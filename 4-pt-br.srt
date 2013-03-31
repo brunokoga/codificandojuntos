@@ -1,0 +1,6879 @@
+1
+00:00:00,459 --> 00:00:14,439
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:14,459 --> 00:00:16,800
+Bem vindos à aula 4. Já vou mergulhar
+no conteúdo, como de costume.
+
+3
+00:00:16,820 --> 00:00:22,569
+Muita coisa para falar hoje.
+A primeira coisa que eu quero
+
+4
+00:00:22,589 --> 00:00:26,539
+finalizar hoje são algumas outras
+particularidades de Objective-C.
+
+5
+00:00:26,559 --> 00:00:29,839
+Eu ainda tenho algumas características
+de linguagem do Objective-C
+
+6
+00:00:29,859 --> 00:00:32,739
+para ensinar pra vocês nas próximas
+semanas, mas pelo menos as básicas 
+
+7
+00:00:32,759 --> 00:00:36,669
+estarão cobertas depois de hoje.
+E então quero falar
+
+8
+00:00:36,689 --> 00:00:39,010
+sobre Foundation. O framework
+Foundation. Vocês já sabem
+
+9
+00:00:39,030 --> 00:00:42,550
+um monte de Foundation porque vocês
+sabe tudo sobre NSArray e NSString
+
+10
+00:00:42,570 --> 00:00:45,959
+e um pouco sobre NSObject,
+então eu vou apenas
+
+11
+00:00:45,979 --> 00:00:48,459
+adicionar mais algumas coisas
+ao conhecimento de vocês sobre
+
+12
+00:00:48,479 --> 00:00:50,829
+o framework Foundation. E então,
+eu tenho algumas demos
+
+13
+00:00:50,849 --> 00:00:56,620
+para fazer. Certo. "nil" eu queria
+apenas fazer mais um
+
+14
+00:00:56,640 --> 00:01:00,120
+refinamento. Vocês já sabem
+o que é nil, certo? É zero.
+
+15
+00:01:00,140 --> 00:01:04,070
+Quando é um ponteiro prum objeto, ok?
+Então, se um ponteiro para um
+
+16
+00:01:04,090 --> 00:01:06,549
+objeto tem um valor de nil,
+significa que não está apontando
+
+17
+00:01:06,569 --> 00:01:10,689
+para nada na heap. E eu disse
+a vocês que vocês podem enviar
+
+18
+00:01:10,709 --> 00:01:13,709
+mensagens para nil e que
+isso é ok. Nada acontecerá.
+
+19
+00:01:13,729 --> 00:01:17,019
+Exceto pelo fato que
+se o método que você está
+
+20
+00:01:17,039 --> 00:01:20,790
+tentando chamar tem um
+valor de retorno, será zero.
+
+21
+00:01:20,810 --> 00:01:23,469
+Ok, bom, existe um detalhe
+nisso. Que é: e se você
+
+22
+00:01:23,489 --> 00:01:28,959
+tiver um método cujo valor
+de retorno é uma struct, ok?
+
+23
+00:01:28,979 --> 00:01:31,620
+O que significa para uma struct
+ter um valor de zero? Bom,
+
+24
+00:01:31,640 --> 00:01:34,559
+uma struct não pode ter um valor
+zero, e não, Objective-C não
+
+25
+00:01:34,579 --> 00:01:37,199
+vai setar todas as coisas dentro
+da struct para zero,
+
+26
+00:01:37,219 --> 00:01:40,589
+e quaisquer structs que ela
+possa ter... não.
+
+27
+00:01:40,609 --> 00:01:44,900
+Quando você tem um método que retorna
+uma struct e você envia
+
+28
+00:01:44,920 --> 00:01:48,799
+essa mensagem para nil, ok? O
+valor de retorno é indefinido.
+
+29
+00:01:48,819 --> 00:01:54,189
+Então não faça isso, ok? Nunca envie
+uma mensagem para nil,
+
+30
+00:01:54,209 --> 00:01:57,679
+com a mensagem ou método que
+retorne uma struct, ok?
+
+31
+00:01:57,699 --> 00:02:01,629
+Porque o que você vai receber
+será apenas lixo, desconhecido,
+
+32
+00:02:01,649 --> 00:02:05,519
+indefinido. Ok? Mas você pode
+fazer isso se o método retornar
+
+33
+00:02:05,539 --> 00:02:08,480
+um valor primitivo ou um ponteiro
+ou algo assim, porque
+
+34
+00:02:08,500 --> 00:02:14,519
+você vai receber zero. Alguma
+pergunta sobre isso? Métodos de classe.
+
+35
+00:02:14,539 --> 00:02:18,449
+Eu mostrei a vocês como chamar
+métodos de classe nas aulas
+
+36
+00:02:18,469 --> 00:02:21,609
+passadas, que foi esse
+"PlayingCard validSuits", lembram-se
+
+37
+00:02:21,629 --> 00:02:24,689
+disso? Você apenas digitava o
+nome da classe e então o nome do
+
+38
+00:02:24,709 --> 00:02:27,189
+método de classe, e boom. Chamava
+o método de classe, é ótimo.
+
+39
+00:02:27,209 --> 00:02:29,709
+Existe outra maneira de chamar
+um método de classe, que é
+
+40
+00:02:29,729 --> 00:02:35,899
+na verdade, enviar o método de instância
+"class" para uma instância,
+
+41
+00:02:35,919 --> 00:02:40,709
+receber sua classe e então enviar
+o método de classe. Ok? Agora
+
+42
+00:02:40,729 --> 00:02:43,529
+tem um monte de palavras [???] aí,
+e se você realmente entende
+
+43
+00:02:43,549 --> 00:02:45,529
+programação orientada a objetos
+você provavelmente entendeu tudo.
+
+44
+00:02:45,549 --> 00:02:49,159
+Mas talvez olhando para ele
+faça mais sentido. Na segunda maneira
+
+45
+00:02:49,179 --> 00:02:52,499
+aqui, eu estou enviando "validSuits"
+e isso está dentro da implementação
+
+46
+00:02:52,519 --> 00:02:55,359
+de PlayingCards. Mas, ao invés de
+dizer "[PlayingCard validSuits]"
+
+47
+00:02:55,379 --> 00:03:00,429
+eu estou dizendo 
+"[[self class] validSuits]", ok?
+
+48
+00:03:00,449 --> 00:03:03,329
+Então "[self class]", eu estou apenas
+enviando o método de instância para
+
+49
+00:03:03,349 --> 00:03:06,329
+mim mesmo e recebendo minha classe.
+E então estou enviando para ela
+
+50
+00:03:06,349 --> 00:03:08,469
+um método de classe. Ok? Qual é
+a diferença entre essas duas maneiras?
+
+51
+00:03:08,489 --> 00:03:13,079
+Bom, a segunda maneira funciona com
+herança. Ok? Em outras palavras,
+
+52
+00:03:13,099 --> 00:03:15,760
+se uma subclasse de PlayinCard
+implementa "validSuits",
+
+53
+00:03:15,780 --> 00:03:19,389
+se você chamá-lo da segunda
+maneira, ele vai usar
+
+54
+00:03:19,409 --> 00:03:21,839
+a versão da subclasse. Porque ele
+vai chamar "[self class]"
+
+55
+00:03:21,859 --> 00:03:24,589
+que vai retornar a subclasse
+se for uma subclasse.
+
+56
+00:03:24,609 --> 00:03:27,339
+Então ele vai chamar "validSuits".
+Agora, se a subclasse
+
+57
+00:03:27,359 --> 00:03:29,589
+não implementa "validSuits",
+ele vai herdar os métodos
+
+58
+00:03:29,609 --> 00:03:32,089
+de classe. Porque os métodos
+de classe são herdados também.
+
+59
+00:03:32,109 --> 00:03:35,139
+Do mesmo modo que os métodos
+de instância são herdados. Então
+
+60
+00:03:35,159 --> 00:03:39,849
+essa é a única diferença. Vocês
+verão que isso é mais usado
+
+61
+00:03:39,869 --> 00:03:42,219
+quando você é o "self", ou seja,
+você está dentro da sua própria
+
+62
+00:03:42,239 --> 00:03:44,779
+implementação. Vocês perceberão que
+quando fazemos algo tipo "[NSString ...
+
+63
+00:03:44,799 --> 00:03:48,419
+stringWithFormat", esse é um método
+de classe. Nós dizemos apenas [NSString...
+
+64
+00:03:48,439 --> 00:03:51,689
+stringWithFormat", certo? Então quando
+vocês estiverem usando outra classe
+
+65
+00:03:51,709 --> 00:03:54,939
+geralmente você diz apenas o
+nome da classe porque você sabe
+
+66
+00:03:54,959 --> 00:03:57,439
+o que você quer. Você quer aquela
+instância particular de, sabe,
+
+67
+00:03:57,459 --> 00:03:59,939
+daquela, dentro da hierarquia
+das classes. Mas, dentro da sua própria
+
+68
+00:03:59,959 --> 00:04:02,939
+classe, você poderia querer usar
+"[self class]" porque você pode querer
+
+69
+00:04:02,959 --> 00:04:05,649
+permitir que uma subclasse sobrescreva
+seu método de classe. Pergunta.
+
+70
+00:04:05,669 --> 00:04:09,349
+>> [Estudante perguntando]
+
+
+71
+00:04:09,369 --> 00:04:12,109
+>> Porque isso está dentro da
+implementação de PlayingCards,
+
+72
+00:04:12,129 --> 00:04:16,030
+eu disse, certo? Esse é
+o "setSuit", esse é o setter
+
+73
+00:04:16,050 --> 00:04:19,569
+de suit, dentro de PlayingCard.
+Perguntas? Não?
+
+74
+00:04:19,589 --> 00:04:22,609
+Ok, isso é apenas um detalhe
+de métodos de classe. Você pode usar
+
+75
+00:04:22,629 --> 00:04:26,160
+de qualquer um dos modos.
+Isso não é um problema.
+
+76
+00:04:26,180 --> 00:04:29,160
+Não existe um jeito particularmente
+certo de fazer. Não se preocupe muito
+
+77
+00:04:29,180 --> 00:04:32,160
+com isso, mas eu quis apenas mostrar
+para quando vocês virem essa 
+
+78
+00:04:32,180 --> 00:04:35,160
+segunda sintaxe. Eu queria que vocês
+soubessem o que está acontecendo. Eu vou
+
+79
+00:04:35,180 --> 00:04:37,660
+passar por alguns desses slides,
+como esse aqui, criando
+
+80
+00:04:37,680 --> 00:04:40,160
+objetos. Eu acredito que vocês
+entenderam como criar objetos, alloc,
+
+81
+00:04:40,180 --> 00:04:43,949
+init, como "[NSString stringWithFormat...]",
+isso é você chamando
+
+82
+00:04:43,969 --> 00:04:47,149
+um método de classe que cria um objeto
+para você. Existem vários métodos
+
+83
+00:04:47,169 --> 00:04:49,730
+que não criarm objetos para você,
+como se você chamar
+
+84
+00:04:49,750 --> 00:04:53,329
+"lastObject" em um NSArray,
+ele retornará um ponteiro para
+
+85
+00:04:53,349 --> 00:04:56,040
+o último objeto no array, não uma
+cópia dele ou algo assim.
+
+86
+00:04:56,060 --> 00:04:59,509
+Isso é, estará apontando
+para o real ponteiro do objeto.
+
+87
+00:04:59,529 --> 00:05:04,079
+Eu acho que vocês entenderam
+tudo isso. Mas às vezes vocês
+
+88
+00:05:04,099 --> 00:05:06,600
+perceberão que existe um método
+de classe como "[NSString ...
+
+89
+00:05:06,620 --> 00:05:09,769
+stringWithFormat]" e existe também
+um init que é exatamente
+
+90
+00:05:09,789 --> 00:05:13,989
+assim: "[[NSString alloc]...
+initWithFormat]". E ele é escrito
+
+91
+00:05:14,009 --> 00:05:16,239
+exatamente da mesma forma. Bom,
+existe diferença entre
+
+92
+00:05:16,259 --> 00:05:19,549
+"[NSString stringWithFormat]",
+o método de classe e "initWithFormat",
+
+93
+00:05:19,569 --> 00:05:22,859
+que é um método de instância
+de NSString? E a resposta
+
+94
+00:05:22,879 --> 00:05:26,309
+é: não há mais diferença. Ok.
+Antes de nós termos
+
+95
+00:05:26,329 --> 00:05:29,309
+contador automático de referência,
+que é esse negócio que gerencia
+
+96
+00:05:29,329 --> 00:05:32,429
+automaticamente a heap baseada em
+strong e weak, existia uma
+
+97
+00:05:32,449 --> 00:05:35,179
+diferença entre fazer dessas
+duas maneiras. Mas não há mais.
+
+98
+00:05:35,199 --> 00:05:37,929
+Então, como nós vamos sempre usar ARC
+nesse curso, e muito provavelmente
+
+99
+00:05:37,949 --> 00:05:40,679
+vamos estar sempre usando ARC
+a não ser que você mexa em algum
+
+100
+00:05:40,699 --> 00:05:43,679
+código antigo no seu local
+de trabalho, que você vai se confrontar,
+
+101
+00:05:43,699 --> 00:05:46,679
+eu sei que muitas pessoas acabam
+tendo que... mas nesse curso,
+
+102
+00:05:46,699 --> 00:05:49,429
+nós não temos muito tempo
+para ensiná-los. Então, não
+
+103
+00:05:49,449 --> 00:05:51,929
+há diferença. Ok? É exatamente
+a mesma coisa. Você pode usar qualquer
+
+104
+00:05:51,949 --> 00:05:54,929
+um dos dois nesse curso. Eu não
+tenho nenhuma preferência.
+
+105
+00:05:54,949 --> 00:05:57,179
+Talvez a Apple seja mais inclinada
+a alloc + inits.
+
+106
+00:05:57,199 --> 00:05:59,929
+Eu percebi recentemente que novos
+objetos que eles lançam
+
+107
+00:05:59,949 --> 00:06:02,929
+tendem a não ter o antigo modo
+de método de classe, eles usam
+
+108
+00:06:02,949 --> 00:06:05,429
+alloc + init. Certo?
+Vários alloc + init. Então, sabe,
+
+109
+00:06:05,449 --> 00:06:10,689
+nada pra se preocupar muito. Ok.
+"Dynamic binding". Isso é
+
+110
+00:06:10,709 --> 00:06:13,359
+algo sobre Objective-C que é
+diferente de vários outras
+
+111
+00:06:13,379 --> 00:06:17,139
+linguagens que vocês estão acostumados,
+como Java. E isso faz
+
+112
+00:06:17,159 --> 00:06:20,819
+Objective-C, para os não-iniciados,
+parecer meio como 
+
+113
+00:06:20,839 --> 00:06:24,839
+uma selva, em termos de digitação.
+Mas isso é, na verdade, muito
+
+114
+00:06:24,859 --> 00:06:29,329
+bem definido. Muito bem entendido.
+Nós usamos essa "selva" aqui
+
+115
+00:06:29,349 --> 00:06:33,970
+de uma maneira muito
+bem entendida. Então eu vou
+
+116
+00:06:33,990 --> 00:06:37,619
+explicar o que é isso e eu
+vou mostrar um exemplo a vocês
+
+117
+00:06:37,639 --> 00:06:41,109
+de como o compilador vai
+nos ajudar. E então,
+
+118
+00:06:41,129 --> 00:06:43,389
+espero, depois de tudo isso,
+vocês vão entender um pouco
+
+119
+00:06:43,409 --> 00:06:49,429
+sobre esse conceito de
+"dynamic binding". Então quando
+
+120
+00:06:49,449 --> 00:06:53,299
+nós estávamos trabalhando em todas
+as primeiras aulas, nós sempre
+
+121
+00:06:53,319 --> 00:06:57,369
+usamos o que é chamado de "static typing".
+Então quando nós temos um ponteiro
+
+122
+00:06:57,389 --> 00:07:01,459
+para um objeto, nós especificamos qual
+a classe do objeto para qual nós esperamos
+
+123
+00:07:01,479 --> 00:07:06,619
+que aquele ponteiro aponte. Como
+" NSString * " ou " Card * ", ok?
+
+124
+00:07:06,639 --> 00:07:11,059
+Esse ponteiro para um objeto,
+nós pensamos... nós dizemos ao
+
+125
+00:07:11,079 --> 00:07:14,559
+compilador, ele aponta para uma carta,
+ou uma subclasse dela. Isso é o que
+
+126
+00:07:14,579 --> 00:07:17,480
+significa " Card * ". Isso é chamado
+"static typing". Bem,
+
+127
+00:07:17,500 --> 00:07:20,259
+existe um modo de tipagem,
+em Objective-C onde você não
+
+128
+00:07:20,279 --> 00:07:24,309
+especifica isso. Isso é a coisa mágica
+chamada "id". E nós na verdade
+
+129
+00:07:24,329 --> 00:07:27,899
+vimos isso brevemente, quando nós
+olhamos para o init de PlayingCardDeck.
+
+130
+00:07:27,919 --> 00:07:32,189
+Ele retornava um "id", ok?
+E lembrem-se, "id" significa
+
+131
+00:07:32,209 --> 00:07:35,879
+ponteiro para um objeto de um
+tipo desconhecido. E é aí que
+
+132
+00:07:35,899 --> 00:07:38,879
+a "selva" aparece. As pessoas
+ficam, tipo "aah! Se é de um tipo
+
+133
+00:07:38,899 --> 00:07:41,629
+desconhecido, como que é possível
+que isso não crashe meu programa?"
+
+134
+00:07:41,649 --> 00:07:45,869
+E a resposta é: se você usa "id"
+e não o usa do jeito certo,
+
+135
+00:07:45,889 --> 00:07:48,889
+é, você pode crashar o
+seu programa. Então você precisa
+
+136
+00:07:48,909 --> 00:07:52,679
+ser cuidadoso com ele, certo?
+E o compilador...
+
+137
+00:07:52,699 --> 00:07:57,169
+Bom, a diferença entre
+"static typing" e "id" é somente
+
+138
+00:07:57,189 --> 00:08:00,549
+um compilador te ajudando a pensar.
+É somente o compilador.
+
+139
+00:08:00,569 --> 00:08:04,459
+O compilador irá gerar
+exatamente o mesmo código, esteja você
+
+140
+00:08:04,479 --> 00:08:09,089
+dizendo "NSString * alguma coisa"
+ou "id". É exatamente igual
+
+141
+00:08:09,109 --> 00:08:11,439
+em tempo de execução. Você não
+consegue dizer a diferença.
+
+142
+00:08:11,459 --> 00:08:14,659
+A única diferença é: se você disser
+"NSString *", então, 
+
+143
+00:08:14,679 --> 00:08:18,939
+o compilador, em tempo de compilação,
+vai pegar se você
+
+144
+00:08:18,959 --> 00:08:21,540
+enviar uma mensagem que não é
+um método de string, para
+
+145
+00:08:21,560 --> 00:08:24,350
+essa coisa. Isso é tudo que está
+acontecendo aqui. É somente
+
+146
+00:08:24,370 --> 00:08:28,209
+o compilador te alertando
+"ou! cuidado!", ok? Se você usar "id"
+
+147
+00:08:28,229 --> 00:08:30,959
+o compilador não poderá te alertar
+porque ele não saberá para o que
+
+148
+00:08:30,979 --> 00:08:33,960
+ele está apontando. Então é quando
+você está por si só. Agora,
+
+149
+00:08:33,980 --> 00:08:39,009
+você pode pensar que isso é
+impossível de se gerenciar
+
+150
+00:08:39,029 --> 00:08:42,989
+e se você é algum da ciência
+da computação, você pode pensar
+
+151
+00:08:43,009 --> 00:08:45,989
+bom, como eu posso... isso é
+não-determinado. Eu não posso
+
+152
+00:08:46,009 --> 00:08:49,309
+saber se meu programa está correto.
+Sabe, correto com C maíusculo,
+
+153
+00:08:49,329 --> 00:08:51,980
+no sentido de ciência da computação,
+para aqueles que tem um pouco
+
+154
+00:08:52,000 --> 00:08:54,830
+de ciência da computação. E isso
+é verdade, mas isso não é
+
+155
+00:08:54,850 --> 00:08:58,129
+realmente um objetico do Objective-C,
+de construir uma linguagem que possa ser,
+
+156
+00:08:58,149 --> 00:09:02,129
+sabe, corretamente escrita de um modo
+que seja deterministicamente correto.
+
+157
+00:09:02,149 --> 00:09:06,950
+A sua função é prover o tipo
+de ambiente flexível
+
+158
+00:09:06,970 --> 00:09:10,609
+para você construir esses
+apps poderosos, certo?
+
+159
+00:09:10,629 --> 00:09:13,850
+A decisão sobre que código
+é executado em tempo de execução
+
+160
+00:09:13,870 --> 00:09:17,759
+quando uma mensagem é enviada, acontece
+100% em tempo de execução, ok?
+
+161
+00:09:17,779 --> 00:09:21,919
+Então, literalmente, cada mensagem
+que você envia é transformada em
+
+162
+00:09:21,939 --> 00:09:25,720
+uma chamada, para essa função chamada
+objc_msgSend, "Objective-C
+
+163
+00:09:25,740 --> 00:09:29,249
+enviar mensagem". E o primeiro
+argumento para essa mensagem é
+
+164
+00:09:29,269 --> 00:09:31,489
+o objeto que você está enviando essa
+mensagem. O segundo argumento é
+
+165
+00:09:31,509 --> 00:09:34,980
+o método que você quer enviar.
+E o resto dos argumentos
+
+166
+00:09:35,000 --> 00:09:37,710
+são os restos dos argumentos, ok?
+Então, isso é chamado,
+
+167
+00:09:37,730 --> 00:09:40,279
+todas as vezes que você envia
+uma mensagem, quer você tenha
+
+168
+00:09:40,299 --> 00:09:43,100
+digitado "id", "NSString *"...,
+é irrelevante. Ele acaba sendo
+
+169
+00:09:43,120 --> 00:09:45,850
+transformado nisso. E então,
+em tempo de execução, o que acontece é
+
+170
+00:09:45,870 --> 00:09:51,989
+esse obj_msgSend procura pelo
+id da mensagem para a classe
+
+171
+00:09:52,009 --> 00:09:55,230
+que ele vê lá em tempo de execução
+e pega o código certo para executar,
+
+172
+00:09:55,250 --> 00:09:58,419
+baseado em herança e
+todas essas coisas.
+
+173
+00:09:58,439 --> 00:10:01,169
+Então, está tudo acontecendo em
+tempo de execução. Nada disso está
+
+174
+00:10:01,189 --> 00:10:03,840
+sendo amarrado em tempo de compilação.
+Um compilador nunca está escolhendo
+
+175
+00:10:03,860 --> 00:10:07,279
+qual o código vai rodar. Ele sempre
+escolhe obj_msgSend.
+
+176
+00:10:07,299 --> 00:10:10,100
+É isso que ele sempre vai rodar
+quando uma mensagem está
+
+177
+00:10:10,120 --> 00:10:13,460
+sendo enviada. E o runtime
+pega o código atual que está
+
+178
+00:10:13,480 --> 00:10:18,859
+sendo executado. Então, vou pular isso
+e vou pra cá, porque aqui temos
+
+179
+00:10:18,879 --> 00:10:21,659
+um exemplo de tipagem de objeto.
+Temos duas classes aqui.
+
+180
+00:10:21,679 --> 00:10:25,429
+Eu tenho um veículo, ok? Que tem
+somente um méotdo,
+
+181
+00:10:25,449 --> 00:10:28,309
+"mover" e o veículo pode ser movido
+por aí. E então tenho navio,
+
+182
+00:10:28,329 --> 00:10:30,950
+que herda de veículo, mas ele
+pode também atirar em outros
+
+183
+00:10:30,970 --> 00:10:33,809
+navios. Então é como se fosse
+um jogo de tiros, ok? Agora, claro,
+
+184
+00:10:33,829 --> 00:10:36,309
+Um navio também pode se mover,
+porque ele é um veículo.
+
+185
+00:10:36,329 --> 00:10:40,159
+Certo?. Então se eu aloquei um navio
+usando "[[Ship alloc] init]" e
+
+186
+00:10:40,179 --> 00:10:43,859
+o atribuí para uma variável que era
+"Ship *s", estaticamente tipada
+
+187
+00:10:43,879 --> 00:10:47,629
+para ser "Ship *". Então, claro,
+eu poderia dizer "[s shoot]" e o
+
+188
+00:10:47,649 --> 00:10:50,629
+compilador estaria ok com isso.
+Certo? Porque ele sabe que "s"
+
+189
+00:10:50,649 --> 00:10:54,439
+é um navio e navios podem atirar. Ótimo.
+E se eu fizesse "[s move]"?
+
+190
+00:10:54,459 --> 00:10:57,309
+O compilador estaria ok com isso também.
+Porque claro "s", um navio,
+
+191
+00:10:57,329 --> 00:11:02,019
+herda "move"  de veículo. Então,
+isso é ótimo. EU posso
+
+192
+00:11:02,039 --> 00:11:06,080
+também vazer isso: "Vehicle *v = s".
+Isso é como dizer
+
+193
+00:11:06,100 --> 00:11:10,039
+"Deck *deck = [[PlayingCardDeck alloc] init]",
+certo?
+
+194
+00:11:10,059 --> 00:11:15,039
+Como eu posso dizer que o navio é um
+veículo, eu posso atribuir um veículo,
+
+195
+00:11:15,059 --> 00:11:18,139
+amarrado estaticamente a um ponteiro
+para ser um navio. Funciona perfeitamente.
+
+196
+00:11:18,159 --> 00:11:22,929
+Entretanto, eu não posso dizer
+"[v shoot]", ok? Todo mundo entende
+
+197
+00:11:22,949 --> 00:11:26,549
+porque isso não funciona em tempo de
+compilação? Porque o compilador pensa que
+
+198
+00:11:26,569 --> 00:11:30,720
+v é um veículo. Ele não sabe que é um
+navio. Ele sabe somente que é um veículo.
+
+199
+00:11:30,740 --> 00:11:34,039
+E veículos não podem atirar.
+Um navio pode. Mas um veículo
+
+200
+00:11:34,059 --> 00:11:36,819
+por si só não pode. Então isso
+causaria um warning em tempo de compilação.
+
+201
+00:11:36,839 --> 00:11:40,189
+Em tempo de execução, se você
+ignorar o warning do compilador,
+
+202
+00:11:40,209 --> 00:11:43,480
+Isso não crasharia. Isso ia
+ser ok. Porque o navio na verdade
+
+203
+00:11:43,500 --> 00:11:46,999
+implementa "shoot". Ok?
+Então isso não crasharia
+
+204
+00:11:47,019 --> 00:11:50,039
+em tempo de execução e iria
+gerar um warning de compilação.
+
+205
+00:11:50,059 --> 00:11:53,139
+Todo mundo entende isso? Esse é
+uma linha de código importante de
+
+206
+00:11:53,159 --> 00:11:57,179
+se entender. Muito simples, mas essencial.
+Certo, agora se você tivesse um "id",
+
+207
+00:11:57,199 --> 00:12:02,460
+algum objeto, objeto
+de um tipo desconhecido, e você enviasse
+
+208
+00:12:02,480 --> 00:12:08,319
+a ele "shoot", ok, o compulador
+não iria te alertar. Ok, isso é
+
+209
+00:12:08,339 --> 00:12:11,679
+importante de se entender porque
+ele não sabe que 
+
+210
+00:12:11,699 --> 00:12:12,679
+o "obj" não é
+
+
+211
+00:12:12,699 --> 00:12:15,100
+um navio. Ele pode ser, então o
+compilador não vai, sabe,
+
+212
+00:12:15,120 --> 00:12:16,100
+te incomodar
+
+
+213
+00:12:16,120 --> 00:12:18,350
+com warnings desnecessários.
+Basicamente, quando você usa "id"
+
+214
+00:12:18,370 --> 00:12:19,350
+o compilador
+
+
+215
+00:12:19,370 --> 00:12:21,319
+assume que você sabe o que
+você está fazendo. Essa é
+
+216
+00:12:21,339 --> 00:12:25,119
+uma peça fundamental desse
+quebra-cabeça, ok? Então isso pode
+
+217
+00:12:25,139 --> 00:12:27,939
+crashar ou não em tempo de execução.
+Depende somente se o "obj" implementa
+
+218
+00:12:27,959 --> 00:12:30,580
+ou não o método "shoot".
+E eu não me importa o que é
+
+219
+00:12:30,600 --> 00:12:34,359
+esse método "shoot", porque "obj"
+é um navio, ou talvez "obj" seja
+
+220
+00:12:34,379 --> 00:12:38,829
+uma outra classe que tenha "dang"
+e "shoot" nela, ok?
+
+221
+00:12:38,849 --> 00:12:41,689
+Em outras palavras, um significado
+totalmente diferente de "shoot" ainda
+
+222
+00:12:41,709 --> 00:12:44,949
+funcionaria bem se a classe
+implementasse "shoot"
+
+223
+00:12:44,969 --> 00:12:50,019
+em tempo de execução. Ok. Agora,
+se você disser, digamos, "obj",
+
+224
+00:12:50,039 --> 00:12:53,470
+e algum método que esse objeto não
+implementa, ok? Então o compilador
+
+225
+00:12:53,490 --> 00:12:56,409
+vai te alertar. Porque o compilador é
+tipo... é muito improvável que isso
+
+226
+00:12:56,429 --> 00:12:59,569
+vá funcionar. Porque eu não sei de
+nenhum objeto que implementa isso.
+
+227
+00:12:59,589 --> 00:13:02,069
+Mas essa é a única hora que
+o compilador pode te alertar
+
+228
+00:13:02,089 --> 00:13:05,569
+quando você envia uma mensagem
+para "id". Agora, se você tiver
+
+229
+00:13:05,589 --> 00:13:10,179
+uma string, NSString *, ok? E você
+disser "shoot" para isso,
+
+230
+00:13:10,199 --> 00:13:12,679
+o compilador vai te alertar. Porque
+o compilador sabe que uma string
+
+231
+00:13:12,699 --> 00:13:15,049
+não implementa "shoot", certo?
+Então isso é
+
+232
+00:13:15,069 --> 00:13:16,309
+óbvio.
+
+
+233
+00:13:16,329 --> 00:13:21,230
+Se você fizer um cast dessa string...
+todo mundo sabe o que é casting,
+
+234
+00:13:21,250 --> 00:13:24,090
+certo, em todas as linguagens...
+não todas as linguagens... Todas as
+
+235
+00:13:24,110 --> 00:13:26,539
+linguagens que vocês conhecem tem
+casting, onde você coloca
+
+236
+00:13:26,559 --> 00:13:29,019
+dentro de parêntesis o tipo que você
+quer que alguma coisa seja, na frente
+
+237
+00:13:29,039 --> 00:13:33,579
+dessa alguma coisa. Então seu eu fizer
+um cast dessa string "hello" para ser
+
+238
+00:13:33,599 --> 00:13:37,499
+um navio, colocá-la em uma variável chamada
+helloShop, então quando eu disser
+
+239
+00:13:37,519 --> 00:13:41,869
+"[helloShop shoot]", o compilador
+não vai me alertar, certo? Porque
+
+240
+00:13:41,889 --> 00:13:45,590
+eu estou enviando "shoot" para uma
+variável do tipo Ship, ponteiro para
+
+241
+00:13:45,610 --> 00:13:49,699
+ship. E ship entende isso. Agora,
+em tempo de execução, vai crashar
+
+242
+00:13:49,719 --> 00:13:51,989
+porque strings não implementams shoot.
+
+
+243
+00:13:52,009 --> 00:13:54,230
+Certo? Mas em tempo de compilação
+isso vai compilar perfeitamente.
+
+244
+00:13:54,250 --> 00:13:58,929
+E o mesmo se eu fizer o cast
+de algo para "id" e então enviar
+
+245
+00:13:58,949 --> 00:14:01,350
+uma mensagem. O compilador vai fucionar
+perfeitamente, mas vai crashar em
+
+246
+00:14:01,370 --> 00:14:02,350
+tempo de execução
+
+
+247
+00:14:02,370 --> 00:14:10,389
+porque ele não vai entender
+a mensagem, ok? Sim.
+
+248
+00:14:10,409 --> 00:14:13,289
+>> [Estudante perguntando]
+
+
+249
+00:14:13,309 --> 00:14:14,289
+[estudante perguntando]
+
+
+250
+00:14:14,309 --> 00:14:16,539
+>> Ok, então a pergunta é:
+qual a diferença entre "id"
+
+251
+00:14:16,559 --> 00:14:19,039
+e "void *". Pergunta fantástica.
+"void *" não tem nada a ver
+
+252
+00:14:19,059 --> 00:14:21,539
+com objetos. "void *" é um ponteiro
+em C para uma memória arbitrária,
+
+253
+00:14:21,559 --> 00:14:25,109
+ok? Nós nunca usamos a palavra
+"void *", ou sequer pensamos
+
+254
+00:14:25,129 --> 00:14:28,539
+em "void *" quando falamos
+de objetos. "id" significa ponteiro
+
+255
+00:14:28,559 --> 00:14:32,199
+para um tipo desconhecido de objeto.
+"id" nunca significa ponteiro para uma
+
+256
+00:14:32,219 --> 00:14:35,429
+memória aleatória. Ele sempre significa
+ponteiro para um objeto. Nós somente
+
+257
+00:14:35,449 --> 00:14:37,869
+não sabemos sua classe. Ok?
+Então... "void *"... "id"...
+
+258
+00:14:37,889 --> 00:14:38,869
+Coisas diferentes. Sim?
+
+
+259
+00:14:38,889 --> 00:14:42,529
+>> [Estudante perguntando]
+
+
+260
+00:14:42,549 --> 00:14:46,199
+[estudante perguntando]
+
+
+261
+00:14:46,219 --> 00:14:47,199
+[estudante perguntando]
+
+
+262
+00:14:47,219 --> 00:14:49,949
+>> Bom, você não pode chamar [v shoot],
+por isso que está em laranja.
+
+263
+00:14:49,969 --> 00:14:52,699
+Ok, [v shoot] seria pego pelo
+compilador. Ele diria
+
+264
+00:14:52,719 --> 00:14:56,249
+"Vehicle não implementa shoot".
+Certo, então seria um
+
+265
+00:14:56,269 --> 00:14:58,999
+warning. Você pode ignorar
+o warning e continuar e
+
+266
+00:14:59,019 --> 00:15:05,489
+em tempo de execução ele não crasharia
+nesse caso, ok? Mas você nunca
+
+267
+00:15:05,509 --> 00:15:08,309
+deve chamar [v shoot]. QUando vocês
+enviarem os seus homeworks nesse curso,
+
+268
+00:15:08,329 --> 00:15:10,759
+a propósito, ele nunca deve
+ter warnings. Nunca deve ter errors.
+
+269
+00:15:10,779 --> 00:15:14,289
+Ele tem que buildar e não deve
+ter warnings de nenhum tipo.
+
+270
+00:15:14,309 --> 00:15:19,859
+Ok, nunca. Então você nunca
+faria [v shoot],
+
+271
+00:15:19,879 --> 00:15:21,799
+porque você teria
+um warning e você já teria
+
+272
+00:15:21,819 --> 00:15:22,799
+se livrado dele.
+
+
+273
+00:15:22,819 --> 00:15:27,499
+Então, nós temos "id" como nós
+realmente usamos essa coisa
+
+274
+00:15:27,519 --> 00:15:31,289
+seguramente em sensatamente?
+E a resposta é: nós usamos
+
+275
+00:15:31,309 --> 00:15:35,970
+introspecção. Introspecção é uma
+maneira que nos permite perguntar
+
+276
+00:15:35,990 --> 00:15:41,049
+par aum objeto: "qual a sua classe?"
+ou "quais métodos você implementa?",
+
+277
+00:15:41,069 --> 00:15:45,199
+ok? E, então, nós podemos estar
+seguros para enviar mensagens
+
+278
+00:15:45,219 --> 00:15:49,439
+para esse "id", ok? Então eu vou
+falar sobre três deles aqui.
+
+279
+00:15:49,459 --> 00:15:52,439
+Na verdade eu vou apenas falar
+sobre dois deles. Mas existe 
+
+280
+00:15:52,459 --> 00:15:55,189
+"isKindOfClass:", "isMemberOfClass:".
+Esses são ambos
+
+281
+00:15:55,209 --> 00:15:57,939
+maneiras de perguntar a um objeto,
+eles são implementados no
+
+282
+00:15:57,959 --> 00:16:00,689
+NSObject, esses métodos. Então você pode
+enviá-los para qualquer objeto
+
+283
+00:16:00,709 --> 00:16:02,689
+que herde de NSObject.
+E você pode dizer 
+
+284
+00:16:02,709 --> 00:16:03,689
+"isKindOfClass:".
+
+
+285
+00:16:03,709 --> 00:16:06,689
+Isso significa, "você é dessa classe?" ou
+"você herda dessa classe?".
+
+286
+00:16:06,709 --> 00:16:10,089
+"isMemberOfClass:" significa
+"você é dessa classe"? Sem herança.
+
+287
+00:16:10,109 --> 00:16:12,839
+Você tem que, na verdade, ser
+dessa classe. Raramente...
+
+288
+00:16:12,859 --> 00:16:15,759
+é raro que você usa esse
+"isMemberOfClass:". E então
+
+289
+00:16:15,779 --> 00:16:19,089
+"respondsToSelector" é:
+"eu não me importo que classe você é",
+
+290
+00:16:19,109 --> 00:16:22,079
+mas você responde para essa mensagem?"
+"shoot", por exemplo. Certo?
+
+291
+00:16:22,099 --> 00:16:25,289
+E então, uma vez que ele diga "sim",
+agora você pode enviar "shoot".
+
+292
+00:16:25,309 --> 00:16:29,459
+Mesmo que seu tipo seja "id", certo?
+Então vamos olhar para as convenções
+
+293
+00:16:29,479 --> 00:16:32,119
+de chamadas dessas coisas, porque
+os argumentos desses métodos
+
+294
+00:16:32,139 --> 00:16:35,329
+são meio maliciosos. Ok, e,
+para algum de vocês, 
+
+295
+00:16:35,349 --> 00:16:39,079
+vocês vão ter que aceitar minha palavra
+pra isso. Essa é a maneira que vocês
+
+296
+00:16:39,099 --> 00:16:42,079
+vão fazer o tempo todo. Então,
+"isKindOfClass:"
+
+297
+00:16:42,099 --> 00:16:45,999
+recebe uma classe como argumento. Ok?
+Então, infelizmente, ele não pode
+
+298
+00:16:46,019 --> 00:16:49,139
+receber simplesmente, digamos,
+a palavra "NSString". Você não pode
+
+299
+00:16:49,159 --> 00:16:53,259
+dizer: "if ([obj isKindOfClass: @"NSString"])".
+Você tem que dizer
+
+300
+00:16:53,279 --> 00:16:58,159
+[NSString class]. Agora, [NSString class]
+está chamando o método de classe
+
+301
+00:16:58,179 --> 00:17:03,720
+"class", que retorna uma classe.
+Ok? Então nós vimos
+
+302
+00:17:03,740 --> 00:17:06,539
+o método de instância "class"
+nos slides anteriores. Agora,
+
+303
+00:17:06,559 --> 00:17:11,239
+nós estamos vendo o método de classe
+"class", ok? Bom, de qualquer modo,
+
+304
+00:17:11,259 --> 00:17:14,839
+nós sempre... porque nós estamos
+perguntando "isKindOfClass",
+
+305
+00:17:14,859 --> 00:17:17,440
+nós vamos especificar o nome
+dessa classe e usar esse
+
+306
+00:17:17,460 --> 00:17:20,879
+mecanismo, [NSString class].
+Aceitem minha palavra
+
+307
+00:17:20,899 --> 00:17:23,700
+para isso. Isso é o que você
+vai querer fazer sempre.
+
+308
+00:17:23,720 --> 00:17:26,019
+Apenas troque "NSString" com qualquer
+que seja a classe que você está interessado.
+
+309
+00:17:26,039 --> 00:17:29,220
+Se isso retornar "YES", ele retorna
+um BOOL, se ele retornar "YES",
+
+310
+00:17:29,240 --> 00:17:32,559
+então, boom, você sabe que "obj"
+que é do tipo "id"
+
+311
+00:17:32,579 --> 00:17:34,859
+presumidamente, embora ele pudesse
+ser de qualquer tipo,
+
+312
+00:17:34,879 --> 00:17:37,470
+porque o tipo estático nÃo sem importa
+quando você está fazendo esse negócio
+
+313
+00:17:37,490 --> 00:17:41,749
+de classe. Então, você está seguro
+na próxima linha, dentro do if,
+
+314
+00:17:41,769 --> 00:17:44,999
+para fazer um cast dele para NSString,
+e enviar uma mensagem de
+
+315
+00:17:45,019 --> 00:17:47,339
+NSString, porque vocÊ checou para
+ter certeza que é uma NSString.
+
+316
+00:17:47,359 --> 00:17:51,420
+Vêem? Ok, isso é chamado
+introspecção. Então isso é
+
+317
+00:17:51,440 --> 00:17:55,839
+introspecção de classe. Aqui é como
+nós fazemos, selectors.
+
+318
+00:17:55,859 --> 00:17:59,849
+Ok? Envio de mensagens. Nós usamos
+essa sintaxe mágica chamada
+
+319
+00:17:59,869 --> 00:18:03,690
+"@selector". E o modo que você
+consegue esse meio que
+
+320
+00:18:03,710 --> 00:18:07,859
+identificador mágico de uma mensagem,
+de um método, é "@selector"
+
+321
+00:18:07,879 --> 00:18:08,859
+e o nome.
+
+
+322
+00:18:08,879 --> 00:18:12,220
+Então, por exemplo, se eu quero
+saber se um objeto responde
+
+323
+00:18:12,240 --> 00:18:14,720
+para "shoot", eu diria:
+"[obj respondsToSelector:...
+
+324
+00:18:14,740 --> 00:18:18,059
+@selector(shoot)".
+Agora, se o método
+
+325
+00:18:18,079 --> 00:18:19,059
+tem argumentos,
+
+326
+00:18:19,079 --> 00:18:21,749
+então você simplesmente os coloca
+todos ali, com os dois pontos.
+
+327
+00:18:21,769 --> 00:18:24,569
+Por exemplo, você poderia dizer,
+"respondsToSelector:...
+
+328
+00:18:24,589 --> 00:18:25,569
+
+
+329
+00:18:25,589 --> 00:18:28,889
+@selector(addCard:atTop:)"
+
+
+330
+00:18:28,889 --> 00:18:29,889
+@selector(addCard:atTop:)"
+
+
+
+331
+00:18:29,909 --> 00:18:34,759
+Então... é assim que você
+faria com múltiplos argumentos.
+
+332
+00:18:34,779 --> 00:18:35,759
+E uma vez que
+
+333
+00:18:35,779 --> 00:18:38,440
+você tenha determinado isso,
+se aquilo responde para o método,
+
+334
+00:18:38,460 --> 00:18:41,059
+então você pode simplesmente enviar
+para ele. E vai funcionar, porque
+
+335
+00:18:41,079 --> 00:18:44,059
+você chegou para ter certeza
+que iria funcionar. Vêem? Então,
+
+336
+00:18:44,079 --> 00:18:46,409
+é assim que usamos introspecção,
+para meio qu nos protegermos,
+
+337
+00:18:46,429 --> 00:18:51,149
+quando estamos usando "id". Certo?
+Agora por que nós vamos querer
+
+338
+00:18:51,169 --> 00:18:54,489
+usar "id"? Bom, existem algumas
+razões que vamos ver mais para frente
+
+339
+00:18:54,509 --> 00:18:57,139
+nesse trimestre. Algumas das
+boas razões. Eu vou mostrar uma
+
+340
+00:18:57,159 --> 00:19:00,950
+que vocês conseguem entender agora,
+que é... e se você tiver um NSArray
+
+341
+00:19:00,970 --> 00:19:05,399
+e quiser ter tanto strings
+quando "numbers" nele? Ok?
+
+342
+00:19:05,419 --> 00:19:07,989
+Nós não falamos de objetos "number"
+ainda. Nós vamos falar em
+
+343
+00:19:08,009 --> 00:19:10,239
+um minuto. Mas, existem objetos
+que representam números também.
+
+344
+00:19:10,259 --> 00:19:13,489
+Então, se você quiser ter ambos
+ali, você poderia colocar
+
+345
+00:19:13,509 --> 00:19:16,489
+ambos em um array misto. E então,
+quando você os extraísse
+
+346
+00:19:16,509 --> 00:19:19,489
+e olhasse para eles, você poderia
+dizer: se for um número
+
+347
+00:19:19,509 --> 00:19:22,989
+faça isso, caso contrário, se for
+uma string, faça aquilo. Certo?
+
+348
+00:19:23,009 --> 00:19:25,989
+Então esse é um exemplo do porquê
+você iria querer um "id". Ok? NSArray...
+
+349
+00:19:26,009 --> 00:19:28,989
+se você olhar para os argumentos
+dos seus métodos, como
+
+350
+00:19:29,009 --> 00:19:32,450
+"addObject:", são "id"s. Porque você
+pode adicionar qualquer tipo de objeto
+
+351
+00:19:32,470 --> 00:19:35,869
+em um array. Ok? E não há um
+mecanismo como existe em Java
+
+352
+00:19:35,889 --> 00:19:39,409
+para dizer: aqui temos um array,
+ele contém esse tipo de classe.
+
+353
+00:19:39,429 --> 00:19:41,819
+Você simplesmente não pode fazer.
+Não há sintaxe para isso.
+
+354
+00:19:41,839 --> 00:19:43,819
+Não dá para fazer isso em Objective-C.
+Nós não fazemos isso...
+
+355
+00:19:43,839 --> 00:19:44,819
+Sim?
+
+
+356
+00:19:44,839 --> 00:19:47,819
+>> [Estudante pergutando]
+
+
+357
+00:19:47,839 --> 00:19:49,069
+[estudante perguntando]
+
+
+358
+00:19:49,089 --> 00:19:52,069
+>> Então a pergunta é: se eu sei
+que um array só contém strings,
+
+359
+00:19:52,089 --> 00:19:54,819
+por exemplo, eu ainda deveria
+
+360
+00:19:54,839 --> 00:19:57,569
+checar para ter certeza que
+tem apenas strings? E a resposta
+
+361
+00:19:57,589 --> 00:20:00,569
+é não. Ok, nós não fazemos isso.
+Se nós checarmos, então estaremos dizendo
+
+362
+00:20:00,589 --> 00:20:03,069
+para alguém que estiver lendo nosso código
+que podem haver outros
+
+363
+00:20:03,089 --> 00:20:06,319
+tipos de objetos lá. Então não
+queremos checar, ok? E se nós
+
+364
+00:20:06,339 --> 00:20:08,819
+acidentalmente mudarmos de opinião
+e colocar outros objetos lá,
+
+365
+00:20:08,839 --> 00:20:11,569
+isso irá crashar e é isso que
+merecemos. E nós teremos que
+
+366
+00:20:11,589 --> 00:20:14,319
+começar a checar e então as pessoas
+irão perceber: "oh, agora podemos
+
+367
+00:20:14,339 --> 00:20:17,319
+ter...", vê o que estou dizendo?
+Mas se você não colocar
+
+368
+00:20:17,339 --> 00:20:19,569
+tipos diferentes nele, não cheque.
+
+369
+00:20:19,589 --> 00:20:24,670
+Aquele "@selector" retorna algo
+que é tipado para ser SEL,
+
+370
+00:20:24,690 --> 00:20:27,670
+tudo em maiúsculo, ok? É só
+um typedef. E você de fato usa
+
+371
+00:20:27,690 --> 00:20:30,739
+esse negócio para fazer todo tipo
+de coisas legais com métodos, tipo,
+
+372
+00:20:30,759 --> 00:20:34,539
+em um array, você pode dizer:
+"makeObjectsPerform:" e esse selector.
+
+373
+00:20:34,559 --> 00:20:36,789
+E ele vai fazer todos os objetos
+executarem aquele selector. Isso
+
+374
+00:20:36,809 --> 00:20:40,480
+é demais. Ou, digamos, você pode
+usar selectors para ordenar
+
+375
+00:20:40,500 --> 00:20:43,859
+arrays, por exemplo. Existem
+várias coisas legais.
+
+376
+00:20:43,879 --> 00:20:46,859
+E, claro, target-action,
+como fizemos no Xcode, com o
+
+377
+00:20:46,879 --> 00:20:48,999
+CTRL + arrastar. Se você quiser
+setar um target-action
+
+378
+00:20:49,019 --> 00:20:51,499
+no código, claro que você vai precisar
+de selectors, porque você tem
+
+379
+00:20:51,519 --> 00:20:54,499
+que dizer qual é a ação que
+será enviada para esse target
+
+380
+00:20:54,519 --> 00:20:59,249
+quando o botão for apertado. Certo?
+Ok, então, deixa eu fazer uma
+
+381
+00:20:59,269 --> 00:21:03,049
+rápida demo aqui, sobre como nós
+usamos introspecção para fazer
+
+382
+00:21:03,069 --> 00:21:06,700
+o "match" melhor. Porque nós fizemos
+algo no "match", mas não foi algo
+
+383
+00:21:06,720 --> 00:21:10,759
+tão... quente. Ok? E essa
+introspecção vai fazer ficar
+
+384
+00:21:10,779 --> 00:21:14,259
+bem melhor. Então, eu vou voltar
+pro Xcode aqui. De volta pro
+
+385
+00:21:14,279 --> 00:21:17,680
+"Matchismo". Aqui estamos nós.
+Eu vou até PlayingCard.
+
+386
+00:21:17,700 --> 00:21:22,529
+Ok? Nós fizemos algo em PlayingCard
+que não foi tão...
+
+387
+00:21:22,549 --> 00:21:25,599
+quente. E aqui está. Aqui está
+PlayingCard. E eu apenas
+
+388
+00:21:25,619 --> 00:21:28,349
+fiz isso tudo de uma vez e ninguém
+me chamou a atenção e eu 
+
+389
+00:21:28,369 --> 00:21:31,599
+não me toquei, então fizemos.
+Que é essa linha
+
+390
+00:21:31,619 --> 00:21:33,099
+de código logo aqui, ok?
+
+
+391
+00:21:33,119 --> 00:21:37,049
+Aqui é onde nós fazemos os pares
+das cartas e nós somos PlayingCard,
+
+392
+00:21:37,069 --> 00:21:40,680
+e nos enviaram um array
+de outras cartas para fazer o match.
+
+393
+00:21:40,700 --> 00:21:45,079
+Agora, conceitualmente, esse array
+de outras cartas foi definido
+
+394
+00:21:45,099 --> 00:21:49,249
+em Card. Esse array poderia contar
+cartas que não precisam ser
+
+395
+00:21:49,269 --> 00:21:52,749
+necessariamente PlayingCards.
+Nós assumimos que iria conter
+
+396
+00:21:52,769 --> 00:21:56,119
+PlayingCards. Ok? Mas, dado que isso
+foi definido em uma classe
+
+397
+00:21:56,139 --> 00:22:00,190
+chamada Card, eu acho que deveríamos
+assumir que podermos não ter
+
+398
+00:22:00,210 --> 00:22:02,849
+PlayingCards aqui. E se não há,
+não deveríamos fazer o match
+
+399
+00:22:02,869 --> 00:22:06,289
+delas. Certo? Se for uma
+"flashcard", nós não
+
+400
+00:22:06,309 --> 00:22:09,089
+vamos fazer o match disso. Nós deveríamos
+retornar zero. Ao invés disso,
+
+401
+00:22:09,109 --> 00:22:10,339
+nós vamos crashar.
+
+
+402
+00:22:10,359 --> 00:22:13,799
+Ok? Por que nós vamos crashar?
+Porque nós tiramos essa carta
+
+403
+00:22:13,819 --> 00:22:16,839
+daqui e simplesmente assumimos
+que é uma PlayingCard. E,
+
+404
+00:22:16,859 --> 00:22:21,220
+como é um "id", o compilador
+não reclama. Vêem?
+
+405
+00:22:21,240 --> 00:22:25,359
+Certo? O método "lastObjects"
+de um array retorna um "id".
+
+406
+00:22:25,379 --> 00:22:28,519
+Porque arrays contém "id"s.
+O compilador diz: oh, você está
+
+407
+00:22:28,539 --> 00:22:31,269
+usando "id". Você sabe o que está
+fazendo. Espero que saiba
+
+408
+00:22:31,289 --> 00:22:34,269
+o que está fazendo. E então prosseguimos,
+na próxima linha, chamando esse getter,
+
+409
+00:22:34,289 --> 00:22:36,749
+que vai crashar se não for
+uma PlayingCard.
+
+410
+00:22:36,769 --> 00:22:40,899
+Então, qual a coisa certa de se
+fazer aqui, nesse caso? Ok?
+
+411
+00:22:40,919 --> 00:22:45,119
+E eu acho que é fazer algo assim.
+"id otherCard = [otherCards...
+
+412
+00:22:45,139 --> 00:22:46,119
+lastObject]", ok?
+
+
+413
+00:22:46,139 --> 00:22:50,809
+Então eu tenho a "otherCard"
+aqui. Agora, vou dizer
+
+414
+00:22:50,829 --> 00:22:56,569
+"if ([otherCard isKindOfClass:..."
+
+415
+00:22:56,589 --> 00:23:01,220
+é, eu vi. Pronto. Eu queria
+poder falar pro Xcode
+
+416
+00:23:01,240 --> 00:23:06,009
+parar de me ajudar [...]
+"isKindOfClass:...
+
+417
+00:23:06,029 --> 00:23:12,119
+[PlayingCard class]", ok?
+Então se for uma PlayingCard,
+
+418
+00:23:12,139 --> 00:23:14,619
+então eu vou criar outra
+variável local chamada
+
+419
+00:23:14,639 --> 00:23:19,419
+"PlayingCard *otherPlayingCard",
+eu vou chamá-la, igual a ...
+
+420
+00:23:19,439 --> 00:23:25,069
+agora eu poderia apenas dizer
+"otherCard", desse jeito, ok? O compilador
+
+421
+00:23:25,089 --> 00:23:27,499
+não vai me alertar. Esse warning é
+porque eu não estou usando ele
+
+422
+00:23:27,519 --> 00:23:31,749
+e não que é um cast errado. Vou me
+livrar disso, colocar todas essas
+
+423
+00:23:31,769 --> 00:23:38,680
+coisas aqui dentro, certo,
+mudar isso para otherPlayingCard,
+
+424
+00:23:38,700 --> 00:23:43,329
+assim, e estamos ganhando.
+Ok? Então, tudo que fiz aqui
+
+425
+00:23:43,349 --> 00:23:46,349
+foi, eu tirei do array como um "id".
+Eu chequei para ter certeza que era
+
+426
+00:23:46,369 --> 00:23:50,089
+PlayingCard e, se for, daí eu
+fiz o match do rank e naipe.
+
+427
+00:23:50,109 --> 00:23:52,589
+Se não for, vou apenas retornar zero,
+porque esse é o default aqui,
+
+428
+00:23:52,609 --> 00:23:56,339
+certo? Nunca vou chegar
+nessas coisas aqui. A única
+
+429
+00:23:56,359 --> 00:23:59,519
+outra coisa que eu gostaria de falar,
+o que eu pessoalmente faria,
+
+430
+00:23:59,539 --> 00:24:04,809
+colocar um cast aqui. "PlayingCard *".
+Mesmo que não seja necessário.
+
+431
+00:24:04,829 --> 00:24:08,029
+Vocês vêem que o compilador
+não me alerta. Eu só quero que
+
+432
+00:24:08,049 --> 00:24:11,649
+o leitor do meu código perceba
+que eu sei que estou tratando
+
+433
+00:24:11,669 --> 00:24:14,079
+esse negócio como um PlayingCard.
+Ok? Eu entendo que
+
+434
+00:24:14,099 --> 00:24:16,869
+originalmente não era uma
+PlayingCard. E que eu
+
+435
+00:24:16,889 --> 00:24:20,249
+estou usando como uma PlayingCard.
+Então, jogar o cast aqui é
+
+436
+00:24:20,269 --> 00:24:24,259
+apenas uma comunicaçãozinha a mais,
+do tipo "eu sei".
+
+437
+00:24:24,279 --> 00:24:26,619
+E a pessoa lendo isso vai dizer:
+"oh, isso está ok".
+
+438
+00:24:26,639 --> 00:24:29,619
+Porque ele checou para ter certeza
+que era uma PlayingCard.
+
+439
+00:24:29,639 --> 00:24:33,239
+Então, estamos bem. Ok? Viram
+como usamos introspecção
+
+440
+00:24:33,259 --> 00:24:37,430
+aqui? Então, se você passar uma
+"flashcard" aqui, se você tivesse
+
+441
+00:24:37,450 --> 00:24:39,930
+um jogo nesse jogo da memória
+que tivesse algumas PlayingCards
+
+442
+00:24:39,950 --> 00:24:42,680
+e algumas "flashcards" e algumas
+outras cartas, isso funcionaria.
+
+443
+00:24:42,700 --> 00:24:45,430
+Porque ele não vai, as PlayingCards
+não vão fazer par com essas
+
+444
+00:24:45,450 --> 00:24:47,930
+outras cartas. Não vai crashar.
+Apenas não vai fazer par.
+
+445
+00:24:47,950 --> 00:24:50,180
+Vai dar um match de zero.
+Então faz sentido, ok?
+
+446
+00:24:50,200 --> 00:24:51,180
+Isso era tudo
+
+
+447
+00:24:51,200 --> 00:24:53,239
+que eu queria mostrar aqui.
+
+
+448
+00:24:53,259 --> 00:24:56,489
+Vamos voltar pra cá.
+E onde está minha... aqui.
+
+449
+00:24:56,509 --> 00:25:02,169
+Ok, alguma pergunta sobre isso?
+
+
+450
+00:25:02,189 --> 00:25:03,169
+Sim? 
+
+
+451
+00:25:03,189 --> 00:25:07,329
+>> [Estudante perguntando]
+
+452
+00:25:07,349 --> 00:25:10,339
+>> Sim.
+
+
+453
+00:25:10,359 --> 00:25:25,359
+[estudante perguntando]
+
+
+454
+00:25:25,379 --> 00:25:27,909
+A pergunta é: "id" é mais amplo,
+
+
+455
+00:25:27,929 --> 00:25:28,109
+e quando você atribui
+alguma coisa mais específica
+
+
+456
+00:25:28,129 --> 00:25:30,609
+para algo mais amplo,
+
+
+457
+00:25:30,629 --> 00:25:33,109
+isso geralmente vai ser errado,
+
+
+458
+00:25:33,129 --> 00:25:34,859
+mas o "id" é especial
+nesse ponto.
+
+459
+00:25:34,879 --> 00:25:37,609
+"id", em ambas as direções,
+ficando mais específico ou
+
+460
+00:25:37,629 --> 00:25:38,609
+ficando mais amplo,
+
+
+461
+00:25:38,629 --> 00:25:39,609
+ele não vai gerar um erro. Ok?
+
+
+462
+00:25:39,629 --> 00:25:41,109
+"id", novamente,
+ele assume que
+
+463
+00:25:41,129 --> 00:25:42,609
+você sabe o que está fazendo,
+
+
+464
+00:25:42,629 --> 00:25:43,859
+através do compilador.
+
+
+465
+00:25:43,879 --> 00:25:44,109
+Ambas as direções,
+
+
+466
+00:25:44,129 --> 00:25:45,359
+Não há warnings.
+
+
+467
+00:25:45,379 --> 00:25:45,859
+Tome cuidado
+
+
+468
+00:25:45,879 --> 00:25:46,359
+com "id".
+
+
+469
+00:25:46,379 --> 00:25:48,859
+Basicamente, se você está
+
+
+470
+00:25:48,879 --> 00:25:50,859
+usando "id",
+use introspecção,
+
+471
+00:25:50,879 --> 00:25:54,109
+ou "protocols" que, eu aprendi,
+depois de alguns anos dando aulas aqui
+
+
+472
+00:25:54,129 --> 00:25:58,109
+que não se ensina mais protocolos
+nos cursos de ciência da computação
+
+
+473
+00:25:58,129 --> 00:26:54,859
+então eu vou ensinar para vocês na
+próxima semana...
+[ erro de sync, :( ]
+
+474
+00:26:09,879 --> 00:26:13,509
+Falaremos disso daqui algumas semanas.
+Ok, resto de Foundation.
+
+475
+00:26:13,529 --> 00:26:18,009
+Isso é tudo de Objective-C.
+Eu tenho blocos e protocolos
+
+476
+00:26:18,029 --> 00:26:21,339
+para ensinar pra vocês, funcionalidades
+avançadas da linguagem que vou
+
+477
+00:26:21,359 --> 00:26:25,269
+ensinar pra vocês nas próximas semanas,
+mas isso é tudo por enquanto, ok?
+
+478
+00:26:25,289 --> 00:26:28,489
+Ok, Foundation. Novamente,
+eu não vou passar pelo Foundation
+
+479
+00:26:28,509 --> 00:26:31,730
+inteiramente. Somente as coisas
+que eu não cobri até agora.
+
+480
+00:26:31,750 --> 00:26:34,730
+Eu vou assumirq ue vocês já
+sabem sobre array...
+
+481
+00:26:34,750 --> 00:26:38,829
+Então não vou falar sobre array.
+NSObject, vocês também
+
+482
+00:26:38,849 --> 00:26:42,609
+sabem sobre ele. É o objeto-raiz.
+Na verdade, eu mencionei
+
+483
+00:26:42,629 --> 00:26:46,179
+esse método "description" antes,
+de passagem. Eu nunca fiz uma
+
+484
+00:26:46,199 --> 00:26:50,379
+demo com ele. Se as coisas correrem bem
+e tivermos tempo, vou tentar
+
+485
+00:26:50,399 --> 00:26:54,419
+mostrá-lo na demo de hoje. Mas vocês
+podem usar NSLog para basicamente
+
+486
+00:26:54,439 --> 00:26:57,539
+imprimir um objeto no console,
+se esse objeto implementar
+
+487
+00:26:57,559 --> 00:27:00,940
+o "description". Ok, "description"
+apenas retorna uma NSString
+
+488
+00:27:00,960 --> 00:27:03,739
+que descreve o objeto para o qual
+você está enviando a mensagem
+
+489
+00:27:03,759 --> 00:27:07,319
+"description". Agora, NSObject
+implementa description, mas
+
+490
+00:27:07,339 --> 00:27:10,329
+ele faz um trabalho muito ruim.
+Ele retorna apenas o ponteiro, ok?
+
+491
+00:27:10,349 --> 00:27:13,789
+Imprime o ponteiro em hexadecimal.
+Ok, então isso não é o que você quer.
+
+492
+00:27:13,809 --> 00:27:16,659
+Mas NSArray e NSDictionary
+e NSString e NSNumber,
+
+493
+00:27:16,679 --> 00:27:19,129
+eles implementam "description"
+muito bem. E você pode
+
+494
+00:27:19,149 --> 00:27:22,169
+implementar "description" nas suas
+próprias classes, como Card.
+
+495
+00:27:22,189 --> 00:27:25,749
+A "description" de Card provavelmente
+retornaria o "self.contents".
+
+496
+00:27:25,769 --> 00:27:29,450
+Essa seria uma boa descrição
+de uma carta. Vêem? E mesmo que
+
+497
+00:27:29,470 --> 00:27:32,119
+tenha sido herdado por PlayingCard,
+ainda assim seria uma boa
+
+498
+00:27:32,139 --> 00:27:34,319
+implementação de "description".
+Então vocês poderiam dizer
+
+499
+00:27:34,339 --> 00:27:35,319
+"NSLog(@"card =...
+
+
+500
+00:27:35,339 --> 00:27:38,529
+%@", card" e ele
+imprimiria 
+
+501
+00:27:38,549 --> 00:27:39,529
+no console
+
+
+502
+00:27:39,549 --> 00:27:42,450
+de uma maneira boa, uma maneira
+entendível.
+
+503
+00:27:42,470 --> 00:27:43,450
+Alguma pergunta
+
+
+504
+00:27:43,470 --> 00:27:49,289
+sobre "description"? É meio que
+um método de debug, certo? Ok,
+
+505
+00:27:49,309 --> 00:27:51,849
+"copying". "Copying" é realmente
+importante de se entender. Não é
+
+506
+00:27:51,869 --> 00:27:55,679
+tÃo simples como, "oh, fiz uma cópia
+de um objeto, agora eu tenho
+
+507
+00:27:55,699 --> 00:27:59,279
+dois deles", ok? Copy e mutableCopy...
+eles são implementados no
+
+508
+00:27:59,299 --> 00:28:02,999
+NSObject, mas a não ser que
+uma classe faça uma
+
+509
+00:28:03,019 --> 00:28:06,200
+certa coisa que eu não vou entrar
+nos detalhes,
+
+510
+00:28:06,220 --> 00:28:10,259
+eles não vão funcionar direito,
+na verdade ele vai
+
+511
+00:28:10,279 --> 00:28:13,509
+subir uma exceção. Ok,
+todas as classes do Foundation
+
+512
+00:28:13,529 --> 00:28:17,190
+como Array e Dictionary,
+eles implementam eles corretamente,
+
+513
+00:28:17,210 --> 00:28:20,999
+mas as semânticas desses dois
+métodos tem um lance
+
+514
+00:28:21,019 --> 00:28:25,049
+que vocês realmente tem que entender.
+E esse lance é que "copy" te dá
+
+515
+00:28:25,069 --> 00:28:30,119
+uma cópia imutável do objeto,
+o que significa que ele não pode
+
+516
+00:28:30,139 --> 00:28:33,429
+ser mudado. E te dá uma cópia
+imutável, tenha você enviado para 
+
+517
+00:28:33,449 --> 00:28:38,139
+uma classe mutável ou não.
+Ok? Então se você enviar "copy"
+
+518
+00:28:38,159 --> 00:28:42,960
+para um MutableArray, ele vai te dar
+um NSArray. E você
+
+519
+00:28:42,980 --> 00:28:45,579
+não vai poder modificá-lo, ok?
+
+
+520
+00:28:45,599 --> 00:28:48,700
+Todo mundo entendo o que eu estou
+dizendo? NSMutableArray, NSArray.
+
+521
+00:28:48,720 --> 00:28:52,019
+Tanto faz se você enviar "copy"
+para NSArray ou NSMutableArray,
+
+522
+00:28:52,039 --> 00:28:55,539
+você vai receber um NSArray imutável.
+A mesma coisa se for ao contrário.
+
+523
+00:28:55,559 --> 00:29:00,309
+Se você enviar "mutableCopy" para
+um NSArray ou NSMutableArray,
+
+524
+00:29:00,329 --> 00:29:04,329
+você terá um NSMutableArray,
+ok? uma cópia
+
+525
+00:29:04,349 --> 00:29:08,329
+do outro, só que mutável.
+Não é uma "deep copy", a propósito,
+
+526
+00:29:08,349 --> 00:29:11,970
+então, se era uma array que tinha
+arrays nele
+
+527
+00:29:11,990 --> 00:29:15,639
+eles não vão ser mutáveis
+descendo em cascata.
+
+528
+00:29:15,659 --> 00:29:18,639
+Ok? Apenas o primeiro
+será mutável.
+
+529
+00:29:18,659 --> 00:29:22,470
+Faz sentido? Então "copy" e "mutableCopy".
+Por que nós temos essa semântica?
+
+530
+00:29:22,490 --> 00:29:26,619
+É por cause de público
+versus privado, basicamente.
+
+531
+00:29:26,639 --> 00:29:30,189
+Você usa coisas mutáveis
+na implementação da sua classe,
+
+532
+00:29:30,209 --> 00:29:34,200
+como um array mutável de cartas
+dentro do seu jogo da memória.
+
+533
+00:29:34,220 --> 00:29:36,779
+E entào, na sua API pública,
+você pode querer passar esse array
+
+534
+00:29:36,799 --> 00:29:39,960
+para alguém. Mas claro que você
+não vai querer alguém mexendo
+
+535
+00:29:39,980 --> 00:29:42,639
+com as suas coisas internas, então
+você cria uma cópia imutável e
+
+536
+00:29:42,659 --> 00:29:47,220
+passa ela pra alguém. Vêem? Então
+vocês verão várias API que
+
+537
+00:29:47,240 --> 00:29:50,879
+te dão e recebem NSArray e então
+fazem cópias mutáveis deles
+
+538
+00:29:50,899 --> 00:29:54,419
+por dentro, para trabalhar com eles
+e talvez façam cópias imutáveis deles
+
+539
+00:29:54,439 --> 00:29:56,339
+para dar de volta para as pessoas.
+Ok?
+
+
+540
+00:29:56,359 --> 00:29:59,499
+Todo mundo bem com cópia
+mutável e imutável?
+
+541
+00:29:59,519 --> 00:30:01,339
+Perguntas? Sim.
+
+
+542
+00:30:01,359 --> 00:30:04,339
+>> [Estudante perguntando]
+
+543
+00:30:04,359 --> 00:30:08,569
+[estudante perguntando]
+
+544
+00:30:08,589 --> 00:30:11,529
+[estudante perguntando]
+
+545
+00:30:11,549 --> 00:30:12,529
+[estudante perguntando]
+
+
+546
+00:30:12,549 --> 00:30:15,819
+>> Arram. Essa é uma boa pergunta.
+Se eu der um array,
+
+547
+00:30:15,839 --> 00:30:19,710
+mesmo que seja imutável.
+Digamos que eu dê um array
+
+548
+00:30:19,730 --> 00:30:21,829
+imutável, mas dentro do array
+existem arrays imutáveis
+
+549
+00:30:21,849 --> 00:30:22,829
+e eu mudar
+
+
+550
+00:30:22,849 --> 00:30:24,539
+esses mutable arrays lá?
+Sim, eu estou 
+
+551
+00:30:24,559 --> 00:30:25,539
+mudando lá,
+
+
+552
+00:30:25,559 --> 00:30:28,609
+o outro, o original, ok? Então
+pelo fato de serem ponteiros,
+
+553
+00:30:28,629 --> 00:30:30,720
+certo, então todos eles estão
+apontando para os mesmos
+
+554
+00:30:30,740 --> 00:30:33,739
+mutable arrays. Então, se você tiver
+uma coisa profunda,
+
+555
+00:30:33,759 --> 00:30:34,739
+é meio raro
+
+
+556
+00:30:34,759 --> 00:30:37,889
+ter uma coisa tão profunda, mas
+se você tiver, você deve copiá-lo
+
+557
+00:30:37,909 --> 00:30:40,639
+de um modo diferente. Nós vamos falar
+sobre isso mais pra frente.
+
+558
+00:30:40,659 --> 00:30:43,889
+Você vai copiá-lo em um modo
+"deep copy", que copia todos eles
+
+559
+00:30:43,909 --> 00:30:46,389
+ou algo assim.
+Então, ok. Isso é NSObject,
+
+560
+00:30:46,409 --> 00:30:49,639
+isso é tudo que eu queria falar.
+Tudo de NSObject que cobrimos
+
+561
+00:30:49,659 --> 00:30:51,639
+foi "introspection", "description",
+o negócio de copy...
+
+562
+00:30:51,659 --> 00:30:54,639
+Vocês viram tudo
+que tinha pra ver.
+
+563
+00:30:54,659 --> 00:30:57,689
+Praticamente tudo. NSArray, vocês
+sabem tudo sobre ele. A única coisa que
+
+564
+00:30:57,709 --> 00:31:00,439
+eu queria dizer sobre NSArray é,
+os últimos método aqui.
+
+565
+00:31:00,459 --> 00:31:03,439
+A propósito, se você jogar toda
+essa aula fora, várias vezes
+
+566
+00:31:03,459 --> 00:31:06,939
+meus slides tem um monte de texto neles.
+E eu posso pular pro final.
+
+567
+00:31:06,959 --> 00:31:09,439
+E não se sintam, mesmo que
+eu os poste antes da aula,
+
+568
+00:31:09,459 --> 00:31:12,439
+não se sintam na obrigação
+de ler cada palavra agora.
+
+569
+00:31:12,459 --> 00:31:15,939
+Várias coisas aqui são referência,
+então você pode voltar e olhar
+
+570
+00:31:15,959 --> 00:31:18,939
+depois, ok? Eu não espero que vocês
+se pendurem em cada palavra.
+
+571
+00:31:18,959 --> 00:31:22,439
+Então, se eu levar vocês para o final,
+como eu estou fazendo agora,
+
+572
+00:31:22,459 --> 00:31:25,689
+podem pular para o final. O final
+aqui está mostrando que existem
+
+573
+00:31:25,709 --> 00:31:27,939
+vários métodos legais em NSArray.
+Métodos super poderosos que tem
+
+574
+00:31:27,959 --> 00:31:30,439
+a ver com ordenação, métodos para
+rodar outros métodos, para transformar
+
+575
+00:31:30,459 --> 00:31:32,939
+o array em string e coisas assim.
+Vocês devem se familiarizar
+
+576
+00:31:32,959 --> 00:31:35,039
+com array e dictionary
+e string e todos 
+
+577
+00:31:35,059 --> 00:31:38,419
+esses métodos malucos, ok?
+Porque isso pode salvar
+
+578
+00:31:38,439 --> 00:31:41,669
+um tempão de vocês e eu vou
+tentar mostrá-los na demo
+
+579
+00:31:41,689 --> 00:31:44,669
+de hoje também, onde eu vou
+usar alguns métodos de
+
+580
+00:31:44,689 --> 00:31:47,669
+array e string que são tipo
+uma linha de código para fazer
+
+581
+00:31:47,689 --> 00:31:50,419
+o que vocês provavelmente achariam
+que precisariam de dez, ok?
+
+582
+00:31:50,439 --> 00:31:53,569
+Mutable array, vocês já sabem tudo.
+Eu na verdade não acho que tenha
+
+583
+00:31:53,589 --> 00:31:56,769
+muito pra flar aqui.
+Criar mutable arrays hoje em dia
+
+584
+00:31:56,789 --> 00:31:59,720
+nos normalmente usamos alloc e init.
+Certo, nos criamos arrays imutáveis
+
+585
+00:31:59,740 --> 00:32:02,649
+normalmente com aquele
+negócio de "@[ ]",
+
+586
+00:32:02,669 --> 00:32:05,319
+mas arrays mutáveis nós não
+podemos fazer isso. Vocês precisam
+
+587
+00:32:05,339 --> 00:32:06,319
+fazer alloc e init,
+
+
+588
+00:32:06,339 --> 00:32:08,319
+mas existem também esses métodos
+de classe, como... existe
+
+589
+00:32:08,339 --> 00:32:10,519
+na verdade esse método de classe
+em mutable array chamado
+
+590
+00:32:10,539 --> 00:32:13,480
+ou melhor, em NSArray, chamado
+"array" e ele vai te retornar
+
+591
+00:32:13,500 --> 00:32:15,599
+um array como se você tivesse feito
+alloc + init.
+
+592
+00:32:15,619 --> 00:32:18,769
+Novamente, isso é meio que um pouco
+da moda antiga, sem ARC e com ARC
+
+593
+00:32:18,789 --> 00:32:21,739
+e tudoisso. Então alloc e init
+é uma ótima maneira pra fazer isso.
+
+594
+00:32:21,759 --> 00:32:24,989
+Mas existe um init e um método
+de classe que recebe uma
+
+595
+00:32:25,009 --> 00:32:28,009
+capacidade. Vêem esse aqui,
+o primeiro método aqui, "arrayWithCapacity"?
+
+596
+00:32:28,029 --> 00:32:32,230
+Ok? Não se confundam com isso.
+Isso é puramente uma sugestão
+
+597
+00:32:32,250 --> 00:32:35,559
+de performance, ok? Isso não
+cria um array que
+
+598
+00:32:35,579 --> 00:32:38,460
+tem essa quantidade de itens nele.
+Ele não pode, porque ele não sabe
+
+599
+00:32:38,480 --> 00:32:41,419
+que tipos de itens vão no array ainda.
+Você ainda não colocou
+
+600
+00:32:41,439 --> 00:32:44,809
+ninguém lá. Ele só cria espaço,
+ou, bom, ele nem sequer
+
+601
+00:32:44,829 --> 00:32:48,230
+faz isso. Ele só dá uma dica
+pra classe array: "hey,
+
+602
+00:32:48,250 --> 00:32:50,989
+eu provavelmente vou por dez
+itens aqui, então você pode
+
+603
+00:32:51,009 --> 00:32:54,179
+se otimizar de acordo". Mas você
+ainda pode colocar 100 ou 1000
+
+604
+00:32:54,199 --> 00:32:57,409
+ou dez ou um ou
+qualquer coisa. É só uma sugestão
+
+605
+00:32:57,429 --> 00:33:00,889
+uma "dica de performance", ok?
+Algumas pessoas realmente se confundem
+
+606
+00:33:00,909 --> 00:33:03,929
+com esse "arrayWithCapacity:"
+por alguma razão. Se você não
+
+607
+00:33:03,949 --> 00:33:07,499
+gostar dele, não use. Não precisará
+para esse curso.
+
+608
+00:33:07,519 --> 00:33:11,769
+Certo, enumeração vocês já sabem tudo,
+os loops "for", como
+
+609
+00:33:11,789 --> 00:33:15,899
+"para uma NSString no meu array",
+nós fizemos isso. Em algumas
+
+610
+00:33:15,919 --> 00:33:21,069
+das classes. Percebam que se você
+tiver um array de "id", ok, se
+
+611
+00:33:21,089 --> 00:33:24,309
+você não assumir que você sabe o que
+tem no array, então você pode
+
+612
+00:33:24,329 --> 00:33:28,999
+usar introspecção direto em
+"id obj in myArray".
+
+613
+00:33:29,019 --> 00:33:32,449
+Se "obj" for uma string, então faça isso.
+Se "obj" é outra coisa, faça aquilo, certo?
+
+614
+00:33:32,469 --> 00:33:36,569
+A mesma cioisa, ele pode ser
+cartas ou qualquer coisa. Você pode,
+
+615
+00:33:36,589 --> 00:33:37,569
+certamente,
+
+
+616
+00:33:37,589 --> 00:33:41,279
+fazer isso, ok? Todos os arrays
+contém "id"s. A questão é
+
+617
+00:33:41,299 --> 00:33:44,579
+se você assume o que tem lá ou não.
+Certo. NSNumber.
+
+618
+00:33:44,599 --> 00:33:48,569
+Classe nova. Uma classe
+realmente importante. É um
+
+619
+00:33:48,589 --> 00:33:53,739
+"encaixotador". É o negócio que,
+aceita tipos primitivos como
+
+620
+00:33:53,759 --> 00:33:57,539
+ints e floats e enums e bools.
+E deixa você colocá-los em
+
+621
+00:33:57,559 --> 00:34:00,509
+arrays e dicionários. Faz...
+os transforma em objetos.
+
+622
+00:34:00,529 --> 00:34:04,909
+Basicamente "wrap" eles em objetos.
+Isso é NSNumber. É imutável.
+
+623
+00:34:04,929 --> 00:34:07,769
+Todos os NSNumbers são imutáveis.
+Não há NSNumber mutável, ok?
+
+624
+00:34:07,789 --> 00:34:10,769
+Você sempre cria um novo
+porque ele só contém
+
+625
+00:34:10,789 --> 00:34:15,420
+um pedacinho de informação.
+Então nós os criamos usando
+
+626
+00:34:15,440 --> 00:34:19,759
+essa sintaxe de
+@"( )", certo? 
+
+627
+00:34:19,779 --> 00:34:20,759
+Arrays são
+
+
+628
+00:34:20,779 --> 00:34:23,749
+arroba + colchetes. NSNumbers
+são arroba + parêntesis.
+
+629
+00:34:23,769 --> 00:34:27,409
+E dentro dos parêntesis, você coloca
+algo que resulta em um
+
+630
+00:34:27,429 --> 00:34:31,619
+tipo primitivo. Não uma struct.
+Um tipo primitivo.
+
+631
+00:34:31,639 --> 00:34:35,159
+Int, float, double, bool, enum.
+E você pode chamar um método ali,
+
+632
+00:34:35,179 --> 00:34:37,869
+sempre que ele retornar
+um int, float ou algo assim.
+
+633
+00:34:37,889 --> 00:34:40,619
+Você pode colocar um enum lá,
+é isso que significa aquele negócio
+
+634
+00:34:40,639 --> 00:34:45,920
+com "Underline". Isso é NSNumber, ok?
+Então, se você quiser fazer
+
+635
+00:34:45,940 --> 00:34:48,989
+um array de ints, você faz
+um array de NSNUmbers.
+
+636
+00:34:49,009 --> 00:34:49,989
+Nós tendemos a não usar
+
+
+637
+00:34:50,009 --> 00:34:55,190
+arrays de C em Objective-C.
+Você os usa somente em
+
+638
+00:34:55,210 --> 00:34:57,559
+situações realmente critícas
+de performance. Talvez você
+
+639
+00:34:57,579 --> 00:34:59,829
+esteja fazendo gráficos 3D e isso
+é, sabe, array de vértices,
+
+640
+00:34:59,849 --> 00:35:00,829
+de um monte de
+
+
+641
+00:35:00,849 --> 00:35:03,400
+triângulos ou algo assim.
+Então, você poderia usá-los.
+
+642
+00:35:03,420 --> 00:35:06,579
+Mas, por enquanto, se você tem
+tipo 15 números em um array
+
+643
+00:35:06,599 --> 00:35:09,170
+você deve usar
+NSArray e NSNumber.
+
+644
+00:35:09,190 --> 00:35:13,940
+É muito mais fácil e simples.
+Tem outra coisa,
+
+645
+00:35:13,960 --> 00:35:18,130
+Bem menos importante, chamada NSValue.
+Bem menos importante.
+
+646
+00:35:18,150 --> 00:35:21,599
+Serve para "wrap" structs, ok?
+Para colocar uma structure
+
+647
+00:35:21,619 --> 00:35:24,599
+em um objeto. Ele sabe apenas
+como fazer wrap de algumas poucas structs.
+
+648
+00:35:24,619 --> 00:35:27,349
+Como, se vocês fizeram o homework,
+ou olharam par ao homework,
+
+649
+00:35:27,369 --> 00:35:30,099
+e vocês sabem o que é UIEdgeInsets,
+é uma struct em C,
+
+650
+00:35:30,119 --> 00:35:34,249
+está envolvido perifericamente 
+no homework de vocês.
+
+651
+00:35:34,269 --> 00:35:37,749
+Está em uma das dicas. Você pode
+colocá-los em um NSArray usando
+
+652
+00:35:37,769 --> 00:35:40,749
+um NSValue, fazendo
+"valueWithUIEdgeInsets", e passando
+
+653
+00:35:40,769 --> 00:35:43,249
+a struct, e ele criará
+um objeto o contendo.
+
+654
+00:35:43,269 --> 00:35:45,719
+Nós não precisamos de NSValue
+nesse curso, talvez
+
+655
+00:35:45,739 --> 00:35:48,639
+nunca precisemos, talvez quando
+começarmos a usar pontos e retângulos
+
+656
+00:35:48,659 --> 00:35:51,400
+e "sizes", que são todos structs,
+mas, provavelmente nem assim.
+
+657
+00:35:51,420 --> 00:35:53,900
+Ok, mas eu tenho que mencionar
+NSValue porque ele está por aí,
+
+658
+00:35:53,920 --> 00:35:56,400
+mas NSNumber é o wrapper
+que nós vamos usar,
+
+659
+00:35:56,420 --> 00:35:58,900
+porque nós vamos definitivamente
+colocar ints e coisas assim em arrays.
+
+660
+00:35:58,920 --> 00:36:01,170
+Também existe o NSData, que é
+outra classe, são somente
+
+661
+00:36:01,190 --> 00:36:05,219
+dados crus, sacos de bits.
+Apenas ponteiros para memória,
+
+662
+00:36:05,239 --> 00:36:08,389
+e quantidade de bytes, ok? Isso é
+tudo que NSData é. Nós vamos usar
+
+663
+00:36:08,409 --> 00:36:11,389
+bem mais pra frente, não se preocupem
+com isso por enquanto.
+
+664
+00:36:11,409 --> 00:36:15,619
+NSDate é exatamente o que vocês
+pensam, tempo de datas, ok?
+
+665
+00:36:15,639 --> 00:36:18,969
+Existem classes auxiliares
+como Calendar e coisas assim.
+
+666
+00:36:18,989 --> 00:36:23,190
+Divertidas até. Existem outras coisas
+tipo array, como NSSet
+
+667
+00:36:23,210 --> 00:36:28,559
+e NSOrderedSet. Você pode dar uma
+olhada neles. Sabe, um "set"
+
+668
+00:36:28,579 --> 00:36:31,309
+é um array, mas não é ordenado.
+E quando você coloca coisas
+
+669
+00:36:31,329 --> 00:36:34,489
+nele, todos os objetos são distindos.
+Então você não deveria
+
+670
+00:36:34,509 --> 00:36:37,739
+ter o mesmo objeto repetido
+em um set. E então você pode
+
+671
+00:36:37,759 --> 00:36:40,239
+unir sets e intersectar com outros
+sets, esses tipos de coisas.
+
+672
+00:36:40,259 --> 00:36:42,739
+Está tudo aí. Não necessariamente
+para esse curso.
+
+673
+00:36:42,759 --> 00:36:46,289
+Mas então, temos NSDictionary.
+Agora, NSDictionary é
+
+674
+00:36:46,309 --> 00:36:50,279
+muito importante. Depois de
+array e string é a classe
+
+675
+00:36:50,299 --> 00:36:56,029
+mais importante do Foundation.
+NSDictionary é
+
+676
+00:36:56,049 --> 00:36:59,170
+uma hash table. Uma simples hash table.
+Em outras palavras, É um mecanismo
+
+677
+00:36:59,190 --> 00:37:03,150
+de armazenamento como o NSArray,
+exceto pelo fato que, ao invés
+
+678
+00:37:03,170 --> 00:37:07,279
+das coisas serem armazenadas por índice,
+certo? Enquanto o array
+
+679
+00:37:07,299 --> 00:37:10,269
+é uma lista, no NSDictionary eles são
+armazenados por chave. Então,
+
+680
+00:37:10,289 --> 00:37:13,069
+você procura por uma chave e então
+você tem um valor. Como em um dicionário,
+
+681
+00:37:13,089 --> 00:37:16,440
+sabe, se você estiver procurando
+uma palavra, você procura por ela
+
+682
+00:37:16,460 --> 00:37:19,440
+e você tem a definição. Mesma coisa aqui.
+Você procura uma chave e recebe
+
+683
+00:37:19,460 --> 00:37:22,949
+um valor. Eles são criados
+com a sintaxe de
+
+684
+00:37:22,969 --> 00:37:24,549
+arroba + chaves.
+
+
+685
+00:37:24,569 --> 00:37:26,769
+Então, nós temos "@[ ]",
+são arrays,
+
+686
+00:37:26,789 --> 00:37:27,769
+"@( )" em NSNumber,
+
+
+687
+00:37:27,789 --> 00:37:29,610
+e "@{ }", que são NSDictionary.
+
+
+688
+00:37:29,630 --> 00:37:30,610
+Dicionários.
+
+
+689
+00:37:30,630 --> 00:37:34,469
+Ok, então é "@{key : value, ...
+key : value, ...
+
+690
+00:37:34,489 --> 00:37:38,069
+key : value, key : value",
+coloque quantas
+
+691
+00:37:38,089 --> 00:37:40,819
+chaves e valores que você quiser.
+Então aqui eu criei
+
+692
+00:37:40,839 --> 00:37:43,440
+dicionário onde as chaves
+são strings, como
+
+693
+00:37:43,460 --> 00:37:47,659
+"verde", "azul" e "vermelho".
+E os valores são objetos Color.
+
+694
+00:37:47,679 --> 00:37:51,769
+E vamos falar deles em
+alguns minutos. Então você procura
+
+695
+00:37:51,789 --> 00:37:55,639
+coisas em um dicionário usando
+os mesmos colchetes.
+
+696
+00:37:55,659 --> 00:38:00,949
+A mesma notação que você usa para
+procurar coisas em um array, ok?
+
+697
+00:38:00,969 --> 00:38:04,920
+Em um array você faz: array,
+abre colchetes, um número que é
+
+698
+00:38:04,940 --> 00:38:07,139
+o index do array, fecha colchetes.
+Em um dicionário
+
+699
+00:38:07,159 --> 00:38:09,769
+você faz: dictionário,
+abra colchetes, a chave,
+
+700
+00:38:09,789 --> 00:38:13,299
+fecha colchetes. E ele vai
+procurar essa chave no dicionário.
+
+701
+00:38:13,319 --> 00:38:14,299
+Sim?
+
+
+702
+00:38:14,319 --> 00:38:15,299
+>> As chaves são únicas?
+
+
+703
+00:38:15,319 --> 00:38:20,039
+>> A pergunta é: as chaves são unicas?
+Sim, as chaves são únicas
+
+704
+00:38:20,059 --> 00:38:24,369
+de um modo "isEqual". Então
+se você tinha... se suas keys
+
+705
+00:38:24,389 --> 00:38:28,380
+são strings - e as keys geralmente
+são strins - se suas keys 
+
+706
+00:38:28,400 --> 00:38:31,130
+são strings, elas vão ser enviadas
+"isEqual". O método "isEqual".
+
+707
+00:38:31,150 --> 00:38:34,130
+E, de fato, se você olhar
+aqui embaixo, eu não iria entrar
+
+708
+00:38:34,150 --> 00:38:36,880
+nesse detalhe. Mas,
+para um objeto poder ser
+
+709
+00:38:36,900 --> 00:38:39,769
+uma chave em um dicionário,
+ele tem que implementar
+
+710
+00:38:39,789 --> 00:38:43,610
+dois métodos. "hash" que dá algum
+inteiro. Esse "hash" é
+
+711
+00:38:43,630 --> 00:38:47,769
+o mais único possível. E também
+"isEqual". Que checa
+
+712
+00:38:47,789 --> 00:38:50,519
+para ver se ele é igual
+a outro objeto.
+
+713
+00:38:50,539 --> 00:38:53,329
+Agora, strings implementam "isEqual".
+Implementam chanado seu próprio método
+
+714
+00:38:53,349 --> 00:38:56,509
+"isEqualToString". Então,
+uma string é igual se os caracteres
+
+715
+00:38:56,529 --> 00:39:01,299
+são os mesmos. Não é igualdade de ponteiros,
+ok? Outros objetos... Não há muitos
+
+716
+00:39:01,319 --> 00:39:03,099
+outros objetos por aí
+que implementam esses 
+
+717
+00:39:03,119 --> 00:39:04,099
+dois métodos corretamente, certo?
+
+
+718
+00:39:04,119 --> 00:39:06,799
+Que... que realmente implementam
+"isEqual" e podem
+
+719
+00:39:06,819 --> 00:39:09,440
+fazer hash deles mesmos.
+
+
+720
+00:39:09,460 --> 00:39:10,440
+>> Pergunta?
+
+
+721
+00:39:10,460 --> 00:39:26,499
+>> [Estudante perguntando]
+
+
+722
+00:39:26,519 --> 00:39:29,499
+[estudante perguntando]
+
+
+723
+00:39:29,519 --> 00:39:30,749
+[estudante perguntando]
+
+
+724
+00:39:30,769 --> 00:39:33,499
+>> Arram. Bom, lembre-se.
+Se você tiver esse "green"
+
+725
+00:39:33,519 --> 00:39:36,249
+duas vezes... Como se você tivesse dito
+um "green". "UIColor green".
+
+726
+00:39:36,269 --> 00:39:38,999
+E então na próxima linha
+"green" "UIColor yellow" ou
+
+727
+00:39:39,019 --> 00:39:41,499
+algo assim. O segudno
+provavelmente iria
+
+728
+00:39:41,519 --> 00:39:44,499
+substituir o primeiro.
+Seria errado fazer isso.
+
+729
+00:39:44,519 --> 00:39:47,249
+Mas, ele provavelmente iria
+apenas substituí-lo. Mas você
+
+730
+00:39:47,269 --> 00:39:49,499
+não poderia ter duas keys "green"
+diferentes aí, obviamente.
+
+731
+00:39:49,519 --> 00:39:51,249
+Porque quando você fosse pegá-lo de volta,
+qual deles você
+
+732
+00:39:51,269 --> 00:39:52,249
+iria receber?
+
+
+733
+00:39:52,269 --> 00:39:54,499
+Bom, isso é dictionary.
+Imutável, assim como
+
+734
+00:39:54,519 --> 00:39:55,749
+array e string, imutável.
+Pergunta?
+
+735
+00:39:55,769 --> 00:39:58,999
+[Estudante perguntando]
+
+
+736
+00:39:59,019 --> 00:40:01,999
+[estudante perguntando]
+
+
+737
+00:40:02,019 --> 00:40:03,249
+[estudante perguntando]
+
+
+738
+00:40:03,269 --> 00:40:08,289
+>> Arram, essa é uma boa pergunta.
+O que ele está dizendo é,
+
+739
+00:40:08,309 --> 00:40:11,249
+se você algum dia escrever uma classe
+para ser usada como chave de um 
+
+740
+00:40:11,269 --> 00:40:13,889
+dicionário, e você implementa
+"isEqual" corretamente, para poder
+
+741
+00:40:13,909 --> 00:40:16,639
+procurar pelo objeto, você também
+vai querer implementar "hash", ok?
+
+742
+00:40:16,659 --> 00:40:19,159
+Então eles vão fazer hash
+para a mesma coisa. Sim?
+
+743
+00:40:19,179 --> 00:40:20,409
+>> [Estudante perguntando]
+
+744
+00:40:20,429 --> 00:40:21,409
+[estudante perguntando]
+
+
+745
+00:40:21,429 --> 00:40:33,039
+[estudante perguntando]
+
+
+746
+00:40:33,059 --> 00:40:35,889
+>> A pergunta foi: existe algum helper
+para fazer o "hash", por exemplo? Não.
+
+747
+00:40:35,909 --> 00:40:42,440
+Não. Na verdade, strings são as chaves
+de um dicionário em 99% do tempo, ok?
+
+748
+00:40:42,460 --> 00:40:47,199
+Normalmente, você estará
+usando strings. Nesse curso
+
+749
+00:40:47,219 --> 00:40:52,170
+serão 100% das vezes.
+E claro que também existem
+
+750
+00:40:52,190 --> 00:40:55,980
+dicionários mutáveis, ok? Agora
+strings mutáveis nós quase nunca usamos.
+
+751
+00:40:56,000 --> 00:40:59,249
+Mas dicionários mutáveis nós usamos
+um pouco, ok? E mutable dictionary
+
+752
+00:40:59,269 --> 00:41:01,889
+é exatamente o mesmo, sabe.
+Ele herda de dictionary.
+
+753
+00:41:01,909 --> 00:41:04,639
+Então, você tem todas essas
+coisas maravilhosas que existe em
+
+754
+00:41:04,659 --> 00:41:07,329
+um dicionário. E você tem, além disso,
+obviamente, "setObject:forKey:".
+
+755
+00:41:07,349 --> 00:41:10,819
+Isso serve para que você adicione
+chaves e valores. "removeObjectForKey:",
+
+756
+00:41:10,839 --> 00:41:14,539
+para remover chaves e valores.
+"removeAllObjects", simplesmente
+
+757
+00:41:14,559 --> 00:41:17,190
+esvazia seu dictionary e você
+também pode fazer coisas como
+
+758
+00:41:17,210 --> 00:41:19,440
+adicionar um monte de entradas no seu
+dicionário, a partir de um outro dicionário,
+
+759
+00:41:19,460 --> 00:41:21,940
+ok? Existe um monte de métodos
+em NSDictionary.
+
+760
+00:41:21,960 --> 00:41:23,569
+Assim como array, e string,
+vocês devem
+
+761
+00:41:23,589 --> 00:41:24,569
+se familiarizar com eles,
+
+
+762
+00:41:24,589 --> 00:41:29,599
+ok? Mas, novamente,
+mutável e imutável. E se você tiver
+
+763
+00:41:29,619 --> 00:41:32,239
+um dicionário imutável e você chamar
+uma "mutableCopy",
+
+764
+00:41:32,259 --> 00:41:37,230
+você vai receber um mutável
+e vice-versa. Ok, looping
+
+765
+00:41:37,250 --> 00:41:40,460
+dentro de chaves e valores
+de um dicionário. Levemente
+
+766
+00:41:40,480 --> 00:41:44,159
+diferente de array nesse ponto.
+Se você fizer o negócio de "for in"
+
+767
+00:41:44,179 --> 00:41:48,509
+você recebe as chaves. Ok?
+Se você quer os valores,
+
+768
+00:41:48,529 --> 00:41:52,809
+apenas diga
+"value = myDictionary[key]".
+
+769
+00:41:52,829 --> 00:41:55,739
+Certo? Agora vocês tem o valor
+dentro do loop.
+
+770
+00:41:55,759 --> 00:42:01,599
+Ok. Certo. Property List.
+Então, property list não é uma
+
+771
+00:42:01,619 --> 00:42:05,089
+característica da linguagem. Não é
+uma classe. É apenas uma palavra,
+
+772
+00:42:05,109 --> 00:42:08,829
+um termo, uma frase que nós usamos
+e que vocês precisam entender o que
+
+773
+00:42:08,849 --> 00:42:12,269
+significa. Ok, isso é tudo o que
+é uma property list, apenas uma frase
+
+774
+00:42:12,289 --> 00:42:15,869
+e eu estou definindo esse termo
+porque existem APIs em iOS que vão,
+
+775
+00:42:15,889 --> 00:42:19,599
+nos comentários, na documentação,
+vÃo dizer que o argumento para isso
+
+776
+00:42:19,619 --> 00:42:22,789
+precisa ser uma property list.
+Apenas envie essa mensagem para
+
+777
+00:42:22,809 --> 00:42:26,049
+esse objeto se esse objeto for
+uma property list, ok? Então,
+
+778
+00:42:26,069 --> 00:42:28,869
+o que significa uma property list?
+Muito simples, não compliquem,
+
+779
+00:42:28,889 --> 00:42:32,559
+uma property list é apenas qualquer
+grafo de objetos que tem apenas
+
+780
+00:42:32,579 --> 00:42:36,079
+NSArrays, NSDictionaries,
+NSNumbers, NSStrings, NSDate
+
+781
+00:42:36,099 --> 00:42:40,049
+e NSData nele. Ou quaisquer
+subclasses disso.
+
+782
+00:42:40,069 --> 00:42:43,299
+Então ele poderia ter as versões
+mutáveis deles aí também.
+
+783
+00:42:43,319 --> 00:42:46,349
+Ok? É isso. É isso que é uma
+property list. É isso que esse termo
+
+784
+00:42:46,369 --> 00:42:49,569
+significa. Então, um array poderia
+ser uma property list, se
+
+785
+00:42:49,589 --> 00:42:52,130
+todas as coisas dentro do array
+também forem property list, ok?
+
+786
+00:42:52,150 --> 00:42:55,710
+Então um array de strings
+é uma property list.
+
+787
+00:42:55,730 --> 00:42:58,710
+Um array de arrays é uma property list
+se esses arrays tiverem
+
+788
+00:42:58,730 --> 00:43:01,710
+apenas property lists neles.
+Um array de cartas não é
+
+789
+00:43:01,730 --> 00:43:04,869
+uma property list. Porque uma
+carta não é um array,
+
+790
+00:43:04,889 --> 00:43:08,579
+um dicionário, um número, uma string,
+uma "date" ou um "data", ok?
+
+791
+00:43:08,599 --> 00:43:12,529
+Então um array de cartas não é uma
+property list. Um dicionário será uma
+
+792
+00:43:12,549 --> 00:43:15,989
+property list se ambas suas chaves e
+valores, todos eles,
+
+793
+00:43:16,009 --> 00:43:19,139
+forem property lists. Agora, claro,
+string é uma property list.
+
+794
+00:43:19,159 --> 00:43:23,730
+É uma pequena, mas
+é uma property list.
+
+795
+00:43:23,750 --> 00:43:27,599
+Por que nós definimos
+esse termo? Bom, uma API
+
+796
+00:43:27,619 --> 00:43:31,159
+que por exemplo usa property list
+é esse método "writeToFile"
+
+797
+00:43:31,179 --> 00:43:34,489
+que existe é implementada
+em NSDictionary e NSArray.
+
+798
+00:43:34,509 --> 00:43:38,159
+O que ela faz é escrever os objetos
+que ela recebe no dicionário
+
+799
+00:43:38,179 --> 00:43:41,489
+ou no array que você está
+enviando para, em um arquivo
+
+800
+00:43:41,509 --> 00:43:46,769
+.xml, ok? Mas ele só aceita
+se o array ou o dicionário
+
+801
+00:43:46,789 --> 00:43:49,920
+que você estiver enviando essa mensgaem
+for uma property list. Então se
+
+802
+00:43:49,940 --> 00:43:53,499
+você enviar "writeToFile" para um
+array de cards, ele vai crashar.
+
+803
+00:43:53,519 --> 00:43:55,900
+Subir uma exceção. Por que não...
+porque um array de cartas
+
+804
+00:43:55,920 --> 00:43:56,900
+não é uma property list.
+
+
+805
+00:43:56,920 --> 00:43:59,400
+Mesmo que array implemente
+"writeToFile", se o array
+
+806
+00:43:59,420 --> 00:44:02,900
+não for de fato uma
+property list, ou seja,
+
+807
+00:44:02,920 --> 00:44:05,400
+ele não possua apenas essas classes
+que falei, ele vai crashar.
+
+808
+00:44:05,420 --> 00:44:07,880
+Todo mundo pegou isso?
+A implementação mais interessante
+
+809
+00:44:07,900 --> 00:44:10,519
+usando property list é, provavelmente,
+um negócio chamado
+
+810
+00:44:10,539 --> 00:44:11,519
+NSUserDefaults,
+
+
+811
+00:44:11,539 --> 00:44:16,029
+que é um espaço de armazenamento
+leve para property lists.
+
+812
+00:44:16,049 --> 00:44:19,670
+Certo. Ele é como um NSDictionary.
+Mas ele permanece vivo
+
+813
+00:44:19,690 --> 00:44:23,179
+mesmo depois que sua aplicação
+fechar, ok? Quando você rodar
+
+814
+00:44:23,199 --> 00:44:25,179
+sua aplicação novamente, ele
+ainda estará ali. Toda a informação
+
+815
+00:44:25,199 --> 00:44:27,929
+ainda estará ali. É como se
+fosse um banco de dados.
+
+816
+00:44:27,949 --> 00:44:31,650
+Um grande NSMutableDictionary
+que é permanente. Entretanto,
+
+817
+00:44:31,670 --> 00:44:35,199
+não é um banco de dados completo.
+É limitado em tamanho, você só vai querer
+
+818
+00:44:35,219 --> 00:44:37,699
+armazenas coisas pequenas nele.
+É muito ineficiente pegar coisas
+
+819
+00:44:37,719 --> 00:44:41,809
+de volta dele, ok? A maneira que
+você acessa ele é escrevendo
+
+820
+00:44:41,829 --> 00:44:47,199
+e lendo, através dessa instância
+compartilhada que você recebe
+
+821
+00:44:47,219 --> 00:44:51,069
+enviando o método de classe
+"standardUserDefaults" para a classe
+
+822
+00:44:51,089 --> 00:44:54,710
+NSUserDefauts. Ok, então você faz isso.
+E você recebe a única instância
+
+823
+00:44:54,730 --> 00:44:57,460
+que existe no seu app inteiro.
+É como se fosse uma variável global
+
+824
+00:44:57,480 --> 00:44:59,710
+no seu app, que é esse NSUserDefaults.
+E então você envia
+
+825
+00:44:59,730 --> 00:45:00,710
+a mensagem como:
+
+
+826
+00:45:00,730 --> 00:45:03,539
+"setArray:forKey:".
+Assim, parecido com métodos
+
+827
+00:45:03,559 --> 00:45:06,359
+de dicionário, exceto pelo fato
+que eles são mais tipados.
+
+828
+00:45:06,379 --> 00:45:10,429
+"setDouble:ForKey:", receber um
+"integerForKey:", "setObject:forKey:"
+
+829
+00:45:10,449 --> 00:45:13,230
+"setObject:forKey:", esse objeto,
+embora ele seja um "id",
+
+830
+00:45:13,250 --> 00:45:16,849
+ele tem que ser uma property list.
+Vocês vêem porque definimos
+
+831
+00:45:16,869 --> 00:45:20,219
+property lists? Porque existe "obj",
+ele recebe um "id",
+
+832
+00:45:20,239 --> 00:45:22,839
+não há classe para property lists.
+Então poderia ser um dicionário,
+
+833
+00:45:22,859 --> 00:45:26,109
+poderi ser um array.
+Poderia ser uma string, mas ele tem
+
+834
+00:45:26,129 --> 00:45:30,039
+que ser uma property list.
+"arrayForKey" se certificará -
+
+835
+00:45:30,059 --> 00:45:32,259
+essas coisas como "arrayForKey" ou
+"integerForKey", vão retornar
+
+836
+00:45:32,279 --> 00:45:35,059
+esse tipo de coisa, então
+"arrayForKey" vai sempre retornar
+
+837
+00:45:35,079 --> 00:45:38,499
+um array. Se você setar um array
+para uma chave e tipo,
+
+838
+00:45:38,519 --> 00:45:41,380
+setá-lo para um dicionário ou algo assim,
+ele vai retornar nil. Porque
+
+839
+00:45:41,400 --> 00:45:43,730
+ele vai olhar para ele e dizer:
+eca! essa chave não contém um array,
+
+840
+00:45:43,750 --> 00:45:47,049
+então ele vai voltar nil.
+A coisa mais importante
+
+841
+00:45:47,069 --> 00:45:50,509
+quando se está usando user defaults,
+além de mantê-lo sempre pequeno, é
+
+842
+00:45:50,529 --> 00:45:54,029
+lembrar-se de escrevê-lo. Escrevê-lo
+no disco depois de você
+
+843
+00:45:54,049 --> 00:45:57,929
+setar algo. Então, você faz "setFloar:ForKey:",
+e entÃo, você tem que dizer
+
+844
+00:45:57,949 --> 00:46:00,839
+"[[NSUserDefaults standardUserDefaults]...
+
+845
+00:46:00,859 --> 00:46:04,279
+...synchronize]". Synchronize é
+a coisa que vai escrever
+
+846
+00:46:04,299 --> 00:46:06,529
+no disco. E você faz isso
+logo após cada "pacote".
+
+847
+00:46:06,549 --> 00:46:07,529
+Não é muito caro
+
+
+848
+00:46:07,549 --> 00:46:10,779
+fazer isso, então é ok
+fazê-lo depois de cada, sabe
+
+849
+00:46:10,799 --> 00:46:13,779
+qualquer hota que você tenha um
+pequeno grupo de "defaults"
+
+850
+00:46:13,799 --> 00:46:16,279
+para serem escritos, mesmo que
+seja um de cada vez,
+
+851
+00:46:16,299 --> 00:46:23,150
+você sincroniza, ok? Cert, próximo:
+NSRange. Então, NSRange não é
+
+852
+00:46:23,170 --> 00:46:26,599
+um objeto. É uma struct em C.
+Ele só tem duas coisas nele:
+
+853
+00:46:26,619 --> 00:46:30,769
+"location", que é o começo de
+uma distância e "length",
+
+854
+00:46:30,789 --> 00:46:34,730
+que é o comprimento da distância.
+Isso é usado por arrays,
+
+855
+00:46:34,750 --> 00:46:38,099
+onde tem a "location" que é o index
+e o range, certo?
+
+856
+00:46:38,119 --> 00:46:41,190
+E também em strings. Em qual caractere
+ela começa e qual o
+
+857
+00:46:41,210 --> 00:46:44,549
+comprimento. Então esse é apenas
+um "range" genério para usar
+
+858
+00:46:44,569 --> 00:46:47,900
+no iOS em qualquer momento que você
+quiser expressar um tamanho ou alcance,
+
+859
+00:46:47,920 --> 00:46:51,779
+seja o tamanho de um array, ou o de
+uma string, ou algo assim. 
+
+860
+00:46:51,799 --> 00:46:56,170
+Ele tem um valor de "location" muito
+importante, muito especial.
+
+861
+00:46:56,190 --> 00:47:00,380
+Então se o "range.location"
+for igual a NSNotFound,
+
+862
+00:47:00,400 --> 00:47:01,380
+isso significa que
+
+
+863
+00:47:01,400 --> 00:47:05,489
+a coisa pela qual você procurou
+ou algo assim, não foi encontrada.
+
+864
+00:47:05,509 --> 00:47:09,739
+NSNotFound significa que essa
+"range" não existe no lugar que 
+
+865
+00:47:09,759 --> 00:47:13,019
+você está procurando. Então, se você
+estiver procurando em uma string
+
+866
+00:47:13,039 --> 00:47:16,529
+por uma sub-string e o método que
+foi chamado para isso
+
+867
+00:47:16,549 --> 00:47:20,150
+"rangeOfString", esse é o método
+de string que você enviaria,
+
+868
+00:47:20,170 --> 00:47:22,900
+e ele retorna uma "range", e se ele
+não conseguir achar a sub-string,
+
+869
+00:47:22,920 --> 00:47:25,900
+a location do retorno será
+NSNotFound, a "length" nem
+
+870
+00:47:25,920 --> 00:47:29,369
+fará sentido. Ok? Se a location
+é NSNotFound, a "length"
+
+871
+00:47:29,389 --> 00:47:34,489
+não tem significado, ok?
+Vocês vão ver o tipo
+
+872
+00:47:34,509 --> 00:47:38,759
+NSRangePointer. Isso é apenas
+um typedef para " NSRange * ".
+
+873
+00:47:38,779 --> 00:47:39,759
+Okay?
+
+
+874
+00:47:39,779 --> 00:47:43,920
+Nós não passamos structs em C,
+por ponteiro, a não ser que eles
+
+875
+00:47:43,940 --> 00:47:49,170
+venham como "out" de um método. Ok,
+structs em C em iOS são sempre passados
+
+876
+00:47:49,190 --> 00:47:53,609
+por valor, ok, na pilha.
+Eles não são passados por ponteiros.
+
+877
+00:47:53,629 --> 00:47:56,699
+Como objetos são. Mas esse
+NSRangePointer existe,
+
+878
+00:47:56,719 --> 00:47:59,519
+vocês o verão em
+alguns lugares e ele existe apenas
+
+879
+00:47:59,539 --> 00:48:02,059
+para ranges que estão vindo
+como "outs" de um método,
+
+880
+00:48:02,079 --> 00:48:05,079
+como um argumento. Certo? Então
+o método pode estar retornando
+
+881
+00:48:05,099 --> 00:48:07,829
+alguma outra coisa, mas então você pode
+opcionalmente receber um range também.
+
+882
+00:48:07,849 --> 00:48:11,579
+É para isso que serve NSRangePointer.
+Com esse monte de
+
+883
+00:48:11,599 --> 00:48:15,349
+structs em C em iOS, existem também
+um monte de funções em C
+
+884
+00:48:15,369 --> 00:48:18,650
+que as acompanham e isso está
+aqui também. NSMakeRane ou
+
+885
+00:48:18,670 --> 00:48:22,279
+"criando uma range a partir de uma
+location", esse tipo de coisa.
+
+886
+00:48:22,299 --> 00:48:24,929
+Certo, as duas últimas coisas
+que vou falar aqui antes
+
+887
+00:48:24,949 --> 00:48:27,409
+da nossa trivia são
+cores e fontes. Eles não estão
+
+888
+00:48:27,429 --> 00:48:30,489
+no Foundation. Por isso que
+eles começam com UI. UIColor,
+
+889
+00:48:30,509 --> 00:48:35,589
+UIFont. Eles estão no UIKit, certo?
+Mas vocês vão ver que nós estamos
+
+890
+00:48:35,609 --> 00:48:38,999
+começando a fazer um desvio do Foundation,
+nós ainda vamos estar falando
+
+891
+00:48:39,019 --> 00:48:41,249
+sobre Foundation, exceto
+por essas duas classes, mas agora
+
+892
+00:48:41,269 --> 00:48:44,589
+estamos começando a mover para o UIKit.
+Essas duas classes
+
+893
+00:48:44,609 --> 00:48:46,670
+estão bem na fronteira
+entre os dois.
+
+894
+00:48:46,690 --> 00:48:50,190
+Porém, elas vivem no UIKit.
+Uma "color" é exatamente o que parece.
+
+895
+00:48:50,210 --> 00:48:53,190
+Uma "color, vocÊ pode criá-la
+baseado em RGB, certo,
+
+896
+00:48:53,210 --> 00:48:55,690
+valores vermelho, verde e azul,
+ou HSB que é "hue, saturation
+
+897
+00:48:55,710 --> 00:49:00,239
+and brightness". Uma "color" pode
+até ser uma UIImage e então
+
+898
+00:49:00,259 --> 00:49:03,159
+quando você, tipo, preencher com a cor,
+ele vai preencher com aquele padrão.
+
+899
+00:49:03,179 --> 00:49:06,670
+É espetacularmente poderoso.
+Colors também podem ter alpha.
+
+900
+00:49:06,690 --> 00:49:10,089
+Vocês vão precisa disso
+para o homework de vocês na próxima semana.
+
+901
+00:49:10,109 --> 00:49:13,159
+Não nessa semana, mas na próxima.
+Colors podem ter alpha, então
+
+902
+00:49:13,179 --> 00:49:17,009
+você pode ter uma cor meio transparente
+e preencher algo com ela, ok?
+
+903
+00:49:17,029 --> 00:49:20,119
+Você pode dar uma olhada
+no UIColor para ver como você
+
+904
+00:49:20,139 --> 00:49:23,980
+as cria. Bocê precisa de um RGB
+ou um HSB ou você pode usar
+
+905
+00:49:24,000 --> 00:49:26,230
+uma das cores padrão como
+"greenColor" ou algo assim.
+
+906
+00:49:26,250 --> 00:49:28,980
+E então você pode adicionar o alpha
+usando esse componente 
+
+907
+00:49:29,000 --> 00:49:31,730
+"colorWithAlpha" para criar
+uma nova cor, que é a mesma cor
+
+908
+00:49:31,750 --> 00:49:34,699
+que a antiga, exceto pelo fato de
+ela ter alpha. UIFont é exatamente
+
+909
+00:49:34,719 --> 00:49:37,589
+o que vocês pensam. É uma fonte.
+Tipograficamente falando
+
+910
+00:49:37,609 --> 00:49:38,589
+é bem mais
+complicado que 
+
+911
+00:49:38,609 --> 00:49:41,029
+o que você pode pensar,
+como um usuário de computador.
+
+912
+00:49:41,049 --> 00:49:42,029
+Não é algo como: "oh, eu tenho"
+
+
+913
+00:49:42,049 --> 00:49:44,869
+uma fonte, me dá o bold".
+Vocês estão acostumados a fazer CMD + B
+
+914
+00:49:44,889 --> 00:49:48,699
+para ter o bold, mas typefaces podem
+não ter um tipo bold, ok?
+
+915
+00:49:48,719 --> 00:49:51,980
+Então não existe um método como "bold"
+em UIFont, ok? Você tem que
+
+916
+00:49:52,000 --> 00:49:55,230
+achar uma "face" que tenha uma
+"bold face" e então escolher essa "face".
+
+917
+00:49:55,250 --> 00:49:58,230
+Nós não vamos falar sobre nada disso.
+Nesse curso, vocês vão basicamente
+
+918
+00:49:58,250 --> 00:50:00,980
+usar as fontes do sistema.
+Ou vocês vão pegar sua fonte no Xcode,
+
+919
+00:50:01,000 --> 00:50:04,749
+o Xcode tem uma lista de fontes.
+Então essas coisas
+
+920
+00:50:04,769 --> 00:50:07,249
+que estão aqui embaixo,
+o "familyNames" e todas
+
+921
+00:50:07,269 --> 00:50:09,999
+essas coisas, esqueçam isso.
+Vocês não vai fazer
+
+922
+00:50:10,019 --> 00:50:12,749
+isso nesse curso. Ok, isso seria
+algo meio que avançado.
+
+923
+00:50:12,769 --> 00:50:15,499
+Uma coisa para realmente entender
+sobre uma fonte, é que ela
+
+924
+00:50:15,519 --> 00:50:20,089
+inclui o seu tamanho.
+Uma fonte inclui o seu tamanho.
+
+925
+00:50:20,109 --> 00:50:23,089
+Você não tem um objeto de fonte
+e então um tamanho. Você não
+
+926
+00:50:23,109 --> 00:50:25,339
+os especifica separadamente.
+Quando você cria um objeto de fonte,
+
+927
+00:50:25,359 --> 00:50:27,839
+ele inclui o tamanho, certo?
+E isso é porque algumas
+
+928
+00:50:27,859 --> 00:50:31,529
+typefaces tem mapa de bits (bitmaps),
+como os paus e copas que
+
+929
+00:50:31,549 --> 00:50:36,129
+nós vemos nos nossos botões.
+Eles são na verdade bitmaps
+
+930
+00:50:36,149 --> 00:50:38,289
+se você olhar para eles. E se você
+fizer uma fonte um pouco maior
+
+931
+00:50:38,309 --> 00:50:40,900
+eles não vai ficar maior
+até você chegar no próximo tamanho.
+
+932
+00:50:40,920 --> 00:50:43,150
+E então ele vai pro
+próximo mapa bitmap.
+
+933
+00:50:43,170 --> 00:50:44,150
+Então isso é o porquê
+
+
+934
+00:50:44,170 --> 00:50:46,900
+que a fonte e seu tamanho
+andam juntas,
+
+935
+00:50:46,920 --> 00:50:49,650
+no mesmo objeto, certo?
+A última coisa que eu vou falar
+
+936
+00:50:49,670 --> 00:50:53,489
+hoje antes da demo é
+attributed string. Attributed
+
+937
+00:50:53,509 --> 00:50:57,879
+string é novo no iOS 6,
+super poderoso, seu próximo homework
+
+938
+00:50:57,899 --> 00:51:01,710
+inteiro vai ser baseado em
+attributed string. Pensem nela,
+
+939
+00:51:01,730 --> 00:51:06,089
+NSAttributedString, como uma
+NSString, excerto pelo fato de que
+
+940
+00:51:06,109 --> 00:51:10,269
+cada caractere tem
+um dicionário de atributos.
+
+941
+00:51:10,289 --> 00:51:12,589
+E esses atributos sÃo tipo,
+"qual a fonte desse caractere?"
+
+942
+00:51:12,609 --> 00:51:15,449
+"Ele é underlined? Qual a cor
+que vamos usar para desenhá-lo?"
+
+943
+00:51:15,469 --> 00:51:18,690
+Ok? Então existe um grande dicionário
+com certas chaves que especifica
+
+944
+00:51:18,710 --> 00:51:21,650
+essas coisas, fonte, underline,
+etc. E certos valores
+
+945
+00:51:21,670 --> 00:51:24,309
+para eles, ok? Conceitualmente
+é isso que é.
+
+946
+00:51:24,329 --> 00:51:26,969
+Agora, claro, attributed string
+é muito eficiente. E se você tiver
+
+947
+00:51:26,989 --> 00:51:30,309
+100 caracteres seguidos
+que tem os mesmos atributos,
+
+948
+00:51:30,329 --> 00:51:33,059
+cada um não vai ter seu
+próprio dicionário.
+
+949
+00:51:33,079 --> 00:51:36,059
+Ela gerencia isso como um "lote"
+e coisas assim.
+
+950
+00:51:36,079 --> 00:51:38,409
+Mas, conceitualmente, é isso
+que ela é. Agora, você pega
+
+951
+00:51:38,429 --> 00:51:41,440
+esses atributos enviando uma mensagem
+para a attributed string.
+
+952
+00:51:41,460 --> 00:51:45,849
+"Me dá o dicionário de atributos
+nesse índice", ok?
+
+953
+00:51:45,869 --> 00:51:49,759
+"para o caractere que está
+nesse índice". Ele retorna se
+
+954
+00:51:49,779 --> 00:51:52,469
+você quiser, você pode passar
+NULL como o segundo argumento,
+
+955
+00:51:52,489 --> 00:51:55,650
+mas ele retornará quantos caracteres
+tem exatamente o mesmo
+
+956
+00:51:55,670 --> 00:51:59,519
+dicionário de atributos. Certo?
+Porque frequentemente você vai ter
+
+957
+00:51:59,539 --> 00:52:02,609
+um monte de caracteres seguidos
+que vão ter a mesma fonte
+
+958
+00:52:02,629 --> 00:52:05,849
+e coisas assim. Então é assim
+que você pega os atributos.
+
+959
+00:52:05,869 --> 00:52:08,469
+Realmente bem direto. Uma coisa
+para entender sobre NSAttributedString...
+
+960
+00:52:08,489 --> 00:52:11,349
+ela não é uma NSString.
+Ela não herda de NSString.
+
+961
+00:52:11,369 --> 00:52:15,119
+Você não pode enviar
+métodos de NSString.
+
+962
+00:52:15,139 --> 00:52:18,960
+Se você quiser fazer coisas de string,
+faça em seus caracteres, ok?
+
+963
+00:52:18,980 --> 00:52:21,469
+Tipo se você não quer manipular
+seus atributos, mas você quer
+
+964
+00:52:21,489 --> 00:52:23,969
+na verdade mudar os caracteres
+e coisas assim.
+
+965
+00:52:23,989 --> 00:52:27,190
+Você pode chamar esse método importantíssimo
+em NSAttributedString
+
+966
+00:52:27,210 --> 00:52:32,179
+chamado "string", ok? "string"
+retorna uma NSString que
+
+967
+00:52:32,199 --> 00:52:34,699
+representa os caracteres na
+NSAttributedString. Agora,
+
+968
+00:52:34,719 --> 00:52:39,389
+esse método é garantido para ser
+altamente performático, ok?
+
+969
+00:52:39,409 --> 00:52:42,409
+Normalmente ele vai retornar
+o que está armazenado, direto
+
+970
+00:52:42,429 --> 00:52:45,679
+da implementação. Mas por causa disso,
+ele também é volátil.
+
+971
+00:52:45,699 --> 00:52:48,139
+Em outras palavras, você não mantém
+um ponteiro para ele por aí.
+
+972
+00:52:48,159 --> 00:52:51,469
+Você pode chamar "string",
+fazer o que tem que fazer,
+
+973
+00:52:51,489 --> 00:52:53,339
+procurar na string, qualquer coisa.
+Mas daí você acabou. Se você quiser
+
+974
+00:52:53,359 --> 00:52:56,019
+mantê-la por mais tempo que isso,
+faça uma cópia dela.
+
+975
+00:52:56,039 --> 00:52:58,019
+Ok? Tipo, se você for colocá-la
+numa property
+
+976
+00:52:58,039 --> 00:52:59,019
+ou algo assim,
+
+
+977
+00:52:59,039 --> 00:53:02,269
+faça uma cópia dela para que
+você a capture, tire uma foto dela.
+
+978
+00:53:02,289 --> 00:53:05,139
+Ok? Porque do modo que funciona
+a attributed string, ela vai estar
+
+979
+00:53:05,159 --> 00:53:09,109
+modificando essa string
+o tempo todo, ok? É apenas
+
+980
+00:53:09,129 --> 00:53:12,769
+algo para se entender. Na prática
+não é normal mantermos
+
+981
+00:53:12,789 --> 00:53:15,269
+essas strings. Você pergunta
+pela string cada vez que
+
+982
+00:53:15,289 --> 00:53:18,449
+você quiser fazer algo,
+porque é super rápido, ok?
+
+983
+00:53:18,469 --> 00:53:21,940
+Não há penalidades de performance.
+Diferente de NSString, onde nós
+
+984
+00:53:21,960 --> 00:53:25,129
+quase nunca usamos uma string mutável,
+nós quase sempre estamos
+
+985
+00:53:25,149 --> 00:53:27,710
+usando attributed strings mutáveis,
+caso contrário nós não poderíamos
+
+986
+00:53:27,730 --> 00:53:31,429
+setar os atributos dela,
+certo? Nós meio que... quero dizer,
+
+987
+00:53:31,449 --> 00:53:34,879
+nós também usamos attributed
+strings imutáveis quando
+
+988
+00:53:34,899 --> 00:53:37,629
+temos alguma coisa que
+queremos mostrar na UI,
+
+989
+00:53:37,649 --> 00:53:40,879
+e queremos mostrá-la de uma vez,
+de um certo modo, mas,
+
+990
+00:53:40,899 --> 00:53:43,379
+frequentemente, nós usamos os
+atributos para mostrar algo.
+
+991
+00:53:43,399 --> 00:53:45,539
+Uma cor que reflete algo,
+ou sobescrever algo,
+
+992
+00:53:45,559 --> 00:53:49,249
+"isso é importante", ou algo assim.
+Então nós queremos que seja mutável.
+
+993
+00:53:49,269 --> 00:53:54,889
+Essa versão mutável adiciona
+métodos, obviamente, para adicionar,
+
+994
+00:53:54,909 --> 00:53:57,569
+setar e remover atributos. A diferença
+entre adicionar atributos
+
+995
+00:53:57,589 --> 00:54:00,909
+e setar atributos é que
+setar atributos remove
+
+996
+00:54:00,929 --> 00:54:04,859
+todos os atributos naquele range
+e os seta para o dicionário
+
+997
+00:54:04,879 --> 00:54:10,379
+que você mandou. "addAtributes"
+adiciona esses atributos com
+
+998
+00:54:10,399 --> 00:54:13,499
+quaisquer atributos que você
+já tenha lá. Então, se uma fonte
+
+999
+00:54:13,519 --> 00:54:16,319
+já está setada e você diz "adicione
+o atributdo underline",
+
+1000
+00:54:16,339 --> 00:54:18,960
+então a fonte vai permanecer
+a mesma e o atributo será...
+
+1001
+00:54:18,980 --> 00:54:20,920
+sabe, o underline
+irá acontecer.
+
+1002
+00:54:20,940 --> 00:54:21,920
+Se você disser
+
+
+1003
+00:54:21,940 --> 00:54:25,739
+"setAtributes" então qualquer que seja
+a fonte que estava no dicionário
+
+1004
+00:54:25,759 --> 00:54:28,829
+que você setou, ou a default se você
+não setou nenhuma, essa será a fonte.
+
+1005
+00:54:28,849 --> 00:54:32,009
+Então, normalmente, você
+não quer fazer um "set".
+
+1006
+00:54:32,029 --> 00:54:35,009
+Você quer adicionar, ok? E se você
+adicionar um atributo que já está
+
+1007
+00:54:35,029 --> 00:54:39,089
+lá, então o novo irá vencer. Então,
+se você adicionar o atributo underline
+
+1008
+00:54:39,109 --> 00:54:42,210
+para algo que já tem o atributo
+não-underline,
+
+1009
+00:54:42,230 --> 00:54:45,049
+ele vai ficar underlined
+e o outro vai ser
+
+1010
+00:54:45,069 --> 00:54:48,859
+jogado fora. Então o último
+atrubuto adicionado ganha.
+
+1011
+00:54:48,879 --> 00:54:52,259
+E então "removeAttribute", nós
+o removemos, fazendo com que o
+
+1012
+00:54:52,279 --> 00:54:55,089
+default seja aplicado. Todos
+os atributos tem um default que a
+
+1013
+00:54:55,109 --> 00:54:58,900
+documentação fala qual é.
+Então se você quiser modificar
+
+1014
+00:54:58,920 --> 00:55:01,779
+o conteúdo dessa string,
+não os atributos, mas o
+
+1015
+00:55:01,799 --> 00:55:05,730
+conteúdo, existem métodos
+para anexar
+
+1016
+00:55:05,750 --> 00:55:08,690
+outra attributed string
+nee, ou deletar caracteres
+
+1017
+00:55:08,710 --> 00:55:11,710
+ou inserir alguns caracteres
+no meio. Mas você pode também
+
+1018
+00:55:11,730 --> 00:55:15,309
+chamar esse método incrível
+chamado "mutableString".
+
+1019
+00:55:15,329 --> 00:55:18,690
+Ok? E ele vai retornar uma
+NSMutableString que você pode
+
+1020
+00:55:18,710 --> 00:55:23,670
+modificar e ele vai manter
+os atributos, ok? É mágico.
+
+1021
+00:55:23,690 --> 00:55:26,909
+Não me pergunte como funciona,
+mas você pode fazer isso, ok?
+
+1022
+00:55:26,929 --> 00:55:31,480
+Bom, então vamos ver...
+isso é tudo sobre atributos.
+
+1023
+00:55:31,500 --> 00:55:33,980
+Falei sobre como setar
+e receber os atributos,
+
+1024
+00:55:34,000 --> 00:55:36,230
+mas o que são esses atributos?
+Vamos olhar para
+
+1025
+00:55:36,250 --> 00:55:38,730
+alguns dos mais comuns.
+Então, aqui eu tenho
+
+1026
+00:55:38,750 --> 00:55:39,730
+um dicionário, vêem?
+
+
+1027
+00:55:39,750 --> 00:55:42,980
+o "@{ }" significa um dicionário.
+A chave é NSFontAttributeName,
+
+1028
+00:55:43,000 --> 00:55:46,819
+isso é definido no UIKit,
+quando você olha
+
+1029
+00:55:46,839 --> 00:55:50,139
+para o NSAttributedString,
+haverá um link lá
+
+1030
+00:55:50,159 --> 00:55:53,139
+e ele vai te mostrar
+todas as chaves que você pode usar.
+
+1031
+00:55:53,159 --> 00:55:56,309
+Uma delas é NSFontAttributeName.
+Dois pontos sgnificam
+
+1032
+00:55:56,329 --> 00:55:59,679
+que o valor vem a seguir.
+E o valor é a fonte. Então cada chave
+
+1033
+00:55:59,699 --> 00:56:02,609
+tem um tipo de valor diferente.
+
+
+1034
+00:56:02,629 --> 00:56:06,059
+Então, NSAttributeName,
+ele tem que ser uma fonte, ok?
+
+1035
+00:56:06,079 --> 00:56:08,809
+E se você olhar na documentação,
+ele lhe dirá isso. O valor para
+
+1036
+00:56:08,829 --> 00:56:11,809
+essa chave precisa ser uma fonte.
+Aqui eu disse, por exemplo,
+
+1037
+00:56:11,829 --> 00:56:14,559
+systemFontOfSize:12.
+Eu poderia ter dito
+
+1038
+00:56:14,579 --> 00:56:17,519
+"systemFontOfSize:24" e meus
+caracteres ficariam maiores.
+
+1039
+00:56:17,539 --> 00:56:22,639
+Vamos adicionar mais alguns atributos.
+Aqui temos NSForegroundColorAttributeName.
+
+1040
+00:56:22,659 --> 00:56:26,650
+O seu valor
+precisa ser uma cor. Uma UIColor.
+
+1041
+00:56:26,670 --> 00:56:29,900
+Aqui eu setei para azul, certo?
+Ou eu poderia setar para verde, ok?
+
+1042
+00:56:29,920 --> 00:56:33,109
+E vejam como meu dicionário
+está ficando maior
+
+1043
+00:56:33,129 --> 00:56:37,069
+conforme eu adiciono mais atributos
+nesse negócio. Então aqui,
+
+1044
+00:56:37,089 --> 00:56:42,150
+"StrokeWidth", ok? "StrokeWidth",
+uma fonte é realmente desenhada...
+
+1045
+00:56:42,170 --> 00:56:47,329
+o "stroke" é a linha de fora
+e o "fill" é o meio.
+
+1046
+00:56:47,349 --> 00:56:50,499
+Então, o "fill" é verde aqui
+e o laranja é o "stroke".
+
+1047
+00:56:50,519 --> 00:56:53,599
+Então eu posso setar o "StrokeWidth"
+para o quão grosso eu queira
+
+1048
+00:56:53,619 --> 00:56:56,449
+que o stroke seja. Normalmente,
+ele não é "stroked", é zero.
+
+1049
+00:56:56,469 --> 00:56:59,589
+Então não há, sabe, stroke em volta,
+você veria apenas
+
+1050
+00:56:59,609 --> 00:57:03,379
+a parte do "fill" da fonte.
+E o -5..., bom,
+
+1051
+00:57:03,399 --> 00:57:06,789
+o "StrokeWidth" recebe um NSNumber
+e aqui é -5,
+
+1052
+00:57:06,809 --> 00:57:07,789
+menos cinco significa
+
+
+1053
+00:57:07,809 --> 00:57:11,769
+stroke e fill. Se eu dissesse apenas
+cinco, ele seria apenas
+
+1054
+00:57:11,789 --> 00:57:14,349
+o stroke. Então a parte do meio
+estaria vazia. Eu não consegui
+
+1055
+00:57:14,369 --> 00:57:17,599
+fazer isso no Keynote, mas
+a parte verde que vocês estão vendo
+
+1056
+00:57:17,619 --> 00:57:19,599
+não existiria, se eu tivesse dito
+"StrokeWidth: @5".
+
+
+1057
+00:57:19,619 --> 00:57:23,469
+E aqui estou setando a "StrokeColor"
+para laranja. Então minha
+
+1058
+00:57:23,489 --> 00:57:25,989
+"ForegroundColor" é verde,
+meu "StrokeColor" é laranja,
+
+1059
+00:57:26,009 --> 00:57:29,869
+Aqui eu seto a "StrokeColor" para vermelho.
+Aqui vai outra, que é
+
+1060
+00:57:29,889 --> 00:57:33,129
+o "UnderlyingStyle". Seu valor é
+um número, que, no caso,
+
+1061
+00:57:33,149 --> 00:57:37,639
+é um enum. NSUnderlyingStyleSingle,
+NSUnderlyingStyleNone.
+
+1062
+00:57:37,659 --> 00:57:44,039
+Aqui é simples, aqui nenhuma, certo?
+E aqui temos NSBackgroundColor,
+
+1063
+00:57:44,059 --> 00:57:46,829
+a cor de fundo é todo o espaço
+atrás do escrito,
+
+1064
+00:57:46,849 --> 00:57:51,230
+esse espaço amarelado aqui
+e eu, apenas para fazer uma graça,
+
+1065
+00:57:51,250 --> 00:57:55,339
+setei o "BackgroundColor" aqui para
+ser uma cor transparente.
+
+1066
+00:57:55,359 --> 00:57:58,339
+Vêem como dá pra ver um pouco
+através dela? Então, vocês vão
+
+1067
+00:57:58,359 --> 00:58:01,539
+querer fazer isso também.
+Não com o "BackgroundColor", mas com o...
+
+1068
+00:58:01,559 --> 00:58:03,719
+provavelmente com o "ForegroundColor,
+no próximo homework de vocês.
+
+1069
+00:58:03,739 --> 00:58:07,649
+Ok? Eu não consegui descobrir
+como fazer o "ForegroundColor" aqui
+
+1070
+00:58:07,669 --> 00:58:10,399
+e conseguir mostrá-lo para vocês
+e ainda que fosse um esboço
+
+1071
+00:58:10,419 --> 00:58:13,299
+aqui no keynote, mas tudo bem.
+Então é isso.
+
+1072
+00:58:13,319 --> 00:58:16,049
+É assim que atributos funcionam.
+Nós precisamos apenas construir
+
+1073
+00:58:16,069 --> 00:58:18,179
+esses grandes dicionários
+que descrevem
+
+1074
+00:58:18,199 --> 00:58:20,230
+cada caractere, ok?
+
+
+1075
+00:58:20,250 --> 00:58:23,569
+Então aqui está a demo. Eu posso
+afirmar de antemão que nós
+
+1076
+00:58:23,589 --> 00:58:26,619
+estamos apertados no tempo,
+então vou correr aqui.
+
+1077
+00:58:26,639 --> 00:58:30,739
+O que nós vamos fazer na demo
+é que eu já... normalmente
+
+1078
+00:58:30,759 --> 00:58:38,179
+eu não gosto de começar a demo
+com código já iniciado. Mas aqui
+
+1079
+00:58:38,199 --> 00:58:43,460
+tudo que eu fiz foi a UI, ok?
+Eu ainda não fiz nada...
+
+1080
+00:58:43,480 --> 00:58:46,210
+aqui está meu controller,
+eu não escrevi nenhum código ainda.
+
+1081
+00:58:46,230 --> 00:58:50,569
+Aqui está minha UI e o que nós
+vamos fazer aqui é, nós vamos
+
+1082
+00:58:50,589 --> 00:58:53,569
+usar uma nova coisa de UI
+chamado "stepper". Então eu vou
+
+1083
+00:58:53,589 --> 00:58:56,299
+arrastá-lo. O stepper
+está aqui embaixo, é isso aqui.
+
+1084
+00:58:56,319 --> 00:58:59,349
+É só um botãozinho com + e -.
+Onde se você apertar o menos
+
+1085
+00:58:59,369 --> 00:59:03,429
+ele vai pra trás em alguma
+lista de valores, e se você
+
+1086
+00:59:03,449 --> 00:59:06,429
+apertar o mais, ele vai
+pra frente nessa lista de valores.
+
+1087
+00:59:06,449 --> 00:59:09,429
+Vocês podem ver aqui, zero.
+De zero pra cem. Ele vai
+
+1088
+00:59:09,449 --> 00:59:13,379
+dar passos de um em um
+nesse caso, o que está bom.
+
+1089
+00:59:13,399 --> 00:59:16,460
+E o que o nosso stepper vai fazer
+é passar por todas as palavras
+
+1090
+00:59:16,480 --> 00:59:20,049
+nesse label. Ele vai passar
+pelas palavras nesse label e
+
+1091
+00:59:20,069 --> 00:59:22,799
+vai mostrar a palavra que
+está selecionada bem aqui.
+
+1092
+00:59:22,819 --> 00:59:25,549
+E então, nós vamos usar
+esses botões aqui embaixo
+
+1093
+00:59:25,569 --> 00:59:28,559
+para modificar essa palavra
+no label. Essa é uma attributed
+
+1094
+00:59:28,579 --> 00:59:31,809
+string. Se você olhar para
+esse label, você pode ver que
+
+1095
+00:59:31,829 --> 00:59:34,059
+não é uma string pura, é uma
+attributed string. Certo?
+
+1096
+00:59:34,079 --> 00:59:36,869
+Então isso está mostrando
+uma attributed string, logo aqui.
+
+1097
+00:59:36,889 --> 00:59:42,789
+Ok? Então nós precisamos
+de algumas propriedades. Eu vou
+
+1098
+00:59:42,809 --> 00:59:45,839
+fazer uma propriedade aqui para
+esse label. Eu vou ter uma property
+
+1099
+00:59:45,859 --> 00:59:48,339
+que aponta para o stepper,
+que eu vou chamar de
+
+1100
+00:59:48,359 --> 00:59:51,259
+"mySelectedWordStepper"
+porque é isso que ele faz,
+
+1101
+00:59:51,279 --> 00:59:54,139
+ele passa por palavras selecionadas.
+E então aqui eu vou ter meu
+
+1102
+00:59:54,159 --> 00:59:58,099
+mySelectedWordLabel, porque
+eu vou mostrar
+
+1103
+00:59:58,119 --> 01:00:02,659
+que palavra está selecionada.
+Vou tentar arrumar o máximo
+
+1104
+01:00:02,679 --> 01:00:05,909
+de espaço que eu conseguir para
+que vocês consigam ver
+
+1105
+01:00:05,929 --> 01:00:09,889
+todas essas coisas. Pronto, então
+nós temos esses. Agora, a principal coisa
+
+1106
+01:00:09,909 --> 01:00:12,759
+que eu preciso para isso funcionar é,
+eu preciso de uma ista de palavras
+
+1107
+01:00:12,779 --> 01:00:16,349
+nesse label, ok? Eu preciso olhar
+nesse label e achar uma lista de palavras.
+
+1108
+01:00:16,369 --> 01:00:19,599
+Então, isso que vou mostrar para vocês,
+usando Foundation avançado.
+
+1109
+01:00:19,619 --> 01:00:22,549
+Ok? Usando alguns métodos que
+vocês vão tipo "oh, eu não
+
+1110
+01:00:22,569 --> 01:00:24,889
+sabia que dava pra fazer isso!",
+pois assim consigo colocar todas
+
+1111
+01:00:24,909 --> 01:00:29,359
+essas palavras em um array
+com uma linha de código, ok?
+
+1112
+01:00:29,379 --> 01:00:37,170
+Aqui vamos nós. Vou chamar de
+- (NSArray *)wordList
+
+1113
+01:00:37,190 --> 01:00:41,999
+NSArray *wordList = ... deixa
+eu ver se eu lembro. Ah sim,
+
+1114
+01:00:42,019 --> 01:00:45,329
+nós vamos pegar o label no self,
+tirar o seu attributedText,
+
+1115
+01:00:45,349 --> 01:00:49,480
+tirar uma string dele.
+Ok? Esse é o método mágico que eu
+
+1116
+01:00:49,500 --> 01:00:53,039
+disse a vocês que pegava a string
+de um texto com atributos,
+
+1117
+01:00:53,059 --> 01:00:57,029
+então aqui está.
+Agora, nós temos  a string,
+
+1118
+01:00:57,049 --> 01:01:00,279
+e agora nós
+vamos usar esse método
+
+1119
+01:01:00,299 --> 01:01:05,179
+componentsSeparatedByCharactersInSet,
+ok? Incrivelmente,
+
+1120
+01:01:05,199 --> 01:01:10,059
+isso pega uma string,
+a divide baseada nos caracteres
+
+1121
+01:01:10,079 --> 01:01:12,399
+que estão em um certo
+conjunto de caracteres. Nesse caso,
+
+1122
+01:01:12,419 --> 01:01:17,940
+eu vou pegar um conjunto de caracteres,
+NSCharacterSet, chamado
+
+1123
+01:01:17,960 --> 01:01:22,829
+whiteSpaceAndNewLineCharacterSet,
+ok? Esse é um conjunto
+
+1124
+01:01:22,849 --> 01:01:25,329
+de caracteres que é pré-construído
+no sistema. Ele tem todos
+
+1125
+01:01:25,349 --> 01:01:28,799
+os white spaces como "espaço" e "tab"
+e os retornos de linhas nele.
+
+1126
+01:01:28,819 --> 01:01:33,289
+E então com essa linha de código
+eu criei um array com todas
+
+1127
+01:01:33,309 --> 01:01:37,309
+as palavras nesse texto com atributos, ok?
+Então esse é o tipo de método
+
+1128
+01:01:37,329 --> 01:01:40,489
+componentsSeparatedByCharactersInSet
+que vocês deveriam se familiarizar
+
+1129
+01:01:40,509 --> 01:01:43,460
+que eles existem.
+Porque vocês podem imaginar
+
+1130
+01:01:43,480 --> 01:01:45,960
+vocês poderiam escrever um bocado
+de código, procurando... 
+
+1131
+01:01:45,980 --> 01:01:48,969
+procurando por espaços,
+um pé no saco e você tem isso
+
+1132
+01:01:48,989 --> 01:01:52,219
+em uma linha aqui. A outra coisa
+que eu queria fazer com minha
+
+1133
+01:01:52,239 --> 01:01:55,460
+lista de palavras é: eu nunca vou
+retornar um array vazio disso.
+
+1134
+01:01:55,480 --> 01:01:59,579
+Por isso, eu não preciso me precoupar
+com isso em lugar nenhum do meu código.
+
+1135
+01:01:59,599 --> 01:02:02,879
+Então vou dizer:
+"if ([wordlist count])", então retorna
+
+1136
+01:02:02,899 --> 01:02:11,349
+a wordlist, caso contrário
+eu vou retornar um array
+
+1137
+01:02:11,369 --> 01:02:16,369
+com uma string vazia nele.
+Ok? Estou roubando um pouco
+
+1138
+01:02:16,389 --> 01:02:18,849
+aqui porque eu não quero...
+eu quero que essa demo
+
+1139
+01:02:18,869 --> 01:02:22,849
+prossiga rapidamente, então não quero
+ter que colocar um monte de "if"s
+
+1140
+01:02:22,869 --> 01:02:26,099
+em outros lugares para ficar checando.
+Sabe, isso nem é algo errado
+
+1141
+01:02:26,119 --> 01:02:28,849
+de se fazer. Logo aqui,
+fazendo isso. Você poderia fazer isso
+
+1142
+01:02:28,869 --> 01:02:32,349
+na vida real. Ok, a próxima coisa
+que eu queria fazer é:
+
+1143
+01:02:32,369 --> 01:02:35,099
+eu preciso dessa palavra logo aqui.
+Essa palavra selecionada. Ok?
+
+1144
+01:02:35,119 --> 01:02:38,099
+Então eu tenho a lista de palavras,
+como eu sei qual palavra está selecionada?
+
+1145
+01:02:38,119 --> 01:02:41,099
+Bom, depende de onde está
+o stepper. Então eu vou criar um método
+
+1146
+01:02:41,119 --> 01:02:45,549
+aqui:
+- (NSString *)selectedWord.
+
+
+1147
+01:02:45,569 --> 01:02:52,940
+Eu vou retornar a wordList
+indexada por...
+
+1148
+01:02:52,960 --> 01:02:57,190
+na verdade vai sair um int
+desse stepper. Como que chama?
+
+1149
+01:02:57,210 --> 01:03:03,129
+selectedWordStepper.value.
+Ok, qualquer que seja
+
+1150
+01:03:03,149 --> 01:03:06,190
+o valor selecionado do stepper,
+e lembrem-se que esse stepper
+
+1151
+01:03:06,210 --> 01:03:09,839
+está andando uma unidade
+de cada vez. Com cada "step".
+
+1152
+01:03:09,859 --> 01:03:13,589
+Eu poderia dizer .5 aqui,
+é por isso que nós colocamos "int",
+
+1153
+01:03:13,609 --> 01:03:16,839
+porque isso é um float. Isso
+poderia ser .1 ou .5 ou qualquer coisa.
+
+1154
+01:03:16,859 --> 01:03:19,589
+Agora, o máximo é 100. Isso
+não é bom. Não há 100 palavras aqui.
+
+1155
+01:03:19,609 --> 01:03:23,089
+Então preciso me certificar
+de setar meu stepper para um
+
+1156
+01:03:23,109 --> 01:03:25,839
+máximo igual ao tamanho
+da wordList.
+
+1157
+01:03:25,859 --> 01:03:29,089
+Porque eu não quero dar um "step"
+pra fora da wordList
+
+1158
+01:03:29,109 --> 01:03:32,089
+porque isso iria crashar com
+"array index out of bounts".
+
+1159
+01:03:32,109 --> 01:03:35,089
+Então é melhor eu fazer isso e
+vocês sabem... eu vou fazer isso...
+
+1160
+01:03:35,109 --> 01:03:38,589
+é aqui que eu vou fazer isso.
+Eu vou fazer isso
+
+1161
+01:03:38,609 --> 01:03:41,839
+no "action method" desse stepper.
+Então, eu vou colocar um "action method"
+
+1162
+01:03:41,859 --> 01:03:44,839
+aqui, que eu vou chamar de
+"updateSelectedWord".
+
+1163
+01:03:44,859 --> 01:03:47,589
+Esse é um bom nome
+para chamá-lo.
+
+1164
+01:03:47,609 --> 01:03:50,429
+Ok, não precisa ter
+nenhum argumento. Okay?
+
+1165
+01:03:50,449 --> 01:03:55,230
+"updateSelectedWord" só vai fazer
+duas coisas. Eu vou
+
+1166
+01:03:55,250 --> 01:04:03,019
+setar o máximo valor do
+selectedWordStepper para ser
+
+1167
+01:04:03,039 --> 01:04:10,649
+o "count" do wordList. Menos um, ok?
+Então, desta maneira, o stepper
+
+1168
+01:04:10,669 --> 01:04:14,129
+nunca vai poder dar um passo
+maior que isso. Mesmo que o label
+
+1169
+01:04:14,149 --> 01:04:17,469
+mudar por baixo dos panos.
+Se nós mudarmos aquela coisa
+
+1170
+01:04:17,489 --> 01:04:20,579
+que diz "CS193P is the most awesome
+class at Stanford!", aliás, não sei
+
+1171
+01:04:20,599 --> 01:04:23,829
+porque eu mudaria isso.
+Mas se por acaso isso mudasse,
+
+1172
+01:04:23,849 --> 01:04:26,829
+então nós iríamos querer que o stepper
+não desse um "step" maior do que
+
+1173
+01:04:26,849 --> 01:04:29,579
+o tamanho dessa coisa nova. Então,
+cada vez que o stepper for pressionado
+
+1174
+01:04:29,599 --> 01:04:32,329
+Eu vou fazer isso. E então,
+se o stepper setar o seu valor máximo
+
+1175
+01:04:32,349 --> 01:04:34,579
+e o valor corrente for maior
+que isso, ele vai automaticamente
+
+1176
+01:04:34,599 --> 01:04:36,829
+mover o seu máximo, o seu
+valor para baixo. Então ele vai,
+
+1177
+01:04:36,849 --> 01:04:39,579
+ele vai basicamente fazer uma checagem
+de "range" para nós, o que é ótimo.
+
+1178
+01:04:39,599 --> 01:04:43,079
+E a outra coisa que eu preciso
+fazer aqui é: eu preciso setar
+
+1179
+01:04:43,099 --> 01:04:45,829
+aquele label "selectedWord".
+Essa coisa bem aqui.
+
+1180
+01:04:45,849 --> 01:04:50,419
+Para ser "self.selectedWord". Certo,
+nós sempre queremos ver a palavra
+
+1181
+01:04:50,439 --> 01:04:54,649
+selecionada ali. E a última coisa
+que eu vou fazer aqui,
+
+1182
+01:04:54,669 --> 01:04:57,399
+o que eu fiz errado aqui...
+selectedWord... qual é o problema?
+
+1183
+01:04:57,419 --> 01:05:03,109
+incompatível... oh, desculpe. ".text".
+Certo, colocamos o ".text".
+
+1184
+01:05:03,129 --> 01:05:06,230
+A última coisa que vou fazer,
+eu vou dar a vocês um preview
+
+1185
+01:05:06,250 --> 01:05:08,480
+da próxima aula. E mostrar a vocês
+esse método, "viewDidLoad".
+
+1186
+01:05:08,500 --> 01:05:13,619
+Ok? Esse método, viewDidLoad,
+no seu controller, é parte
+
+1187
+01:05:13,639 --> 01:05:16,539
+do que é chamado ciclo de vida
+do ViewController. E então,
+
+1188
+01:05:16,559 --> 01:05:19,879
+o seu controller, ele passa por um
+ciclo de vida (lifecycle) de
+
+1189
+01:05:19,899 --> 01:05:23,029
+vir à vida, aparecer na tela
+e sair da tela, e coisas assim.
+
+1190
+01:05:23,049 --> 01:05:25,940
+E quando tudo isso acontece, você
+é notificado. Bom, esse aqui,
+
+1191
+01:05:25,960 --> 01:05:28,799
+viewDidLoad, é um realmente importante.
+Ele é enviado para você depois que
+
+1192
+01:05:28,819 --> 01:05:32,299
+a view inteira foi preparada,
+e todos os seus outlets
+
+1193
+01:05:32,319 --> 01:05:35,049
+estão prontos. Então você recebe
+essa mensagem, viewDidLoad.
+
+1194
+01:05:35,069 --> 01:05:39,109
+Então eu vou apenas chamar,
+"self.updateSelectedWord",
+
+1195
+01:05:39,129 --> 01:05:43,399
+quando isso acontecer. Então isso
+é preparado aqui, então esse
+
+1196
+01:05:43,419 --> 01:05:47,179
+stepper recebe o seu valor máximo, certo?
+Então, na verdade, isso deve ser
+
+1197
+01:05:47,199 --> 01:05:51,169
+o suficiente para fazer isso.
+Pelo menos nós devemos
+
+1198
+01:05:51,189 --> 01:05:55,389
+conseguir passar pela nossas palavras.
+Ok? 
+
+1199
+01:05:55,409 --> 01:05:58,629
+Então agora o que queremos fazer é,
+dependendo de qual palavra
+
+1200
+01:05:58,649 --> 01:06:01,379
+estiver selecionada aqui,
+nós queremos que todos esses
+
+1201
+01:06:01,399 --> 01:06:03,879
+botões aqui em baixo para modificar
+o dicionário desses caracteres.
+
+1202
+01:06:03,899 --> 01:06:07,690
+Para colocar algumas cores,
+e algumas fontes,
+
+1203
+01:06:07,710 --> 01:06:10,339
+e underlines e tudo isso.
+Então, todo mundo entende o que
+
+1204
+01:06:10,359 --> 01:06:14,980
+nós vamos fazer? Ok? Então vamos lá.
+Vamos fazer o underline primeiro.
+
+1205
+01:06:15,000 --> 01:06:17,899
+Eu vou fazer aqui em cima,
+por causa do scrolling.
+
+1206
+01:06:17,919 --> 01:06:20,749
+Vamos fazer o underline. Ele está
+bem aqui. Eu vou criar o 
+
+1207
+01:06:20,769 --> 01:06:23,529
+action method.
+Nós vamos chamá-lo de underline.
+
+1208
+01:06:23,549 --> 01:06:25,329
+Aqui vamos nós...
+
+
+1209
+01:06:25,349 --> 01:06:28,669
+Pode falar.
+
+
+1210
+01:06:28,689 --> 01:06:33,230
+>> [Estudante perguntando]
+
+
+1211
+01:06:33,250 --> 01:06:34,480
+[estudante perguntando]
+
+
+1212
+01:06:34,500 --> 01:06:37,230
+>> Arram, então a pergunta é:
+por que eu não seto o valor máximo
+
+1213
+01:06:37,250 --> 01:06:40,480
+no viewDidLoad? Bom, a resposta é,
+eu faço isso, porque eu chamo
+
+1214
+01:06:40,500 --> 01:06:43,230
+esse método bem aqui,
+que seta ele. Mas, o que você está
+
+1215
+01:06:43,250 --> 01:06:46,230
+dizendo é: por que eu não coloco
+isso logo aqui, e a resposta é:
+
+1216
+01:06:46,250 --> 01:06:49,669
+e se, mais tarde, eu mudar o texto nisso?
+Certo? E se esse texto está tipo
+
+1217
+01:06:49,689 --> 01:06:52,389
+sendo carregado da internet?
+Estiver mostrando os
+
+1218
+01:06:52,409 --> 01:06:56,269
+seus últimos tweets? Ok?
+Meus tweets. Então, quando ele mudar,
+
+1219
+01:06:56,289 --> 01:06:59,319
+a próxima vez que alguém tocar
+o stepper, eu quero ter certeza
+
+1220
+01:06:59,339 --> 01:07:02,819
+que eles não passem para além do fim.
+É por isso que eu seto ele
+
+1221
+01:07:02,839 --> 01:07:06,669
+cada vez que eu clico. Certo,
+então underline. Tudo que precisamos
+
+1222
+01:07:06,689 --> 01:07:10,169
+para fazer o underline é,
+nós precisamos achar o range
+
+1223
+01:07:10,189 --> 01:07:12,669
+da palavra selecionada aqui.
+Porque quando setarmos os atributos,
+
+1224
+01:07:12,689 --> 01:07:15,679
+nós os setamos para um range
+em nosso attributed string.
+
+1225
+01:07:15,699 --> 01:07:18,319
+Então, isso é bem fácil de fazer.
+Nós vamos apenas dizer:
+
+1226
+01:07:18,339 --> 01:07:25,809
+[self.label.attributedText string],
+Ok? Aí está aquele método importante
+
+1227
+01:07:25,829 --> 01:07:28,159
+que eu falei pra vocês que
+pega a string.
+
+1228
+01:07:28,179 --> 01:07:30,659
+Porque nós vamos fazer a busca
+dentro dessa string para encontrar
+
+1229
+01:07:30,679 --> 01:07:33,230
+essa palavra selecionada aqui em cima.
+E o modo como você procura
+
+1230
+01:07:33,250 --> 01:07:37,440
+em uma string é o método "rangeOfString",
+ok? Vocês podem ver, tem alguns
+
+1231
+01:07:37,460 --> 01:07:40,190
+diferentes aqui, com opções
+e coisas desse tipo.
+
+1232
+01:07:40,210 --> 01:07:42,690
+Algumas dessas "options" são coisas
+como, comparar usando caso insensitivo,
+
+1233
+01:07:42,710 --> 01:07:46,929
+coisas assim.
+Mas eu vou apenas-- eu não vou usar
+
+1234
+01:07:46,949 --> 01:07:50,949
+nenhuma dessas opções para
+manter simples. Então uma "rangeOfString"
+
+1235
+01:07:50,969 --> 01:07:54,690
+e a string que queremos procurar
+é a palavra selecionada, ok?
+
+1236
+01:07:54,710 --> 01:07:59,789
+Então agora eu tenho
+o range dessa palavra selecionada,
+
+1237
+01:07:59,809 --> 01:08:03,609
+essa aqui em cima,
+nessa string. Eu sei onde ela começa
+
+1238
+01:08:03,629 --> 01:08:06,009
+e onde ela termina.
+Então, agora que eu a achei,
+
+1239
+01:08:06,029 --> 01:08:09,869
+e enquanto a range.location
+não for igual a NSNotFound,
+
+1240
+01:08:09,889 --> 01:08:13,629
+o que não deve acontecer nunca aqui,
+porque eu construi isso, sabe,
+
+1241
+01:08:13,649 --> 01:08:19,849
+a partir daquilo. Ser cauteloso,
+por que não? Agora eu preciso
+
+1242
+01:08:19,869 --> 01:08:23,110
+modificar os atributos disso,
+então eu preciso de uma versão
+
+1243
+01:08:23,130 --> 01:08:28,110
+mudável. Então vou dizer
+"NSMutableAttrubutedString".
+
+1244
+01:08:28,130 --> 01:08:31,360
+Eu vou chamá-lo de "mat" porque
+
+1245
+01:08:31,380 --> 01:08:34,360
+eu não tenho muito espaço e eu não
+quero ter que quebrar porque às vezes
+
+1246
+01:08:34,380 --> 01:08:36,860
+fica confuso. Mas eu provavelmente
+deveria chamá-lo de mutableString ou
+
+1247
+01:08:36,880 --> 01:08:39,110
+mutableAttributedString, ou algo assim.
+Mas vamos chamá-lo de "mat".
+
+1248
+01:08:39,130 --> 01:08:43,269
+E isso é igual a "[self.label. ...
+
+1249
+01:08:43,289 --> 01:08:49,240
+attributedText mutableCopy]". Ok?
+Estou fazendo uma cópia mutável
+
+1250
+01:08:49,260 --> 01:08:53,789
+disso, que é uma NSAttributedString.
+Agora nós temos uma
+
+1251
+01:08:53,809 --> 01:08:59,219
+NSMutableAttrubutedString. Pergunta.
+
+
+1252
+01:08:59,239 --> 01:09:00,219
+>> [Estudante pergutando]
+
+
+1253
+01:09:00,239 --> 01:09:03,139
+>> Ok, a pergunta é:
+o que acontece se a mesma palavra
+
+1254
+01:09:03,159 --> 01:09:05,889
+aparecer duas vezes? Meu código
+só faz a primera. Porém, isso poderia
+
+1255
+01:09:05,909 --> 01:09:09,389
+ser um loop "for" e então
+você poderia fazer as outras.
+
+1256
+01:09:09,409 --> 01:09:12,639
+Mas no meu código ele só faz a primeira.
+Então agora temos um mutableText,
+
+1257
+01:09:12,659 --> 01:09:16,349
+um "mutableAttributedText",
+vamos pra frente e adicionar
+
+1258
+01:09:16,369 --> 01:09:20,179
+os atributos que queremos.
+Então o "addAttributes" recebe
+
+1259
+01:09:20,199 --> 01:09:23,280
+um dicionário e um range.
+Nós sabemos o range, está bem aqui.
+
+1260
+01:09:23,300 --> 01:09:26,339
+E o dicionário, eu vou apenas
+fazê-lo aqui, 
+
+1261
+01:09:26,359 --> 01:09:29,089
+"on the fly".
+Eu vou fazer
+
+1262
+01:09:29,109 --> 01:09:31,400
+NSUnderlineStyleAttributeName:
+[bla bla bla]
+
+
+1263
+01:09:31,420 --> 01:09:37,159
+[bla bla bla]
+
+
+1264
+1:09:37,179 --> 01:09:42,200
+NSUnderlineStyleAttributeName: @(NSUnderlineStyleAttributeName)
+
+
+1265
+01:09:42,220 --> 01:09:49,240
+e a range é "range".
+E aqui eu vou tentar fazer isso
+
+1266
+01:09:49,260 --> 01:09:53,889
+um pouco melhor, tipo assim, ok?
+Agora eu tenho o attributedText
+
+1267
+01:09:53,909 --> 01:09:58,059
+daqui, eu fiz ele mutável,
+eu adiconei alguns atributos
+
+1268
+01:09:58,079 --> 01:10:01,919
+para esse range onde a palavra
+selecionada está. Agora eu só preciso
+
+1269
+01:10:01,939 --> 01:10:07,339
+setá-lo de volta. Ok?
+Então agora eu estou setando
+
+1270
+01:10:07,359 --> 01:10:10,619
+o "self.labels.attributedText"
+para esse mutável. Ok?
+
+1271
+01:10:10,639 --> 01:10:14,639
+Vêem o que eu fiz? Peguei uma
+versÃo imutável, modifiquei, e agora
+
+1272
+01:10:14,659 --> 01:10:18,419
+eu estou setando ela de volta. Ok?
+Então isso deve funcionar.
+
+1273
+01:10:18,439 --> 01:10:23,969
+Vamos ver se funciona. Certo, vamos
+pegar uma palavra, talvez "most".
+
+1274
+01:10:23,989 --> 01:10:29,980
+E underline. Ok? E não consigo
+tirar o underline. Vamos fazê-lo
+
+1275
+01:10:30,000 --> 01:10:32,820
+bem rápido. Não que eu queira
+tirar o underline,
+
+1276
+01:10:32,840 --> 01:10:36,719
+esse é o curso MAIS legal,
+mas nós queremos fazer isso.
+
+1277
+01:10:36,739 --> 01:10:39,360
+Vamos lá então. E, na verdade,
+un-underline é basicamente
+
+1278
+01:10:39,380 --> 01:10:41,929
+o que nós queremos fazer aqui -
+deixa eu criar outra action aqui,
+
+1279
+01:10:41,949 --> 01:10:47,400
+chamaremos de "ununderline". É
+quase idêntico a esse aqui.
+
+1280
+01:10:47,420 --> 01:10:50,450
+Mas eu não quero copiar e colar
+todo esse código,
+
+1281
+01:10:50,470 --> 01:10:53,509
+para tudo que eu quiser setar.
+Então eu vou ser um bom codificador
+
+1282
+01:10:53,529 --> 01:10:56,259
+aqui e eu vou dividir isso
+em um outro método.
+
+1283
+01:10:56,279 --> 01:10:59,889
+Eu vou chamá-lo... hm...
+"addLabelAttributes".
+
+1284
+01:10:59,909 --> 01:11:04,629
+Então esse, ele vai receber
+um dicionário de atributos,
+
+1285
+01:11:04,649 --> 01:11:11,070
+e um range para aplicar.
+E então vai aplicá-los
+
+1286
+01:11:11,090 --> 01:11:20,530
+no label.
+Então é por isso que é chamado
+
+1287
+01:11:20,550 --> 01:11:24,559
+addLabelAttributes. Então
+é basicamente isso. Eu apenas
+
+1288
+01:11:24,579 --> 01:11:28,450
+copio e colo isso aqui.
+Mas ao invés de ter UnderlineAttributes,
+
+1289
+01:11:28,470 --> 01:11:34,169
+nós vamos colcoar
+"attributes" aqui. E então
+
+1290
+01:11:34,189 --> 01:11:38,740
+nós vamos ter outro
+aqui, um intermediário
+
+1291
+01:11:38,760 --> 01:11:43,450
+que vamos chamar de
+"addSelectedWordAttributes".
+
+1292
+01:11:43,470 --> 01:11:47,900
+Então esse aqui
+vai receber os atributoes e
+
+1293
+01:11:47,920 --> 01:11:52,719
+aplicá-los apenas à palavra
+selecionada, ok? Ele vai apenas
+
+1294
+01:11:52,739 --> 01:11:56,240
+colocar essa coisinha... Eu vou perder
+eu underline, mas tudo bem.
+
+1295
+01:11:56,260 --> 01:11:59,469
+Ele vai por esse carinha
+aqui e então
+
+1296
+01:11:59,489 --> 01:12:01,719
+vai chamar
+[self addLabelAttributes: attributes ...
+
+1297
+01:12:01,739 --> 01:12:06,409
+usando esse range. Ok? Então agora
+o underline se transforma em:
+
+1298
+01:12:06,429 --> 01:12:10,629
+[self addSelectedWordAttributes...
+a mesma coisa que eu tinha no meu
+
+1299
+01:12:10,649 --> 01:12:13,919
+"buffer" de cópia, mas eu perdi
+quando eu fiz isso,
+
+1300
+01:12:13,939 --> 01:12:20,089
+aue é [bla bla bla]
+
+
+1301
+01:12:20,109 --> 01:12:26,360
+[bla bla bla], ok?
+
+
+1302
+01:12:26,380 --> 01:12:37,369
+E agora, ununderline é a mesma coisa,
+mas "None", ok?
+
+1303
+01:12:37,389 --> 01:12:42,929
+Então, isso vai funcionar. Certo,
+agora nós temos underline
+
+1304
+01:12:42,949 --> 01:12:46,200
+e un-underline. Vou para uma
+palavra diferente, underline,
+
+1305
+01:12:46,220 --> 01:12:49,110
+vou para outra, underline. Certo?
+Ok, então esses estão funcionando.
+
+1306
+01:12:49,130 --> 01:12:53,019
+Excelente. Agora vamos fazer
+um legal, que é o "color".
+
+1307
+01:12:53,039 --> 01:12:56,589
+Então, esses botões bem aqui,
+uma coisa que eu quero mostrar
+
+1308
+01:12:56,609 --> 01:12:59,089
+sobre esses botões para o
+homework de vocês, eles não são
+
+1309
+01:12:59,109 --> 01:13:01,589
+"rounded rects". Vocês perceberam
+que eu fiz o tipo desses botões
+
+1310
+01:13:01,609 --> 01:13:04,889
+ser "custom buttons". E,
+vocês provavelmente vão querer isso
+
+1311
+01:13:04,909 --> 01:13:08,289
+para os homework da próxima semana.
+Não para o dessa semana, pro da próxima,
+
+1312
+01:13:08,309 --> 01:13:10,829
+ok? Vocês vão fazer
+outro jogo de cartas e essas cartas
+
+1313
+01:13:10,849 --> 01:13:13,629
+provavelmente não querem ter
+cantos arredondados como o
+
+1314
+01:13:13,649 --> 01:13:17,249
+PlayinCard quer. Ela querem ser
+esse tipo de coisa. Ok? Então
+
+1315
+01:13:17,269 --> 01:13:21,249
+tudo que eu fiz aqui foi criar
+um "custom rect buttom",
+
+1316
+01:13:21,269 --> 01:13:23,879
+"custom buttom". Eu só fiz uma coisa,
+que foi setar o backgroundColor deles.
+
+1317
+01:13:23,899 --> 01:13:27,440
+Vêem esse? Laranja? Esse
+aqui é laranja, esse é azul,
+
+1318
+01:13:27,460 --> 01:13:30,019
+verde, preto, isso foi
+tudo que eu fiz, ok? E então
+
+1319
+01:13:30,039 --> 01:13:33,299
+digitei os nomes, "orange, blue,
+green, black", ok?
+
+1320
+01:13:33,319 --> 01:13:38,549
+Vamos ver como eles funcionam.
+Vejam isso, "changeColor".
+
+1321
+01:13:38,569 --> 01:13:41,849
+Dessa vez, eu preciso de um "sender",
+eu quero que seja um botão,
+
+1322
+01:13:41,869 --> 01:13:45,049
+e o que eu vou fazer é setar a cor
+do texto para ser a cor do botão.
+
+1323
+01:13:45,069 --> 01:13:48,919
+Ok? Então, qualquer que seja a cor
+do botão, vai ser a cor
+
+1324
+01:13:48,939 --> 01:13:51,419
+do texto. Isso será apenas
+self...
+
+1325
+01:13:51,439 --> 01:13:59,070
+vamos abrir espaço, desculpem,
+meio chato fazer isso...
+
+1326
+01:13:59,090 --> 01:14:04,209
+"addSelectedWordAttributes". Essa é
+o NSForegroundColorAttributeName
+
+1327
+01:14:04,229 --> 01:14:07,099
+e a cor é a backgroundColor
+do sender, ok?
+
+1328
+01:14:07,119 --> 01:14:12,549
+Então, precisamos disso para
+todos esses botões.
+
+1329
+01:14:12,569 --> 01:14:17,719
+Então nós vamos fazer todos eles
+terem essa mesma target-action.
+
+1330
+01:14:17,739 --> 01:14:21,230
+Então fazemos isso, certo?
+Então vamos descer para uma palavra
+
+1331
+01:14:21,250 --> 01:14:25,240
+Logo aqui, está azul, está verde,
+e então aqui, laranja, azul, verde,
+
+1332
+01:14:25,260 --> 01:14:27,459
+underline, un-underline. Ok?
+Então vocês vêem o que está acontecendo
+
+1333
+01:14:27,479 --> 01:14:32,980
+aqui? Nós estamos apenas
+adicionando atributos para a coisa.
+
+1334
+01:14:33,000 --> 01:14:36,440
+E eu vou fazer mais um,
+mesmo que estejamos bem no final
+
+1335
+01:14:36,460 --> 01:14:40,400
+aqui. Que é a fonte, porque a fonte
+é um bem interessante.
+
+1336
+01:14:40,420 --> 01:14:43,400
+Então, vamos fazer fonte.
+Eu vou fazer a mesma coisa com a fonte.
+
+1337
+01:14:43,420 --> 01:14:45,900
+Eu vou pegar qualquer que seja
+a fonte do botão
+
+1338
+01:14:45,920 --> 01:14:49,799
+e usá-la, mudar a fonte.
+O truque aqui é o tamanho da fonte.
+
+1339
+01:14:49,819 --> 01:14:54,639
+Eu vou usar o tamanho da fonte
+que já está aqui,
+
+1340
+01:14:54,659 --> 01:14:57,699
+ao invés de usar
+o tamanho da fonte do botão.
+
+1341
+01:14:57,719 --> 01:15:00,419
+Lembrem-se, eu falei que a fonte
+tem um tamanho nela, então eu não quero
+
+1342
+01:15:00,439 --> 01:15:04,829
+que o texto tenha o tamanho do botão.
+Então eu preciso perguntar
+
+1343
+01:15:04,849 --> 01:15:10,139
+para o label aqui: qual o tamanho
+da sua fonte? E eu realmente
+
+1344
+01:15:10,159 --> 01:15:13,269
+devo perguntar para a palavra
+em questão, porque poderiamos ter
+
+1345
+01:15:13,289 --> 01:15:16,019
+diferentes tamanhos de fonte
+espalhados por aqui. Mas,
+
+1346
+01:15:16,039 --> 01:15:19,019
+eu vou roubar, por causa do tempo,
+e olhar apenas para o primeiro
+
+1347
+01:15:19,039 --> 01:15:22,269
+caractere e descobrir qual é.
+E eu faço isso com o seguinte código:
+
+1348
+01:15:22,289 --> 01:15:25,629
+[ditando o código]
+
+
+1349
+01:15:25,649 --> 01:15:32,070
+[ditando o código]
+
+
+1350
+01:15:32,090 --> 01:15:35,959
+[ditando o código], e, novamente,
+eu vou dizer 0.
+
+1351
+01:15:35,979 --> 01:15:39,209
+Isso deve ser o começo da palavra.
+E eu não me importo com o range
+
+1352
+01:15:39,229 --> 01:15:42,209
+então eu vou dizer NULL.
+Isso significa que eu não tenho
+
+1353
+01:15:42,229 --> 01:15:44,709
+o range aonde esses atributos estão
+aplicados. E então, eu vou dizer
+
+1354
+01:15:44,729 --> 01:15:50,289
+[ditando o código]
+
+
+1355
+01:15:50,309 --> 01:15:52,690
+Vêem como eu estou
+olhando no dicionário?
+
+1356
+01:15:52,710 --> 01:15:57,240
+Olhando no dicionário
+qual é a fonte?
+
+1357
+01:15:57,260 --> 01:16:02,459
+Certo, todo mundo entendeu?
+E então, se eu achar a fonte
+
+1358
+01:16:02,479 --> 01:16:08,110
+ali, eu vou setar
+o tamanho da fonte para 
+
+1359
+01:16:08,130 --> 01:16:12,780
+o "pointSize" da existingFont.
+Se eu não achar uma, é melhor que
+
+1360
+01:16:12,800 --> 01:16:16,499
+eu faça isso: CGFloat...
+CGFloat é apenas um número de
+
+1361
+01:16:16,519 --> 01:16:21,360
+ponto flutuante, é o que o
+fontSize é. Nós vamos usar o
+
+1362
+01:16:21,380 --> 01:16:25,599
+"systemFontSize" se não conseguirmos
+achar uma existente ali. Mas nós vamos
+
+1363
+01:16:25,619 --> 01:16:28,599
+conseguir achar uma ali.
+E então nós vamos apenas dizer
+
+1364
+01:16:28,619 --> 01:16:34,679
+[ditando código],
+esse é o título do botão.
+
+1365
+01:16:34,699 --> 01:16:37,379
+Ok? O botão desenha o seu título
+usando esse negócio de "titleLabel".
+
+1366
+01:16:37,399 --> 01:16:42,360
+E nós vamos dizer
+"fontWithSize: fontSize".
+
+1367
+01:16:42,380 --> 01:16:51,299
+Ok? Então nós dizemos:
+[ditando código]
+
+1368
+01:16:51,319 --> 01:17:01,019
+[ditando código],
+ok? Então vamos
+
+1369
+01:17:01,039 --> 01:17:04,570
+descer pra cá, nós temos bold,
+normal, itálico, oops, nós não
+
+1370
+01:17:04,590 --> 01:17:08,280
+amarramos esses daqui.
+Onde está, onde está? Aqui.
+
+1371
+01:17:08,300 --> 01:17:15,539
+Logo aqui. Ok, alguns mais...
+
+
+1372
+01:17:15,559 --> 01:17:22,049
+Verde, underline, bold...
+Ok? Então é isso.
+
+1373
+01:17:22,069 --> 01:17:25,049
+Eu só tinha uma coisa a mais
+para fazer que era o "outline".
+
+1374
+01:17:25,069 --> 01:17:28,549
+Eu vou fazer esse no código qu eu
+vou postar porque não quero
+
+1375
+01:17:28,569 --> 01:17:31,049
+prender mais vocês aqui. Espero que
+vocês tenham entendido tudo.
+
+1376
+01:17:31,069 --> 01:17:32,429
+Estou aqui para perguntas
+se vocês não as fizeram.
+
+1377
+01:17:32,449 --> 01:17:34,429
+Visite nosso site:
+www.centraldosapps.com

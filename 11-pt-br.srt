@@ -1,0 +1,4160 @@
+1
+00:00:00,012 --> 00:00:10,880
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:10,880 --> 00:00:20,572
+Bem-vindos à aula 11 do CS193P, inverno de 2013. Hoje
+nós temos dois tópicos grandes. Um é GCD que é
+
+3
+00:00:20,572 --> 00:00:27,708
+a maneira que fazemos multi-threading no iOS e nós
+vamos falar sobre GCD e depois sobre
+
+4
+00:00:27,708 --> 00:00:32,874
+algumas features que podemos usar uma vez
+que aprendermos o GCD. E então o segundo
+
+5
+00:00:32,874 --> 00:00:37,607
+tópico vai ser persistência, certo?
+Como fazer as coisas ficarem por aí
+
+6
+00:00:37,607 --> 00:00:42,541
+quando sua aplicação fechar. E vocês já sabem
+uma maneira bem simples, que é
+
+7
+00:00:42,541 --> 00:00:48,000
+NSUserDefaults, mas essa é para coisas
+bem pequenas. E agora nós vamos falar
+
+8
+00:00:48,000 --> 00:00:52,222
+sobre storing... coisa séria. Ok,
+esses são os tópicos de hoje. E eu vou
+
+9
+00:00:52,222 --> 00:00:55,612
+fazer a demo no meio. Não vou fazer a demo
+da persistência. Vocês terão
+
+10
+00:00:55,612 --> 00:00:59,343
+que fazer isso no homework,
+então vai haver
+
+11
+00:00:59,343 --> 00:01:03,081
+bastante oportunidade para vocês
+aprenderem como faz. E também,
+
+12
+00:01:03,081 --> 00:01:07,356
+o homework dessa semana, o tópico
+de persistência é um que eu quero que vocês
+
+13
+00:01:07,356 --> 00:01:11,195
+leiam a documentação. É realmente importante
+para ser um bom programador iOS, saber como
+
+14
+00:01:11,195 --> 00:01:14,990
+navegar na documentação, que espero que
+vocês venham fazendo durante todo esse
+
+15
+00:01:14,990 --> 00:01:18,345
+trimestre, mas essa é uma feature que
+eu vou forçar para que vocês façam isso, porque
+
+16
+00:01:18,345 --> 00:01:22,194
+eu não vou dizer exatamente tudo que tem
+que fazer. Embora eu vá ter bastante coisas
+
+17
+00:01:22,194 --> 00:01:25,946
+nos slides, mas não exatamente tudo
+e eu não vou fazer demo disso, então vocês
+
+18
+00:01:25,946 --> 00:01:30,590
+vão ter que fazer por conta. Então, a demo
+no meio vai ser sobre GCD e algumas dessas
+
+19
+00:01:30,590 --> 00:01:35,813
+outras features que vocês podem usar uma vez
+que vocês sabem GCD. Ok, então esse é slide
+
+20
+00:01:35,813 --> 00:01:40,499
+que estava aí da última vez, que são blocks.
+Para que usamos blocks e o último bullet
+
+21
+00:01:40,499 --> 00:01:46,954
+que eu tinha era que é super-importante
+usar blocks em multi-threading, ok?
+
+22
+00:01:46,954 --> 00:01:52,934
+A API do Grand Central Dispatch, GCD.
+Então é isso que vamos falar primeiro aqui.
+
+23
+00:01:52,935 --> 00:01:58,730
+Grand Central Dispatch é uma API em C, ok?
+Não é uma API orientada a objetos.
+
+24
+00:01:58,730 --> 00:02:02,890
+Existe uma versão orientada a objetos dela,
+é chamada de NSOperation. Mas incrivelmente,
+
+25
+00:02:02,890 --> 00:02:07,378
+nós tendemos a usar a versÃo em C e vocês
+verão o porquê quando nós começarmos
+
+26
+00:02:07,378 --> 00:02:12,346
+a escrever o código. É belamente desenhada
+para fazer o seu código ser bem legível.
+
+27
+00:02:12,346 --> 00:02:17,635
+MEsmo se você estiver pulando e indo
+pra frente e pra trás entre threads. Ok,
+
+28
+00:02:17,635 --> 00:02:23,582
+a idéia básica do GCD é que você tem
+filas (queues) de operações. Essas operações
+
+29
+00:02:23,582 --> 00:02:29,909
+são definidas por block, ok? Vocês sabem
+o que um block é, certo? É apenas uma pequena
+
+30
+00:02:29,909 --> 00:02:36,358
+porção de código em C, uma rotina com duas
+chaves. Então... a idéia fundamental do GCD é
+
+31
+00:02:36,358 --> 00:02:41,337
+você tem essas queue. Todo mundo sabe o que
+uma queue é? Levante sua mão se você
+
+32
+00:02:41,337 --> 00:02:46,335
+sabe o que é uma queue. Ok. Todos vocês.
+Bom. Então uma queue é apenas uma fila
+
+33
+00:02:46,335 --> 00:02:51,145
+e esses blocks vão se enfileirando para
+serem executados e o iOS vai chegar e começar a
+
+34
+00:02:51,145 --> 00:02:55,733
+pegar blocks dessa fila e começar
+a executá-los em diferentes threads,
+
+35
+00:02:55,733 --> 00:03:00,126
+ok? Essa é a chave. Ela roda em uma
+thread diferente. Agora, você não sabe
+
+36
+00:03:00,126 --> 00:03:03,794
+quando vai rodar, ou em que thread
+que vai rodar. Isso é totalmente irrelevante
+
+37
+00:03:03,794 --> 00:03:07,485
+para você. Tudo que você se importa
+é enfileirar esses blocks para que
+
+38
+00:03:07,485 --> 00:03:10,962
+eles sejam executados em um tempo
+futuro. E não na thread corrente.
+
+39
+00:03:10,962 --> 00:03:16,519
+Agora, existem dois tipos de queues.
+Existem queues serial, onde todos os blocks 
+
+40
+00:03:16,519 --> 00:03:21,403
+são executados em ordem, certo. Em outras
+palavras, a queue é processada um por um,
+
+41
+00:03:21,403 --> 00:03:25,959
+um block roda completamente até ele acabar,
+então o sistema pega outro.
+
+42
+00:03:25,959 --> 00:03:29,932
+Existe também queues concorrentes.
+Nós não vamos falar sobre isso nesse curso.
+
+43
+00:03:29,932 --> 00:03:33,843
+É um pouco mais complicado e vocês,
+como vocês podem imaginar se múltiplos
+
+44
+00:03:33,843 --> 00:03:37,890
+blocks podem estar vindo da queue
+e rodando ao mesmo tempo em múltiplas 
+
+45
+00:03:37,890 --> 00:03:41,947
+threads, o que acontece se você tiver
+dependências, ok? Se os blocks dependerem de
+
+46
+00:03:41,947 --> 00:03:46,254
+alguma estrutura de dados ou algo assim, então
+você precisa de uma programação um pouco mais
+
+47
+00:03:46,254 --> 00:03:50,094
+sofisticada que nós não vamos ter tempo para cobrir.
+Nesse curso, nós vamos falar apenas sobre
+
+48
+00:03:50,094 --> 00:03:53,970
+queues seriais, mas vocês devem saber que
+também existem queues concorrentes à sua
+
+49
+00:03:53,970 --> 00:03:57,952
+disposição também. Mas com queues seriais,
+vocês podem fazer um monte de coisas interessantes
+
+50
+00:03:57,952 --> 00:04:02,442
+para fazer seu app rodar realmente bem.
+Por que precisamos desse negócio de threads?
+
+51
+00:04:02,442 --> 00:04:06,784
+Bom, 2 razões na verdade. 1) Se vamos fazer
+algo que vai bloquear,
+
+52
+00:04:06,784 --> 00:04:11,008
+como acesso à rede, nós queremos que
+isso seja feito em uma outra thread do que
+
+53
+00:04:11,008 --> 00:04:15,687
+na main thread. Porque nós não queremos
+que a main thread, que recebe gestos
+
+54
+00:04:15,687 --> 00:04:19,807
+e esse tipo de coisa, fique bloqueada.
+Nós queremos a nossa aplicação realmente
+
+55
+00:04:19,807 --> 00:04:24,472
+responsiva. Nós sempre a queremos respondendo
+ao usuário. Nós jamais queremos ela bloqueada
+
+56
+00:04:24,472 --> 00:04:27,999
+esperando pela rede. Então, se nós usaríamos
+blocks e colocaríamos em outra thread.
+
+57
+00:04:27,999 --> 00:04:31,751
+E também se nós vamos fazer algo que vai
+levar um longo tempo, nós vamos
+
+58
+00:04:31,751 --> 00:04:35,335
+fazer algum cálculo grande, vamos
+fazer algum processamento de imagem,
+
+59
+00:04:35,335 --> 00:04:39,288
+ou algo assim. Nós provavelmente vamos querer
+tirar isso da main thread também. Porque,
+
+60
+00:04:39,288 --> 00:04:42,304
+novamente, nós não queremos que a main thread
+fique engasgando enquanto ela faz esse
+
+61
+00:04:42,304 --> 00:04:46,277
+enorme cálculo e então continue, ok? É por isso
+que nós vamos ter essas threads.
+
+62
+00:04:46,277 --> 00:04:52,379
+É isso que vamos estar fazendo com o GCD,
+fazer que essas duas coisas aconteçam.
+
+63
+00:04:52,379 --> 00:04:58,612
+Então a API do GCD é uma API em C, lembram-se?
+Existem algumas dezenas de funções em C
+
+64
+00:04:58,612 --> 00:05:04,414
+nele. Eu vou apenas falar sobre cinco
+ou seis aqui. E vocês sabem que vocês podem
+
+65
+00:05:04,414 --> 00:05:08,734
+olhar na documentação por eles e todo
+o resto deles estarão lá também.
+
+66
+00:05:08,734 --> 00:05:13,302
+Várias dessas coisas estão lá,
+sobre threads concorrentes e mesmo
+
+67
+00:05:13,302 --> 00:05:18,346
+coisas sobre semáforos e locks
+e coisas assim. Então tem um monte
+
+68
+00:05:18,346 --> 00:05:23,402
+de coisa aqui, mas nós vamos falar apenas
+sobre essa API básica. A primeira é
+
+69
+00:05:23,402 --> 00:05:28,897
+dispatch_queue_create. Ok? Isso cria
+uma queue, ok? E então você vai
+
+70
+00:05:28,897 --> 00:05:34,144
+colocar blocks nela. É assim que funciona e
+não poderia ser mais simples. Percebam que
+
+71
+00:05:34,144 --> 00:05:39,136
+os argumentos ali, o primeiro argumento
+não é uma NSString, é uma const char *,
+
+72
+00:05:39,136 --> 00:05:44,549
+ok? Essa é a única que vocês vão ver
+nesse curso inteiro e isso é
+
+73
+00:05:44,549 --> 00:05:49,688
+porque é uma API em C e então estamos
+recebendo uma string em C aqui. Essa string
+
+74
+00:05:49,688 --> 00:05:54,029
+é realmente apenas um identificador para
+essa fila. Tipo quando você está debugando se
+
+75
+00:05:54,029 --> 00:05:58,450
+você quiser olhar no debugger e ver em que
+queue uma thread estava associada.
+
+76
+00:05:58,450 --> 00:06:03,021
+Daí mostraria essa string, ok? Você não
+precisa para mais nada além disso,
+
+77
+00:06:03,021 --> 00:06:07,250
+então apenas coloque um nome que diga
+o que é essa queue. O que quer que seja
+
+78
+00:06:07,250 --> 00:06:11,463
+que os blocks da queue estejam fazendo.
+Coloque um nome legal ali. E então o segundo argumento
+
+79
+00:06:11,463 --> 00:06:15,581
+NULL significa que é uma queue serial. Se
+você passar esse argumento como NULL, é uma
+
+80
+00:06:15,581 --> 00:06:19,972
+queue serial. Existe outro enum que você pode
+especificar aí se você quiser. Concurrent
+
+81
+00:06:19,972 --> 00:06:23,957
+Queues, mas nós não vamos falar sobre isso.
+E então o tipo de retorno, pode ver, é
+
+82
+00:06:23,957 --> 00:06:28,144
+dispatch_queue_t. Isso é apenas um typedef
+para algum tipo opaco C, void * ou algo assim
+
+83
+00:06:28,144 --> 00:06:32,970
+que é retornado. É como se fosse um cookie,
+que representa a sua queue,
+
+84
+00:06:32,970 --> 00:06:38,136
+ok? Então, a qualquer momento que você quiser
+colocar blocks na queue, você vai passar
+
+85
+00:06:38,136 --> 00:06:43,569
+essa queue de volta para o sistema. E como
+você coloca blocks na queue? Bom, existem duas
+
+86
+00:06:43,569 --> 00:06:48,395
+maneiras principais de se fazer. Uma maneira é
+com a próxima função aqui, dispatch_async,
+
+87
+00:06:48,395 --> 00:06:53,897
+que assincronamente coloca um block na queue.
+Assincronamente significa que coloca o block
+
+88
+00:06:53,897 --> 00:06:58,933
+na queue e que retorna imediatamente
+na sua thread, ok? Apenas joga
+
+89
+00:06:58,933 --> 00:07:03,406
+aquele block lá e esse block
+vai ser executado por alguma
+
+90
+00:07:03,406 --> 00:07:08,281
+outra thread no futuro, você não sabe
+quando, mas você retorna imediatamente.
+
+91
+00:07:08,281 --> 00:07:13,396
+Ok? É isso que signfica o dispatch_async.
+Existe também o dispatch_sync que é: coloque
+
+92
+00:07:13,396 --> 00:07:18,260
+essa coisa na queue e faça minha thread
+esperar até que esse block finalmente seja
+
+93
+00:07:18,260 --> 00:07:23,384
+completado em alguma outra thread e então
+volte. Ok? Então é inútil para nós
+
+94
+00:07:23,384 --> 00:07:27,940
+no sentido de que vamos usar o GCD, certo?
+Porque nós nunca queremos que nossa thread
+
+95
+00:07:27,940 --> 00:07:32,249
+seja bloqueada. Nós vamos estar chamando
+isso na main thread na maioria das vezes,
+
+96
+00:07:32,249 --> 00:07:36,243
+certo? Então nós nunca queremos bloquar.
+Então nós não usamos dispatch_sync. Podemos
+
+97
+00:07:36,243 --> 00:07:40,063
+colocar de lado. É o dispatch_async
+que nós queremos. Sim?
+
+98
+00:07:40,063 --> 00:07:44,667
+>> [Estudante perguntando]
+>> A pergunta é: você pode dar um exemplo
+
+99
+00:07:44,667 --> 00:07:48,691
+de quando você usaria diXpatch_sync?
+Existem vários exemplos de quando você
+
+100
+00:07:48,691 --> 00:07:52,970
+usaria um dispatch_sync. Você pode
+estar usando threads e filas apenas para
+
+101
+00:07:52,970 --> 00:07:56,811
+organizar o trabalho, ok? Você está
+apenas organizando o trabalho em um monte
+
+102
+00:07:56,811 --> 00:08:00,985
+de blocks, certo? Você não está usando
+para concorrência, você está apenas organizando
+
+103
+00:08:00,985 --> 00:08:05,384
+e você quer que seja executado
+em uma outra thread, ok? Porque talvez
+
+104
+00:08:05,384 --> 00:08:09,307
+outros blocks estão na mesma fila e você
+pode querer que eles sejam executados primeiro.
+
+105
+00:08:09,307 --> 00:08:13,428
+Talvez você tenha uma queue que é para
+escrever no banco de dados e você quer que
+
+106
+00:08:13,428 --> 00:08:17,460
+todo mundo, todas as outras threads que estão
+escrevendo no banco que chegaram ali primeiro
+
+107
+00:08:17,460 --> 00:08:21,684
+executem seus blocks primeiro, mas você quer
+esperar até ter o direito ao banco termine.
+
+108
+00:08:21,684 --> 00:08:26,147
+Isso faz sentido? Esse exemplo? É por isso
+que você pode querer dispatchar coisas.
+
+109
+00:08:26,147 --> 00:08:30,051
+Mas não é para isso que nós vamos usar,
+nós vamos usar para tirar coisas da nossa
+
+110
+00:08:30,051 --> 00:08:34,509
+thread. Então nós queremos dispatch_async.
+O segundo-- o primeiro argumento para o
+
+111
+00:08:34,509 --> 00:08:38,690
+dispatch_async é apenas a queue. Esse cookie
+que você recebeu do dispatch_queue_create. E o
+
+112
+00:08:38,690 --> 00:08:42,684
+segundo argumento é um block. E se você
+olhar para o typedef desse block, é apenas
+
+113
+00:08:42,684 --> 00:08:46,949
+^, o que significa um block. Dispatch_block_t,
+que é o nome do tipo, parentesis void.
+
+114
+00:08:46,949 --> 00:08:51,073
+Em outras palavras, esse é um block
+que não recebe argumentos e que não
+
+115
+00:08:51,073 --> 00:08:55,941
+retorna nada. Nada, ok? O block mais
+simples possível. Então, esse é o tipo
+
+116
+00:08:55,941 --> 00:09:00,839
+de block que você pode colocar na sua queue.
+Ok? Vocês verão como que é a cara dessa
+
+117
+00:09:00,839 --> 00:09:05,455
+chamada, mas vocês podem provavelmente
+imaginar. Muito, muito simples. Agora,
+
+118
+00:09:05,455 --> 00:09:10,981
+existem algumas funções em C aqui que são
+valiosas também. Uma é dispatch_get_current_queue.
+
+119
+00:09:10,981 --> 00:09:16,617
+Ok? Isso retorna pra você
+a queue em que você
+
+120
+00:09:16,617 --> 00:09:22,479
+está rodando atualmente, ok? Onde
+você está atualmente dispatchado, ok?
+
+121
+00:09:22,479 --> 00:09:28,107
+Então seu block está rodando agora, no código,
+e ele está em alguma queue, pode ser a
+
+122
+00:09:28,107 --> 00:09:33,178
+main_queue, que é a main thread ou pode
+ser em alguma outra queue. Então
+
+123
+00:09:33,178 --> 00:09:38,773
+get_current_queue. Você pode descobrir,
+por que você iria querer saber a queue que você está?
+
+124
+00:09:38,773 --> 00:09:43,598
+Bom, a resposta para isso é que você pode
+querer dispatchar um block de código em
+
+125
+00:09:43,598 --> 00:09:49,049
+alguma outra queue e quando essa queue
+acabar, você pode querer dispatchar de volta
+
+126
+00:09:49,049 --> 00:09:53,990
+para você, para sua queue, ok? E assim,
+você poderia passar sua queue como um argumento
+
+127
+00:09:53,990 --> 00:09:58,853
+para... sabe, usando variáveis locais.
+Lembram-se dos blocks? Vocês podem ver
+
+128
+00:09:58,853 --> 00:10:03,263
+as variáveis locais, então vocês podem ter
+uma variável local com a sua queue atual e
+
+129
+00:10:03,263 --> 00:10:07,937
+passá-la e então você pode usá-la para
+falar de volta com você. Mas essa é a chance
+
+130
+00:10:07,937 --> 00:10:12,918
+para eu falar sobre ARC com queues, ok?
+Queues, mesmo que não sejam objetos, funcionam
+
+131
+00:10:12,918 --> 00:10:17,665
+com ARC. Em outras palavras, ele conta referência
+das queues, e vai remover da heap quando
+
+132
+00:10:17,665 --> 00:10:22,595
+não há mais blocks naquela queue. E quando
+não tiver mais strong pointers para ela,
+
+133
+00:10:22,595 --> 00:10:27,817
+basicamente, ok? Sem ponteiros mantidos
+para ela. Costumava ser, antes do iOS 6,
+
+134
+00:10:27,817 --> 00:10:32,827
+que você poderia explicitamente reter
+um contador de referência para sua queue e então
+
+135
+00:10:32,827 --> 00:10:37,481
+explicitamente dar um release para decrementar
+o contador de referência. Mas ARC faz isso
+
+136
+00:10:37,481 --> 00:10:42,668
+para você agora (aleluia), ok? Você pode esquecer
+sobre esse dispatch_queue_retain e dispatch_queue_release,
+
+137
+00:10:42,668 --> 00:10:48,391
+sério, esqueçam. A última função em C,
+uma função em C realmente importante, essa vai
+
+138
+00:10:48,391 --> 00:10:53,379
+obter a main_queue. Essa é a queue onde
+roda a UI. Essa é sua main thread.
+
+139
+00:10:53,379 --> 00:10:59,050
+Ok? Essa, vocês precisam bastante. Porque
+várias vezes vocês vão enviar um bloco de
+
+140
+00:10:59,050 --> 00:11:04,183
+código para alguma queue aleatória para
+ser executado e então, ele termina o que tinha
+
+141
+00:11:04,183 --> 00:11:09,514
+para fazer e então ele quer fazer update na UI.
+Ok? Mas nós sabemos, eu falei sobre isso antes,
+
+142
+00:11:09,514 --> 00:11:14,839
+Você não pode fazer nenhuma chamada para
+o UIKit, com algumas exceções, mas você não
+
+143
+00:11:14,839 --> 00:11:19,679
+pode fazer chamadas para UIKit em qualquer thread
+que não seja a main thread. Ok? O UIKit
+
+144
+00:11:19,679 --> 00:11:24,767
+não é thread-safe. Vocês entendem o que
+isso significa? Você não pode fazer chamadas
+
+145
+00:11:24,767 --> 00:11:29,887
+no UIKit de outras threads. Elas só podem
+ser feitas da main thread, que é onde
+
+146
+00:11:29,887 --> 00:11:35,166
+o UIKit realiza todas suas execuções. Então,
+várias vezes em um block em outras threads,
+
+147
+00:11:35,166 --> 00:11:40,899
+você quer dispatchar de volta para a main queue,
+ok? Porque você quer rodar um block que
+
+148
+00:11:40,899 --> 00:11:45,408
+vai fazer update na UI, apenas na
+main queue, então você vai dispatchar de volta.
+
+149
+00:11:45,408 --> 00:11:50,172
+E vocês veram isso quando vermos exemplos. Sim?
+>> [Estudante pergutando]
+
+150
+00:11:50,172 --> 00:11:55,465
+>> A pergunta: por que o UIKit não é
+thread-safe? E a resposta é: algumas coisas.
+
+151
+00:11:55,465 --> 00:12:00,097
+Uma, é mais fácil para você, ok?
+Quando você está escrevendo seus controllers
+
+152
+00:12:00,097 --> 00:12:04,145
+e tudo isso, você não precisa se preocupar
+em fazê-los todos thread-safe, ok? Porque
+
+153
+00:12:04,145 --> 00:12:08,106
+você sabe que as coisas vão rodar apenas
+na main queue, ok? Essa é uma dos principais
+
+154
+00:12:08,106 --> 00:12:11,867
+motivos que é assim. Tenho certeza que
+é parte porque é há muito overhead e é
+
+155
+00:12:11,867 --> 00:12:16,213
+muito difícil escrever algo que seja
+totalmente thread-safe. Agora,
+
+156
+00:12:16,214 --> 00:12:21,416
+eu disse que há algumas partes do UIKit
+que são thread-safe. Essa é o UIImage.
+
+157
+00:12:21,416 --> 00:12:26,240
+Você pode carregar uma UIImage em outra
+thread. Fontes, você pode, sabe,
+
+158
+00:12:26,240 --> 00:12:31,964
+procurar por fontes e typefaces. E também
+desenhar diretamente com Core Graphics,
+
+159
+00:12:31,964 --> 00:12:37,279
+e UIBezierPath, esse tipo de coisa.
+Você pode fazer isso em outra thread. Você
+
+160
+00:12:37,279 --> 00:12:41,842
+quase nunca faz, mas você poderia. Também,
+o UIKit está usando outras threads, como
+
+161
+00:12:41,842 --> 00:12:45,919
+todos os drawings estão acontecendo
+em outras threads. Quando ele está pondo
+
+162
+00:12:45,919 --> 00:12:50,128
+os bits na memória, par air para a tela,
+isso tudo está sendo feito em outra thread, mas
+
+163
+00:12:50,128 --> 00:12:54,435
+ele sabe como fazer toda a sincronização
+e tudo isso. Então, tipo, quando o seu
+
+164
+00:12:54,435 --> 00:12:58,217
+drawRect é chamado, pode ser que isso
+esteja acontecendo em outra thread, pode ser
+
+165
+00:12:58,217 --> 00:13:03,262
+na main thread. Provavelmente na main
+thread. Todas essas coisas são gerenciadas,
+
+166
+00:13:03,262 --> 00:13:08,547
+então você não precisa se preocupar. O resumo é:
+a razão para que o UIKit não seja
+
+167
+00:13:08,547 --> 00:13:14,196
+thread-safe é para você (obrigado!). Para
+facilitar sua implementação. Ok? Então como é
+
+168
+00:13:14,196 --> 00:13:19,216
+que é chamar isso? Vamos dar uma olhada
+em um exemplo chamando essas funções em C.
+
+169
+00:13:19,216 --> 00:13:24,199
+Temos o resetImage, ok? Aqui eu fiz uma
+"cópia leve" do resetImage, ele chama
+
+170
+00:13:24,199 --> 00:13:28,826
+apenas NSData dataWithContentsOfURL.
+Isso provavelmente vai bloquear,
+
+171
+00:13:28,826 --> 00:13:33,822
+ok? Se essa URL está na rede como a foto
+do Hawaii que eu peguei na última demo,
+
+172
+00:13:33,822 --> 00:13:38,973
+ele vai bloquear. Esperando o Flickr
+responder de volta. E então eu faço
+
+173
+00:13:38,973 --> 00:13:43,811
+uma imagem a partir disso, e seto
+a imagem, seto o frame da ImageView,
+
+174
+00:13:43,811 --> 00:13:48,344
+e seto o contentSize da scrollView.
+Todo mundo está confortável com esse código?
+
+175
+00:13:48,344 --> 00:13:52,827
+Ok, essa é uma versão simples do que
+fizemos na última demo. Então, o que
+
+176
+00:13:52,827 --> 00:13:57,082
+é ruim aqui? Bom, esse dataWithContentsOfURL
+bloqueia a mainThread, ok?
+
+177
+00:13:57,082 --> 00:14:01,080
+E se eu tenho uma conexão com a internet
+lenta, o que é possível se eu estiver tipo
+
+178
+00:14:01,080 --> 00:14:05,599
+conectado pelo celular, ok, no meu telefone,
+então enquanto eu estiver esperando pelo
+
+179
+00:14:05,599 --> 00:14:10,066
+Flickr, meu telefone fica congelado, ok?
+Quero dizer, posso clicar no HomeButton e ir
+
+180
+00:14:10,066 --> 00:14:14,587
+usar outro app, mas esse app está congelado, ok?
+Porque ele está bloqueado. Então temos que
+
+181
+00:14:14,587 --> 00:14:19,110
+mover isso para outra thread. Então, como
+vamos fazer isso? Nós vamos apenas pegar esse
+
+182
+00:14:19,110 --> 00:14:22,989
+bloco inteiro de código, nós vamos criar uma
+queue. Eu vou chamar a queue de
+
+183
+00:14:22,989 --> 00:14:26,979
+"image downloader", daí eu vou apenas
+dizer dispatch_async para o downloadQueue
+
+184
+00:14:26,979 --> 00:14:32,661
+com esse block, e colocar o código ali.
+Ok? Agora, você pode ver
+
+185
+00:14:32,661 --> 00:14:37,545
+porque estamos usando essa API em C.
+É super simples e é realmente fácil de ler
+
+186
+00:14:37,545 --> 00:14:41,878
+esse código, para ver: oh, nós vamos executar
+essas cinco linhas de código em outra
+
+187
+00:14:41,878 --> 00:14:46,297
+thread. Ok? Mas tem um problema sério
+com isso. Chamadas para o UIKit não podem
+
+188
+00:14:46,297 --> 00:14:50,792
+acontecer em qualquer lugar que não seja
+a main thread, ok? E vocês podem ver que
+
+189
+00:14:50,792 --> 00:14:55,380
+essas últimas três linhas, setando a imagem
+e o frame e o contentSize da scrollView,
+
+190
+00:14:55,380 --> 00:15:00,404
+essas são chamadas pro UIKit. Então
+elas não podem acontecer em uma thread aleatória,
+
+191
+00:15:00,404 --> 00:15:05,072
+que está rodando essa queue. Todo mundo
+entende isso? Então, como vamos arrumar isso?
+
+192
+00:15:05,072 --> 00:15:09,409
+Muito simples. Nós vamos dispatchar
+esse block de volta para a main queue.
+
+193
+00:15:09,409 --> 00:15:14,150
+Ok? É por isso que queremos aquela função
+para pegar a main queue. Ela nos dá
+
+194
+00:15:14,150 --> 00:15:18,798
+a main queue. E nós dispatchamos isso
+de volta, ok? E a main queue, ela é
+
+195
+00:15:18,798 --> 00:15:23,552
+uma queue, sabe? A main thread está
+rodando em uma certa queue. E ela vai pegar
+
+196
+00:15:23,552 --> 00:15:27,907
+esse block e vai colocar na lista
+de blocks para rodar. E assim que ela
+
+197
+00:15:27,907 --> 00:15:32,191
+terminar o que ela estiver fazendo, tipo
+processando o último pequeno incremento de
+
+198
+00:15:32,191 --> 00:15:36,317
+um gesture, talvez ela vai ter tempo para
+colocar esse bloco ali e rodá-lo rapidamente.
+
+199
+00:15:36,317 --> 00:15:40,282
+Ok? E ela vai continuar processando os gestures,
+vêem o que estou dizendo? Então
+
+200
+00:15:40,282 --> 00:15:44,494
+a main queue vai processar isso assim
+que ela conseguir. É simples assim.
+
+201
+00:15:44,494 --> 00:15:48,875
+Ok? E novamente, vocês podem ver
+porque esse código é tão fácil de ler. Pegue
+
+202
+00:15:48,875 --> 00:15:53,029
+esse código, coloque em outra thread e então,
+quando você acabar, coloque isso de volta
+
+203
+00:15:53,029 --> 00:15:57,504
+na main thread para executar isso. É
+realmente fácil de ler. Sim?
+
+204
+00:15:57,504 --> 00:16:01,720
+>> [Estudante perguntando]
+
+205
+00:16:01,720 --> 00:16:07,286
+>> Ok, ótima pergunta. A pergunta que
+ele está fazendo é o que acontece
+
+206
+00:16:07,286 --> 00:16:11,246
+quando a main thread está executando
+essas três linhas:
+
+207
+00:16:11,246 --> 00:16:16,286
+self.imageView.image e image.frame e
+contentSize, enquanto a outra thread está
+
+208
+00:16:16,286 --> 00:16:21,244
+trabalhando no NSData e na UIImage.
+E a resposta é: isso nunca vai acontecer.
+
+209
+00:16:21,244 --> 00:16:27,435
+Ok? Porque esse dispatch_async, o segundo,
+que está dentro, não é chamado até
+
+210
+00:16:27,435 --> 00:16:33,126
+o NSData e o UIImage terminarem.
+Vê? Porque isso está rodando
+
+211
+00:16:33,126 --> 00:16:38,769
+em outra thread. Aí está a beleza disso.
+Todo mundo entende isso?
+
+212
+00:16:38,769 --> 00:16:45,122
+Então, é isso. É assim que-- é isso
+que é o GCD. Pergunta? Ah, aí atrás, sim?
+
+213
+00:16:45,122 --> 00:16:52,031
+>> [Estudante perguntando]
+
+
+214
+00:16:52,031 --> 00:16:59,074
+>> Outra ótima pergunta! Ele está perguntando
+o que acontece se eu--
+
+215
+00:16:59,074 --> 00:17:05,736
+eu faço isso, e disparo esse
+imageData, dataWithContentsOfURL,
+
+216
+00:17:05,736 --> 00:17:10,292
+e o usuário clica em back e ele não
+está mais interessado nisso? E vocês tem
+
+217
+00:17:10,292 --> 00:17:15,068
+que realmente se importar com esse caso.
+Quando nós dispatchamos para a main thread
+
+218
+00:17:15,068 --> 00:17:19,408
+nesse caso simples, eu provavelmente
+vou querer um if ali dizendo: se o usuário
+
+219
+00:17:19,408 --> 00:17:24,091
+ainda estiver interessado nessa imagem,
+então seta essa imageView no scrollView. Vêem
+
+220
+00:17:24,091 --> 00:17:28,316
+o que estou dizendo? E o homework de vocês
+vai dar uma dica sobre isso. Vocês deveriam
+
+221
+00:17:28,316 --> 00:17:32,781
+dar uma olhada nisso. Ok? Eu estou apenas
+mostrando essa versão bem simples mas, com certeza,
+
+222
+00:17:32,781 --> 00:17:37,133
+o caso que enquanto você está baixando coisas
+do Flickr, coisas poderiam estar acontecendo
+
+223
+00:17:37,133 --> 00:17:41,608
+por todo lugar. Você poderia pedir duas outras
+imagens nesse meio tempo. Então quando uma imagem
+
+224
+00:17:41,608 --> 00:17:46,298
+é baixada, você deve pensar: oh, é melhor eu checar
+e ter certeza que ainda faz sentido
+
+225
+00:17:46,298 --> 00:17:52,099
+fazer isso, ok? Você faz isso com um
+simples if ali para ver e-- nós vamos
+
+226
+00:17:52,099 --> 00:17:58,050
+fazer isso na demo, ok? Eu coloco isso
+na demo hoje e vocês verão, porque
+
+227
+00:17:58,050 --> 00:18:03,459
+essa é uma ótima pergunta. Ok--
+alguma outra pergunta? Sim.
+
+228
+00:18:03,459 --> 00:18:05,942
+>> [Estudante perguntando]
+
+229
+00:18:05,942 --> 00:18:11,738
+[estudante perguntando]
+>> A pergunta é: se eu já dispatchei alguma coisa,
+
+230
+00:18:11,738 --> 00:18:17,070
+eu posso pará-la? Não, você não pode pará-la,
+ok? A única forma de pará-la seria: ela poderia
+
+231
+00:18:17,070 --> 00:18:22,904
+estar em um loop ou algo assim, você poderia
+setar uma variável e checar essa variável e parar.
+
+232
+00:18:22,904 --> 00:18:27,256
+Ou quando falamos de fazer requisições na rede,
+existem modos mais complicados de apenas dizer
+
+233
+00:18:27,256 --> 00:18:31,637
+dataWithURL, onde você poderia ter timeouts,
+por exemplo, nos seus fetches. E se
+
+234
+00:18:31,637 --> 00:18:35,957
+deu um timeout, você poderia decidir se
+você iria continuar procurando ou algo assim.
+
+235
+00:18:35,957 --> 00:18:39,965
+Você também poderia receber interrupções,
+quando coisas acontecem. Existem um monte de coisas
+
+236
+00:18:39,965 --> 00:18:44,083
+mais complicadas que você pode fazer. Mas a resposta
+é: uma vez que você coloca um block na queue,
+
+237
+00:18:44,084 --> 00:18:49,481
+ele vai rodar. E ele vai rodar por inteiro.
+Então se você quiser abortar, algo dentro do seu
+
+238
+00:18:49,481 --> 00:18:53,961
+próprio código tem que olhar para algo que
+faça com que ele aborte e então ele teria que
+
+239
+00:18:53,961 --> 00:18:58,648
+simplesmente retornar, ok? Não há como. Não
+há API para, digamos, parar o block. Sim?
+
+240
+00:18:58,648 --> 00:19:03,133
+>> [Estudante perguntando]
+
+
+241
+00:19:03,133 --> 00:19:07,498
+[estudante perguntando]
+
+
+242
+00:19:07,498 --> 00:19:12,253
+[estudante perguntando]
+
+
+243
+00:19:12,253 --> 00:19:17,595
+[estudante perguntando]
+>> A pergunta é: o que acontece
+
+
+244
+00:19:17,595 --> 00:19:22,833
+se eu dispatchar um monte de blocks em
+uma queue e então trocar para outro app?
+
+245
+00:19:22,833 --> 00:19:27,870
+Ok? No iOS, o seu app, quando alguém muda
+para longe de você, você só pode rodar
+
+246
+00:19:27,870 --> 00:19:33,083
+por um pequeno tempo. Talvez 10 segundos, 15,
+você não sabe o quanto. E nesse tempo
+
+247
+00:19:33,083 --> 00:19:38,100
+essas coisas em background continuariam
+rodando, ok? Claro, quando tentar fazer
+
+248
+00:19:38,100 --> 00:19:42,132
+as coisas de UI, o UIKit sabe: oh, 
+eu não sou mais o app ativo, então algo que
+
+249
+00:19:42,132 --> 00:19:46,227
+causaria desenhar na tela ou fazer algo
+acontecer, seria meio que uma perda de tempo.
+
+250
+00:19:46,227 --> 00:19:50,396
+E se você enfilerou um monte de blocks,
+quando o user sair do app,
+
+251
+00:19:50,396 --> 00:19:54,101
+você não vai querer mais essa informação.
+Esses blocks, quando começarem a rodar,
+
+252
+00:19:54,101 --> 00:19:58,198
+deveriam provavelmente dizer: eu ainda
+sou o app ativo? E se não for,
+
+253
+00:19:58,198 --> 00:20:02,970
+não faça o que eles fariam, por exemplo.
+Certo? Mas a resposta é: você não roda após
+
+254
+00:20:02,970 --> 00:20:07,356
+cerca de 10 ou 15 ou-- indefinido. Mas
+depois de um tempo, quando alguém
+
+255
+00:20:07,356 --> 00:20:12,330
+sai do app, você não roda. Você está
+em background, você não roda. Nenhuma parte
+
+256
+00:20:12,330 --> 00:20:17,235
+de você roda. Nenhuma dessas queues. Nada
+Ok? Então é essa a resposta. Nós não falamos
+
+257
+00:20:17,235 --> 00:20:21,978
+sobre como funciona o multi-tasking
+no iOS ainda. Espero que consigamos
+
+258
+00:20:21,978 --> 00:20:26,658
+chegar nisso, mas a resposta é: você
+basicamente para de rodar depois de um tempo.
+
+259
+00:20:26,658 --> 00:20:31,162
+Ok. Outra pergunta? Sim?
+>> [Estudante perguntando]
+
+260
+00:20:31,162 --> 00:20:34,481
+>> Ok, a pergunta é: qual a relação
+entre a queue
+
+261
+00:20:34,481 --> 00:20:39,418
+e as threads? E a resposta é:
+você não sabe e você não se importa,
+
+262
+00:20:39,418 --> 00:20:44,788
+ok? Você não quer saber. Porque
+você não quer se envolver
+
+263
+00:20:44,788 --> 00:20:50,023
+com isso, ok? Tudo que você quer saber
+é que quando eu coloco um block na queue, ele
+
+264
+00:20:50,023 --> 00:20:55,093
+vai rodar não nessa thread, ok? Em algum
+tempo no futuro. Isso é tudo que você
+
+265
+00:20:55,093 --> 00:20:59,734
+precisa saber, isso é tudo que você
+quer saber? Agora, você pode gerenciar isso de
+
+266
+00:20:59,734 --> 00:21:04,108
+um modo mais detalhado? De certo modo, mas
+você não pode realmente descer no nível de dizer:
+
+267
+00:21:04,108 --> 00:21:08,315
+eu quero isso rodando nessa thread ou
+naquela thread. A idéia do GCD é gerenciar
+
+268
+00:21:08,315 --> 00:21:13,922
+essas threads para você. Ok? Isso
+responde a sua pergunta?
+
+269
+00:21:13,922 --> 00:21:19,965
+Outras perguntas? Ok. Agora que temos o GCD,
+e podemos colocar coisas em outras threads,
+
+270
+00:21:19,965 --> 00:21:25,752
+vamos falar sobre algumas coisas de UI que
+podemos fazer agora que não podíamos fazer antes.
+
+271
+00:21:25,752 --> 00:21:31,715
+Uma das coisas é atualizar a tableView. Ok?
+Essa é uma tableView que está atualizando.
+
+272
+00:21:31,715 --> 00:21:36,568
+E ela está atualizando porque ela não
+bloqueia a main thread e isso faz dela
+
+273
+00:21:36,568 --> 00:21:41,600
+bem "refrescante" (ha, ha). Vamos falar sobre
+como isso funciona. Ela te um suporte, integrado
+
+274
+00:21:41,600 --> 00:21:46,197
+a ela, UITableViewController. Estamos falando
+sobre UITableViewController, a coisa que
+
+275
+00:21:46,197 --> 00:21:50,911
+é pré-fabricada, que você arrasta no Xcode.
+Ela tem uma coisa chamada UIRefreshControl.
+
+276
+00:21:50,911 --> 00:21:55,750
+E ele se parece com isso. Você pode ter
+ou pode não ter visto isso.
+
+277
+00:21:55,750 --> 00:22:00,660
+Algumas pessoas me falam: eu nunca vi
+isso antes. Mas está se tornando mais
+
+278
+00:22:00,660 --> 00:22:05,685
+e mais comum. E a cara dela é,
+ali na esquerda, se você tem uma tableView
+
+279
+00:22:05,685 --> 00:22:10,397
+e tentar arrastar para baixo como para
+tentar ver a cell -1, certo?
+
+280
+00:22:10,397 --> 00:22:15,466
+tentar arrastar muito para baixo,
+então um pequeno círculo cinza com uma
+
+281
+00:22:15,467 --> 00:22:19,605
+seta nele vai aparecer. E na medida que você
+continua puxando para baixo, ele meio que estica
+
+282
+00:22:19,605 --> 00:22:23,553
+como se fosse feito de borracha ou algo assim.
+E eventualmente você estica tanto que ele
+
+283
+00:22:23,553 --> 00:22:27,474
+PLUP, vai voltar e vai se transformar
+no spinning circle. O spinning circle
+
+284
+00:22:27,474 --> 00:22:31,840
+animado que tenho certeza que vocês
+já viram, ok? Você tipo estica bem
+
+285
+00:22:31,840 --> 00:22:35,808
+e ele volta e quando você faz isso,
+essa pequena coisinha redonda vai chamar
+
+286
+00:22:35,808 --> 00:22:39,931
+um método, ok? É o método target-action
+dessa UIRefreshControl. E nesse
+
+287
+00:22:39,931 --> 00:22:44,064
+método target-action, você pode
+sair da thread para ir fazer alguma coisa
+
+288
+00:22:44,064 --> 00:22:48,620
+usando o GCD, ok? E quando terminar,
+você vai fazer com que o TableViewController
+
+289
+00:22:48,620 --> 00:22:52,601
+saiba. Ele vai parar o pequeno spinner
+e colocar a tableView de volta, ok?
+
+290
+00:22:52,601 --> 00:22:57,660
+Presumidamente, você vai ter carregado
+algum dado ou feito alguma coisa com a table,
+
+291
+00:22:57,660 --> 00:23:03,522
+ok? Nós vamos ver isso na demo. Como
+fazer isso. Você liga esse comportamento
+
+292
+00:23:03,522 --> 00:23:08,578
+de refresh em um TableViewController
+inspecionando o TableViewController e
+
+293
+00:23:08,578 --> 00:23:13,252
+se você olhar embaixo no seu inspector,
+você vai ver que ali diz: refreshing.
+
+294
+00:23:13,252 --> 00:23:18,156
+E ele vai estar enabled ou disabled.
+E quando você muda ele para enabled,
+
+295
+00:23:18,156 --> 00:23:22,304
+então no seu document outline, você
+verá um pequeno UIRefreshControl
+
+296
+00:23:22,304 --> 00:23:26,502
+aparecendo embaixo do TableViewController.
+Agora, perceba que não está de fato na hierarquia
+
+297
+00:23:26,502 --> 00:23:30,680
+de views. Isso porque ele não está na tela
+o tempo todo. Ele aparece apenas 
+
+298
+00:23:30,680 --> 00:23:35,646
+quando alguém arrasta bem pra baixo
+na table. (???)
+
+299
+00:23:35,646 --> 00:23:41,163
+Então fica mais pra baixo. E você
+pode pensar: da hora! eu vou apenas
+
+300
+00:23:41,163 --> 00:23:46,475
+CTRL + drag para setar um target-action,
+o que deveria funcionar, mas não funciona,
+
+301
+00:23:46,475 --> 00:23:52,265
+ok? Algum bug no Xcode, eu não sei porquê.
+Você não pode fazer isso, ok? Então
+
+302
+00:23:52,265 --> 00:23:56,336
+talvez eles tenham colocado isso para mim,
+para que eu pudesse ensinar como configurar
+
+303
+00:23:56,336 --> 00:24:00,909
+um target-action em código! Ok? Porque vocês
+só fizeram com CTRL + arrastar até agora,
+
+304
+00:24:00,909 --> 00:24:05,276
+a partir de botões e tal. Então vou ter que
+mostrar a vocês-- e é uma boa hora para
+
+305
+00:24:05,276 --> 00:24:09,431
+aprender isso. Como nós fazemos target-action,
+como nós setamos um target-action entre
+
+306
+00:24:09,431 --> 00:24:14,485
+um controle e algum target em código?
+E aqui está como seria isso.
+
+307
+00:24:14,485 --> 00:24:19,887
+No seu viewDidLoad, esse é um bom lugar
+para fazer isso, você apenas envia uma
+
+308
+00:24:19,887 --> 00:24:24,791
+mensagem para o UIRefreshControl, ok?
+O TableViewController tem uma property chamada
+
+309
+00:24:24,791 --> 00:24:29,424
+refreshControl. Ele vai retornar o
+UIRefreshControl, se o seu refreshing
+
+310
+00:24:29,424 --> 00:24:35,099
+estiver ativado, se você clicou nele
+no Xcode. UIRefreshControl herda de uma
+
+311
+00:24:35,099 --> 00:24:40,494
+classe chamada UIControl. Essa classe
+também é a superclasse de Button e Slider
+
+312
+00:24:40,494 --> 00:24:46,387
+e Switch, SegmentedControl e tem um método
+no UIControl chamado
+
+313
+00:24:46,387 --> 00:24:51,865
+addTarget:action:forControlEvent:
+e esse é o método que você usa
+
+314
+00:24:51,865 --> 00:24:56,659
+para adicionar target-action. Percebam que
+não é "set", é "add". Então é possível termos
+
+315
+00:24:56,659 --> 00:25:01,049
+um botão que quando você pressiona, ele
+envia múltiplos target-action, ok? E você
+
+316
+00:25:01,049 --> 00:25:05,367
+pode fazer isso no Xcode também. Você pode
+CTRL + arrastar para múltiplas coisas. A propósito,
+
+317
+00:25:05,367 --> 00:25:09,335
+a ordem não é garantida. Não é a ordem que
+você os adicionou, não é a ordem que você
+
+318
+00:25:09,335 --> 00:25:13,119
+CTRL + arrastou. É uma ordem aleatória,
+é tipo como, lembram-se no IBOutletCollection,
+
+319
+00:25:13,119 --> 00:25:17,397
+nós não podíamos garantir a ordem la?
+A mesma coisa se vocês tiverem
+
+320
+00:25:17,397 --> 00:25:22,191
+múltiplos target-action a partir de algo,
+ok? Bom, aqui estamos apenas adicionando um
+
+321
+00:25:22,191 --> 00:25:26,412
+e então addTarget é o objeto target, que
+aqui eu vou enviar para o próprio
+
+322
+00:25:26,412 --> 00:25:30,767
+TableViewController e action é o método
+para enviar e nós vamos usar essa
+
+323
+00:25:30,767 --> 00:25:35,457
+sintaxe @selector, que eu já falei sobre
+quando eu estava falando sobre
+
+324
+00:25:35,457 --> 00:25:39,745
+introspecção. E então para controlEvents,
+se você olhar no UIControl tem tipo
+
+325
+00:25:39,745 --> 00:25:44,758
+uma dúzia de diferentes controlEvents,
+vocês se lembram para Button,
+
+326
+00:25:44,758 --> 00:25:50,339
+o controlEvent que usamos foi Touch Up Inside.
+Ok? Esse é quando um evento de touch ocorre
+
+327
+00:25:50,339 --> 00:25:55,087
+dentro dos bounds do button. Isso é
+o que faz com que faça o seu target-action.
+
+328
+00:25:55,087 --> 00:26:00,061
+E você pode, quando você cria uma
+target-action no Xcode, um dos popups lá,
+
+329
+00:26:00,061 --> 00:26:04,669
+na janela que aparece é que você pode escolher
+que evento, que controlEvent
+
+330
+00:26:04,669 --> 00:26:10,141
+você quer. Coisas como sliders e esse
+refresh control, o único evento que
+
+331
+00:26:10,141 --> 00:26:15,285
+realmente faz sentido é o valueChanged.
+O refresh control só tem dois estados.
+
+332
+00:26:15,285 --> 00:26:20,531
+Ele tem "não puxado e rodando" ou
+"puxado e rodando".
+
+333
+00:26:20,531 --> 00:26:25,468
+É tipo on/off. Quando esse estado muda,
+é quando você quer enviar o
+
+334
+00:26:25,468 --> 00:26:31,138
+target-action. Você pode olhar no
+UIControl e descobrir essas outras coisas
+
+335
+00:26:31,138 --> 00:26:36,605
+para outros controles, como botões,
+não para UIRefreshControl.
+
+336
+00:26:36,605 --> 00:26:41,203
+Mas de qualquer modo, alguém tem
+alguma pergunta sobre isso? É assim que
+
+337
+00:26:41,203 --> 00:26:46,157
+setamos um target-action em código, 
+com addTarget. Ok? Pergunta.
+
+338
+00:26:46,157 --> 00:26:49,792
+>> [Estudante perguntando]
+>> A pergunta é: eu faria isso em
+
+339
+00:26:49,792 --> 00:26:54,660
+algum outro lugar sem ser o viewDidLoad?
+Talvez. Quero dizer, eu poderia ter um
+
+340
+00:26:54,660 --> 00:26:58,594
+target-action condicional, talvez faça sentido,
+eu posso setá-lo talvez no viewWillAppear...
+
+341
+00:26:58,594 --> 00:27:03,225
+99% do tempo você colocaria no viewDidLoad.
+Porque quando você
+
+342
+00:27:03,225 --> 00:27:07,068
+pensa sobre isso, meio que faz parte
+do seu processo de loading, setar o
+
+343
+00:27:07,068 --> 00:27:11,526
+target-action. Porque geralmente isso é
+setado no seu Storyboard. Mas... poderia ser
+
+344
+00:27:11,526 --> 00:27:15,518
+em outros lugares. Não existe um alei que diga
+que tem que ser aqui. Talvez você queira colocá-lo
+
+345
+00:27:15,518 --> 00:27:19,543
+em um setter. É, você pode querer colocá-lo
+no setter do botão ou algo assim. Se você quiser
+
+346
+00:27:19,543 --> 00:27:23,709
+por alguma razão, fazer em código. É difícil
+pensar em uma razão pela qual você não faria
+
+347
+00:27:23,709 --> 00:27:27,572
+no Xcode. Mesmo aqui, nós devíamos estar
+fazendo no Xcode. É que não funciona, ok?
+
+348
+00:27:27,572 --> 00:27:32,232
+Mas normalmente, você faz no Xcode.
+Ok, como que seria a cara desse método
+
+349
+00:27:32,232 --> 00:27:37,579
+de refresh? Ok, o refresh control, quando ele
+dispara, como que seria?
+
+350
+00:27:37,579 --> 00:27:43,351
+E a primeira coisa que vocês provavelmente
+vão querer fazer é enviar a mensagem
+
+351
+00:27:43,351 --> 00:27:49,070
+beginRefreshing para o RefreshControl. Isso
+significa: apareça e faça o lance de
+
+352
+00:27:49,070 --> 00:27:54,902
+spinning. Agora, se esse método foi chamado
+porque o usuário puxou pra baixo, ele pode
+
+353
+00:27:54,902 --> 00:27:59,241
+já estar mostrando isso. Então isso não
+faria nada. Essa linha de beginRefreshing.
+
+354
+00:27:59,241 --> 00:28:03,375
+Mas e se, tipo, sua aplicação inicia e você
+quer que ela carregue? Você pode querer
+
+355
+00:28:03,375 --> 00:28:07,495
+que essa coisa desça e comece a girar.
+Certo? Não seria legal? Então
+
+356
+00:28:07,495 --> 00:28:11,582
+o beginRefreshing vai fazer com que
+o refresh control, se ele não já estiver visível
+
+357
+00:28:11,582 --> 00:28:16,363
+e girando, ele vai ficar visível e começar
+a girar. Ok? Daí nós vamos fazer o
+
+358
+00:28:16,363 --> 00:28:22,675
+dispatch, ok? Um código jogando para
+outra thread, ok? Estou chamando de
+
+359
+00:28:22,675 --> 00:28:28,729
+table view loading queue. E  o block que
+eu vou colocar ali, a primeira parte
+
+360
+00:28:28,729 --> 00:28:34,859
+do block vai fazer o que for preciso para
+obter os dados do meu model para minha
+
+361
+00:28:34,860 --> 00:28:39,728
+TableView. Então talvez esteja fazendo um
+request no Flickr como o lance das fotos
+
+362
+00:28:39,728 --> 00:28:45,110
+do homework de vocês ou últimas fotos
+geo-referenciadas, como na demo do Shutterbug.
+
+363
+00:28:45,110 --> 00:28:50,414
+Daí, quando tiver essa informação, ok? Que está
+num block, mas num block em outra queue, daí
+
+364
+00:28:50,414 --> 00:28:55,872
+ele vai dispatchar de volta para a
+main queue, ok? E chamar reloadData, talvez,
+
+365
+00:28:55,872 --> 00:29:00,851
+na tableView ou updatear algo na tableView.
+E então ele vai dizer self.refreshControl...
+
+366
+00:29:00,851 --> 00:29:06,271
+endRefreshing. Que é...
+isso que vai fazê-lo parar de girar
+
+367
+00:29:06,271 --> 00:29:11,879
+e deslizar para fora da tela. É isso.
+Alguma pergunta sobre isso? Isso é bem legal.
+
+368
+00:29:11,879 --> 00:29:17,445
+Isso é novo no iOS 6, eu acho. É, acho 
+que no iOS 6, não no iOS 5.
+
+369
+00:29:17,445 --> 00:29:22,897
+É um controle bem legal. Certo, e sobre
+outrs lugares onde
+
+370
+00:29:22,897 --> 00:29:28,386
+você está fazendo algo em outra thread
+e você quer que o usuário saiba que
+
+371
+00:29:28,386 --> 00:29:34,221
+"eu estou trabalhando nisso para você.
+Eu estou trabalhando nisso", sabe? Dizendo constantemente.
+
+372
+00:29:34,221 --> 00:29:40,499
+Bom, você pode usar o NetworkActivityIndicator
+para indicar se o que você está fazendo
+
+373
+00:29:40,499 --> 00:29:46,672
+é na rede, ok? E você deve usar o network
+activity indicator somente quando você
+
+374
+00:29:46,672 --> 00:29:53,185
+está acessando a rede. Agora,
+a API para isso e bem ruim. Ok?
+
+375
+00:29:53,185 --> 00:29:59,597
+Porque é basicamente uma property
+em um objeto global compartilhado chamado
+
+376
+00:29:59,597 --> 00:30:06,554
+UIApplication, certo? Então, se você
+chamar esse método de classe sharedInstance,
+
+377
+00:30:06,554 --> 00:30:10,656
+talvez seja sharedApplication...
+shared alguma coisa,
+
+378
+00:30:10,656 --> 00:30:14,996
+no UIApplication, você vai obter esse
+objeto compartilhado UIApplication. Não existe
+
+379
+00:30:14,996 --> 00:30:19,206
+muita coisa nele que é interessante,
+vocês podem olhar a API se vocês quiserem.
+
+380
+00:30:19,206 --> 00:30:23,154
+Nós não vamos falar sobre isso. Mas
+existe uma property lá chamada
+
+381
+00:30:23,154 --> 00:30:27,403
+NetworkActivityIndicatorVisible. Se você
+setar isso para YES, então na statusBar
+
+382
+00:30:27,403 --> 00:30:32,047
+do seu iPhone ou iPad, você vai ver
+que tem uma pequena spinning wheel. Ela vai
+
+383
+00:30:32,047 --> 00:30:36,634
+ligar. E quando você setar para NO,
+vai desligar. Ok? Agora, porque isso
+
+384
+00:30:36,634 --> 00:30:41,247
+é ruim? Isso é ruim porque, e se você
+tiver múltipas threads acessando a rede?
+
+385
+00:30:41,247 --> 00:30:46,213
+Ok? Tenho a thread A, ela liga o
+spinning wheel, ok? Começa a executar.
+
+386
+00:30:46,213 --> 00:30:51,174
+Thread B aparece, começa a executar.
+Ela liga a spinning wheel, que já
+
+387
+00:30:51,174 --> 00:30:55,942
+está ligada. A Thread B termina,
+ela desliga a spinning wheel,
+
+388
+00:30:55,942 --> 00:31:00,714
+a thread A ainda está acessando a rede,
+mas o bagulho está desligado! Daí a thread A
+
+389
+00:31:00,714 --> 00:31:05,298
+desliga, mas ele já estava desligado. Vêem
+o problema? Em outras palavras, você tem uma
+
+390
+00:31:05,298 --> 00:31:09,787
+thread que leva mais tempo acessando a rede,
+daí uma thread menor aparece
+
+391
+00:31:09,787 --> 00:31:14,269
+enquanto a outra ainda está rodando e
+desliga, ok? Se você realmente quiser estar
+
+392
+00:31:14,269 --> 00:31:19,026
+correto no seu homework, por exemplo, você
+provavelmente vai querer algo onde mantém
+
+393
+00:31:19,026 --> 00:31:23,568
+um contador, certo? Cada vez que alguém
+liga isso, incrementa o contador. E daí
+
+394
+00:31:23,568 --> 00:31:28,056
+sempre que alguém desligar, ele decrementa
+o contador e somente quando ele volta para zero
+
+395
+00:31:28,056 --> 00:31:32,710
+é que ele realmente desliga isso. Faz
+sentido? De qualquer modo, isso é para
+
+396
+00:31:32,710 --> 00:31:37,375
+atividade de rede somente. Não use esse
+spinning wheel para dizer que está fazendo
+
+397
+00:31:37,375 --> 00:31:41,625
+alguma coisa. Isso significa que você
+está acessando a rede. Por que as pessoas
+
+398
+00:31:41,625 --> 00:31:46,184
+querem saber disso? Porque elas pagam
+pela rede. Se elas tiverem, sabe, cellular,
+
+399
+00:31:46,185 --> 00:31:49,907
+elas tem planos de dados limitados e elas
+querem ver quando tem um app que está
+
+400
+00:31:49,907 --> 00:31:53,803
+acessando a rede. E se você não ligar isso,
+provavelmente você vai ser rejeitado
+
+401
+00:31:53,803 --> 00:31:57,392
+na app store, ok? Se o seu app acessa
+a rede e não liga isso,
+
+402
+00:31:57,392 --> 00:32:01,132
+a Apple vai dizer: ei, você precisa
+deixar as pessoas saberem. E vice-versa.
+
+403
+00:32:01,132 --> 00:32:05,636
+Se ele liga todo o tempo, quando não está
+de fato acessando a rede, então
+
+404
+00:32:05,636 --> 00:32:10,364
+eles vão reclamar por isso e dizer:
+er, você não pode usar para isso. Certo,
+
+405
+00:32:10,364 --> 00:32:15,456
+e se nós tivermos algo a mais acontecendo,
+fora a rede e nós queremos avisar
+
+406
+00:32:15,456 --> 00:32:20,429
+o usuário? Nós podemos usar o que chamamos
+de UIActivityIndicator. E eu vou mostrar
+
+407
+00:32:20,429 --> 00:32:25,429
+na demo. O UIActivityIndicatorView é somente
+uma view que tem uma spinning wheel,
+
+408
+00:32:25,429 --> 00:32:31,325
+ok? E ele tem alguams APIs para você
+iniciar a animação e você parar
+
+409
+00:32:31,325 --> 00:32:37,628
+a animação, meio parecido com o refresh
+control. beginRefreshing e endRefreshing.
+
+410
+00:32:37,628 --> 00:32:43,132
+E também tem uma property bem legal
+que vocês vão querer setar, chamada
+
+411
+00:32:43,132 --> 00:32:47,991
+hidesWhenStopped. Você pode setá-la
+no Xcode e nós vamos fazer isso na demo.
+
+412
+00:32:47,991 --> 00:32:52,055
+E o que isso faz é, quando parar de girar,
+esconda. Então você pode simplesmente
+
+413
+00:32:52,055 --> 00:32:56,339
+colocar na sua view, bem na frente,
+na frente de tudo que estiver em background,
+
+414
+00:32:56,339 --> 00:33:00,398
+como, digamos, sua imageView, e começar a
+animar e ele vai aparecer e começar a
+
+415
+00:33:00,398 --> 00:33:04,812
+girar e então, assim que você pará-lo,
+ele irá desaparecer. E, presumidamente, as
+
+416
+00:33:04,812 --> 00:33:10,254
+coisas atrás vão ser desenhadas ou algo
+assim, ok? Vocês vão ver isso na
+
+417
+00:33:10,254 --> 00:33:16,997
+demo aqui, e vai fazer bastante sentido.
+Um carinha bem simples. Certo.
+
+418
+00:33:16,997 --> 00:33:23,531
+Eu vou fazer isso usando o Shutterbug.
+Esse é o mesmo app que
+
+419
+00:33:23,531 --> 00:33:29,058
+nós terminamos na aula passada. Shutterbug
+universal. Uma coisa que eu vou fazer
+
+420
+00:33:29,058 --> 00:33:33,545
+é: eu vou fazer isso no iPhone hoje,
+no simulador. Mas todas as coisas
+
+421
+00:33:33,545 --> 00:33:37,766
+que eu estou fazendo, se eu mexer em um
+Storyboard, eu precisaria fazer em ambos
+
+422
+00:33:37,766 --> 00:33:42,615
+os Storyboards. Talvez eu faça em ambos
+os Storyboards, na verdade. Sabe,
+
+423
+00:33:42,615 --> 00:33:46,711
+é difícil de ver quando eu rodo a versão
+de iPad, porque o simulador, essa e uma tela
+
+424
+00:33:46,711 --> 00:33:51,121
+de pouquíssima resolução e o simulador iria
+ter que scrollar e seria difícil de ver.
+
+425
+00:33:51,121 --> 00:33:55,168
+Sim, pergunta? A pergunta é:
+se eu tiver alguma estrutura de dados que
+
+426
+00:33:55,168 --> 00:33:59,137
+mantém o contador do NetworkActivityIndicator
+sendo ligado, eu tenho que ter cuidado,
+
+427
+00:33:59,137 --> 00:34:02,719
+ele precisa ser atomic. Ok? Porque ele
+vai ser, sabe, acessado
+
+428
+00:34:02,719 --> 00:34:06,768
+por várias threads. E a resposta é:
+esse é um caso onde você pode querer
+
+429
+00:34:06,768 --> 00:34:12,335
+tem um objeto com uma propriedade que
+não seja nonatomic, ok? E incrementar
+
+430
+00:34:12,335 --> 00:34:16,837
+essa propriedade, por exemplo... vê o que
+eu estou dizendo? Esse é um dos pouquíssimos
+
+431
+00:34:16,837 --> 00:34:22,737
+exemplos onde você pode querer
+uma property atomic. É uma boa pergunta.
+
+432
+00:34:22,737 --> 00:34:28,773
+Ok, vamos direto ao nosso imageViewController
+bem aqui e no nosso resetImage
+
+433
+00:34:28,773 --> 00:34:34,381
+vamos fazer isso funcionar
+em uma thread. Isso é uma demo bem simples,
+
+434
+00:34:34,381 --> 00:34:40,361
+mal tem o que ver aqui. Eu vou apenas
+criar uma queue.
+
+435
+00:34:40,361 --> 00:34:48,480
+[ditando código]
+
+
+436
+00:34:48,480 --> 00:34:54,833
+[ditando código]
+
+437
+00:34:54,833 --> 00:35:02,334
+[ditando código]
+vamos chamar nossa queue de "image fetcher",
+
+438
+00:35:02,334 --> 00:35:08,981
+porque é isso que ela faz. É uma queue
+serial, então passamos NULL.
+
+439
+00:35:08,981 --> 00:35:15,778
+e então apenas fazemos dispatch_async
+nessa queue. O bloco de código a seguir.
+
+440
+00:35:15,778 --> 00:35:22,844
+...
+
+
+441
+00:35:22,844 --> 00:35:28,843
+EntÃo eu vou pegar esse código que
+nós temos e eu vou colocá-lo
+
+442
+00:35:28,843 --> 00:35:34,464
+bem aqui, ok? E isso é da hora,
+como sabemos, exceto pelo fato de que
+
+443
+00:35:34,464 --> 00:35:41,018
+isso não pode estar rodando
+em outra thread. Então temos que dispatchar isso
+
+444
+00:35:41,018 --> 00:35:45,902
+de volta pra main queue. E eu vou fazer
+o que astutamente me perguntaram que é
+
+445
+00:35:45,902 --> 00:35:50,934
+e se isso demorar 10 segundos e quando ele
+voltar nós já tivermos saído e clicamos
+
+446
+00:35:50,934 --> 00:35:55,734
+em outras fotos, etc. Então eu vou
+dizer aqui: se a imagem...
+
+447
+00:35:55,734 --> 00:36:01,506
+se nós pegamos uma imagem. Aliás, vamos
+fazer aqui. Eu vou dizer aqui: se a URL
+
+448
+00:36:01,506 --> 00:36:10,186
+que nós estamos mostrando no nosso
+imageController é igual a URL da imagem que
+
+449
+00:36:10,186 --> 00:36:18,634
+nós fizemos o request, que nós vamos setar
+em um segundo aqui. Então faça isso. Então eu
+
+450
+00:36:18,634 --> 00:36:31,361
+vou dispatchar. Ok?
+[ditando código]
+
+451
+00:36:31,361 --> 00:36:42,306
+Isso aqui, deleto aqui. Então essa
+imageURL aqui é apenas uma variável local
+
+452
+00:36:42,306 --> 00:36:48,403
+que eu quero que seja a URL da imagem
+que nós fomos buscar, ok? E eu vou apenas
+
+453
+00:36:48,403 --> 00:36:55,410
+setar isso como uma variável local
+igual a self.imageURL. Ok? Então aqui estou usando
+
+454
+00:36:55,410 --> 00:37:02,090
+o negócio que blocks me permite usar
+variáveis locais dentro do block. Ok?
+
+455
+00:37:02,090 --> 00:37:08,593
+Todo mundo entende o que fiz aqui?
+As vezes é tão simples que as pessoas ficam:
+
+456
+00:37:08,593 --> 00:37:15,031
+ahn, pode ser tão simples assim?
+E é, certo? Essa é a imageURL como ela existia
+
+457
+00:37:15,031 --> 00:37:21,274
+antes de dispatcharmos. Agora,
+nós estamos checando novamente para ver se
+
+458
+00:37:21,274 --> 00:37:26,604
+self.imageURL mudou enquanto nós estávamos
+fora, ok? E se for igual, nós vamos dispatchar
+
+459
+00:37:26,604 --> 00:37:31,998
+na main queue, caso contrário vamos apenas
+ignorar os resultados. Sim?
+
+460
+00:37:31,998 --> 00:37:36,936
+>> Ok, a pergunta é porque não temos
+que colocar o __block aqui, ok?
+
+461
+00:37:36,936 --> 00:37:41,511
+E a resposta é porque nós não estamos
+escrevendo nela, ok? Como estamos apenas lendo,
+
+462
+00:37:41,511 --> 00:37:47,933
+nós estamos apenas olhando, nós não precisamos
+colocar o __block. Boa pergunta. Ok, é isso.
+
+463
+00:37:47,933 --> 00:37:54,099
+Sim, pergunta?
+>> [Estudante perguntando]
+
+464
+00:37:54,099 --> 00:38:00,350
+[estudante perguntando]
+
+465
+00:38:00,350 --> 00:38:04,581
+>> Sabe, eu não estou copiando a URL
+ou algo assim aqui. Eu estou apenas pegando
+
+466
+00:38:04,581 --> 00:38:08,439
+o ponteiro. O ponteiro para ela. Estou apontando
+para a mesma cosia. Se alguém vier depois e
+
+467
+00:38:08,439 --> 00:38:12,201
+chamar o setter do self.imageURL e setar
+esse ponteiro para outra coisa, eu ainda vou
+
+468
+00:38:12,201 --> 00:38:15,964
+ter o ponteiro antigo. Certo? E aquilo
+não será mais aquele que nós estamos
+
+469
+00:38:15,964 --> 00:38:20,401
+interessados, porque eles setaram a imageURL
+para outra coisa, certo? Agora, outra coisa
+
+470
+00:38:20,401 --> 00:38:25,351
+aqui é: o modo como o iPhone funciona,
+ele está constantemente criando um novo
+
+471
+00:38:25,351 --> 00:38:30,246
+ImageViewController cada vez que nós segueamos.
+Então isso nunca nem vai acontecer.
+
+472
+00:38:30,246 --> 00:38:35,264
+Ok? O que vai acontecer é que toda vez
+que nós voltarmos desse negócio,
+
+473
+00:38:35,264 --> 00:38:40,268
+pode ser que nosso viewController
+nem está mais lá, ok?
+
+474
+00:38:40,268 --> 00:38:46,175
+Ele foi... ninguém está apontando pra ele, ok?
+Porque nós voltamos e depois fomos
+
+475
+00:38:46,175 --> 00:38:52,727
+para um novo ImageViewController, então
+ele se foi. Então o que vai acontecer nesse
+
+476
+00:38:52,727 --> 00:38:58,721
+caso? Bom, nesse caso nós. Esse é
+o único no mundo que vai ter um strong pointer
+
+477
+00:38:58,721 --> 00:39:03,927
+para self. Porque eu falei para vocês
+que blocks mantém strong pointers para
+
+478
+00:39:03,927 --> 00:39:08,978
+qualquer objeto que é usado dentro deles.
+E nesse caso nós estamos usando o self
+
+479
+00:39:08,978 --> 00:39:14,302
+dentro do nosso block. Então ele vai manter
+o self vivo. Então quando nós voltarmos
+
+480
+00:39:14,302 --> 00:39:19,556
+para cá, outra coisa que poderíamos dizer é
+"if self.imageURL igual a imageURL", bom,
+
+481
+00:39:19,556 --> 00:39:24,588
+nós podemos apenas deixar assim, na verdade.
+Porque o que vai acontecer aqui é:
+
+482
+00:39:24,588 --> 00:39:29,226
+esse scrollView e imageView, eles estão
+no nosso self.view. É um pouco de perda
+
+483
+00:39:29,226 --> 00:39:33,867
+de tempo fazer isso, porque assim que esse block
+acabar, assim que esse block bem aqui
+
+484
+00:39:33,867 --> 00:39:38,347
+terminar, esse viewController
+vai ser liberado da heap.
+
+485
+00:39:38,347 --> 00:39:42,808
+Porque esse block era o último cara
+que tinha um ponteiro strong para ele.
+
+486
+00:39:42,808 --> 00:39:46,918
+Isso faz sentido? Então estamos tipo
+perdendo um pouco do nosso tempo aqui, mas
+
+487
+00:39:46,918 --> 00:39:50,804
+o UIKit é bem esperto, isso aqui não vai
+fazer nada de fato se esse viewController
+
+488
+00:39:50,804 --> 00:39:55,539
+nem estiver na tela. Quero dizer, isso vai
+setar algumas coisas, mas não vai redesenhar
+
+489
+00:39:55,539 --> 00:40:00,291
+ou causar algum trabalho custoso,
+então na verdade não está nos custando muito
+
+490
+00:40:00,291 --> 00:40:04,683
+fazer isso, mesmo que nosso viewController
+vá ser liberado assim que
+
+491
+00:40:04,683 --> 00:40:10,194
+esse block for liberado. Todo mundo
+entende isso? Alguma pergunta sobre isso?
+
+492
+00:40:10,194 --> 00:40:16,615
+Ok. Ótimo. Ok, então vamos colocar um
+sleep aqui. NSThread... Eu vou colocar um
+
+493
+00:40:16,615 --> 00:40:20,626
+sleep bem aqui. Sleep por dois segundos.
+Então aqui eu vou simular esse
+
+494
+00:40:20,626 --> 00:40:26,375
+initWithContentsOfURL demorando um tempão.
+Ok? Agora quando eu clico, ele é segueado
+
+495
+00:40:26,375 --> 00:40:33,524
+bem na hora, mas ainda demora um tempão.
+Demora dois segundos para acontecer, certo?
+
+496
+00:40:33,524 --> 00:40:39,482
+Agora, isso é meio que uma UI ruim porque
+eu cliquei aqui e essa grande tela branca
+
+497
+00:40:39,482 --> 00:40:45,630
+aparece aqui e o usuário fica tipo: o que está
+acontecendo? Essa coisa, uma UI grande e branca.
+
+498
+00:40:45,630 --> 00:40:50,099
+Embora minha UI não estivesse bloqueada, olhem.
+Eu posso voltar e ir clicar em outro.
+
+499
+00:40:50,099 --> 00:40:54,393
+Vêe? Eu nunca fico bloqueado, porque eu
+movi aquele lance pra fora da main queue.
+
+500
+00:40:54,393 --> 00:40:58,640
+Mas eu ainda tenho uma UI ruim, porque
+eu tenho essa grande tela em branco. Então
+
+501
+00:40:58,640 --> 00:41:03,132
+o que eu quero fazer é o spinning wheel, ok?
+Como eu vou colocar o spinning wheel ali?
+
+502
+00:41:03,132 --> 00:41:07,558
+Nós vamos usar o UIActivityIndicatorView.
+Vamos dar uma olhada nisso. Eu vou
+
+503
+00:41:07,558 --> 00:41:14,079
+voltar no meu Storyboard aqui no meu iPhone.
+Aqui está a imageView e se eu for
+
+504
+00:41:14,079 --> 00:41:20,425
+aqui embaixo, vocês verão esse carinha.
+ActivityIndicatorView.
+
+505
+00:41:20,425 --> 00:41:26,377
+Vêem isso? E eu posso arrastá-lo. Agora
+se eu arrastá-lo e tentar colocar no meio
+
+506
+00:41:26,377 --> 00:41:30,949
+da minha view, alguma coisa ruim vai
+acontecer, ok? Vamos tentar. O que aconteceu
+
+507
+00:41:30,949 --> 00:41:35,130
+ali? Parece que tudo está bom.
+Eu tenho um UIActivityIndicatorView aqui.
+
+508
+00:41:35,130 --> 00:41:40,230
+Eu poderia setar o style para, talvez,
+ser cinza. Eu tenho esse belo
+
+509
+00:41:40,230 --> 00:41:44,719
+hidesWhenStopped que eu posso ligar, que vocês
+vão definitivamente querer ligar, mas tem
+
+510
+00:41:44,719 --> 00:41:49,926
+um problema. E o problema é: se olharmos
+no document outline, ele colocou esse
+
+511
+00:41:49,926 --> 00:41:54,583
+indicatorView cinza na ScrollView, ok?
+O que eu não quero. Eu não quero essa coisa
+
+512
+00:41:54,583 --> 00:41:59,315
+dentro da ScrollView. Por uma razão:
+quando eu carrego uma imagem, eu seto o
+
+513
+00:41:59,315 --> 00:42:04,294
+contentArea da scrollView para 0,0.
+Ok? Então nem vai ser visível, 
+
+514
+00:42:04,294 --> 00:42:08,974
+mas também eu não quero ele scrollando
+por ai, mesmo se esse não fosse o caso. Então
+
+515
+00:42:08,974 --> 00:42:13,819
+eu quero essa coisa para ser um irmão
+do scrollView, certo? Ambos serem subviews
+
+516
+00:42:13,819 --> 00:42:18,963
+diretas de self.view. E você pode fazer
+isso no document outline bem facilmente.
+
+517
+00:42:18,963 --> 00:42:23,422
+Você apenas o pega, certo? E você pode movê-lo
+para que ele seja um irmão da scrollView,
+
+518
+00:42:23,422 --> 00:42:28,162
+ok? Então agora ele está aqui. Ele continua
+centralizado aqui, mas é um irmão
+
+519
+00:42:28,162 --> 00:42:33,214
+dela. Não é uma subview dela.
+Faz sentido? Vocês vão querer fazer isso.
+
+520
+00:42:33,214 --> 00:42:38,521
+(??) no seu homework, mas vocês vão
+querer fazer isso. Certo, então agora eu preciso
+
+521
+00:42:38,521 --> 00:42:43,281
+de um outlet para essa coisa, ok? Eu vou
+conectar um outlet nisso. Então eu vou
+
+522
+00:42:43,281 --> 00:42:48,550
+pegar meu imageViewController aqui.
+(...)
+
+523
+00:42:48,550 --> 00:42:54,040
+(...)
+
+
+524
+00:42:54,040 --> 00:42:58,443
+Ok, eu vou apenas CTRL + arrastar
+para criar um outlet
+
+525
+00:42:58,443 --> 00:43:02,919
+para essa coisa. Oops
+(...)
+
+526
+00:43:02,919 --> 00:43:07,661
+É meio difícil de fazer isso. E aqui eu coloquei
+embaixo da scrollView eu poderia colocar
+
+527
+00:43:07,661 --> 00:43:12,718
+mais pra baixo, ou no em cima, etc.
+Mas aqui está um modo bom de fazer isso. Apenas
+
+528
+00:43:12,718 --> 00:43:17,145
+CTRL + arrastar do document outline.
+Quando é difícil de achar algo,
+
+529
+00:43:17,145 --> 00:43:22,006
+CTRL + arrastar. Na verdade vou mostrar a vocês
+outro coisa que é bom de fazer aqui.
+
+530
+00:43:22,006 --> 00:43:26,476
+Deixe-me conectar aqui primeiro. Vamos chamar
+de spinner. É o meu spinner. Eu gosto de chamar
+
+531
+00:43:26,476 --> 00:43:30,802
+de spinner. O que acontece quando você
+tenta clicar em alguma coisa aqui e tem
+
+532
+00:43:30,802 --> 00:43:35,386
+múltiplas coisas aqui. Tem o Activity Indicator,
+tem o Scroll View,
+
+533
+00:43:35,386 --> 00:43:40,409
+tem algo atrás. Você pode na verdade
+segurar o CTRL e Shift ao mesmo tempo
+
+534
+00:43:40,409 --> 00:43:46,188
+e clicar (!!!!!). CTRL + Shift + clicar.
+
+535
+00:43:46,188 --> 00:43:51,756
+>> Eu sei... eu deveria... a pergunta é:
+por que eu não falei antes? Eu deveria
+
+536
+00:43:51,756 --> 00:43:58,093
+ter dito, mas vocês não estavam construindo
+hierarquias de view nessa profundidade até agora,
+
+537
+00:43:58,093 --> 00:44:02,578
+mas vocês podem ver aqui que eles deixam você
+selecionar o controller ou vocês podem selecionar
+
+538
+00:44:02,578 --> 00:44:07,264
+self.view ou poderiam selecionam ambos as subviews
+do self.view aqui, vêem? Desculpem sobre isso.
+
+539
+00:44:07,264 --> 00:44:12,140
+Por não ter mostrado isso antes. Então CTRL + Shift
+enquanto clica. De qualquer modo, eu tenho
+
+540
+00:44:12,140 --> 00:44:18,002
+meu spinner aqui. Vamos seguir e usar
+o spinner. De volta ao Controller. Certo, aqui estou
+
+541
+00:44:18,002 --> 00:44:24,122
+devolta no Controller, onde eu acabei de adicionar
+o spinner. Como eu seto o spinner para
+
+542
+00:44:24,122 --> 00:44:29,619
+funcionar? Super simples. Eu vou aqui em
+resetImage, eu vou dizer
+
+543
+00:44:29,619 --> 00:44:35,229
+self.spinner startAnimating e então aqui
+embaixo eu tenho que parar de animar, mas temos
+
+544
+00:44:35,229 --> 00:44:42,671
+que ser cuidadosos aqui. Porque nós não
+fazemos o update na scrollView se não tiver
+
+545
+00:44:42,671 --> 00:44:49,659
+imagem, como se a imagem volou nil. Era uma
+URL ruim ou algo assim. Entretanto, nós precisamos
+
+546
+00:44:49,659 --> 00:44:56,102
+parar o spinner mesmo nesse caso.
+Então eu vou colocar isso fora
+
+547
+00:44:56,102 --> 00:45:02,778
+desse if. stopAnimating. Oops.
+Ok? É isso. Vamos rodar.
+
+548
+00:45:02,778 --> 00:45:08,584
+Spinner, bem fácil de fazer. Ok? Então
+agora quando clicamos, nós temos o pequeno
+
+549
+00:45:08,584 --> 00:45:15,164
+spinner e assim que a imagem vem,
+ele para de animar e automaticamente
+
+550
+00:45:15,164 --> 00:45:21,270
+ele some quando pára, porque eu setei
+aquele hidesWhenStopped. Então agora, se
+
+551
+00:45:21,270 --> 00:45:27,651
+eu clicar back e voltar e finalmente
+quando eu parar de clicar, ele carrega
+
+552
+00:45:27,651 --> 00:45:33,452
+e pára. Ok? Alguma pergunta sobre isso?
+Apenas para lembrá-los do que eu estou falando
+
+553
+00:45:33,452 --> 00:45:38,662
+sobre esse hidesWhenStopped, que é essa
+coisa bem aqui. Eu estou inspecionando o
+
+554
+00:45:38,662 --> 00:45:44,092
+Activity Indicator, esse carinha bem aqui.
+HidesWhenStopped. Ok? Certo, então
+
+555
+00:45:44,092 --> 00:45:49,811
+é isso. E sobre o pequeno NetworkActivityIndicator
+lá em cima na Status Bar? Ok?
+
+556
+00:45:49,811 --> 00:45:54,471
+Eu vou ligá-lo de um jeito bem ruim.
+Na verdade, nós vamos
+
+557
+00:45:54,471 --> 00:45:58,574
+pular isso, por causa do tempo aqui. Mas
+tudo que vocês precisariam fazer seria
+
+558
+00:45:58,574 --> 00:46:03,047
+vir aqui e dizer... vamos fazer vai...
+UIApplication sharedApplication.
+
+559
+00:46:03,047 --> 00:46:09,120
+(???)
+networkActivity... é... ruim.
+
+560
+00:46:09,120 --> 00:46:16,450
+Ruim. Ok e então bem aqui, NO. E percebam
+que eu não coloquei no outro lado desse aqui,
+
+561
+00:46:16,450 --> 00:46:23,988
+porque uma vez que eu cheguei aqui,
+agora eu não estou mais na rede. Ok, agora
+
+562
+00:46:23,988 --> 00:46:31,143
+nós rodamos isso. E vocês verão aqui em cima.
+Então tem aquele delay de
+
+563
+00:46:31,143 --> 00:46:37,583
+dois segundos. Isso foi a thread
+sleeping e então nós fomos de fato
+
+564
+00:46:37,583 --> 00:46:44,148
+para a rede. Certo, eu tenho aquele falso...
+eu estou sleeping na thread, agora eu acesso
+
+565
+00:46:44,148 --> 00:46:50,309
+a rede. Faz sentido? Ok, vamos fazer
+aquele RefreshControl. Ok, tudo isso--
+
+566
+00:46:50,309 --> 00:46:55,130
+eu tenho que fazer isso no Storyboard
+do iPad também. Eu tenho que arrastar
+
+567
+00:46:55,130 --> 00:47:00,318
+o spinner aqui e CTRL + arrastar também.
+Percebam que eu escrevi meu código aqui
+
+568
+00:47:00,318 --> 00:47:05,252
+que se o Spinner não estiver setado, ou seja,
+se isso estiver desconectado, essa view
+
+569
+00:47:05,252 --> 00:47:09,715
+ainda vai funcionar bem. Porque isso vai
+ser nil, isso não vai fazer nada,
+
+570
+00:47:09,715 --> 00:47:14,122
+isso vai ser nil, isso não vai
+fazer nada, ok? E é comum escrevermos
+
+571
+00:47:14,122 --> 00:47:18,152
+view controllers onde se um certo elemento
+de UI não está linkado, ele funciona, ok?
+
+572
+00:47:18,152 --> 00:47:22,235
+Você pode não ter essa feature,
+mas funciona. Como em... nesse aqui
+
+573
+00:47:22,235 --> 00:47:27,245
+por exemplo, o pequeno toolbarItem,
+certo? Que aparecia no título. Se
+
+574
+00:47:27,245 --> 00:47:31,340
+você não CTRL + arrastar para um
+toolbarItem, você não tem o título
+
+575
+00:47:31,340 --> 00:47:36,131
+naquela coisa. Mas continua funcionando.
+O imageController ainda vai mostrar
+
+576
+00:47:36,131 --> 00:47:41,323
+uma imagem, você apenas não vai ter o título.
+Certo, então RefreshControl. Vamos fazer
+
+577
+00:47:41,323 --> 00:47:46,182
+para iPhone. Para isso, nós voltamos aqui
+para nossa TableView que está bem aqui.
+
+578
+00:47:46,182 --> 00:47:50,631
+Aqui está nosso TableViewController.
+Estou selecionando o controller. Se eu
+
+579
+00:47:50,631 --> 00:47:55,376
+CTRL + Shift + clicar nele, eu poderia fazer isso.
+Estou sendo palhacitos agora, eu sei.
+
+580
+00:47:55,376 --> 00:48:00,098
+E se nós formos para o inspector
+da TableViewController aqui, tem que ser
+
+581
+00:48:00,098 --> 00:48:05,288
+o seu inspector, refreshing está desligado.
+Então eu vou ligá-lo. E assim que eu ligo,
+
+582
+00:48:05,288 --> 00:48:12,416
+se nós olharmos no document outline,
+vocês verão para a tableView,
+
+583
+00:48:12,416 --> 00:48:18,815
+essa coisa aconteceu. Refresh Control.
+E, novamente, adoraria apenas CTRL + arrastar
+
+584
+00:48:18,815 --> 00:48:23,355
+isso no meu código mas eu não consigo
+fazer isso. Então vamos voltar e colocar
+
+585
+00:48:23,355 --> 00:48:28,021
+esse código aqui. Está tudo no top level
+aqui, então vamos no nosso
+
+586
+00:48:28,021 --> 00:48:32,927
+HawaiiImageController. E vocês poderiam
+perguntar: porque eu estou colocando
+
+587
+00:48:32,927 --> 00:48:38,174
+isso no HawaiiImageController? Ops, desculpem,
+Não esse, no LatersFlickrPhotos.
+
+588
+00:48:38,174 --> 00:48:43,456
+Por que estamos colocando aqui e não
+um nível abaixo no FlickrPhotoTVC?
+
+589
+00:48:43,456 --> 00:48:48,836
+Porque daí poderia ser reusando. E a resposta
+é que o RefreshControl pela sua natureza
+
+590
+00:48:48,836 --> 00:48:53,946
+está recarregando o model. E isso está
+acontecendo nesse nível. O model está
+
+591
+00:48:53,946 --> 00:48:59,522
+setado em outro nível. É aqui onde
+o model é realmente obtido. E é isso
+
+592
+00:48:59,522 --> 00:49:05,236
+que o Refresh Control está fazendo.
+Ele está obtendo o mdeo e então o setando.
+
+593
+00:49:05,236 --> 00:49:11,245
+Ok? Então agora, como vamos fazer isso aqui?
+Eu vou ter um pequeno método aqui
+
+594
+00:49:11,245 --> 00:49:19,022
+chamado loadLatestPhotosFromFlickr.
+Vamos colocar aqui embaixo.
+
+595
+00:49:19,022 --> 00:49:27,955
+Ok? Vamos carregar as últimas fotos
+do Flickr aqui. Mesma coisa que
+
+596
+00:49:27,955 --> 00:49:36,337
+estávamos fazendo antes. Mas agora
+nós vamos dizer self.refreshControl
+
+597
+00:49:36,337 --> 00:49:43,669
+beginRefreshing. Então nós vamos criar
+uma dispatch_queue para fazer isso.
+
+598
+00:49:43,669 --> 00:49:52,178
+Vamos chamar isso de... como vamos chamar?
+loaderQ = dispatch_queue_create...
+
+599
+00:49:52,179 --> 00:49:59,041
+vou chamar de "flicker latest loader" e NULL.
+Então temos a queue, então vamos apenas
+
+600
+00:49:59,041 --> 00:50:06,270
+fazer o dispatch_async nela. loaderQ, 
+um block. E dentro do block nós vamos
+
+601
+00:50:06,270 --> 00:50:13,288
+obviamente fazer isso, ok? E o sleep
+que eu coloquei ali vai ajudar com isso.
+
+602
+00:50:13,288 --> 00:50:20,313
+E então eu vou mudar isso para, digamos,
+NSArray *latestPhotos, porque eu
+
+603
+00:50:20,313 --> 00:50:28,051
+não posso dizer "self.photos = " ali,
+porque isso vai chamar o UIKit e essa
+
+604
+00:50:28,051 --> 00:50:34,884
+não é a main thread. Então, ao invés disso,
+eu tenho que dispatchar isso de volta
+
+605
+00:50:34,884 --> 00:50:42,777
+para a main thread. Ok? Block novamente,
+ponto e vírgula... E eu vou dizer
+
+606
+00:50:42,777 --> 00:50:50,728
+self.photos = latestPhotos. Novamente,
+estou usando uma variável local
+
+607
+00:50:50,728 --> 00:50:57,251
+dentro de um block. Ok? Funcionou bem.
+E então, claro, eu preciso ter o refreshControl
+
+608
+00:50:57,251 --> 00:51:03,804
+endRefreshing. Ok? É isso. E finalmente,
+nós precisamos setar o target-action.
+
+609
+00:51:03,804 --> 00:51:11,567
+Vai ser apenas
+[ditando código]
+
+610
+00:51:11,567 --> 00:51:20,299
+a action é loadLatestPhotosFromFlickr.
+O seu control event é UIControlEventValueChanged.
+
+611
+00:51:20,299 --> 00:51:28,688
+Vamos deixar mais legível...
+
+612
+00:51:28,688 --> 00:51:36,153
+(...)
+Ok? Alguma pergunta sobre isso?
+
+613
+00:51:36,153 --> 00:51:43,878
+Vamos ver se funciona. Aqui está.
+Ele automaticamente... ele já
+
+614
+00:51:43,878 --> 00:51:50,614
+está funcionando. Ele chamou essa coisa,
+eu fiz demorar um pouco colocando
+
+615
+00:51:50,614 --> 00:51:56,463
+um sleep ali. Aqui está. É assim que
+funciona: se eu arrastar para baixo, vêem que
+
+616
+00:51:56,463 --> 00:52:02,385
+essa coisa aparece e se eu continuar arrastando
+iiiiiiiiiá! Ok? Agora vai fazer o reload.
+
+617
+00:52:02,385 --> 00:52:07,768
+E aqui vamos nós. O Flickr só muda a cada
+15 minutos, então vocês não vão ver nenhuma
+
+618
+00:52:07,768 --> 00:52:12,733
+diferença, mas. De qualquer modo. Ok?
+Alguma pergunta sobre esse RefeshControl?
+
+619
+00:52:12,733 --> 00:52:17,153
+E novamente, nós provavelmente iríamos querer
+colocar o negócio de network activity por aqui
+
+620
+00:52:17,153 --> 00:52:21,525
+também. Porque isso acessa a rede.
+Na verdade, vocês poderiam argumentar
+
+621
+00:52:21,525 --> 00:52:26,237
+que, que esse negócio de network activity
+deveria estar no FlickrFetcher, certo?
+
+622
+00:52:26,237 --> 00:52:31,924
+FlickrFetcher.m. E vocês podem colocá-lo
+ali se você quiser. Aquele código do
+
+623
+00:52:31,924 --> 00:52:37,472
+FlickrFetcher, vocês podem modificá-lo
+se vocês... por qualquer razão que vocês
+
+624
+00:52:37,472 --> 00:52:42,715
+acharem que precisam. Perguntas?
+Começando por aqui.
+
+625
+00:52:42,715 --> 00:52:49,365
+>> A pergunta é: quando eu adiciono o
+RefreshControl clicando nessa coisa aqui...
+
+626
+00:52:49,366 --> 00:52:56,490
+onde é? Quando eu mudo isso para enabled,
+ele adiciona um outlet?
+
+627
+00:52:56,490 --> 00:53:02,506
+Ele seta um outlet, sim. O outlet
+self.refreshControl que está no
+
+628
+00:53:02,506 --> 00:53:09,039
+UITableViewController, é setado.
+É público ou privado? É público.
+
+629
+00:53:09,039 --> 00:53:14,799
+Está no UITabeViewContrller. É público.
+Pergunta?
+
+630
+00:53:14,799 --> 00:53:21,221
+>> [Estudante perguntando]
+>> Absolutamente. A pergunta é: eu poderia
+
+631
+00:53:21,221 --> 00:53:27,095
+colocar esse método, ao invés de colocá-lo aqui,
+no latersFlickrPhotos, eu poderia
+
+632
+00:53:27,095 --> 00:53:32,442
+ter colocado na superclasse que é
+esse FlickrPhoto aqui, fazendo com que isso
+
+633
+00:53:32,442 --> 00:53:37,548
+que é a parte de carregamento ficar na
+superclasse, talvez abstrato na superclasse.
+
+634
+00:53:37,548 --> 00:53:42,742
+Absolutamente, você poderia ter feito isso.
+Na verdade, pprovavelmente seria bom fazer isso,
+
+635
+00:53:42,742 --> 00:53:47,064
+eu acho. Seria bom. Sabe, é meio...
+é tipo um
+
+636
+00:53:47,064 --> 00:53:51,993
+design tradeoff que tem prós e contras.
+Poderiam ter pessoas aqui argumentando que
+
+637
+00:53:51,993 --> 00:53:56,341
+na superclasse você deveria apenas setar o
+seu model e é isso. Você não deveria ter
+
+638
+00:53:56,341 --> 00:54:00,299
+esse negócio de carregar ali. Mas podem ter
+outras pessoas dizendo: oh, se é comum
+
+639
+00:54:00,299 --> 00:54:03,999
+carregar o model, então por que não fazer
+de um modo com que esse código seja
+
+640
+00:54:03,999 --> 00:54:07,987
+compartilhado. Eu provalvemente concordaria
+com o último. Mas essa é uma boa observação.
+
+641
+00:54:07,987 --> 00:54:12,178
+Ok, alguma outra pergunta sobre isso?
+O homework de vocês é basicamente fazer isso
+
+642
+00:54:12,178 --> 00:54:16,263
+para seu app. Espero, todos vocês aqui
+estão: ah, eu sei exatamente como eu faria
+
+643
+00:54:16,263 --> 00:54:20,932
+isso para meu app. Porque o app de vocês
+é provavelmente extremamente similar a isso.
+
+644
+00:54:20,932 --> 00:54:26,162
+E então a segunda parte do homework vai ser
+sobre File System, então, vamos falar disso.
+
+645
+00:54:26,162 --> 00:54:31,634
+Ok. Persistência. Eu tenho 15 minutos para
+falar sobre persistência, existem vários
+
+646
+00:54:31,634 --> 00:54:36,745
+modos de fazer coisas persistirem no iOS.
+Eu vou correr um pouco aqui, mas apenas
+
+647
+00:54:36,745 --> 00:54:41,715
+para que vocês saibam que essas
+coisas existem, ok? Eu não vou tentar
+
+648
+00:54:41,715 --> 00:54:46,467
+ensinar vocês como fazer nenhum desses. E o
+modo do File System, vocês vão ensinar
+
+649
+00:54:46,467 --> 00:54:51,539
+vocês mesmos no homework de vocês.
+Qual são as formas de fazer as coisas persistirem?
+
+650
+00:54:51,539 --> 00:54:56,973
+Bom, conhecemos o NSUserDefaults. Esse é
+um modo de persistir coisinhas pequenas. Vocês
+
+651
+00:54:56,973 --> 00:55:01,776
+também podem fazer property lists em geral
+serem persistidas, escrevendo-as em arquivos.
+
+652
+00:55:01,776 --> 00:55:06,462
+Usando writeToURL e initWithContentsOfURL
+no NSArray e NSDictionary.
+
+653
+00:55:06,462 --> 00:55:11,508
+Essas duas classes tem esses métodos que
+permitem que as escreva, se eles forem
+
+654
+00:55:11,508 --> 00:55:16,114
+property lists, em arquivos. Ok?
+E existe também uma classe chamada
+
+655
+00:55:16,114 --> 00:55:20,722
+NSPropertyListSerialization que recebe
+um array ou dictionary que é uma
+
+656
+00:55:20,722 --> 00:55:25,382
+property list. E o transforma em NSData,
+uma sacola de bits. Lembrem-se, NSData é
+
+657
+00:55:25,382 --> 00:55:29,629
+uma sacola de bits. Ou vice-versa. Pega um
+NSData que foi transformado--
+
+658
+00:55:29,629 --> 00:55:33,367
+uma property list
+que foi transformada anteriormente
+
+659
+00:55:33,367 --> 00:55:37,464
+e o transforma de volta, ok?
+Então property lists são um modo
+
+660
+00:55:37,464 --> 00:55:43,277
+de fazer as coisas persistentes.
+Archiving Objects, nós vamos falar. É um
+
+661
+00:55:43,277 --> 00:55:48,282
+modo de fazer não-property lists
+serem persistidas em disco, ok?
+
+662
+00:55:48,282 --> 00:55:53,126
+Object graphs que não são property lists.
+E SQLite também, claro, é SQL, uma versão
+
+663
+00:55:53,126 --> 00:55:57,552
+leve dele. Nós vamos falar brevemente
+sobre isso e também podemos colocar as coisas
+
+664
+00:55:57,552 --> 00:56:02,185
+no file system diretamente, basicamente
+usando NSData, ok? E então o modo de verdade
+
+665
+00:56:02,185 --> 00:56:06,406
+que fazemos persistência na maior parte
+do tempo é usando algo chamado Core Data que é
+
+666
+00:56:06,406 --> 00:56:11,230
+um banco de dados orientado a objetos que nós
+vamos começar a falar na próxima aula
+
+667
+00:56:11,230 --> 00:56:16,366
+e vamos terminar daqui uma semana. Certo,
+então Archiving. Esse é apenas um modo
+
+668
+00:56:16,366 --> 00:56:22,025
+de fazer qualquer object graph, por exemplo,
+nossos Storyboard no Xcode são um object
+
+669
+00:56:22,025 --> 00:56:26,955
+graph arbitrário de UIViews e
+ViewControllers e todo esse tipo de coisa que
+
+670
+00:56:26,955 --> 00:56:32,650
+existe lá: segues, gesture recognizers,
+todas essas coisas, e ele simplemente
+
+671
+00:56:32,650 --> 00:56:37,883
+escreve tudo em disco. Usando esse mecanismo
+chamado archiving, ok? Ele meio que
+
+672
+00:56:37,883 --> 00:56:42,648
+o congela. Archiving é: você pega um object
+graph e o congela em disco
+
+673
+00:56:42,648 --> 00:56:47,780
+e então você pode adicionar água e
+trazê-los de volta a vida, ok? Ele requer
+
+674
+00:56:47,780 --> 00:56:52,608
+que todos os objetos no graph, porém,
+implementem um protocol chamado NSCoding
+
+675
+00:56:52,608 --> 00:56:57,088
+protocol, ok? Agora, um monte de objetos,
+(???), como todos que
+
+676
+00:56:57,088 --> 00:57:01,120
+eu acabei de mencionar, todos eles
+implementam isso, claro.
+
+677
+00:57:01,120 --> 00:57:05,781
+E, sim, você poderia implementar
+por você mesmo. É extremamente incomum que
+
+678
+00:57:05,781 --> 00:57:10,206
+você queira usar object archiving. É
+muito, muito bom para o Xcode. É a
+
+679
+00:57:10,206 --> 00:57:14,591
+solução perfeita para isso. Mas não é
+a solução correta para a maioria das outras coisas.
+
+680
+00:57:14,591 --> 00:57:19,021
+A maioria das outras coisas você quer usar
+Core Data na verdade. Mas eu vou mostrar como
+
+681
+00:57:19,021 --> 00:57:23,542
+que faz, bem rápido. Os dois métodos
+encodeWithCoder e initWithCoder.
+
+682
+00:57:23,542 --> 00:57:28,240
+encodeWithCoder basicamente você tem
+esse encoder, que se parece um pouco com
+
+683
+00:57:28,240 --> 00:57:32,818
+um dictionary, e você envia mensagens para
+ele como encodeFloatForKey: qualquer coisa.
+
+684
+00:57:32,819 --> 00:57:37,713
+encodeCGPointForKey: qualquer coisa. Ele tem
+um monte desses métodos dentro dele.
+
+685
+00:57:37,713 --> 00:57:42,837
+E vocÊ vai basicamente guardando os
+valores dos seus objetos como chaves, sabe,
+
+686
+00:57:42,837 --> 00:57:48,445
+associados com chaves como se fosse um
+dictionary, ok? Esse "coder". E quando for a hora
+
+687
+00:57:48,445 --> 00:57:52,825
+de adicionar água e trazê-lo de volta
+à vida, ao invés do seu designated
+
+688
+00:57:52,825 --> 00:57:58,070
+initializer ser chamado, ao invés disso,
+você tem alloc initWithCoder. E ele vai
+
+689
+00:57:58,070 --> 00:58:02,986
+te dar o coder e agora vocÊ tem que
+tirar todos os valores. Isso faz
+
+690
+00:58:02,986 --> 00:58:06,710
+sentido? É algo bem direto.
+Agora, o que é mágico nisso
+
+691
+00:58:06,710 --> 00:58:10,387
+é que isso é um object graph. E você
+poderia ter ponteiros de volta para
+
+692
+00:58:10,387 --> 00:58:14,132
+outros objetos. Um objeto aponta para
+outro objeto que está apontando para
+
+693
+00:58:14,132 --> 00:58:18,036
+outro, que está apontando de volta
+para você. E quando você arquivá-lo,
+
+694
+00:58:18,036 --> 00:58:22,372
+você não quer múltiplas cópias de algo
+que você escreveu. Você quer apenas uma cópia
+
+695
+00:58:22,372 --> 00:58:26,409
+e todo mundo tem um ponteiro para ele.
+Vêem o que eu estou dizendo? Até object
+
+696
+00:58:26,409 --> 00:58:30,505
+graphs complicados que tem ponteiros apontando
+uns para os outros, podem ser arquivados
+
+697
+00:58:30,505 --> 00:58:34,754
+corretamente, se todos os objetos
+implementarem esse lance do NSCoder.
+
+698
+00:58:34,754 --> 00:58:39,410
+Que são esses dois métodos. De acordo
+com o protocol. Ok? Então isso
+
+699
+00:58:39,410 --> 00:58:44,782
+é archiving. er er er.
+Você tem um object graph.
+
+700
+00:58:44,782 --> 00:58:49,962
+Todos eles implementam essa coisa. O modo que
+você faz para escrevê-los é: você usa
+
+701
+00:58:49,962 --> 00:58:55,116
+NSKeyedArchiver ou NSKeyedUnarchiver. Essa classe
+vai pegar o object graph e jogá-lo
+
+702
+00:58:55,116 --> 00:59:00,047
+em um NSData e pegar o NSData
+e jogá-lo de volta, ok? É assim que
+
+703
+00:59:00,047 --> 00:59:04,742
+você faz. Agora você pode pegar o NSData
+e escrevê-lo no file system. É assim
+
+704
+00:59:04,742 --> 00:59:09,550
+que você pode pegar o object graph
+e gravá-lo em disco. É isso que
+
+705
+00:59:09,550 --> 00:59:14,688
+o Xcode faz. Certo? Ok, por exemplo,
+o que vocês acham que esse código faz?
+
+706
+00:59:14,688 --> 00:59:19,851
+Tenho um objeto que implementa NSCoder. Todas
+as coisas que ele aponta precisam implementar NSCoder.
+
+707
+00:59:19,851 --> 00:59:24,924
+Você diz [NSKeyedArchiver archiveDataWithRootObject:object]
+Então você diz NSCoder
+
+708
+00:59:24,924 --> 00:59:30,041
+dup = NSKeyedArchiver unarchive...
+Isso faz uma cópia. Uma "deep copy".
+
+709
+00:59:30,041 --> 00:59:35,231
+Uma cópia bem profunda desse objeto, ok?
+Porque ele o congela em um NSData e ele
+
+710
+00:59:35,232 --> 00:59:41,781
+adiciona água para fazer um novo. Que 
+é exatamente o mesmo. Ok. SQL.
+
+711
+00:59:41,781 --> 00:59:48,450
+SQLite é um SQL sem servidor, certo?
+É um SQL em um único arquivo, o banco
+
+712
+00:59:48,450 --> 00:59:55,746
+inteiro em um único arquivo mapeado.
+É muito rápido. Ele não usa muita memória.
+
+713
+00:59:55,746 --> 01:00:01,516
+Super confiável. É open-source. Não é
+algo que a Apple provê, mas ele já vem
+
+714
+01:00:01,516 --> 01:00:06,477
+no iOS. Está ali, você pode assumir
+que ele está ali e usá-lo. Ele não é
+
+715
+01:00:06,477 --> 01:00:11,457
+bom para absolutamente tudo, mas ele
+é bom para muitas coisas. Ok?
+
+716
+01:00:11,457 --> 01:00:16,503
+E ele não é server-based, então concorrência
+não é o seu forte, embora não seja
+
+717
+01:00:16,503 --> 01:00:21,761
+tão ruim com concorrência. Por que você
+teria concorrencia em um SQL file-based?
+
+718
+01:00:21,761 --> 01:00:26,965
+Alguém pode pensar no porquê? Threads, certo?
+Você tem várias filas mirando o mesmo
+
+719
+01:00:26,965 --> 01:00:32,353
+banco de dados. Isso seria um acesso
+concorrente. Então ele faz concorrência, mas
+
+720
+01:00:32,353 --> 01:00:37,699
+não é (???), você não vai querer ter
+várias queues batendo nele muito forte.
+
+721
+01:00:37,699 --> 01:00:43,517
+Sua API é basicamente assim.
+Essas são as funções básicas. Você abre
+
+722
+01:00:43,517 --> 01:00:48,367
+o banco, certo? O que te dá um
+ponteiro para ele. Você executa comandos SQL.
+
+723
+01:00:48,367 --> 01:00:53,162
+Os comandos podem ter callbacks. Os callbacks
+são funções em C e então você pode
+
+724
+01:00:53,162 --> 01:00:57,926
+fechar o banco. Esse é o SQL fundamental.
+Vocês que já-- se você não sabe
+
+725
+01:00:57,926 --> 01:01:02,755
+SQL ou nem sabe o que é isso.
+Apenas ignore isso. Mas se você sabe SQL
+
+726
+01:01:02,755 --> 01:01:07,999
+e você está pensando para o seu projeto final:
+eu tenho um banco SQL existente e eu quero
+
+727
+01:01:07,999 --> 01:01:12,693
+extrair dados, dê uma olhada
+na API do SQLite. Ok. O File System.
+
+728
+01:01:12,694 --> 01:01:17,606
+Acessar o File System é realmente uma
+questÃo de achar onde as coisas
+
+729
+01:01:17,606 --> 01:01:23,019
+estão. Uma vez que você sabe onde
+estão as coisas, você pode começar a
+
+730
+01:01:23,019 --> 01:01:28,081
+escrever arquivos e procurar em diretórios
+e todas essas coisas. Lembrem-se, eu disse que iOS
+
+731
+01:01:28,081 --> 01:01:33,541
+é UNIX pode baixo, ok? Uma versão do Unix,
+um OS "mock?". Então ele tem o file system do Unix
+
+732
+01:01:33,541 --> 01:01:37,838
+ali, ok? É o mesmo tipo de file system
+do Unix como com.stanford.edu,
+
+733
+01:01:37,838 --> 01:01:42,679
+esse tipo de file system, certo?
+É basicamente a mesma coisa aqui.
+
+734
+01:01:42,679 --> 01:01:46,982
+Claro, as proteções estão todas setadas,
+bem direitinhas, então vocês não
+
+735
+01:01:46,982 --> 01:01:51,595
+podem fizer zoando por aí e olhando
+no sistema e diretórios. Ou olhando nos
+
+736
+01:01:51,595 --> 01:01:55,185
+diretórios dos outros apps ou coisas assim.
+O que você vê é um file system
+
+737
+01:01:55,185 --> 01:01:59,223
+único root-based. Sabe, você pode ver
+somente parte deles e você
+
+738
+01:01:59,223 --> 01:02:03,769
+certamente pode apenas escrever coisas
+que estão no seu "app location". Então, como
+
+739
+01:02:03,769 --> 01:02:08,969
+você obtém isso? Como você descobre
+onde o seu app está e onde você pode
+
+740
+01:02:08,969 --> 01:02:13,659
+escrever? E a resposta é: você vai
+por esse processo de 4 passos. Você
+
+741
+01:02:13,659 --> 01:02:19,294
+pega o root de algum path conhecido em
+uma URL, ok? Existem paths conhecidos,
+
+742
+01:02:19,294 --> 01:02:25,062
+cerca de 20 deles e eu vou mostrar a vocês
+onde procurar para achá-los.
+
+743
+01:02:25,062 --> 01:02:29,988
+Existem coisas como o diretório 
+de Documents para o meu app, ou diretório
+
+744
+01:02:29,988 --> 01:02:34,584
+de Cache, ok? Ou diretório Temp.
+Você pergunta para obter o diretório
+
+745
+01:02:34,584 --> 01:02:39,102
+de Documents e ele vai te dar uma URL para esse
+diretório de Documents. E agora você está pronto,
+
+746
+01:02:39,102 --> 01:02:43,182
+porque agora você vai criar todos
+os seus arquivos, que são documentos, nesse
+
+747
+01:02:43,182 --> 01:02:47,662
+diretório. E você pode criar diretórios dentro
+de diretórios, quão profundo você quiser.
+
+748
+01:02:47,662 --> 01:02:51,765
+Mas esse é o modo como você faz isso. Apenas
+acrescentando o caminho que você quer.
+
+749
+01:02:51,765 --> 01:02:56,258
+E então você lê e escreve arquivos,
+geralmente NSData. Ok, você poderia escrever
+
+750
+01:02:56,258 --> 01:03:01,840
+property lists também, mas na maioria das
+vezes você usa NSData. E então você pode
+
+751
+01:03:01,840 --> 01:03:07,348
+gerenciar o File System, como deletar
+arquivos ou ver quão grandes eles são ou quando
+
+752
+01:03:07,348 --> 01:03:12,748
+eles foram acessados pela última vez, coisas assim.
+Usando NSURL e também NSFileManager, que é
+
+753
+01:03:12,748 --> 01:03:18,129
+uma nova classe, ok? E vocês vão ter,
+para o homework, olhar o NSURL e o
+
+754
+01:03:18,129 --> 01:03:23,206
+NSFileManager. Você pode escrever
+somende dentro do seu sandbox. E, não só isso,
+
+755
+01:03:23,206 --> 01:03:28,110
+somente em alguns diretórios dentro do
+seu sandbox. Então, por exemplo, você pode
+
+756
+01:03:28,110 --> 01:03:33,074
+escrever no seu diretório de Documents, mas
+você não pode escrever no diretório do seu app,
+
+757
+01:03:33,074 --> 01:03:38,066
+que é onde o seu executável está. Então você
+não pode ter um app que se auto-modifica, ok?
+
+758
+01:03:38,066 --> 01:03:43,492
+Você não pode escrever no seu próprio executável.
+Isso é read-only. Por que é assim? Razões
+
+759
+01:03:43,492 --> 01:03:48,232
+óbvias: segurança. Você não quer outro app
+instalado no seu iphone ser capaz
+
+760
+01:03:48,232 --> 01:03:53,426
+de danificar o seu app, de jeito
+nenhum. Privacidade. Sabe? Seu app
+
+761
+01:03:53,426 --> 01:03:58,244
+está criando dados para o usuário. Você não
+quer outros apps serem capaz de olhar
+
+762
+01:03:58,244 --> 01:04:03,395
+o que são esses dados privados. E um
+que é subestimado é limpeza. Quando você
+
+763
+01:04:03,395 --> 01:04:07,870
+deleta um app do seu iPhone, você quer
+que tudo se vá. O app por inteiro e todos
+
+764
+01:04:07,870 --> 01:04:12,615
+os dados que ele criou. Tudo embora.
+Você não quer arquivos, sabe, abandonados
+
+765
+01:04:12,615 --> 01:04:17,007
+nos diretórios do sistema e coisas assim.
+Então você nunca escreve em lugar nenhum a não ser
+
+766
+01:04:17,007 --> 01:04:21,984
+no seu sandbox. E quando o seu app é deletado,
+o sandbox inteiro é deletado. Ok?
+
+767
+01:04:21,984 --> 01:04:26,873
+Todo arquivo que você criou nele. Então,
+o que existe no sandbox? Como eu disse,
+
+768
+01:04:26,873 --> 01:04:32,075
+o application bundle, caches, coisas assim.
+A coisa chave que você quer procurar na
+
+769
+01:04:32,075 --> 01:04:36,930
+documentação é NSSearchPathDirectory.
+Ok? Isso vai te dar a lista das
+
+770
+01:04:36,930 --> 01:04:41,815
+20 e poucos coisas diferentes no seu
+sandbox. Alguns deles são escrevíveis
+
+771
+01:04:41,815 --> 01:04:46,976
+e alguns não são. Então como você
+obtém essa URL se eu quiser, por exemplo, obter
+
+772
+01:04:46,976 --> 01:04:52,004
+a URL para o diretório de Documents,
+o diretóri de Cache, como eu faço? Existem
+
+773
+01:04:52,004 --> 01:04:57,090
+dois métodos na verdade no FileManager,
+nesse FileManager. Você vai alloc+init
+
+774
+01:04:57,090 --> 01:05:02,261
+um FileManager. Existem também um método
+de classe chamado defaultFileManager.
+
+775
+01:05:02,261 --> 01:05:07,124
+A única coisa sobre o defaultFileManager
+é: ele não é thread-safe.
+
+776
+01:05:07,124 --> 01:05:11,712
+Ok? Então se você vai fazer operações
+com arquivos em outras threads, você quer
+
+777
+01:05:11,712 --> 01:05:16,230
+usar FileManager alloc inir. Isso é
+thread-safe. Em outras palavras, se você
+
+778
+01:05:16,230 --> 01:05:20,348
+criar uma instância de NSFileManager,
+enquanto você usá-lo somente na thread
+
+779
+01:05:20,348 --> 01:05:25,374
+que você criou, é perfeitamente thread-safe.
+Em outras palavras, outras threads
+
+780
+01:05:25,374 --> 01:05:29,859
+vão ter suas instâncias e elas podem
+ler e escrever e isso será thread-safe
+
+781
+01:05:29,859 --> 01:05:34,413
+na sua instância, ok? Existem dois
+métodos. Um deles é chamado URLsForDirectory,
+
+782
+01:05:34,413 --> 01:05:39,036
+o outro é chamado URLForDirectory. Qualquer
+um é bom, você pode usar
+
+783
+01:05:39,036 --> 01:05:43,314
+qualquer um, eu estou mostrando esse
+porque ele é m ais simples. Esse
+
+784
+01:05:43,314 --> 01:05:47,702
+retorna um array com todos os diretórios
+de cache, ou todos esses diretórios
+
+785
+01:05:47,702 --> 01:05:52,024
+de Documents. Agora, no iOS só vai
+existir um, ok? Mas no Mac podem
+
+786
+01:05:52,024 --> 01:05:56,509
+existir mais, porque existe um de rede,
+existe um de sistema, podem
+
+787
+01:05:56,509 --> 01:06:01,757
+existir alguns de biblioteca, etc. Você pode
+ter múltiplos diretórios de cache. Mas no iOS
+
+788
+01:06:01,757 --> 01:06:06,493
+tudo é usuários únicos. É um telefone,
+então é baseado em um usuário. Você obtém
+
+789
+01:06:06,493 --> 01:06:11,303
+apenas um, o do usuário. E o segundo
+argumento aqui, "inDomain" é, novamente
+
+790
+01:06:11,303 --> 01:06:16,389
+o domínio do sistema e o domínio de rede.
+No iOS, vocÊ especifica apenas o domínio do usuário
+
+791
+01:06:16,389 --> 01:06:21,094
+aqui. Então, isso está dizendo: eu quero
+o diretório de Cache do usuário ou o diretório
+
+792
+01:06:21,094 --> 01:06:26,624
+de documents do usuário. E você vai obter
+um array de volta e só vai ter uma coisa nele,
+
+793
+01:06:26,624 --> 01:06:32,111
+ok? E é assim que você obtém a URL.
+E essa coisa nele é a URL,
+
+794
+01:06:32,111 --> 01:06:37,681
+a URL aque aponta para esse diretório, ok?
+E então você pode trabalhar a partir daí,
+
+795
+01:06:37,681 --> 01:06:44,298
+(???), começar a escrever arquivos.
+Exemplos de NSSearchPathDirectory,
+
+796
+01:06:44,298 --> 01:06:48,975
+vá procurar nos docs, ok? Vocês verão.
+Você tem essa URL bases e vocÊ quer
+
+797
+01:06:48,975 --> 01:06:53,644
+adicionar coisa snela, como você faz?
+Bom, existem métodos em NSURL para fazer,
+
+798
+01:06:53,644 --> 01:06:59,374
+como URLByAppendingPathComponent. Você
+pode também criar URLs de strings, então
+
+799
+01:06:59,374 --> 01:07:04,835
+vocês podem usar algum método em NSString
+para criar URL e então dizer
+
+800
+01:07:04,835 --> 01:07:11,219
+NSURL alloc, initFileURLWithPath
+e ele vai te dar uma string, ok? Você pode
+
+801
+01:07:11,219 --> 01:07:17,914
+descobrir para o que a URL aponta, tipo
+você pode descobrir se "essa é uma URL que
+
+802
+01:07:17,914 --> 01:07:24,617
+aponta para um arquivo?" Versus uma URL do tipo
+http. Você pode também chamar esse método
+
+803
+01:07:24,617 --> 01:07:30,967
+da hora resourceValuesForKeys. Existem umas
+40 keys que você pode passar nesse array
+
+804
+01:07:30,967 --> 01:07:36,673
+de keys e ele vai te retornar um dictionary
+com as keys que você passou e os valores.
+
+805
+01:07:36,673 --> 01:07:42,477
+Essas coisas podem ser coisas como
+o tamanho do arquivo, a última data de
+
+806
+01:07:42,477 --> 01:07:48,661
+acesso do arquivo. Vocês vão precisar desse
+método para o homework, ok? Porque vocês
+
+807
+01:07:48,661 --> 01:07:54,549
+vão precisar descobrir coisas sobre
+arquivos e o File System porque vocÊs vão
+
+808
+01:07:54,549 --> 01:08:00,856
+estar cacheando essas fotos do Flickr no
+File System. Esse é
+
+809
+01:08:00,856 --> 01:08:06,800
+um método no URL. Ok? Criando URLS http
+seguras. Existe um método em NSString
+
+810
+01:08:06,800 --> 01:08:11,740
+para colocar os percent escapes, como %20
+ou qualquer coisa assim para spacebar
+
+811
+01:08:11,740 --> 01:08:16,523
+e todas essas coisas. Isso não tem
+nada a ver com URLs de arquivos. Apenas joguei
+
+812
+01:08:16,523 --> 01:08:20,663
+aqui porque é um bom lugar para
+colocar... Você também pode converter
+
+813
+01:08:20,663 --> 01:08:24,569
+NSURL em NSString, mas tenha certeza
+que você sabe o que está fazendo porque
+
+814
+01:08:24,569 --> 01:08:28,616
+existe um monte de diferentes métodos para
+fazer isso. Depende do que você está
+
+815
+01:08:28,616 --> 01:08:33,218
+querendo fazer aqui, então você deve olhar
+a documentação para isso. Como eu disse,
+
+816
+01:08:33,218 --> 01:08:37,293
+NSData tem dataWithContentsOfURL,
+vocês já viram. Ela também tem
+
+817
+01:08:37,293 --> 01:08:42,180
+writeToURL:atomically:. Atomically apenas
+significa que ele escreve em um arquivo
+
+818
+01:08:42,180 --> 01:08:47,054
+temporário primeiro e depois deleta o antigo
+e coloca no lugar. É isso que significa, ok?
+
+819
+01:08:47,054 --> 01:08:51,062
+E uma vez que você escreveu os arquivos
+que você queria, agora você pode usar
+
+820
+01:08:51,062 --> 01:08:54,910
+o NSFileManager ou mesmo antes de você
+tê-los escrito. Para criar diretórios
+
+821
+01:08:54,910 --> 01:08:58,546
+em um path. Você pode querer colocar
+coisas em um diretório dentro do
+
+822
+01:08:58,546 --> 01:09:02,429
+diretório de documents. Você pode fazer isso.
+Você pode descobrir se tem um arquivo
+
+823
+01:09:02,429 --> 01:09:06,288
+"readable" em um certo path. O que
+receberia uma string ao invés de uma URL, mas
+
+824
+01:09:06,288 --> 01:09:10,734
+você pode sempre pedir a URL também. E você
+pode obter o conteúdo de um diretório.
+
+825
+01:09:10,734 --> 01:09:15,240
+Isso é tudo, ou alguma das coisas que
+vocês podem precisar pro homework também.
+
+826
+01:09:15,240 --> 01:09:19,913
+Próximas aulas. Seu homework, até Terça,
+como de costume. É basicamente
+
+827
+01:09:19,913 --> 01:09:24,435
+uma versão mais rápida do que vocês tem
+agora que funcione em iPad, incluindo
+
+828
+01:09:24,435 --> 01:09:28,962
+File System e caching. E então, quinta,
+eu já falei sobre isso: Core Data. Também
+
+829
+01:09:28,962 --> 01:09:33,404
+na quinta nós vamos passar sobre os requisitos
+do projeto final de vocês. Então não
+
+830
+01:09:33,404 --> 01:09:38,096
+faltem na quinta, ok? Quinta é um dia bom
+para não faltar. Não vai ter aula sexta.
+
+831
+01:09:38,096 --> 01:09:42,898
+É um fim de semana de feriado, então não vamos
+ter a section de sexta-feira. E então,
+
+832
+01:09:42,898 --> 01:09:45,449
+próxima semana nós vamos fazer mais Core Data.
+Eu estou aqui se tiverem perguntas.
+
+833
+01:09:45,449 --> 01:09:49,449
+Visite nosso site:
+www.centraldosapps.com
+

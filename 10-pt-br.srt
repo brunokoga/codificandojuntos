@@ -1,0 +1,4307 @@
+1
+00:00:00,012 --> 00:00:09,863
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:09,863 --> 00:00:18,991
+Bem-vindos à aula 10 do CS193P, Inverno de 2013.
+Hoje nós temos dois tópicos principais, que são iPad
+
+3
+00:00:18,991 --> 00:00:25,147
+e blocks e multi-threading. Eu vou começar
+com um pouco de UIToolbar,
+
+4
+00:00:25,147 --> 00:00:30,943
+apenas porque é um elemento de UI
+bem valioso e nós não o cobrimos ainda.
+
+5
+00:00:30,943 --> 00:00:34,799
+E eu vou fazer um demo no meio
+mostrando como fazer coisas no iPad,
+
+6
+00:00:34,799 --> 00:00:38,825
+e eu quase com certeza não vou
+ter tempo no funal para fazer
+
+7
+00:00:38,825 --> 00:00:42,810
+a demo com blocks e multi-threading.
+De fato, eu posso nem conseguir passar
+
+8
+00:00:42,810 --> 00:00:46,638
+pelos slides de blocks e multi-threading.
+E nós vamos continuar na próxima aula se nós
+
+9
+00:00:46,638 --> 00:00:50,103
+não conseguirmos. Ok, então mesmo que
+eu consiga passar pelos slides, vai ter uma demo
+
+10
+00:00:50,103 --> 00:00:53,667
+de blocks e multi-threading, vai ser
+apenas o começo da aula de terça.
+
+11
+00:00:53,667 --> 00:00:58,556
+Ok? Ao invés de ser no final dessa.
+Certo. Então UIToolbar. O que é uma
+
+12
+00:00:58,556 --> 00:01:03,842
+UIToolbar? Ela é apenas uma UIView,
+ok? Que tem esses pequenos BarButtonItems
+
+13
+00:01:03,842 --> 00:01:08,481
+nela. Ok? E ela pode ter várias
+aparências diferentes. Então, a aparência
+
+14
+00:01:08,481 --> 00:01:13,473
+padrão dela que você vê no iPad
+é essa aparência metálica, com os botões
+
+15
+00:01:13,473 --> 00:01:18,544
+nela que você vê aí no topo. Mas vocês
+podem customizar totalmente ela para ficar
+
+16
+00:01:18,544 --> 00:01:23,507
+mais com a cara dessa que vocês vêem embaixo.
+Ok? Onde ela meio que não tem as coisas ao redor.
+
+17
+00:01:23,507 --> 00:01:28,130
+Mas ela ainda é o mesmo objeto fundamentalmente.
+Uma view e barButtons dentro dela.
+
+18
+00:01:28,131 --> 00:01:32,578
+Outro lugar que você vê toolbars que
+tem uma aparência diferente é em 
+
+19
+00:01:32,578 --> 00:01:36,724
+UINavigationControllers. Então aqui temos
+um UINavigationController. E você vê aí
+
+20
+00:01:36,724 --> 00:01:41,100
+embaixo que ele tem uma pequena toolbar,
+ok? Que é diferente do que as outras
+
+21
+00:01:41,100 --> 00:01:46,112
+toolbars. Mas é o mesmo setup básico.
+E, lá embaixo, tm um item lá.
+
+22
+00:01:46,112 --> 00:01:50,445
+É uma pequena câmera e o modo
+que você coloca itens nessa barra é
+
+23
+00:01:50,445 --> 00:01:55,244
+um pouco diferente do que nas outras.
+Então eu vou mostrar isso. E, antes de tudo,
+
+24
+00:01:55,244 --> 00:01:59,638
+para obter aquela bar embaixo de um
+navigation controller, você inspeciona
+
+25
+00:01:59,638 --> 00:02:04,738
+o navigation controller e clica
+no switch que vocês vêem no slide, que diz
+
+26
+00:02:04,738 --> 00:02:09,207
+"Shows Toolbar". E então a toolbar
+vai aparecer embaixo, não importa...
+
+27
+00:02:09,207 --> 00:02:13,911
+para todas os view controllers que você
+pushar, todos vão ter a barra. E
+
+28
+00:02:13,911 --> 00:02:18,700
+então como você decide que botões
+vão naquela bar? Bom, isso está anexado
+
+29
+00:02:18,700 --> 00:02:22,997
+ao view controller que foi pushado, ok?
+Que é exatamente o que você quer, certo?
+
+30
+00:02:22,997 --> 00:02:26,960
+Você pusha um view controller, Se ele
+tem qualquer bar button que estão associados
+
+31
+00:02:26,960 --> 00:02:30,547
+a ele, eles aprecem embaixo. Então,
+por exemplo, eu tenho esse
+
+32
+00:02:30,547 --> 00:02:35,071
+view controller, ele é de um curso passado
+e é chamado de PsychologistView
+
+33
+00:02:35,071 --> 00:02:38,841
+e é apenas o Dr. Freud fazendo
+uma pergunta e por alguma razão Dr. Freud
+
+34
+00:02:38,841 --> 00:02:42,669
+quer tre a câmera quando ele está
+fazendo uma pergunta, então tem a câmera
+
+35
+00:02:42,669 --> 00:02:47,903
+embaixo. Agora, qundo você escolhe uma das
+respostas do Dr. Freud, ele pusha um ViewController
+
+36
+00:02:47,903 --> 00:02:53,004
+diferente. Um pequeno diagnóstico que diz
+se você está feliz ou não. Ele é chamado
+
+37
+00:02:53,004 --> 00:02:58,287
+HappinessViewController. E o
+HappinessViewController não tem
+
+38
+00:02:58,287 --> 00:03:03,121
+uma câmera. Ele tem apenas esse botão
+"Hello". Esse botão "Hello" é um BarButtonItem.
+
+39
+00:03:03,121 --> 00:03:08,042
+Vou falar sobre ele em um segundo.
+Ele está em um array que você recebe
+
+40
+00:03:08,042 --> 00:03:12,492
+de uma property que está no
+UIViewController. Ok? Então esse
+
+41
+00:03:12,492 --> 00:03:17,517
+HappinessViewController provavelmente
+é uma subclasse de UIViewController, claro.
+
+42
+00:03:17,517 --> 00:03:22,513
+E ele provavelmente sobrescreveu
+esse getter da propriedade do toolbar items. E retornou
+
+43
+00:03:22,513 --> 00:03:27,302
+um NSArrau que incluiu esse botão
+"Hello". Ok? Então quando ele foi pushado
+
+44
+00:03:27,302 --> 00:03:33,067
+em uma pilha de navegação, na frente,
+seus botões apareceram embaixo. Agora,
+
+45
+00:03:33,067 --> 00:03:38,107
+se nós clicarmos no back button, nós voltamos
+ao Dr. Freud e o "Hello" vai embora e a
+
+46
+00:03:38,107 --> 00:03:43,845
+câmera volta. Isso é por causa que
+o PsyschologistViewController, provavelmente
+
+47
+00:03:43,845 --> 00:03:47,986
+seu toolbarItems retornou um array com
+apenas a câmera nele. Isso faz sentido?
+
+48
+00:03:47,986 --> 00:03:52,201
+Então, existe uma property toolbarItems
+no UIViewController, essa é a coisa
+
+49
+00:03:52,201 --> 00:03:56,288
+que controla quais bar buttons aparecem
+embaixo, quando você está em um
+
+50
+00:03:56,288 --> 00:04:00,677
+navigation controller, ok?
+Esses botões embaixo, como a câmera ou o "Hello"
+
+51
+00:04:00,677 --> 00:04:05,421
+e tudo mais, eles são chamados
+UIBarButtonItems. Eles não são Views, mas eles
+
+52
+00:04:05,421 --> 00:04:10,099
+agem como buttons no Xcode. Você os arrasta,
+você pode CTRL + arrastá-los a partir deles
+
+53
+00:04:10,099 --> 00:04:14,655
+para fazer um target-action. Eles podem ter
+bordas como vocês viram, ou eles podem ser
+
+54
+00:04:14,655 --> 00:04:19,415
+tipo planos, sem bordas, vamos ver isso.
+Existem também um tipo especial de BarButtonItems
+
+55
+00:04:19,415 --> 00:04:24,107
+para organizá-los, um que tem a
+largura flexível e um que é de
+
+56
+00:04:24,107 --> 00:04:28,367
+um tamanho fixo. E usando eles, você pode
+fazer suas bars terem a cara que você quiser,
+
+57
+00:04:28,367 --> 00:04:32,296
+ok? Aqui eu coloquei todos os botões no meio
+colocando botões flexíveis dos lados.
+
+58
+00:04:32,296 --> 00:04:36,086
+Oi, eu os coloco do lado com outro
+no meio, colocando um espaço
+
+59
+00:04:36,086 --> 00:04:39,733
+flexível entre eles. Ou eu coloco
+todos eles na direita colocando um
+
+60
+00:04:39,733 --> 00:04:44,028
+espaço flexível na esquerda. Ok? Esse
+slide é um bom slide de referência que
+
+61
+00:04:44,028 --> 00:04:47,627
+diz a os diferentes tipos de ícones
+do sistema que existem e como são
+
+62
+00:04:47,627 --> 00:04:51,599
+as bordas, e como são os planos,
+flexíveis, etc. E você também pode
+
+63
+00:04:51,599 --> 00:04:55,665
+fazer tudo isso no Xcode. Você seta tudo
+no Xcode e então apenas CTRL + arrasta
+
+64
+00:04:55,665 --> 00:04:59,606
+para setar o target-action a partir desses
+botões. Ou você pode CTRL + arrastar a partir
+
+65
+00:04:59,606 --> 00:05:04,886
+deles para setar outlets também. Ok?
+É isso para toolbar. Ok? Brincar um pouco
+
+66
+00:05:04,886 --> 00:05:10,153
+com isso é a melhor maneira de realmente
+entender. Agora nós vamos falar sobre apps
+
+67
+00:05:10,153 --> 00:05:15,484
+universais. Uma aplicação universal
+é uma aplicação, uma aplicação única
+
+68
+00:05:15,484 --> 00:05:19,559
+que roda tanto no iPhone quanto
+no iPad. Até agora, vocês só construíram
+
+69
+00:05:19,559 --> 00:05:24,222
+aplicações que rodavam no iPhone. Ok?
+Agora nós vamos começar a falar sobre
+
+70
+00:05:24,222 --> 00:05:28,349
+construir aplicações que vão rodar em ambos.
+Como você cria uma? Bom, se vocês
+
+71
+00:05:28,349 --> 00:05:32,802
+se lembram quando nós criamos nossa
+primeira aplicação, uma das perguntas feitas
+
+72
+00:05:32,802 --> 00:05:36,767
+no começo foi qual a plataforma que
+nós vamos querer e nós dissemos iPhone,
+
+73
+00:05:36,767 --> 00:05:41,748
+mas uma das opções lá era "Universal".
+Ok? E "universal" significa ambas as plataformas.
+
+74
+00:05:41,748 --> 00:05:46,227
+Agora, se você já tem uma aplicação
+existente, ok? Uma aplicação iPhone-only ou
+
+75
+00:05:46,227 --> 00:05:50,913
+iPad-only, você pode clicar no projeto
+que fica no canto superior esquerdo
+
+76
+00:05:50,913 --> 00:05:55,457
+do seu file navigator, o que fica
+no topo de tudo, e você clica nele
+
+77
+00:05:55,457 --> 00:06:00,356
+e vocês verão todos os tipos de configuração
+para o projeto, que nós não falamos
+
+78
+00:06:00,356 --> 00:06:04,900
+muito sobre eles, mas nós vamos falar
+sobre o primeiro hoje, que é o device,
+
+79
+00:06:04,900 --> 00:06:09,444
+e o devices vão aparecer ali,
+e se você está atualmente no iPhone,
+
+80
+00:06:09,444 --> 00:06:13,917
+se você simplesmente muda para ser
+universal, agora sua aplicação vai
+
+81
+00:06:13,917 --> 00:06:18,795
+rodar nos dois. Claro, uma vez que você
+faz isso, você precisa fazer um pouco mais.
+
+82
+00:06:18,795 --> 00:06:23,652
+Que é, setar seu Storyboard e eu vou
+mostrar a vocês como fazer isso na demo
+
+83
+00:06:23,652 --> 00:06:28,290
+para cada uma das duas plataformas. E isso
+é porque as duas plataformas possuem UIs
+
+84
+00:06:28,290 --> 00:06:32,939
+diferentes. Você não vai usar o mesmo
+Storyboard para rodar nas duas plataformas, porque
+
+85
+00:06:32,939 --> 00:06:37,525
+no iPad temos um idioma diferente para UI
+do que no iPhone, ok? Ele tem mais
+
+86
+00:06:37,525 --> 00:06:41,481
+espaço na tela, ele tem coisas como
+popovers que você não tem em um
+
+87
+00:06:41,481 --> 00:06:45,018
+iPhone, ele tem SplitViewController,
+que você pode tipo dividir a tela
+
+88
+00:06:45,018 --> 00:06:49,215
+em duas. Nós vamos mostrar a vocês
+tudo isso na demo de hoje.
+
+89
+00:06:49,215 --> 00:06:54,332
+Certo, mas no seu có-- bom, mas
+o conceito geralmente é: você divide todo
+
+90
+00:06:54,332 --> 00:06:58,699
+o código. Você tem dois Storyboard
+diferentes, mas eles dividem todo o código.
+
+91
+00:06:58,699 --> 00:07:03,392
+Todos os seus ViewControllers tem o mesmo
+código. Então, as vezes você pode ter que ter
+
+92
+00:07:03,392 --> 00:07:08,163
+um "if-then" no seu código para dizer
+se está num iPad, ok? Mas esse é o código
+
+93
+00:07:08,163 --> 00:07:12,723
+que você vai usar para descobrir se você está
+em um iPad. Você também pode fazer perguntas como:
+
+94
+00:07:12,723 --> 00:07:17,648
+"eu estou num SplitViewController agora? Porque
+se você estiver em um SplitViewController, você
+
+95
+00:07:17,648 --> 00:07:22,074
+pode querer fazer algo um pouco
+diferente do que se você não estivesse. Certo?
+
+96
+00:07:22,074 --> 00:07:26,556
+Então vamos ter um jeito mais granular
+de perguntar o que está acontecendo. E existem
+
+97
+00:07:26,556 --> 00:07:31,383
+outras coisas também, como, você pode descobrir:
+... eu sou um controller,
+
+98
+00:07:31,383 --> 00:07:36,124
+"minha self.view está na tela agora? Ela está
+visível?", ok? Isso porque no iPad, uma
+
+99
+00:07:36,124 --> 00:07:40,881
+tela maior, você pode estar na tela mais
+frequentemente, porque múltiplos ViewControllers
+
+100
+00:07:40,881 --> 00:07:45,571
+podem estar na tela ao mesmo tempo, onde em
+um iPhone, você está em um NavigationController,
+
+101
+00:07:45,571 --> 00:07:50,375
+geralmente você não estará na tela a não ser
+que você tenha sido pushado para o topo. Você pode
+
+102
+00:07:50,375 --> 00:07:54,950
+então perguntar ao seu self.view se ele tem
+uma "windows" não nula. Se não for uma window nula,
+
+103
+00:07:54,950 --> 00:07:59,276
+então você deve estar na tela, ok? Você pode
+olhar para quão grande a tela atual é.
+
+104
+00:07:59,276 --> 00:08:03,972
+Embora, você quer ser cuidadoso quando
+faz isso. Você certamente não vai querer olhar
+
+105
+00:08:03,972 --> 00:08:08,171
+para o tamanho exato de uma tela, mas você
+pode dizer: essa tela tem uma certa quantidade
+
+106
+00:08:08,171 --> 00:08:12,569
+de pixels? Especialmente se você estiver,
+sabe, mostrando imagens ou algo assim. Você pode
+
+107
+00:08:12,569 --> 00:08:16,404
+mostrar imagens em modos diferentes
+se você souber que tem um monte de pontos
+
+108
+00:08:16,404 --> 00:08:20,287
+disponíveis. Eu disse pixels, mas eu quis
+realmente dizer pontos. Nós não falamos de pixels,
+
+109
+00:08:20,287 --> 00:08:24,213
+e sim de pontos. E, claro, se você quiser
+pensar em pixels porque você está fazendo
+
+110
+00:08:24,213 --> 00:08:28,041
+algum desenho bem granular, então vocês
+poderiam usar aquele negócio que vocês já
+
+111
+00:08:28,041 --> 00:08:31,927
+conhecem, que é o contentScaleFactor
+da UIView e isso dirá a vocês quantos
+
+112
+00:08:31,927 --> 00:08:36,302
+pixels por ponto, quão alta a resolução
+da tela é. Atualmente, isso significa
+
+113
+00:08:36,302 --> 00:08:40,368
+se é retina ou não. Ok? Certo,
+então no iPad nós usamos alguns
+
+114
+00:08:40,368 --> 00:08:45,156
+idiomas diferentes. Uma das grandes diferenças
+é UISplitViewController. Ok? Então
+
+115
+00:08:45,156 --> 00:08:49,645
+UISplitViewController é apenas um modo
+de pegar uma tela grande e dividí-la em dois
+
+116
+00:08:49,645 --> 00:08:53,799
+espaços que são divididos por dois ViewControllers
+diferentes, o MasterViewController e o
+
+117
+00:08:53,799 --> 00:08:58,691
+DetailViewController. Nós os chamamos
+assim porque geralmente é essa a relação
+
+118
+00:08:58,691 --> 00:09:03,378
+o master é o master e o detail faz
+o que o master disser, mas
+
+119
+00:09:03,378 --> 00:09:07,726
+não precisa ser assim. Eles poderiam
+estar apenas dividindo o espaço igualmente,
+
+120
+00:09:07,726 --> 00:09:11,935
+ou você poderia até tê-los em posições
+invertidas. Nós os chamamos de master e detail,
+
+121
+00:09:11,935 --> 00:09:15,671
+master na esquerda, detail na direita.
+Você apenas os arrasta para o seu
+
+122
+00:09:15,671 --> 00:09:20,062
+Storyboard. Ele vai deixar apenas arrastar
+no seu Storyboard do iPad. Então se você
+
+123
+00:09:20,062 --> 00:09:24,015
+estiver procurando para arrastá-lo e você
+não conseguir achar, isso é porque você não
+
+124
+00:09:24,015 --> 00:09:27,791
+está atualmente olhando para um Storyboard
+de iPad, você deve estar olhando para um
+
+125
+00:09:27,791 --> 00:09:31,507
+Storyboard de iPhone. Ok? Você nem pode
+arrastar um SplitView em um Storyboard de
+
+126
+00:09:31,507 --> 00:09:35,912
+iPhone. SplitViews foram desenhadas para estar
+sempre no top level, em outras palavras,
+
+127
+00:09:35,912 --> 00:09:39,677
+ocupar a tela inteira. SplitView não é
+algo que você tende a colocar dentro
+
+128
+00:09:39,677 --> 00:09:43,684
+de outras coisas como uma TabBar. Ok?
+Você não deveria ter uma tab, e ir na tab e
+
+129
+00:09:43,684 --> 00:09:47,588
+tem uma SplitView lá. Você geralmente
+não faz isso. Ok? Você pode colocar
+
+130
+00:09:47,588 --> 00:09:51,474
+uma tabbar dentro de um dos lados da
+SplitView, mas você geralmente não vai fazer
+
+131
+00:09:51,474 --> 00:09:54,983
+o contrário. O setup para uma SplitView
+é exatamente igual ao TabBarController.
+
+132
+00:09:54,983 --> 00:09:59,217
+Ele tem uma property chamada viewControllers,
+que é um array. A única diferença é que
+
+133
+00:09:59,217 --> 00:10:02,627
+o TabBar pode ter qualquer número
+de controllers nesse array, porque
+
+134
+00:10:02,627 --> 00:10:06,207
+você pode ter qualquer número de tabs,
+vocês se lembram. E no SplitViewController
+
+135
+00:10:06,207 --> 00:10:09,730
+sempre tem exatamente duas. Não faria
+nenhum sentido para ele ter apenas uma
+
+136
+00:10:09,730 --> 00:10:13,543
+e não faria sentido para ele ter
+três ou zero. Ok? São sempre
+
+137
+00:10:13,543 --> 00:10:19,231
+duas. O índice zero no array é o lado
+esquerdo (master) e o que tiver índice
+
+138
+00:10:19,231 --> 00:10:25,159
+um é o lado direito (detail). Para fazer
+uma SplitViewController corretamente, você tem
+
+139
+00:10:25,159 --> 00:10:30,468
+que setar o seu delegate, ok? E isso por causa
+da rotação. O que acontece quando
+
+140
+00:10:30,468 --> 00:10:35,337
+rotaciona? O delegate precisa ser
+envolvido para o SplitView saber o que
+
+141
+00:10:35,337 --> 00:10:40,154
+ele vai fazer quando ele for rotacionado
+de portrait para landscape como vocês verão.
+
+142
+00:10:40,154 --> 00:10:44,797
+Nos geralmente setamos o delegate do SplitView
+no awakeFromNib do ViewController que quer
+
+143
+00:10:44,797 --> 00:10:49,309
+ser o delegate do SplitView. E a razão
+pela qual fazemos isso no awakeFromNib ao invés
+
+144
+00:10:49,309 --> 00:10:53,912
+de viewDidLoad é que nós queremos isso
+muito cedo. Porque o SplitViewController
+
+145
+00:10:53,912 --> 00:10:58,328
+está tentando se configurar e colocar
+os dois ViewControllers no lugar
+
+146
+00:10:58,328 --> 00:11:02,360
+e todo esse tipo de coisa e ele pode
+precisar falar com o seu delegate enquanto
+
+147
+00:11:02,360 --> 00:11:07,534
+ele faz isso. Então essa é um dos trechos de código
+singulares que você vai colcoar no awakeFromNib, ok?
+
+148
+00:11:07,534 --> 00:11:13,244
+Então você diz:
+self.splitViewController.delegate = self. Ok?
+
+149
+00:11:13,244 --> 00:11:18,695
+Todos os ViewControllers, se eles estão
+na SplitView, eles tem uma property neles
+
+150
+00:11:18,695 --> 00:11:24,146
+chamada splitViewController que vai retornar
+a SplitViewController que estão. Assim como
+
+151
+00:11:24,146 --> 00:11:29,834
+a property navigatonController vai retonar
+o NavigationController que seu controller está,
+
+152
+00:11:29,834 --> 00:11:34,602
+se estiver em um. E tudo isso vai retornar
+nil se você não estiver. Se você não estiver
+
+153
+00:11:34,602 --> 00:11:39,115
+em uma dessas coisas. Certo. Então
+o delegate controla como fica o SplitView
+
+154
+00:11:39,115 --> 00:11:43,671
+quando ele está em portrait versus
+landscpae e você, quando trocar
+
+155
+00:11:43,671 --> 00:11:48,093
+para portrait, se você decidir não mostrar
+ambos os lados, se você vai apenas
+
+156
+00:11:48,093 --> 00:11:52,515
+mostrar o lado Detail, então você
+supostamente tem que colocar um BarButtomItem
+
+157
+00:11:52,515 --> 00:11:56,870
+em algum lugar na tela que o user pode pressionar
+para fazer o lado esquerdo aparecer. Ok?
+
+158
+00:11:56,870 --> 00:12:01,455
+É meio que a sua responsabilidade
+fazer isso. No mínimo o seu delegate
+
+159
+00:12:01,455 --> 00:12:05,781
+tem que dizer que em portrait ambos
+os lados são visíveis. Se você
+
+160
+00:12:05,781 --> 00:12:09,947
+não fizer o lance do BarButton, que
+não é trivial de fazer e eu coloquei nos
+
+161
+00:12:09,947 --> 00:12:14,235
+slides, nos slides da aula, como fazer,
+mas eu não vou falar sobre isso na aula, porque
+
+162
+00:12:14,235 --> 00:12:19,309
+é um pouco complicado. Mas vocês pelo menos
+tem que dizer se ambas os lados esquerdo
+
+163
+00:12:19,309 --> 00:12:23,964
+e direito são visíveis em portrait, ok?
+Porque muitas vezes não é. Então
+
+164
+00:12:23,964 --> 00:12:28,273
+qual é a cara deles? Se você quiser
+fazer com que o lado esquerdo nunca seja
+
+165
+00:12:28,273 --> 00:12:33,383
+visível, ok? Então só é visível de você
+pressionar o BarButton, então você tem que
+
+166
+00:12:33,383 --> 00:12:38,213
+implementar esse método
+splitViewControlleri:shouldHideViewController:inOrientation:
+
+167
+00:12:38,213 --> 00:12:43,074
+e você deve retonar YES, o que significa
+sempre esconder o master esquerdo, ok?
+
+168
+00:12:43,074 --> 00:12:47,661
+Então ele vai sempre estar escondido,
+em ambas orientations até que alguém aperte
+
+169
+00:12:47,661 --> 00:12:52,429
+esse BarButton que você é o responsável por
+prover. Outra resposta que você pode dar para isso
+
+170
+00:12:52,429 --> 00:12:56,414
+é NO, ok? NO significa nunca esconder
+o esquerdo, então agora você pode ver em
+
+171
+00:12:56,414 --> 00:13:01,335
+portrait e landscape, eles são ambos visíveis.
+Em ambas orientações. Então não há
+
+172
+00:13:01,335 --> 00:13:05,751
+BarButton envolvido aqui, porque o lado esquerdo,
+o do master, está sempre visível, ok?
+
+173
+00:13:05,751 --> 00:13:10,354
+E o default é apenas escondê-lo em
+portrait e em landscape você deixa ambos
+
+174
+00:13:10,354 --> 00:13:14,824
+na tela, mas em portrait não. E o
+BarButton está aqui. Vocês vêem o
+
+175
+00:13:14,824 --> 00:13:19,023
+BarButton no topo? Vocês vão ter
+que implementar esse BarButton para colocá-lo
+
+176
+00:13:19,023 --> 00:13:23,150
+em algum lugar. Vocês não precisam realmente
+implementá-lo, mas vocês precisam colocá-lo
+
+177
+00:13:23,150 --> 00:13:27,382
+em algum lugar que possa ser pressionado
+quando estiver em portrait, ok? Então, isso é
+
+178
+00:13:27,382 --> 00:13:31,479
+o método de delegate splitView:shouldHideViewController.
+E se você fizer algum desses "should hide",
+
+179
+00:13:31,479 --> 00:13:36,236
+se você retornar YES desses métodos
+should hide em qualquer circunstância,
+
+180
+00:13:36,236 --> 00:13:41,195
+então você tem que fazer o lance do BarButton.
+Isso está coberto nos slides e na documentação
+
+181
+00:13:41,195 --> 00:13:46,065
+da Apple, etc. Eu infelizmente não tenho tempo
+para passar sobre isso
+
+182
+00:13:46,065 --> 00:13:51,522
+na aula. Sim, vocês podem ver
+que ele aparece, oops, vocês podem ver que ele
+
+183
+00:13:51,522 --> 00:13:56,482
+aparece quando você pressiona o BarButton
+e desaparece quando você clica em qualquer
+
+184
+00:13:56,482 --> 00:14:01,740
+outro lugar. Ok? Se você esquecer de setar
+o delegate, você não setá-lo para nada,
+
+185
+00:14:01,740 --> 00:14:07,180
+você vai ter isso: modo portrait, não terá
+left master, não terá BarButton para trazê-lo,
+
+186
+00:14:07,180 --> 00:14:11,256
+ok? Isso não é bom para o usuário final.
+Eles não podem mais acessar
+
+187
+00:14:11,256 --> 00:14:15,442
+o lado esquerdo em portrait. Eles terão que
+rotacionar para landscape e eles podem
+
+188
+00:14:15,442 --> 00:14:19,446
+não perceber que é isso que eles tem
+que fazer. E então eles vão olhar para a UI
+
+189
+00:14:19,446 --> 00:14:23,421
+e vão dizer: WAT? Não faz sentido,
+como eu seto a equação para esse gráfico,
+
+190
+00:14:23,421 --> 00:14:27,991
+certo? Então você tem que fazer o BarButton
+se você for esconder.
+
+191
+00:14:27,991 --> 00:14:32,460
+Certo, normalmente quando algo muda
+no master, tipo, se for uma lista de
+
+192
+00:14:32,460 --> 00:14:36,818
+alguma coisa e você clicou nela,
+o Detail vai updatear. Tipo, mostrar a você
+
+193
+00:14:36,818 --> 00:14:41,347
+uma foto. É isso que vamos fazer na nossa demo
+"shutterbug"(?). Nós vamos clicar em uma
+
+194
+00:14:41,347 --> 00:14:46,085
+foto do Flickr e ela vai aparecer
+no Detail. Ok? Existem duas escolhas
+
+195
+00:14:46,085 --> 00:14:50,780
+para fazer esse update. Ambas são igualmente
+válidas, ok? E você tem que apenas decidir
+
+196
+00:14:50,780 --> 00:14:54,673
+qual você quer fazer. Uma é target-action,
+a outra é segue, ok? Target-action,
+
+197
+00:14:54,673 --> 00:14:58,816
+como isso funciona? Muito simples. Você
+pode ter um método target-action
+
+198
+00:14:58,816 --> 00:15:03,029
+como esse doit. E como você conhece a
+splitViewController que você está, você pode
+
+199
+00:15:03,029 --> 00:15:07,187
+simplesmente perguntar qual é a outra view,
+qual é a detailViewController e então
+
+200
+00:15:07,187 --> 00:15:11,431
+você pode falar com ela, ok? Não poderia
+ser mais simples, certo? Você tem a outra
+
+201
+00:15:11,431 --> 00:15:15,603
+viewController lá, apenas fale com ela
+sempre que tiver o target-action, vai lá
+
+202
+00:15:15,603 --> 00:15:19,717
+e faz o update. Isso é tão simples que eu nem vou
+mostrar como faz isso na demo.
+
+203
+00:15:19,717 --> 00:15:24,105
+Eu vou fazer a do segue. O que
+diferencia, ..., o que não é
+
+204
+00:15:24,105 --> 00:15:28,564
+tão legal no target-action  é que ele fica meio
+escondido no seu Storyboard. Você não
+
+205
+00:15:28,564 --> 00:15:33,596
+vê no Storyboard porque não há nenhum segue
+desenhado do master para o detail.
+
+206
+00:15:33,596 --> 00:15:38,618
+Então, sabe, você tem que saber que existe
+esse target-action acontecendo e por isso
+
+207
+00:15:38,618 --> 00:15:43,428
+algumas pessoas preferem o modo do segue,
+que é o segundo modo, porque ele aparece
+
+208
+00:15:43,428 --> 00:15:48,393
+no Storyboard. Novamente, esse segue
+é um tipo novo de segue. Vocês já conhecem o
+
+209
+00:15:48,393 --> 00:15:53,396
+segue Push. Agora esse é um novo chamado
+Replace. E o que o segue Replace faz é
+
+210
+00:15:53,396 --> 00:15:58,105
+ele substitui o viewController no Detail.
+Você pode também ter um replace que
+
+211
+00:15:58,105 --> 00:16:02,929
+substitui o Master Controller, mas
+geralmente o master vai fazer o segue
+
+212
+00:16:02,929 --> 00:16:07,640
+para o lado direito e substituí-lo.
+E porque ele o substitui? Porque,
+
+213
+00:16:07,640 --> 00:16:12,657
+lembrem-se que eu disse que todo segue
+sempre instanciam um novo ViewController,
+
+214
+00:16:12,657 --> 00:16:17,000
+certo? Um novo. Então se ele vai fazer
+um novo, o que ele vai fazer com ele?
+
+215
+00:16:17,000 --> 00:16:21,478
+Bom, ele tem que substituir o antigo,
+o que estava lá. Agora, porque esse é mais
+
+216
+00:16:21,478 --> 00:16:26,262
+complicado do que o target-action? É por causa
+daquele BarButton, ok? O BarButton que você
+
+217
+00:16:26,262 --> 00:16:30,550
+tem que colocar no detail view
+para trazer o master se ele estiver
+
+218
+00:16:30,550 --> 00:16:34,704
+escondido no modo portrait. Se você fizer
+um replace, você estará substituindo a view
+
+219
+00:16:34,704 --> 00:16:39,201
+que tem aquele botão. Então você tem que
+de algum modo se certificar que o botão seja
+
+220
+00:16:39,201 --> 00:16:43,296
+transferido da antiga para a nova. E novamente,
+nos slides eu falo sobre uma forma geral
+
+221
+00:16:43,296 --> 00:16:48,145
+de fazer isso, mas é um pouco
+complicado, ok? Então esse é o modo
+
+222
+00:16:48,145 --> 00:16:52,702
+segue. Agora, se você não fizer a coisa
+onde tem um BarButton, que é o que eu vou
+
+223
+00:16:52,702 --> 00:16:56,780
+fazer na demo, então o replace é bem legal,
+porque você apenas-- é o
+
+224
+00:16:56,780 --> 00:17:01,041
+prepareForSegue, é o que vocês estão
+acostumados. É isso que nós vamos fazer
+
+225
+00:17:01,041 --> 00:17:05,440
+na demo. E provavelmente é isso
+que vocês vão querer fazer, o segue,
+
+226
+00:17:05,440 --> 00:17:09,896
+se vocês não estarão escondendo
+o Master em alguma orientação da SplitView.
+
+227
+00:17:09,897 --> 00:17:15,353
+Vamos falar sobre combinações. Por exemplo,
+você pode colocar um navigation controller e um
+
+228
+00:17:15,353 --> 00:17:20,378
+TabBarController juntos na mesma UI
+ou um SplitViewController e um TabBar
+
+229
+00:17:20,378 --> 00:17:25,503
+controller? E a resposta é sim, você pode
+misturar essas coisas mas elas só encaixam
+
+230
+00:17:25,503 --> 00:17:30,716
+de algumas maneiras. Por exemplo, navigation
+controller sempre tem que estar dentro
+
+231
+00:17:30,716 --> 00:17:35,712
+da tabbar. Você não deveria navegar nunca
+para algo e ver uma tabbar, como eu disse
+
+232
+00:17:35,712 --> 00:17:40,029
+antes. Então é sempre nessa direção.
+A mesma coisa com o SplitViewController.
+
+233
+00:17:40,029 --> 00:17:44,446
+Você pode ter um tabbar controller
+no master ou no detail. Mas você
+
+234
+00:17:44,447 --> 00:17:48,574
+nunca teria um tabbar controller
+no top level e quando você clica
+
+235
+00:17:48,574 --> 00:17:52,803
+em uma das tabs, você teria um SplitView.
+Pelo menos, isso seria uma UI não usual.
+
+236
+00:17:52,803 --> 00:17:57,700
+Eu acho que eles tentaram fazer com que isso
+fosse possível e talvez dê certo no
+
+237
+00:17:57,700 --> 00:18:02,390
+6.0, não estou 100% certo, mas, tipicamente,
+você vê a tabbar ou no lado esquerdo ou no
+
+238
+00:18:02,390 --> 00:18:06,893
+direito da SplitView. Ok? E é assim que fica,
+a propósito, combinando uma
+
+239
+00:18:06,893 --> 00:18:11,756
+navigation controller e uma tabbar.
+Certo, a próxima coisa de iPad que é iPad-only
+
+240
+00:18:11,756 --> 00:18:15,976
+são Popovers. Ok? Um Popover tem 
+essa cara. Ok? Eu tenho um BarButton aí
+
+241
+00:18:15,976 --> 00:18:20,714
+e eu pressiono esse BarButton e o
+viewcontroller aparece na tela, essa é
+
+242
+00:18:20,714 --> 00:18:25,406
+um CalculatorKeypadViewController.
+E ele tem tipo uma borda ao redor, com uma
+
+243
+00:18:25,406 --> 00:18:30,122
+pequena seta no tipo. Vocês vêem a seta
+apontando na direção do botão que fez
+
+244
+00:18:30,122 --> 00:18:36,084
+com que ele aparecesse, ok? Isso é um
+popover. É assim que é a cara dele.
+
+245
+00:18:36,084 --> 00:18:41,494
+Certo? O titleBar ali que diz "Calculator"?
+Isso é colocado lá pelo CalculatorViewController.
+
+246
+00:18:41,494 --> 00:18:47,405
+Ok? O a borda do popover é
+bem fina. Ele confia no ViewController
+
+247
+00:18:47,405 --> 00:18:53,827
+deontro dele para fazer todo
+o desenho, ok? 
+
+248
+00:18:53,827 --> 00:19:00,067
+UIPopoverController. Essa classe não é um
+UIViewController, ok? Ela é apenas
+
+249
+00:19:00,067 --> 00:19:06,345
+uma subclasse de NSObject e ela controla
+um UIViewController, ok? Essa UIViewController
+
+250
+00:19:06,345 --> 00:19:12,728
+que ele controla é chamada de
+contentViewController. Porque é o
+
+251
+00:19:12,728 --> 00:19:19,037
+conteúdo do popover, ok? Os popovers
+geralmente são "segueados". Então você
+
+252
+00:19:19,037 --> 00:19:25,213
+tem um ViewController no seu Storyboard.
+você tem outro bem aqui. Alguma coisa
+
+253
+00:19:25,213 --> 00:19:29,836
+dentro do primeiro ViewController, um
+BarButtonItem ou um botão ou algo assim, você
+
+254
+00:19:29,836 --> 00:19:34,321
+CTRL + arrasta dele para o outro
+ViewController e então você escolhe o tipo
+
+255
+00:19:34,321 --> 00:19:38,042
+do segue. Ao inves de ser um PushSegue,
+ou um ReplaceSegue, ele é um
+
+256
+00:19:38,042 --> 00:19:42,766
+PopoverSegue. Então esse é agora o terceiro
+tipo de segue que vocês conhecem. Além de push
+
+257
+00:19:42,766 --> 00:19:47,783
+e replace, vocês tem o PopoverSegue. E se
+vocês setarem esse tipo de segue, então quando
+
+258
+00:19:47,783 --> 00:19:52,711
+o usuário pressionar aquele botão, um popover
+vai aparecer com essa pequena seta apontando
+
+259
+00:19:52,711 --> 00:19:57,870
+para o botão e dentro vai ter
+aquele outro view controller para o qual
+
+260
+00:19:57,870 --> 00:20:03,479
+foi segueado. Faz sentido? Bem, bem direto.
+No seu prepareForSegue, o primeiro argumento
+
+261
+00:20:03,479 --> 00:20:08,705
+para preparar para o segue é o segue
+e o segue vai ser do tipo
+
+262
+00:20:08,705 --> 00:20:14,353
+UIStoryboardPopoverSegue.
+E então você pode fazer um cast do segue para isso.
+
+263
+00:20:14,353 --> 00:20:18,724
+E então quando você fizer isso, vai ter
+uma property ali. popoverController.
+
+264
+00:20:18,724 --> 00:20:23,212
+Então você pode na verdade
+pegar o popoverController. Agora, por que você
+
+265
+00:20:23,212 --> 00:20:27,687
+precisa do popoverController? Você geralmente
+não precisa dele. Eu vou mostrar na demo
+
+266
+00:20:27,687 --> 00:20:31,513
+a razão que você pode precisar dele. Mas
+uma coisa que você pode fazer com o popoverController,
+
+267
+00:20:31,513 --> 00:20:35,515
+o controller atual, é: você pode
+perguntar se o popover está visível,
+
+268
+00:20:35,515 --> 00:20:39,285
+você pode fazer com que o popover seja dispensado,
+coisas assim, ok? Todo esse controle
+
+269
+00:20:39,285 --> 00:20:44,175
+acontece através do popover. E você pode
+não precisar dessas coisas, mas se você
+
+270
+00:20:44,175 --> 00:20:48,782
+estiver segueando, é assim que você o obtém.
+Do primeiro argumento do prepareForSegue.
+
+271
+00:20:48,782 --> 00:20:53,387
+Você também pode colocar popovers no código,
+o que é bem comum também. Eu dou o exemplo
+
+272
+00:20:53,387 --> 00:20:58,132
+do iBooks. Se você for no iBooks e você selecionar
+uma palavra... talvez não o iBooks, ele faz
+
+273
+00:20:58,132 --> 00:21:02,877
+outro tipo de coisa... mas digamos que
+você tem um texto no seu app, você seleciona
+
+274
+00:21:02,877 --> 00:21:07,808
+uma palavra e então você quer a definição
+dessa palavra. Então você pode colocar um
+
+275
+00:21:07,808 --> 00:21:12,922
+pequeno DictionaryViewController em um
+popover que aponta para essa palavra, ok?
+
+276
+00:21:12,922 --> 00:21:18,172
+Então não é um botão que está trazendo essa coisa,
+talvez seja um gesture ou outra coisa.
+
+277
+00:21:18,172 --> 00:21:23,450
+Então você quer ser capaz de fazer isso
+em código. Como você faz em código? Bom,
+
+278
+00:21:23,450 --> 00:21:28,353
+você cria um UIPopoverController com o seu
+alloc + init. O seu designated initializer.
+
+279
+00:21:28,353 --> 00:21:32,643
+O designated initializer recebe um argumento
+que é o ViewController que você quer que
+
+280
+00:21:32,643 --> 00:21:36,727
+apareça no popover, o que faz sentido.
+E então você tem duas escolhas para
+
+281
+00:21:36,727 --> 00:21:40,744
+popovorá-lo. Você pode fazer o popover
+de um BarButtonItem, certo? Coisas no toolbar
+
+282
+00:21:40,744 --> 00:21:45,168
+que eu estava falando antes. Ou você pode
+fazer o popover de um retângulo arbitrário em
+
+283
+00:21:45,168 --> 00:21:49,503
+qualquer view. Então, no caso do texto, seria
+o retângulo que envolve a palavra que
+
+284
+00:21:49,503 --> 00:21:53,932
+você está tentando achar. Qualquer retângulo
+arbitrário em qualquer view, você pode popovar
+
+285
+00:21:53,932 --> 00:21:58,421
+disso ou de um BarButtonItem. Quando você faz
+qualquer uma dessas coisas, percebam que
+
+286
+00:21:58,421 --> 00:22:03,061
+vocês dizem o permittedArrowDirections?
+Essa é a pequena seta que vai no topo do popover
+
+287
+00:22:03,061 --> 00:22:07,519
+que aponta para a coisa que está
+sendo trazida. Restringindo onde ela pode
+
+288
+00:22:07,519 --> 00:22:12,024
+apontar, você restringe onde o seu popover
+pode aparecer, certo? Porque se você disser
+
+289
+00:22:12,024 --> 00:22:16,434
+que essa seta pode apontar apenas para a esquerda,
+então o popover não vai popar embaixo da coisa
+
+290
+00:22:16,434 --> 00:22:20,697
+e apontar para cima, ele vai tentar achar
+espaço na direita. Ele pode não ser capaz,
+
+291
+00:22:20,697 --> 00:22:24,985
+e nesse caso, sabe, ele vai tentar fazer fazer
+o melhor possível, mas seria um design ruim
+
+292
+00:22:24,985 --> 00:22:29,081
+da sua parte se você criar uma UI
+onde o popover não pode popovar
+
+293
+00:22:29,081 --> 00:22:33,407
+par onde você quer.
+Mas o arrowDirection é tipo como
+
+294
+00:22:33,407 --> 00:22:37,313
+você controla onde você geralmente vai
+querer ir e, claro, pode ter múltiplas
+
+295
+00:22:37,313 --> 00:22:41,841
+direções. Você poderia dizer embaixo
+ou esquerda, sabe, mas não direita, etc.
+
+296
+00:22:41,841 --> 00:22:45,684
+E "animated", você quase sempre diz YES,
+é se o negócio vai tipo fazer um fade
+
+297
+00:22:45,684 --> 00:22:49,613
+ou se vai PIN aparecer na tela.
+Nós quase sempre queremos que tenha animação
+
+298
+00:22:49,613 --> 00:22:53,892
+porque é irritante ver as coisas implesmente
+poparem. A propósito, quando eu ponho um slide
+
+299
+00:22:53,892 --> 00:22:58,170
+como esse e eu mostro a chamada de um método
+e coloco casts na frente de cada coisa,
+
+300
+00:22:58,170 --> 00:23:02,019
+eu estou apenas fazendo isso para que vocês
+saibam que tipos de argumentos são. É tipo
+
+301
+00:23:02,019 --> 00:23:05,252
+... algumas pessoas olham para esse código
+e perguntam: por que eu tenho que 
+
+302
+00:23:05,252 --> 00:23:09,031
+fzer um cast UIPopoverArrowDirection?
+Você não está fazendo o casting aqui, eu estou
+
+303
+00:23:09,031 --> 00:23:14,644
+só mostrando os tipos. Entendem o que
+eu estou dizendo? Ok. Uma coisa
+
+304
+00:23:14,644 --> 00:23:21,274
+sorbre o popover, se você apresenta ele
+em código, você não faz segue, você tem que
+
+305
+00:23:21,274 --> 00:23:28,984
+manter um ponteiro strong para esse popover
+até que ele seja dismissed, ok? Para o PopoverController.
+
+306
+00:23:28,984 --> 00:23:34,112
+Apenas apresentando a coisa não signfica que
+alguém vai ter um ponteiro strong para
+
+307
+00:23:34,112 --> 00:23:38,337
+o PopoverController. Alguém pode ter
+um ponteiro strong para o UIViewController,
+
+308
+00:23:38,337 --> 00:23:42,562
+mas não necessariamente para o
+PopoverController, então você precisa manter
+
+309
+00:23:42,562 --> 00:23:46,989
+um ponteiro strong para ele até que o popover
+seja dismissed. Vamos falar sobre como
+
+310
+00:23:46,989 --> 00:23:52,170
+o popover pode ser dismissed. O que você poderia
+fazer a respeito? Você poderia ter o popover
+
+311
+00:23:52,170 --> 00:23:57,063
+em alguma property, alguma property
+strong sua. Então você diria
+
+312
+00:23:57,063 --> 00:24:02,502
+self.popover = ao popover, ao invés de
+apenas uma variável local "popover =". Então,
+
+313
+00:24:02,502 --> 00:24:06,886
+como dispensamos um popover? Bom, o user
+dispensa um popover simplesmente tocando
+
+314
+00:24:06,886 --> 00:24:11,939
+qualquer lugar fora do popover.
+Pergunta?
+
+315
+00:24:11,939 --> 00:24:15,830
+>> [Estudante perguntando]
+
+316
+00:24:15,830 --> 00:24:19,222
+>> A pergunta é: existe algum modo de
+manter um ponteiro strong para algo
+
+317
+00:24:19,222 --> 00:24:22,948
+sem declarar uma property? E a resposta é,
+sem fazer uma static ou algo assim,
+
+318
+00:24:22,948 --> 00:24:26,725
+não, não há outra maneira, ok? É assim
+que você mantém um ponteiro strong
+
+319
+00:24:26,725 --> 00:24:30,107
+para alguma coisa. E você iria querer
+fazer isso de qualquer jeito, porque você
+
+320
+00:24:30,107 --> 00:24:33,455
+iria querer que o ponteiro strong
+viva enquanto o objeto no qual ele está
+
+321
+00:24:33,455 --> 00:24:37,807
+interessado vive. Vê o que eu quero dizer?
+E se você fizer "static" ou algo assim,
+
+322
+00:24:37,807 --> 00:24:43,387
+então ele viveria para sempre. Você
+não quer isso. Ok. Voltando.
+
+323
+00:24:43,387 --> 00:24:48,481
+Dispensando. Se um user toca em qualquer
+lugar fora do popover, ele vai
+
+324
+00:24:48,481 --> 00:24:53,136
+dispensar o popover. Exceto se o user
+tocar uma view que está no array do
+
+325
+00:24:53,136 --> 00:24:58,382
+popoverController de views "ignoradas", 
+ok? Então, o popover tem esse array
+
+326
+00:24:58,382 --> 00:25:03,286
+que é um monte de objetos UIView.
+Qualquer uma das views ali, se alguém
+
+327
+00:25:03,286 --> 00:25:08,769
+tocar, ele não vai dispensar a coisa.
+Qualquer outra view, ele vai. Agora, por que
+
+328
+00:25:08,769 --> 00:25:14,175
+ele faz isso? Por exemplo, o caso do BarButton,
+você clica na coisa no BarButton, traz
+
+329
+00:25:14,175 --> 00:25:19,231
+o popover, você clica em outro BarButtonItem,
+você quer dispensá-lo
+
+330
+00:25:19,231 --> 00:25:23,982
+e trocar por outra? Ou você quer
+fazer o user clicar em outro lugar,
+
+331
+00:25:23,982 --> 00:25:27,910
+dispensar essa aqui e então
+ir clicar no BarButton? Sabe,
+
+332
+00:25:27,910 --> 00:25:31,804
+a feature esta aí. Eu tenho que falar
+sobre ela, porque vocês vão se confunfir
+
+333
+00:25:31,804 --> 00:25:35,784
+caso contrário, mas eu não usaria muito isso
+pessoalmente. Eu acho que quando
+
+334
+00:25:35,784 --> 00:25:40,044
+o user clica fora do popover eles querem
+sair e devem haver o mínimo de excessões
+
+335
+00:25:40,044 --> 00:25:45,430
+em relação isso quanto possível. Você também
+pode dispensar o popover em código, enviando
+
+336
+00:25:45,430 --> 00:25:50,192
+uma mensagem ao PopoverController
+dismissPopoverAnimated. Uma coisa sobre
+
+337
+00:25:50,192 --> 00:25:55,010
+esse método, você geralmente quer que o
+objeto que chamou para apresentar chame
+
+338
+00:25:55,010 --> 00:25:59,143
+o dismiss, ok? Existe uma tentação
+real aqui para fazer com que o ViewController
+
+339
+00:25:59,143 --> 00:26:04,122
+que foi apresentado, aquele que está dentro
+do popover, que ele tenta fazer
+
+340
+00:26:04,122 --> 00:26:08,419
+o dismiss. Esse não é o modo que você
+quer fazer isso. Ok? O present e o dismiss
+
+341
+00:26:08,419 --> 00:26:12,810
+devem ser feitos pelo mesmo objeto.
+Então como que esse objeto que apresentou
+
+342
+00:26:12,810 --> 00:26:17,512
+algo no popover vai saber que a coisa
+no popover já acabou? Para que ele possa
+
+343
+00:26:17,512 --> 00:26:21,728
+dispensá-lo? E a resposta é: ele vai usar
+delegation. Ok? E nós não falamos
+
+344
+00:26:21,728 --> 00:26:25,312
+muito sobre usar delegation desse jeito,
+mas ViewControllers também podem
+
+345
+00:26:25,312 --> 00:26:29,792
+ter delegates que eles vão usar para
+que sejam avisados: é, eu acabei.
+
+346
+00:26:29,792 --> 00:26:33,932
+Então, se você é um View Controller--
+se você é o ViewController A e você apresentou
+
+347
+00:26:33,932 --> 00:26:37,800
+o ViewController B em um popover.
+Então, o ViewController A setaria ele mesmo
+
+348
+00:26:37,800 --> 00:26:41,788
+para ser o delegate do ViewControllerB.
+E quando o ViewController B terminasse, ele
+
+349
+00:26:41,788 --> 00:26:45,665
+enviaria uma mensagem de delegate de volta
+ao ViewController A. E o ViewController A poderia
+
+350
+00:26:45,665 --> 00:26:50,749
+dismiss o popover. Ok? Agora, por que nós
+fazemos dsse jeito? Porque o ViewController B,
+
+351
+00:26:50,749 --> 00:26:54,489
+que vive no popover, el enão quer saber
+que ele está em um popover. Ele quer funcionar
+
+352
+00:26:54,489 --> 00:26:58,269
+em um popover, ele quer funcionar
+em uma SplitView, ele quer funcionar
+
+353
+00:26:58,269 --> 00:27:02,402
+em um navigation controller, ele quer funcionar
+em uma tabbat. Vêem o que estou dizendo? Ele
+
+354
+00:27:02,402 --> 00:27:06,402
+quer ser genérico. Um ViewController
+reusável. Então é ok par ele ter um delegate,
+
+355
+00:27:06,402 --> 00:27:10,256
+que ele vai dizer o que está acontecendo:
+é, alguém clicou, alguém clicou em cancel.
+
+356
+00:27:10,256 --> 00:27:14,386
+Esse tipo de coisa. Então é um pouco
+diferente se ele estivesse tentando
+
+357
+00:27:14,386 --> 00:27:18,044
+descobrir se ele está em um popover
+e quem é o controller desse popover,
+
+358
+00:27:18,044 --> 00:27:21,879
+e dismissing ele mesmo e também
+o ViewController A não saberia quando ele
+
+359
+00:27:21,879 --> 00:27:25,710
+foi dismissed, se o ViewController B
+tivesse dismissed por conta própria, ok?
+
+360
+00:27:25,710 --> 00:27:31,358
+Então é assim que fazemos, certo? Quem
+apresenta deve fazer o dismiss. O mesmo objeto,
+
+361
+00:27:31,358 --> 00:27:37,595
+ok? Que é o Controller A no meu exemplo.
+O popover tem um delegate, o UIPopoverController,
+
+362
+00:27:37,595 --> 00:27:43,553
+você pode dizer que ele tem um delegate e
+ele vai te dizer sempre que um user
+
+363
+00:27:43,553 --> 00:27:48,252
+o dispensou. Ok? Então sempre que o user
+clicar, tocar em algum outro lugar e dispensá-lo,
+
+364
+00:27:48,252 --> 00:27:52,317
+ele vai enviar isso para o delegate
+do PopoverController. Então você pode--
+
+365
+00:27:52,317 --> 00:27:56,567
+o ViewController A, você pode receber
+isso também. Então, você você vai saber
+
+366
+00:27:56,567 --> 00:28:00,907
+se é hora de dismissá-lo programaticamente,
+e você também vai descobrir se o user
+
+367
+00:28:00,907 --> 00:28:06,577
+fez o dismiss tocando, ok? Tocando
+fora do popover é tipo um cancel.
+
+368
+00:28:06,577 --> 00:28:12,113
+É como se tocássemos o botão de cancel.
+É por isso que nós nunca temos um botão de
+
+369
+00:28:12,113 --> 00:28:17,420
+cancel dentro de um PopoverViewController,
+porque cancelar é clicar em qualquer outro lugar.
+
+370
+00:28:17,420 --> 00:28:22,896
+Você não precisa de um cancel button
+dentro de um Popover, ok?
+
+371
+00:28:22,896 --> 00:28:26,965
+Certo, então vamos fazer essa demo. O que
+eu vou fazer é: vou construir uma aplicação
+
+372
+00:28:26,965 --> 00:28:31,868
+universal do "Shutterbug". O negócio que
+construímos da última vez. Eu vou apenas fazê-lo
+
+373
+00:28:31,868 --> 00:28:36,854
+ser universal e eu vou mostrar a vocês
+o SplitViewController, eu vou mostrar
+
+374
+00:28:36,854 --> 00:28:41,581
+o Popover e eu vou mostrar a vocês a toolbar
+também, enquanto estamos aqui. E hoje, pela
+
+375
+00:28:41,581 --> 00:28:46,018
+primeira vez eu vou tentar fazer a demo
+em um device real. Eu vou tentar rodar
+
+376
+00:28:46,018 --> 00:28:50,680
+em um device real. É um pouco mais fácil
+para vocês verem. Infelizmente, esse device,
+
+377
+00:28:50,680 --> 00:28:55,152
+como vocês podem ver, está um pouco
+pra fora. Então no modo landscape vocês não vão
+
+378
+00:28:55,152 --> 00:28:59,389
+ver o lado direito, então eu vou tentar
+fazer toda a UI ficar no meio. E portrait
+
+379
+00:28:59,389 --> 00:29:06,893
+está ok. Bom, Universal Shutterbug,
+vamos ver aqui. Aqui.
+
+380
+00:29:06,893 --> 00:29:14,623
+Certo, então eu vou voltar
+ao Shutterbug, exatamente como deixamos antes.
+
+381
+00:29:14,623 --> 00:29:23,324
+E vocês podem ver bem aqui que eu tenho
+essa UI, que é totalmente dependente do iPhone.
+
+382
+00:29:23,324 --> 00:29:29,151
+Ok? Tudo está em um grande,
+um navigation controller. E se eu tentar fazer
+
+383
+00:29:29,151 --> 00:29:33,850
+essa UI rodar no iPad, ela vai ter
+essa lista gigantesca, lista com scroll,
+
+384
+00:29:33,850 --> 00:29:38,876
+sabe? Com pequenos nomes de coisas nela.
+Simplesmente vai ficar fora de proporção.
+
+385
+00:29:38,876 --> 00:29:43,727
+Então, ao invés disso, eu quero usar
+uma tela mais de acordo e eu vou usar uma SplitView.
+
+386
+00:29:43,727 --> 00:29:47,503
+Ok? Então no lado esquerdo, o lado master,
+eu vou colocar uma lista de fotos,
+
+387
+00:29:47,503 --> 00:29:51,261
+e na direita, eu vou ter a foto
+que eu estou visualizando, ok? E quando
+
+388
+00:29:51,261 --> 00:29:55,168
+eu clicar na esquerda, ela vai aparecer
+na direita, ok? É isso que eu vou fazer.
+
+389
+00:29:55,168 --> 00:29:58,843
+Agora, como fazemos isso? Bom, como eu disse,
+nós vamos ter Storyboards totalmente
+
+390
+00:29:58,843 --> 00:30:02,794
+diferentes para o iPad do que você tem
+para o iPhone. Então, o modo que fazemos isso é
+
+391
+00:30:02,794 --> 00:30:07,400
+nós vamos aqui no topo, vêem "Shutterbug"?
+Clico no projeto e aqui nós temos
+
+392
+00:30:07,400 --> 00:30:12,851
+alguns atributos do projeto
+que nós vamos olhar no decorrer
+
+393
+00:30:12,851 --> 00:30:18,170
+do trimestre. Mas um deles aqui é esse
+negócio de device e se eu clicar no Devices
+
+394
+00:30:18,170 --> 00:30:23,501
+eu posso trocar de app iPhone-only
+para ser Universal. Agora, quando eu faço isso,
+
+395
+00:30:23,501 --> 00:30:28,257
+aqui em baixo eu tenho uma seçãozinha nova
+chamada "iPad Deployment Info" E uma das
+
+396
+00:30:28,257 --> 00:30:33,043
+coisas mais importantes sobre o
+"iPad Deployment Info" é o seu Storyboard.
+
+397
+00:30:33,043 --> 00:30:38,022
+E agora vocês podem ver que ele está usando
+o mesmo Storyboard, MainStoryboard. E se eu
+
+398
+00:30:38,022 --> 00:30:42,795
+vier pra cima, aqui está o do iPhone.
+Também está usando o MainStoryboard. E isso é ruim.
+
+399
+00:30:42,795 --> 00:30:47,281
+Você nunca quer um app Universal,
+a não ser que seja um app muito trivial,
+
+400
+00:30:47,281 --> 00:30:52,351
+que tem o mesmo Storyboard para ambos.
+Então, primeiro, para deixar as cosias mais
+
+401
+00:30:52,351 --> 00:30:57,972
+limpas e mais entendíveis, eu vou
+renomear esse MainStoryboard para
+
+402
+00:30:57,972 --> 00:31:03,095
+iPhone.storyboard. Esse é o Storyboard
+do meu iPhone. Porque MainStoryboard
+
+403
+00:31:03,095 --> 00:31:08,100
+não faz sentido quando eu tenho dois
+MainStoryboards, o do iPhone e o do iPad.
+
+404
+00:31:08,100 --> 00:31:13,634
+Quando eu mudo isso, eu preciso voltar aqui
+para esse mesmo lugar e mudar o MainStoryboard
+
+405
+00:31:13,634 --> 00:31:18,721
+do iPhone, para "iPhone". Ok?
+Ele olha todos os seus Storyboards
+
+406
+00:31:18,721 --> 00:31:24,366
+e escolhe esse, ok? Agora, como eu faço
+um Storyboard para o meu iPad? Bom,
+
+407
+00:31:24,366 --> 00:31:30,095
+como para tudo que queremos um novo arquivo,
+nós vamos em New File, ok? Mas ao invés
+
+408
+00:31:30,095 --> 00:31:35,526
+de fazer uma Objective-C class, nós vamos
+aqui em User Interface. E vocês podem ver
+
+409
+00:31:35,526 --> 00:31:41,078
+a primeira coisa é Storyboard. Certo,
+User Interface Storyboard. Clica em next,
+
+410
+00:31:41,078 --> 00:31:46,540
+aqui está. Eu quero um Storyboard
+de iPad, ok? Clico em next. Está perguntando
+
+411
+00:31:46,540 --> 00:31:51,686
+onde eu quero coloca-lo. Eu vou apenas
+colocá-lo no lugar padrão. Eu vou
+
+412
+00:31:51,686 --> 00:31:56,866
+chamá-lo de iPad. Colocar no Shutterbug.
+Na verdade deveria fazer isso,
+
+413
+00:31:56,866 --> 00:32:01,744
+para que vocês vejam para onde está indo. Certo?
+Esse é o nosso projeto, certo? Vamos colocá-lo
+
+414
+00:32:01,744 --> 00:32:06,589
+aí. Agora temos o Storyboard do iPad,
+que está em branco. Não tem nada
+
+415
+00:32:06,589 --> 00:32:11,693
+nele. E nós ainda temos o nosso
+do iPhone também, ok? Vamos voltar
+
+416
+00:32:11,693 --> 00:32:17,637
+ao nosso projeto aqui agora, nós criamos
+esse novo Storyboard de iPad. Agora
+
+417
+00:32:17,637 --> 00:32:23,527
+nós precisamos ir aqui embaixo onde dizemos
+qual é o Storyboard do iPad e dizer
+
+418
+00:32:23,527 --> 00:32:30,204
+que queremos o "iPad". Ok? Agora,
+se eu rodar agora, estará em branco. E está,
+
+419
+00:32:30,204 --> 00:32:35,720
+ok? Está em branco porque temos
+um Storyboard em branco. Então vamos agora
+
+420
+00:32:35,720 --> 00:32:41,537
+para esse Storyboard e fazê-lo não ser
+em branco. Vamos colocar alguma coisa nele.
+
+421
+00:32:41,537 --> 00:32:47,564
+Por exemplo, vamos colocar uma SplitView
+nele. Ok? Aqui está um SplitViewController.
+
+422
+00:32:47,564 --> 00:32:53,486
+Se eu arrastá-lo para o Storyboard,
+eu tenho esse grande SplitViewController.
+
+423
+00:32:53,486 --> 00:32:59,799
+E ele já me dá um master que é
+um navigation controller e uma
+
+424
+00:32:59,799 --> 00:33:06,237
+tableview em branco e também me deu
+o Detail. Eu vou deletar esses, ok?
+
+425
+00:33:06,237 --> 00:33:12,087
+E eu vou até o meu Storyboard do
+iPhone, então vou selecioná-los aqui
+
+426
+00:33:12,087 --> 00:33:18,008
+e copiá-los. Então vou voltar para o meu
+"iPad" e colar, ok? E quando faço isso,
+
+427
+00:33:18,008 --> 00:33:23,905
+eu obtenho eles aqui. Está meio que
+uma bagunça. Eles estão realmente grandes.
+
+428
+00:33:23,905 --> 00:33:29,552
+Por que isso está acontecendo? Porque eles
+estão assim? Bom, eles estão assim porque
+
+429
+00:33:29,552 --> 00:33:35,042
+se nós realmente tivéssemos um navigation
+controller com essas duas coisas nele, eles seriam
+
+430
+00:33:35,042 --> 00:33:40,250
+grandes. Eles seriam tipo do tamanho
+da tela inteira. Mas na verdade, o que eu quero
+
+431
+00:33:40,250 --> 00:33:45,458
+para esses 2 é ser o Master do meu
+SplitView e eu quero esse aqui para ser
+
+432
+00:33:45,458 --> 00:33:50,689
+o Detail. Então eu vou fazer isso com
+CTRL + arrastar, assim como o TabBarController,
+
+433
+00:33:50,689 --> 00:33:56,154
+certo? Estou segurando o CTRL. Arrastando
+para cá. E vocês podem ver embaixo que
+
+434
+00:33:56,154 --> 00:34:01,017
+eu tenho a opção de fazer esse o Master
+ou o Detail. Então vou fazê-lo o Master.
+
+435
+00:34:01,017 --> 00:34:06,131
+Agora está pequeno porque o Master é esse
+menor do lado esquerdo. Mas eu vou
+
+436
+00:34:06,131 --> 00:34:10,502
+pegar esse cara e fazê-lo Detail
+fazendo assim e agora ele ficou grande
+
+437
+00:34:10,502 --> 00:34:14,924
+porque ele sabe que ele vai ser
+o cara da direita. Mas, tem uma coisa
+
+438
+00:34:14,924 --> 00:34:19,685
+interessante acontecendo aqui. Olhem o que
+acontece se eu clicar nesse aqui. Prontos?
+
+439
+00:34:19,685 --> 00:34:25,186
+Ele fica pequeno de novo. Mas se eu clicar aqui,
+ele fica grande. Por que isso está acontecendo?
+
+440
+00:34:25,186 --> 00:34:30,778
+Bom, isso acontece porque, esse segue,
+bem aqui, ok? É um PushSegue.
+
+441
+00:34:30,778 --> 00:34:36,327
+Eu copiei e colei do iPhone. Então,
+esse cara acha que ele vai ser pushado,
+
+442
+00:34:36,327 --> 00:34:42,189
+então ele fica do mesmo tamanho que ele.
+Esse aqui, esse é um segue de relacionamento
+
+443
+00:34:42,189 --> 00:34:48,130
+bem aqui, o de Detail, então ele acha
+que vai ser grande, ok? Bom, vamos arrumar isso
+
+444
+00:34:48,130 --> 00:34:54,070
+mudando esse segue bem aqui, para deixar
+de ser um PushSegue e ser um ReplaceSegue.
+
+445
+00:34:54,070 --> 00:34:59,458
+Ok? O ReplaceSegue é o segue da
+SplitView que diz: substitua,
+
+446
+00:34:59,458 --> 00:35:04,438
+nesse caso, o lado do Detail, cada vez
+que fizermos esse segue. Então, o mesmo
+
+447
+00:35:04,438 --> 00:35:10,016
+segue, está apenas fazendo algo diferente.
+Ao invés de Pushing, ele vai fazer esse
+
+448
+00:35:10,016 --> 00:35:15,511
+Replace da SplitView. E agora, não importa
+em qual eu clique, está do tamanho certo,
+
+449
+00:35:15,511 --> 00:35:21,744
+o tamanho que eu espero. Ok?
+Todo mundo entendeu o que eu fiz aqui
+
+450
+00:35:21,744 --> 00:35:29,074
+mudando esse segue? Ok, então vamos ver,
+eu não acho que tenha algo mais que
+
+451
+00:35:29,074 --> 00:35:35,537
+precisamos fazer pra fazer isso rodar.
+Então vamos apenas rodar. Senão, vamos descobrir
+
+452
+00:35:35,537 --> 00:35:41,272
+em breve. Então, está rodando e nós temos
+apenas um quadrado grande e branco,
+
+453
+00:35:41,272 --> 00:35:46,280
+ok? E por que isso? Porque quando
+estamos no modo portrait nós não
+
+454
+00:35:46,280 --> 00:35:51,809
+implementamos os delegates do SplitView,
+certo? EntÃo ele nÃo sabe o que fazer.
+
+455
+00:35:51,809 --> 00:35:57,088
+Ele está fazendo o default que é
+esconder o Master. Ok? Então nós não podemos
+
+456
+00:35:57,088 --> 00:36:02,636
+ver o Master. Agora, se eu rotacionar para
+landscape, agora eu consigo ver o Master, vêem?
+
+457
+00:36:02,636 --> 00:36:08,242
+E se eu clicar em algo aqui, como o
+"Red Sky At Night", então eu obtenho aquele
+
+458
+00:36:08,242 --> 00:36:13,701
+Replace, que substitiu o lado direito. Agora,
+eu tenho meu ImageViewController aqui
+
+459
+00:36:13,701 --> 00:36:19,133
+na direita. E eu posso clicar em outra coisa,
+"Brighten the Day" aqui embaixo. Mesma coisa,
+
+460
+00:36:19,133 --> 00:36:25,770
+ok? Faz sentido o que está acontencendo
+aqui, ok? E se eu voltar para portrait,
+
+461
+00:36:25,770 --> 00:36:32,202
+eu ainda tenho a imagem, mas eu não tenho
+o lado esquerdo poque eu não implementei
+
+462
+00:36:32,202 --> 00:36:38,741
+o delegate, certo? Então, precisamos fazer isso,
+vamos fazer isso. Qualquer um dos lados,
+
+463
+00:36:38,741 --> 00:36:44,841
+o Detail ou o Master, podem ser
+o delegate. Eu geralmente recomendo
+
+464
+00:36:44,841 --> 00:36:50,358
+colocar o delegate no lado que fica
+por aí mais frequentemente. E, nesse caso
+
+465
+00:36:50,358 --> 00:36:55,819
+é óbvio, o lado da ImageView é
+constantemente substituído. Então você
+
+466
+00:36:55,819 --> 00:37:00,509
+não iria querer que ele fosse o delegate
+do SplitView. Vêem o porquê? Vocês precisariam
+
+467
+00:37:00,509 --> 00:37:05,953
+estar constantemente resetando o novo
+como o delegate do SplitView. Então,
+
+468
+00:37:05,953 --> 00:37:11,585
+aqui é óbvio, nós queremos o PhotoTableViewController,
+aquele que está na esquerda, para ser
+
+469
+00:37:11,585 --> 00:37:17,433
+o delegate. Eu vou fazê-lo delegate.
+Eu tenho que dizer que ele implementa
+
+470
+00:37:17,433 --> 00:37:24,308
+o protocolo UISplitViewControllerDelegate.
+Ok? E, agora nós temos que implementar
+
+471
+00:37:24,308 --> 00:37:32,252
+isso. Vamos fazer isso aqui no topo.
+Eu vou colocar um
+
+472
+00:37:32,252 --> 00:37:40,162
+pragma mark aqui. UISplitViewControllerDelegate.
+Ok, e eu também preciso
+
+473
+00:37:40,162 --> 00:37:45,266
+setar eu mesmo como o delegate da
+SplitView e eu vou fazer isso no
+
+474
+00:37:45,266 --> 00:37:50,716
+awakeFromNib. Eu vou dizer
+self.splitViewController.delegate = self
+
+475
+00:37:50,716 --> 00:37:56,428
+e o compilador não vai reclamar porque
+eu disse que eu sou o delegate do SplitView,
+
+476
+00:37:56,428 --> 00:38:03,881
+espero. Oh, o que fiz de errado aqui?
+Oh, é. Desculpem.
+
+477
+00:38:03,881 --> 00:38:09,754
+É, aqui vamos nós. Esse aqui.
+Pronto. Agora sim. Ok, então agora
+
+478
+00:38:09,754 --> 00:38:16,011
+o compilador não está reclamando.
+O completion me pegou. Agora vamos
+
+479
+00:38:16,011 --> 00:38:21,329
+implementar um desses métodos de
+delegate do SplitViewController. Um deles
+
+480
+00:38:21,329 --> 00:38:27,722
+é chamado
+splitViewController:shouldHideViewController:inOrientation:
+
+481
+00:38:27,722 --> 00:38:33,600
+então deixa-me fazer mais legível. Ok. E
+ele está perguntando, quando eu estou
+
+482
+00:38:33,600 --> 00:38:40,664
+nessa orientação, eu devo esconder
+o lado esquerdo? Ok, o Master? E nós vamos
+
+483
+00:38:40,664 --> 00:38:47,821
+sempre dizer: NO. Ok? Nunca esconda
+o lado esquerdo. Agora quando nós rodarmos
+
+484
+00:38:47,821 --> 00:38:55,143
+nós vamos ver que mesmo no modo portrait
+nós temos essa coisa aqui. Agora, claro que
+
+485
+00:38:55,143 --> 00:39:00,904
+o lado do Detail está muito menor agora,
+o que não é muito bom. Sabe, quando tentamos olhar
+
+486
+00:39:00,904 --> 00:39:04,955
+a foto na direita, está tipo...
+não tão bom. Então isso é provavelmente
+
+487
+00:39:04,955 --> 00:39:09,175
+uma UI ruim. Nós não iríamos querer
+fazer isso. Então nós teríamos que ir para a opção
+
+488
+00:39:09,175 --> 00:39:13,513
+do botão. Nós iríamos querer aqui termos
+uma toolbar no topo com um pequeno botão. E
+
+489
+00:39:13,513 --> 00:39:17,938
+nós pressionaríamos o botão e isso iria
+"slide". Ok? Se formos pra landscape, nós
+
+490
+00:39:17,938 --> 00:39:23,344
+ainda temos isso, o que é bom. Bom. Todo mundo
+entendeu o que aconteceu aqui?
+
+491
+00:39:23,344 --> 00:39:27,950
+O que nós fizemos com o delegate? É bem errado
+termos o SplitView sem
+
+492
+00:39:27,950 --> 00:39:33,209
+o delegate. Porque você fica em um estado
+estranho, onde o lado esquerdo não está lá
+
+493
+00:39:33,209 --> 00:39:38,194
+e não há como trazê-lo para a tela.
+Então isos não é bom. Ok? Certo,
+
+494
+00:39:38,194 --> 00:39:43,988
+próximo nós vamos fazer atoolbar. Certo,
+então o iPad nós podemos colocar
+
+495
+00:39:43,988 --> 00:39:49,112
+uma toolbar no topo disso. E se nós
+colocarmos uma toolbar no ImageViewController
+
+496
+00:39:49,112 --> 00:39:55,245
+aqui e ter o título da foto
+na Toolbar? Isso seria legal.
+
+497
+00:39:55,245 --> 00:40:00,611
+como fazemos isso? Nós apenas vamos
+aqui e arrastamos a toolbar.
+
+498
+00:40:00,611 --> 00:40:05,758
+Eu vou arrumar espaço, então eu vou
+redimensionar isso. Agora, uma coisa no
+
+499
+00:40:05,758 --> 00:40:10,301
+auto-layout, se eu pegar esse pequeno
+handler de resize aqui, ok, e tentar simplesmente
+
+500
+00:40:10,301 --> 00:40:15,336
+redimensionar. É difícil de pegar
+as vezes, então você pode querer ir aqui
+
+501
+00:40:15,336 --> 00:40:20,952
+e fazer, sabe, digitar as coisas diretamente
+no dimensions inspector, o size
+
+502
+00:40:20,952 --> 00:40:26,591
+inspector. Mas no's vamos nos certificar
+que nossas constraints aqui embaixo estão boas
+
+503
+00:40:26,591 --> 00:40:31,511
+quando terminarmos. Então deixe-me pegar
+aquela toolbar. Eu acho que é bem pra baixo.
+
+504
+00:40:31,511 --> 00:40:36,397
+Algum lugar por aqui. Aqui está. Toolbar.
+Então eu vou arrastar. Quando ele encaixa,
+
+505
+00:40:36,397 --> 00:40:42,104
+ele fica bem. Ele está amarrado
+no topo. No topo, na esquerda e
+
+506
+00:40:42,104 --> 00:40:47,738
+na direita. Então vamos seguir e fazer
+esse cara encaixar aqui e então as coisas
+
+507
+00:40:47,738 --> 00:40:53,385
+vão ficar boas agora. Ok? Então temos
+o auto-layout indo bem aqui. Eu vou meio que
+
+508
+00:40:53,385 --> 00:40:58,219
+roubar e fazer o título. Colocando ele
+no botão. Mas não vai ser tão bom
+
+509
+00:40:58,219 --> 00:41:02,552
+se ele tiver bordas, então vamos nos livrar
+das bordas. Ok? Então aqui eu estou apenas
+
+510
+00:41:02,552 --> 00:41:06,890
+inspecionando esse BarButtonItem e mudando
+para ser "Plain". Ok? Então ele
+
+511
+00:41:06,890 --> 00:41:11,302
+não tem mais bordas nele, mas eu quero
+que esse título-- esse vai ser meu títutlo.
+
+512
+00:41:11,302 --> 00:41:16,102
+Eu quero que ele fique no meio, então eu vou
+arrastar um desses flexible space Bar Button
+
+513
+00:41:16,102 --> 00:41:20,934
+e colocar um na esquerda e um na
+direita. Ok? E então eles são tipo
+
+514
+00:41:20,934 --> 00:41:26,101
+afastadores, que afastam. E agora
+eu tenho meu negócio bem no meio aqui.
+
+515
+00:41:26,101 --> 00:41:31,561
+Como eu vou falar com essa coisa? Bom,
+como eu falo com qualquer coisa, certo? Eu vou
+
+516
+00:41:31,561 --> 00:41:36,631
+usar outlets. Eu vou criar um outlet
+a partir da minha ImageViewController aqui
+
+517
+00:41:36,631 --> 00:41:41,844
+para esse BarButton. Vamos aqui no topo,
+eu vou apenas selecioná-lo aqui
+
+518
+00:41:41,844 --> 00:41:47,310
+oops, desculpme, e segurar o CTRL.
+Arrasto pra cá e eu vou chamar isso de
+
+519
+00:41:47,310 --> 00:41:52,657
+titleBarButtonItem. Agora, vocês podem
+estar pensando: oh não! Estamos fazendo
+
+520
+00:41:52,657 --> 00:41:57,993
+essa ImageViewController menos genérica.
+Mas na verdade não, porque o que estamos dizendo aqui
+
+521
+00:41:57,993 --> 00:42:02,330
+é apenas que se algum dia quisermos mostrar
+o título em uma toolbar, em um BarButtonItem,
+
+522
+00:42:02,330 --> 00:42:06,554
+nós podemos fazer isso. Se isso for nil,
+nós vamos nos certificar que nosso código funciona.
+
+523
+00:42:06,554 --> 00:42:10,519
+Nós não queremos que nosso ImageViewController
+não funcione se ele não tiver um titleBarButtonItem.
+
+524
+00:42:10,519 --> 00:42:14,967
+Porque nós estamos usando nosso
+ImageViewController lá no nossa versão
+
+525
+00:42:14,967 --> 00:42:19,651
+de iPhone e ele não tem um titleBar.
+Vêem o que estou falando? Então esse
+
+526
+00:42:19,651 --> 00:42:25,072
+ViewController quer ter cuidado para não
+depender disso ser não-nil, ok?
+
+527
+00:42:25,072 --> 00:42:29,965
+Como nós vamos fazer isso? Eu vou apenas
+fazer com que, sempre que alguém setar
+
+528
+00:42:29,965 --> 00:42:35,124
+o título do meu ViewController... então essa
+é uma property que eu herdei da minha superclasse
+
+529
+00:42:35,124 --> 00:42:41,073
+UIVieController. Eu vou fazer super.title =
+title. Então vou chamar o setter da minha
+
+530
+00:42:41,073 --> 00:42:46,472
+superclasse para setar essa coisa
+e entÃo eu também vou
+
+531
+00:42:46,472 --> 00:42:51,570
+[ditando código]
+Então qualquer momento que alguém
+
+532
+00:42:51,570 --> 00:42:56,770
+setar o title desse ViewControler
+eu vou setar o título do BarButton.
+
+533
+00:42:56,770 --> 00:43:02,462
+Entretanto, se alguém chamar isso
+antes do viewDidLoad, então isso vai ser
+
+534
+00:43:02,462 --> 00:43:06,265
+nil, então eu também preciso colocar isso
+no meu viewDidLoad.
+
+535
+00:43:06,265 --> 00:43:12,594
+[ditando código]
+Agora, tendo isso, tendo que
+
+536
+00:43:12,594 --> 00:43:19,197
+setar isso em dois lugares, eu acho que é
+meio mala do iOS. Eu realmente queria
+
+537
+00:43:19,197 --> 00:43:22,654
+que tivesse um mecanismo tipo
+prepareForSegue, onde você você talvez
+
+538
+00:43:22,654 --> 00:43:26,164
+tivesse dois passes. Um prepareForSegue
+chamado antes que foi carregado e outro depois,
+
+539
+00:43:26,164 --> 00:43:29,866
+ou algo assim. Daí você não precisaria
+colocar o tempo todo em dois lugares,
+
+540
+00:43:29,866 --> 00:43:33,589
+certo? No setter de alguma property para que
+lembre dele e também no viewDidLoad.
+
+541
+00:43:33,589 --> 00:43:37,376
+Mas, infelizmente, é assim que é.
+Ok. Eu acho que isso é tudo
+
+542
+00:43:37,376 --> 00:43:41,841
+que precisamos pra fazer isso funcionar.
+Então vamos ver isso. Certo. Então,
+
+543
+00:43:41,841 --> 00:43:48,757
+o "Red Sky At night" aqui e nós temos
+o título "Red Sky At Night" aqui, ok?
+
+544
+00:43:48,757 --> 00:43:56,286
+Então está aqui, nós clicamos em outra coisa,
+esse aqui, ok? Então isso foi bem bem fácil.
+
+545
+00:43:56,286 --> 00:44:03,267
+Vamos fazer popovers na sequência.
+Ok? O que eu vou fazer para popover é
+
+546
+00:44:03,267 --> 00:44:09,217
+vamos fazer assim: eu vou colocar um BarButtonItem
+aqui, outro, e quando eu clicar nele
+
+547
+00:44:09,217 --> 00:44:14,245
+ele vai me dizer a URL dessa imagem, ok?
+O http:// o que quer que seja.
+
+548
+00:44:14,245 --> 00:44:19,774
+E eu vou fazer essa URL aparecer
+em um pequeno popover. Para fazer isso
+
+549
+00:44:19,774 --> 00:44:25,022
+eu preciso de um ViewController que possa
+mostrar uma string para mim, porque é isso
+
+550
+00:44:25,022 --> 00:44:30,642
+que esse popover vai fazer. Então eu vou criar
+um ViewController genérico.
+
+551
+00:44:30,642 --> 00:44:36,230
+Certo, eu vou arrastar aqui para
+o Storyboard, ok? Bem aqui,
+
+552
+00:44:36,230 --> 00:44:42,509
+vou pro topo, aqui está o ViewController
+genérico, estou arrastando. Ok? Eu vou chamar esse
+
+553
+00:44:42,509 --> 00:44:48,814
+ViewController genérico-- sua classe
+vai ser, digamos
+
+554
+00:44:48,814 --> 00:44:55,617
+AttributedStringViewController. Ele vai ser
+apenas um ViewController genérico que apresenta
+
+555
+00:44:55,617 --> 00:45:02,407
+uma AttributedString e, uma coisa sobre ele
+é que eu vou permitir que ele seja de
+
+556
+00:45:02,407 --> 00:45:08,994
+qualquer tamanho. E você faz isso vindo aqui.
+Desculpem. Onde é? Aqui. E no
+
+557
+00:45:08,994 --> 00:45:15,319
+simulated metrics setamos o size para ser
+free form. Agoar ele pode ter qualquer tamanho.
+
+558
+00:45:15,319 --> 00:45:21,304
+Na verdade, se eu clicar no self.view de dentro
+e disser: hm, eu quero que essa coisa tenha
+
+559
+00:45:21,304 --> 00:45:27,669
+300 de largura e 200 de altura. Daí vocês vêem
+que o ViewController se encolhe para caber
+
+560
+00:45:27,669 --> 00:45:33,517
+a self.view, que é bem legal. E então eu
+preciso fazer a classe para isso, então vamos
+
+561
+00:45:33,517 --> 00:45:39,946
+fazer isso. É uma classe em Objective-C,
+é apenas um UIViewController, vocês estão
+
+562
+00:45:39,946 --> 00:45:45,363
+totalmente acostumados a fazer isso.
+UIViewController... vamos chamá-lo de Attributed...
+
+563
+00:45:45,363 --> 00:45:51,743
+StringViewController. 
+Vou colocá-lo aqui.
+
+564
+00:45:51,743 --> 00:45:58,700
+Aqui está. Nós não
+precisamos de nada disso.
+
+
+565
+00:45:58,700 --> 00:46:05,089
+Eu vou fazer um outlet aqui,
+para essa coisa. Eu vou fazer a API pública dele
+
+566
+00:46:05,089 --> 00:46:11,747
+ser apenas uma property strong que vai ser
+uma NSAttributedString, chamada text.
+
+567
+00:46:11,747 --> 00:46:17,622
+Nós setamos essa property text e o texto vai
+aparecer no ViewController. Ok? Eu vou
+
+568
+00:46:17,622 --> 00:46:23,402
+fazer isso linkando aqui. Ok? Vamos aqui,
+descer para achar o TextView. Vocês sabem
+
+569
+00:46:23,402 --> 00:46:29,209
+o que é isso, nós fizemos isso quando
+nós fizemos os scores. Eu vou arrastar
+
+570
+00:46:29,209 --> 00:46:35,532
+o TextView aqui. Vamos colocá-lo aqui.
+Eu vou setar o TextView para ser attributed.
+
+571
+00:46:35,532 --> 00:46:41,965
+Talvez eu diga que ele é uma URL, Er, não,
+isso é apenas uma AttributedString ou algo assim.
+
+572
+00:46:41,965 --> 00:46:48,647
+Talvez eu faça a fonte um pouco maior aqui.
+24 ou algo assim. Mas é uma AttributedString.
+
+573
+00:46:48,647 --> 00:46:55,296
+Vocês poderiam encodar o tamanho da fonte nela
+se vocês quisessem. Alguém que esteja usando
+
+574
+00:46:55,296 --> 00:47:01,347
+essa coisa. E então vamos só colocar
+isso como um outlet. Me desculpem por todo
+
+575
+00:47:01,347 --> 00:47:07,173
+o resizing e ficar movendo as coisas,
+inevitável. Certo, então eu apenas CTRL +
+
+576
+00:47:07,173 --> 00:47:12,775
+arrasto para a minha área privada na
+AttributedString aqui. E eu vou chamá-lo de
+
+577
+00:47:12,775 --> 00:47:19,558
+vamos chamá-lo apenas de textView,
+certo? Então é aqui que vai ficar
+
+578
+00:47:19,558 --> 00:47:26,953
+e então sempre que alguém setar essa
+API pública "text", eu vou setar meu text e
+
+579
+00:47:26,953 --> 00:47:32,350
+também vou fazer
+self.textView.attributedText = text. 
+
+580
+00:47:32,350 --> 00:47:38,536
+E, pela mesma razão que eu estava dizendo,
+no viewDidLoad faemos a mesma coisa,
+
+581
+00:47:38,536 --> 00:47:45,116
+[ditando código]
+
+582
+00:47:45,116 --> 00:47:51,643
+[ditando código]
+
+
+583
+00:47:51,643 --> 00:47:57,922
+Ok, isso é no caso de alguém chamar isso
+antes de eu estar carregado, isso seria nil, então
+
+584
+00:47:57,922 --> 00:48:03,337
+aqui estou me certificando que quando
+eu estiver carregado eu setarei. Ok, isso é tudo
+
+585
+00:48:03,337 --> 00:48:08,124
+que essa coisa faz. Tudo que esse ViewController faz.
+Todo mundo... alguma pergunta sobre o que
+
+586
+00:48:08,124 --> 00:48:13,325
+esse ViewController faz? ViewController
+super simples. Ok, agora vamos linkar esse
+
+587
+00:48:13,325 --> 00:48:18,263
+ViewController com um BarButtonItem aqui
+que usa um Popover para apresentá-lo,
+
+588
+00:48:18,263 --> 00:48:22,669
+ok? Então nós precisamos de um BarButtonItem.
+Vamos aqui embaixo e pegamos um, bem aqui.
+
+589
+00:48:22,669 --> 00:48:27,381
+Normalmente eu o colocaria bem aqui,
+mas eu vou colocá-lo aqui porque
+
+590
+00:48:27,381 --> 00:48:31,917
+esse lado é cortado pelo projetor.
+Então vou colocá-lo aqui. Nós vamos chamá-lo de
+
+591
+00:48:31,917 --> 00:48:36,934
+Show URL, ok? Então vou segurar o CTRL
+e arrastar do BarButtonItem
+
+592
+00:48:36,934 --> 00:48:42,047
+para cá. E eu vou escolher outro tipo de
+segue que é o PopoverSegue.
+
+593
+00:48:42,047 --> 00:48:47,122
+Certo? Então eu faço isso e agora tem
+um segue que vai pra cá. Esse segue é um
+
+594
+00:48:47,122 --> 00:48:51,815
+popover. Eu posso até escolher a direção
+da seta que eu quero permitir. Eu vou permitir
+
+595
+00:48:51,815 --> 00:48:56,622
+qualquer direção. Deixá-lo achar o melhor
+lugar para colocar. Eu não tenho motivos
+
+596
+00:48:56,622 --> 00:49:02,211
+para restringir algo. E nós vmaos chamar
+esse segue de Show URL, porque do ponto de vista
+
+597
+00:49:02,211 --> 00:49:08,137
+desse cara, é o que ele vai fazer. 
+Está mostrando a URL. Certo? Agora
+
+598
+00:49:08,137 --> 00:49:13,662
+nós temos que fazer o prepareForSegue a partir
+desse cara. Vamos fazer isso. Esse cara é um
+
+599
+00:49:13,662 --> 00:49:23,428
+ImageViewController. Vamos por isso aqui
+no topo, certo? Então
+
+600
+00:49:23,428 --> 00:49:34,147
+prepareForSegue aqui. Oops.
+Certo. Nós queremos
+
+601
+00:49:34,147 --> 00:49:43,261
+checar e ver se esse é o segue "Show URL".
+isEqualToString:@"Show URL",
+
+602
+00:49:43,261 --> 00:49:50,272
+certo? Se for, então nós queremos apenas
+mostrar a URL nesse negócio. E nós sabemos
+
+603
+00:49:50,272 --> 00:49:57,608
+que nós vamos usar esse AttributedViewController,
+porque nós trouxemos ele por esse motivo.
+
+604
+00:49:57,608 --> 00:50:03,327
+Nós o incorporamos ele na view
+do nosso ImageViewController
+
+605
+00:50:03,327 --> 00:50:09,693
+para isso. Então eu vou importá-lo, certo?
+Oops. Precisamos nos certificar que--
+
+606
+00:50:09,693 --> 00:50:15,738
+desculpe. Que estamos falando com uma
+dessas coisas [ditando código]
+
+607
+00:50:15,738 --> 00:50:22,222
+porque essa é a única coisa que
+sabemos como usar para
+
+608
+00:50:22,222 --> 00:50:28,204
+apresentá-lo. Então eu vou dizer
+[ditando código]
+
+609
+00:50:28,204 --> 00:50:34,923
+[ditando código]
+
+610
+00:50:34,923 --> 00:50:42,800
+Ok, agora eu tenho esse Controller
+e tudo que eu preciso fazer
+
+611
+00:50:42,800 --> 00:50:49,994
+é setar o seu text para ser a minha
+imageURL description, digamos. Ok, isso vai ser
+
+612
+00:50:49,994 --> 00:50:57,916
+o http blá blá blá. E isso é uma attributed
+string então estamos recebendo um
+
+613
+00:50:57,916 --> 00:51:04,699
+warning aqui, porque isso não é
+attributed, então nós temos que dizer
+
+614
+00:51:04,699 --> 00:51:13,346
+[ditando código]
+Ok? Então setamos ali. Agora isso não
+
+615
+00:51:13,347 --> 00:51:23,609
+vai funcionar. Ok, isso vai crashar,
+mas vamos deixar e ver isso. Ok?
+
+616
+00:51:23,609 --> 00:51:34,052
+Aqui estamos. Então vamos para landscape
+aqui, podemos ver o button aqui em cima.
+
+617
+00:51:34,052 --> 00:51:40,111
+Aqui vamos nós, "HMS Belfast" e vamos
+tentar mostrar a URL e, oh! funcionou!
+
+618
+00:51:40,111 --> 00:51:46,348
+ok, porque nós tínhamos uma URL.
+Ok, vou começar de novo e vocês verão
+
+619
+00:51:46,348 --> 00:51:53,184
+que vai crashar se eu não pegar uma imagem
+porque nossa imageURL vai ser nil. Ok? Vejam
+
+620
+00:51:53,184 --> 00:51:59,299
+o que acontece aqui. Se eu disser Show URL,
+ele crasha. Ele crasha meu app. Por que crasha?
+
+621
+00:51:59,299 --> 00:52:05,354
+Porque imageURL era nil. Eu tentei fazer uma
+AttributedString a partir de nil. Isso é ruim,
+
+622
+00:52:05,354 --> 00:52:10,190
+ok? Bom, como eu previno essa coisa ruim
+de acontecer? Como eu previno esse crash de
+
+623
+00:52:10,190 --> 00:52:14,870
+acontecer? Porque é perfeitamente ok
+para minha imageURL set nil, eu posso
+
+624
+00:52:14,870 --> 00:52:20,665
+não estar mostrando nada no momento.
+E é aqui que esse método que eu falei
+
+625
+00:52:20,665 --> 00:52:27,675
+pra vocês nos slides chamado
+shouldPerformSegueWithIdentifier, ok? Ele é
+
+626
+00:52:27,675 --> 00:52:36,967
+chamado para perguntar se você quer fazer
+um segue particular. Então aqui eu vou dizer: 
+
+627
+00:52:36,967 --> 00:52:46,767
+se o identifier que você está falando
+é o identifier @"Show URL", então eu vou
+
+628
+00:52:46,767 --> 00:52:55,828
+retornar se o self.imageURL é nil.
+Entõa se o imageURL não for nil,
+
+629
+00:52:55,828 --> 00:53:05,891
+então você pode mostrá-lo. Caso contrário não.
+Ok? Else eu vou deixar minha superclasse
+
+630
+00:53:05,891 --> 00:53:11,658
+fazer o trabalho aqui, ok? Todo mundo vê
+o que estou fazendo aqui? Estou prevenindo
+
+631
+00:53:11,658 --> 00:53:15,992
+aquele crash, usando o should para prevenir
+o segue de acontecer, ok? Agora,
+
+632
+00:53:15,992 --> 00:53:19,836
+provavelmente seria um coding melhor
+para na verdade desabilitar o botão, ok?
+
+633
+00:53:19,836 --> 00:53:24,149
+Ou até mesmo esconder o botão seria melhor.
+Mas eu só quero mostrar como usar o
+
+634
+00:53:24,150 --> 00:53:28,916
+shouldPerformSegueWithIdentifier. Eu vou
+mostrar outro problema, porém. Que acontece
+
+635
+00:53:28,916 --> 00:53:34,059
+com popovers. Um problema bem comum.
+Que é-- ok, agora meu app não está
+
+636
+00:53:34,059 --> 00:53:39,490
+crashando. Eu estou clicando em Show URL. Espero
+que esteja piscando. E ele não está crashando,
+
+637
+00:53:39,490 --> 00:53:45,247
+isso é ótimo. E se eu escolher algo,
+então ele está funcionando novamente, o que é
+
+638
+00:53:45,247 --> 00:53:50,297
+massa. Mas olhem o que está acontecendo
+aqui. Se eu continuar apertando aqui?
+
+639
+00:53:50,297 --> 00:53:54,580
+Vocês vêem como está ficando mais escuro
+e mais escuro? Isso é porque ele está criando
+
+640
+00:53:54,580 --> 00:53:58,908
+mais e mais desses popovers, ok? E se eu começar
+a cancelá-los. Cancel, cancel, cancel, cancel, cancel, cancel,
+
+641
+00:53:58,908 --> 00:54:03,217
+cancel, cancel, cancel, cancel, cancel, cancel.
+Eventualmente vou me livrar te todos eles.
+
+642
+00:54:03,217 --> 00:54:07,455
+Mas isso mão é o que eu quero, ok?
+Eu quero apenas um. Ok? Então
+
+643
+00:54:07,455 --> 00:54:13,370
+essa é a razão clássica que você quer
+agarrar um popover quando você faz o segue
+
+644
+00:54:13,370 --> 00:54:19,319
+para ele. E então segurá-lo. Para ter certeza
+que da próxima vez que algúem te pedir, ele não
+
+645
+00:54:19,319 --> 00:54:25,357
+está visível. Vamos fazer isso. Nós vamos
+criar uma property aqui que é strong,
+
+646
+00:54:25,357 --> 00:54:32,370
+nonatomic. É um UIPopoverController
+chamado urlPopover. Ok? Agora,
+
+647
+00:54:32,370 --> 00:54:39,686
+no meu prepareForSegue aqui embaixo,
+eu vou segurar esse popover. Ok?
+
+648
+00:54:39,686 --> 00:54:46,553
+Da onde eu obtenho esse popover?
+Bom, eu disse que ele vem daqui.
+
+649
+00:54:46,554 --> 00:54:52,222
+Ok? Esse segue, sempre que você tiver
+um segue Popover, ele vai te dar o
+
+650
+00:54:52,222 --> 00:54:58,478
+popover que você quer. Ok? Mas, nós temos
+que fazer o cast desse segue de popover
+
+651
+00:54:58,478 --> 00:55:04,804
+ao invés de usar um segue de Storyboard
+genérico. Então serei seguro e dizer: se esse
+
+652
+00:55:04,804 --> 00:55:14,374
+segue foi da classe UIStoryboardPopoverSegue,
+então eu vou pegar o popover fazendo o casting
+
+653
+00:55:14,374 --> 00:55:25,602
+o segue e dizendo: me dê o PopoverController.
+Ok? Todo mundo vê o que eu fiz aqui?
+
+654
+00:55:25,602 --> 00:55:32,469
+Eu apenas peguei o PopoverController,
+o UIPopoverController que esse segue
+
+655
+00:55:32,469 --> 00:55:38,132
+está usando para fazer o segue para mim.
+Agora eu preciso não rodar o segue identifier
+
+656
+00:55:38,132 --> 00:55:44,016
+se esse popover já estiver visível.
+Então aqui eu vou dizer
+
+657
+00:55:44,016 --> 00:55:48,945
+[ditando código],
+que é uma property do
+
+658
+00:55:48,945 --> 00:55:54,990
+PopoverController, que simplesmente diz a você
+se o popover está visível,
+
+659
+00:55:54,990 --> 00:56:00,352
+ok? Então se não está visível e temos
+uma URL, então eu vou deixar esse
+
+660
+00:56:00,352 --> 00:56:06,227
+segue continuar. Caso contrário eu vou
+prevenir esse segue de acontecer. Ok?
+
+661
+00:56:06,227 --> 00:56:12,442
+Vamos ver se isso arruma o nosso problema
+de popover ficando mais espessos. Certo? Vamos aqui,
+
+662
+00:56:12,442 --> 00:56:17,163
+e Show URL. Mostra de novo e de novo e de novo.
+agora não está ficando mais espesso e se
+
+663
+00:56:17,163 --> 00:56:21,814
+eu clicar em outro lugar, ele vai embora.
+Percebam que se eu clicar na toolbar, eu vou
+
+664
+00:56:21,814 --> 00:56:26,161
+clicar no lado direito da toolbar,
+perto do Show URL. Ou se
+
+665
+00:56:26,161 --> 00:56:31,179
+eu clicar no Show URL. Ok?
+Essa coisas não está desaparecendo,
+
+666
+00:56:31,179 --> 00:56:36,655
+porque elas estão nas views "pass-through".
+então quando você segueia de um BarButoonItem,
+
+667
+00:56:36,655 --> 00:56:41,790
+ele automaticamente coloca a toolbar
+inteira que está o seu BarButton nas views
+
+668
+00:56:41,790 --> 00:56:47,219
+pass-through, ok? Mas se eu clicar aqui
+embaixo, ele vai embora. Clico
+
+669
+00:56:47,219 --> 00:56:52,573
+aqui nesse, clico aqui, certo?
+Todo mundo entendeu o popover? Pergunta.
+
+670
+00:56:52,573 --> 00:56:58,001
+>> [Estudante perguntando]
+
+671
+00:56:58,001 --> 00:57:02,865
+[estudante perguntando]
+
+672
+00:57:02,865 --> 00:57:08,041
+[estudante perguntando]
+
+673
+00:57:08,041 --> 00:57:13,230
+[estudante perguntando]
+>> A pergunta foi: nós inventamos
+
+674
+00:57:13,230 --> 00:57:18,237
+esse novo ViewController chamado
+AttributedStringViewController e nós o usamos
+
+675
+00:57:18,237 --> 00:57:22,940
+em um popover para fazer isso. E sua pergunta é:
+nós poderíamos ter usado-- eu tenho que
+
+676
+00:57:22,940 --> 00:57:27,285
+criar esse novo ViewController e fazer
+tudo isso? Se eu quiser usá-lo em um
+
+677
+00:57:27,285 --> 00:57:31,758
+popover, sim, porque o popover
+sempre vai mostrar um outro ViewController. Mas,
+
+678
+00:57:31,758 --> 00:57:35,854
+você está pergutando se eu poderia ter feito
+com outra UI ao invés do popover, como algo
+
+679
+00:57:35,854 --> 00:57:39,886
+sibreposto no topo dessa view ou
+algo assim, ou UILabel ou algo assim?
+
+680
+00:57:39,886 --> 00:57:44,378
+Claro, eu poderia. Mas daí eu não conseguiria
+fazer a demo de popover
+
+681
+00:57:44,378 --> 00:57:48,358
+para vocês, certo? Por isso que
+fizemos desse modo. E esse é obviamente
+
+682
+00:57:48,358 --> 00:57:52,307
+um caso simples. Estou tentando mostrar a vocês
+coisas feitas do zero. Eu não posso fazer
+
+683
+00:57:52,307 --> 00:57:56,313
+muito complicado. Mas, sim. Se você quiser
+popovar algo, a coisa que você popova
+
+684
+00:57:56,313 --> 00:58:01,482
+é sempre um controller inteiro.
+Sim, pergunta?
+
+685
+00:58:01,482 --> 00:58:05,155
+>> [Estudante perguntando]
+
+
+686
+00:58:05,155 --> 00:58:10,081
+>> Oh, claro. A pergunta é: seria
+tecnicamente possível para nós
+
+687
+00:58:10,081 --> 00:58:14,473
+adicionarmos um UILabel como subview do
+ImageViewController e setar a URL ali.
+
+688
+00:58:14,473 --> 00:58:19,273
+Claro que poderíamos. Quero dizer, poderíamos
+ter um .hidden, nós poderíamos esconder
+
+689
+00:58:19,273 --> 00:58:23,888
+e desesconder um label, setando o texto
+ou setando o texto para nil para
+
+690
+00:58:23,888 --> 00:58:28,458
+fazer o texto sumir ou reaparecer.
+Nós poderíamos facilmente ter colocado a URL
+
+691
+00:58:28,458 --> 00:58:32,903
+no topo, qualquer coisa. Eu estava apenas
+contemplando um exemplo aqui para mostrar a vocês
+
+692
+00:58:32,903 --> 00:58:37,951
+um popover. Ok? Certo. Então essa é a minha demo
+para as coisas de iPad aqui. Vocês aprenderam
+
+693
+00:58:37,951 --> 00:58:43,859
+como fazer um app que roda em ambos. Oh, uma coisa...
+deixe-me provar pra vocês que ainda
+
+694
+00:58:43,859 --> 00:58:49,120
+funciona no iPhone. Vamos rodar no simulador
+aqui. Ok, nada do que fizemos
+
+695
+00:58:49,120 --> 00:58:54,375
+quebrou nada. Nós ainda conseguimos
+vir aqui. Nós ainda podemos
+
+696
+00:58:54,375 --> 00:58:59,519
+fazer todas as coisas que podíamos
+antes. Certo, e estamos usando
+
+697
+00:58:59,519 --> 00:59:04,086
+exatamente o mesmo código. Esses são
+todos os mesmos view controllers. Eles estão
+
+698
+00:59:04,086 --> 00:59:08,640
+tipo sendo usandos em diferentes contextos,
+e mesmo que o ImageViewController saiba
+
+699
+00:59:08,640 --> 00:59:13,020
+fazer coisas como o mostrar uma URL e coisas
+assim, isso simplesmente não está acontecendo
+
+700
+00:59:13,020 --> 00:59:18,149
+no iPhone e isso é perfeitamente ok.
+Ok? Faz sentido? E eu nunca escrevi
+
+701
+00:59:18,149 --> 00:59:23,233
+uma única linha de código dizendo
+"se estiver no iPad, faça isso". Eu não
+
+702
+00:59:23,233 --> 00:59:28,528
+precisei. Eu apenas confiei nos outlets
+que estavam linkados ou não no Storyboard.
+
+703
+00:59:28,528 --> 00:59:33,359
+Ok? Certo. De volta aos slides.
+É isso para-- isso é tudo que vou
+
+704
+00:59:33,359 --> 00:59:39,591
+falar sobre iPad. Sim?
+>> [Estudante perguntando]
+
+705
+00:59:39,591 --> 00:59:45,446
+>> A pergunta é: é normal ter
+"if iPad" no código? Não é anormal,
+
+706
+00:59:45,446 --> 00:59:50,696
+mas não é realmente a primeira opção.
+Se você se ver dizendo "if iPad", você deve
+
+707
+00:59:50,696 --> 00:59:55,517
+tentar pensar "é isso mesmo que esse
+IF quer dizer aqui? Ou é mais, tipo,
+
+708
+00:59:55,517 --> 01:00:00,279
+se esse outlet está conectado, ou..."
+Vê o que eu digo? Não é anormal,
+
+709
+01:00:00,279 --> 01:00:03,863
+mas você provavelmente vai querer
+manter isso no mínimo, ter um bom design.
+
+710
+01:00:03,863 --> 01:00:07,363
+>> [estudante falando]
+>> Oh, então a pergunta:
+
+711
+01:00:07,363 --> 01:00:11,308
+você pode ter ViewControllers separadas
+para apenas uma plataforma? Você pode.
+
+712
+01:00:11,308 --> 01:00:15,454
+Você pode ter algo onde apenas, tipo,
+esse ViewController não pode rodar
+
+713
+01:00:15,454 --> 01:00:18,874
+em uma tela pequena e existe um jeito
+bem melhor de fazer esse app rodar em
+
+714
+01:00:18,874 --> 01:00:22,944
+um iPad. Então, sim. Você poderia ter
+ViewControllers completamente separadas e você
+
+715
+01:00:22,944 --> 01:00:26,696
+teria segues diferentes, certo? O Storyboard
+do iPad iria seguear para esse grandão,
+
+716
+01:00:26,696 --> 01:00:32,105
+e o do iPhone iria seguear para o mais restrito
+e menor. Pergunta.
+
+717
+01:00:32,106 --> 01:00:37,276
+>> [Estudante perguntando]
+
+718
+01:00:37,276 --> 01:00:43,684
+[estudante perguntando]
+
+719
+01:00:43,684 --> 01:00:50,246
+[estudante perguntando]
+
+
+720
+01:00:50,246 --> 01:00:55,148
+>> Ah, quando eu crio um novo Controlller--
+eu acho que... eu não consigo lembrar
+
+721
+01:00:55,148 --> 01:00:59,552
+exatamente. Bom, vamos olhar isso
+depois da aula. Não consigo lembrar exatamente
+
+722
+01:00:59,552 --> 01:01:04,560
+o que você está perguntando. Ok? Então,
+Temos tempo sobrando aqui para eu cobrir
+
+723
+01:01:04,560 --> 01:01:09,201
+a primeira parte de blocks e multi-threading,
+que é blocks. E eu vou falar sobre multi-threading
+
+724
+01:01:09,201 --> 01:01:14,689
+e mostrar a vocês uma demo na próxima
+aula. Certo, então blocks.
+
+725
+01:01:14,689 --> 01:01:20,604
+Agora, antes de começarmos a falar de blocks
+aqui, eu sei que alguns de vocês
+
+726
+01:01:20,604 --> 01:01:27,520
+não são super familiares com C e então,
+algumas dessas sintaxes vão ser um pouco...
+
+727
+01:01:27,520 --> 01:01:32,642
+vão fazer os seus olhos doerem um pouco,
+olhar par aisso, ok? Mas o que
+
+728
+01:01:32,642 --> 01:01:36,917
+vocês vão descobrir é que o uso concreto
+disso-- eu estou mostrando isso a vocês
+
+729
+01:01:36,917 --> 01:01:41,156
+apenas para ser completo e ter certeza
+que vocês sabem o que é essa coisa. Mas o
+
+730
+01:01:41,156 --> 01:01:45,852
+uso concredo disso não precisa de muita
+sintaxe "entorta-mente", ok? Mas eu vou
+
+731
+01:01:45,852 --> 01:01:50,778
+tentar e dar a vocês uma cobertura completa
+dessa feature da linguagem. Essa feature da
+
+732
+01:01:50,778 --> 01:01:55,919
+linguagem é chamada de Blocks. É uma feature
+de Objective-C para código
+733
+01:01:55,919 --> 01:02:01,043
+"inline", para aqueles de vocês que já estão
+mais avançados em Ciência da Computação, é chamado
+
+734
+01:02:01,043 --> 01:02:06,050
+também de closures. Quantas pessoas aqui sabem
+o que é closure? Ok, talvez um terço
+
+735
+01:02:06,050 --> 01:02:10,858
+das pessoas. Ok. Isso é típico.
+É isso que isso é. Para aqueles
+
+736
+01:02:10,858 --> 01:02:15,618
+que não entendem o que é um closure,
+significa apenas que vocÊ vai ser capaz
+
+737
+01:02:15,618 --> 01:02:20,238
+de pegar um código em Objective-C e
+passá-lo com um argumento para um método
+
+738
+01:02:20,238 --> 01:02:25,124
+ou usá-lo em uma variável, em um dicionário,
+e usá-lo depois, ok? Isso é basicamente o que
+
+739
+01:02:25,124 --> 01:02:29,664
+estamos falando em fazer. Um block é chamado
+de block, porque é um bloco de código.
+
+740
+01:02:29,664 --> 01:02:34,052
+É isso que é um block. É um bloco
+de código, junto com o seu tipo de
+
+741
+01:02:34,052 --> 01:02:38,855
+retorno daquele bloco de código e quais
+argumentos vão dentro do bloco de código.
+
+742
+01:02:38,855 --> 01:02:45,018
+Sintaticamente, ele é apenas um ^
+e então abre chaves, fecha chaves
+
+743
+01:02:45,018 --> 01:02:50,310
+com o código dentro dele e então, um pouco
+além, o return value e os
+
+744
+01:02:50,310 --> 01:02:56,098
+argumentos. Aqui temos um exemplo
+de uso de blocks, ok? Vocês conhecem o
+
+745
+01:02:56,098 --> 01:03:01,708
+NSDictionary. NSDictionary tem um método nele
+chamado enumarateKeysAndObjectsUsingBlock e o
+
+746
+01:03:01,708 --> 01:03:07,349
+argumento para esse método é um bloco de código, ok?
+E o que o NSDictionary vai fazer é, ele vai chamar
+
+747
+01:03:07,349 --> 01:03:12,533
+esse bloco de código, para cada
+par chave-valor
+
+748
+01:03:12,533 --> 01:03:18,053
+dentro dele mesmo, ok? Isso é um jeito
+bem da hora de fazer isso, ok?
+
+749
+01:03:18,053 --> 01:03:23,562
+Agora, esse block em particular não retorna
+nada, porque ele apenas olha as keys e
+
+750
+01:03:23,562 --> 01:03:28,154
+values, não está pedindo nada
+sobre eles. Mas ele recebe três
+
+751
+01:03:28,154 --> 01:03:32,665
+argumentos. Ele recebe a chave e o valor
+que o bloco está sendo pedido para olhar.
+
+752
+01:03:32,665 --> 01:03:37,839
+E esse bloco vai ser chamado repetidamente.
+Ele também recebe um parâmetro "out",
+
+753
+01:03:37,839 --> 01:03:42,518
+que é um BOOL. Ok? Isso pode ser meio
+assustador, mas é um BOOL que é "out".
+
+754
+01:03:42,518 --> 01:03:47,332
+É um ponteiro para um BOOL que você
+pode setá-lo então você pode se comunicar
+
+755
+01:03:47,332 --> 01:03:51,587
+de volta com o NSDictionary enquanto
+ele está chamando esses blocks. É bem
+
+756
+01:03:51,587 --> 01:03:56,556
+interessante. Aqui está o que nós estamos fazendo,
+estamos apenas logando as keys e values e
+
+757
+01:03:56,556 --> 01:04:02,043
+nós estamos parando se nós acharmos uma
+key que é @"ENOUGH". Daí nós paramos. Ok?
+
+758
+01:04:02,043 --> 01:04:07,703
+E nós paramos simplesmente dizendo
+*stop = YES, certo? Blocks sempre começam
+
+759
+01:04:07,703 --> 01:04:13,468
+com esse caractere mágico, o ^. Vocês vêem?
+Como o argumento para esse método, o primeiro
+
+760
+01:04:13,468 --> 01:04:18,563
+caractere é um ^? Todos os blocks começam
+com um ^. É assim que o compilador sabe
+
+761
+01:04:18,563 --> 01:04:24,017
+que estamos fazendo blocks. Ok? ^.
+^ é a coisa mágica. Vocês podem
+
+762
+01:04:24,017 --> 01:04:29,214
+usar variáveis locais dentro do seu método,
+que está chamando uma função com um block.
+
+763
+01:04:29,214 --> 01:04:34,091
+Ok? Se eu tiver uma variável local "stopValue"
+e eu chamei NSDictionary enumarateKeysAndObjects...
+
+764
+01:04:34,091 --> 01:04:39,173
+usingBlock, eu poderia usar essa variável
+local dentro do block e isso iria
+
+765
+01:04:39,173 --> 01:04:44,256
+funcionar. Que é muito interessante também.
+Ok? Então eu posso setar o stopValue
+
+766
+01:04:44,256 --> 01:04:49,074
+como uma variável local e então
+checar dentro do block então mesmo que esses blocks
+
+767
+01:04:49,074 --> 01:04:54,184
+estejam sendo executados pelo dictionary
+para mim, ele pode ver todas as minhas variáveis locais.
+
+768
+01:04:54,184 --> 01:04:59,140
+Entretando essas variáveis locais são
+readonly. Então eu não poderia, digamos, ter outra
+
+769
+01:04:59,140 --> 01:05:04,000
+variável local chamada BOOL stoppedEarly,
+e setá-la para YES. Isso não seria permitido,
+
+770
+01:05:04,000 --> 01:05:08,851
+porque eu não posso escrever nas minhas
+variáveis locais.
+
+771
+01:05:08,851 --> 01:05:14,993
+A NÃO SER, que eu coloque __block na frente delas.
+Então eu poderia escrever nelas, ok? Elas seriam
+
+772
+01:05:14,993 --> 01:05:19,616
+colocadas na heap, escreveria nela e
+elas seriam copiadas de volta quando o block
+
+773
+01:05:19,616 --> 01:05:25,076
+acabar. Ok? Tudo isso acontece por mágica,
+pelo compilador em tempo de execução. Simplesmente
+
+774
+01:05:25,076 --> 01:05:29,848
+funciona. Tudo que você espera que aconteça,
+acontecerá, exceto por ter que colocar
+
+775
+01:05:29,848 --> 01:05:34,647
+esse __block para escrever de volta
+em uma variável local. Se a variável é
+
+776
+01:05:34,647 --> 01:05:38,236
+uma instance variable, em outras palavras,
+_algumacoisa, então isso também funcionará.
+
+777
+01:05:38,236 --> 01:05:41,569
+Você também pode escrever nela. Você não
+precisa fazer o __, 
+
+778
+01:05:41,569 --> 01:05:45,117
+você pode automaticamente escrever na
+variável de instância. Claro, nós não
+
+779
+01:05:45,117 --> 01:05:48,497
+escrevemos em variáveis de instância assim,
+nós só fazemos isso nos nossos setters e
+
+780
+01:05:48,497 --> 01:05:52,027
+getters. Então, eu só mencionei isso
+para completar, mas nós não vamos fazer isso
+
+781
+01:05:52,027 --> 01:05:56,318
+de fato. Embora, vocês vão definitivamente chamar
+setters e getters. E, o que acontece
+
+782
+01:05:56,318 --> 01:06:01,311
+se você tiver um objeto nesse block?
+Especificamente... ele é mantido na heap,
+
+783
+01:06:01,311 --> 01:06:06,162
+certo? E a resposta é: qualquer objeto
+que você referencia dentro de um block
+
+784
+01:06:06,162 --> 01:06:11,330
+vai ter um ponteiro strong nele
+até que o block esteja mais
+
+785
+01:06:11,330 --> 01:06:16,306
+sendo executado. Ok? Em outras palavras,
+assim que o bloco não existir mais,
+
+786
+01:06:16,306 --> 01:06:20,776
+que ele for completamente usado, que ninguém
+for chamá-lo mais, então esse ponteiro
+
+787
+01:06:20,776 --> 01:06:25,329
+strong para qualquer objeto que estava
+dentro do block vai finalmente partir. Em outras
+
+788
+01:06:25,329 --> 01:06:29,685
+palavras, o sistema vai garantir que você
+nunca vai de-referenciar um ponteiro para
+
+789
+01:06:29,685 --> 01:06:34,458
+um objeto que foi embora, ok? Entendem
+o que eu estou dizendo com isso? Eu vejo
+
+790
+01:06:34,458 --> 01:06:40,296
+um pouco de olhares vazios aqui mas,
+certo. Normalmente quando nós usamos blocks
+
+791
+01:06:40,296 --> 01:06:46,065
+bem, não normalmente, mas as vezes, nós vamos
+criar um tipo para eles. É aqui que a sintaxe
+
+792
+01:06:46,065 --> 01:06:51,586
+pode entortar sua mente. Nós basicamente
+usamos a sintaxe deponteiro para função em C.
+
+793
+01:06:51,587 --> 01:06:58,385
+Onde dizemos typedef, return type,
+então entre parentesis um ^ e o nome do tipo
+
+794
+01:06:58,385 --> 01:07:04,599
+e então os argumentos. Ok? Então, por exemplo,
+nós poderíamos declarar uma variável chamada
+
+795
+01:07:04,599 --> 01:07:09,285
+square, ok? É uma variável cujo tipo
+é unary_operation_t,
+
+796
+01:07:09,285 --> 01:07:13,813
+que eu defini mais cedo nesse slide.
+Ok? Então square é uma variável.
+
+797
+01:07:13,813 --> 01:07:18,453
+É uma variável cujo tipo é um block.
+Então, o que você guardaria em um square?
+
+798
+01:07:18,453 --> 01:07:23,198
+Um block. Ok? Especificamente
+um block que retorna um double e que recebe
+
+799
+01:07:23,198 --> 01:07:28,116
+um double. Aqui eu estou atribuindo square
+para um block. Ok? Esse block em particular
+
+800
+01:07:28,116 --> 01:07:33,436
+é pega o operador, o argumento, e multiplica
+por ele mesmo. É por isso que é
+
+801
+01:07:33,436 --> 01:07:38,179
+chamado square. Então eu posso usar
+a variável square como se fosse uma função,
+
+802
+01:07:38,179 --> 01:07:43,235
+square(5) retornaria 25. Porque ele
+vai executar aquele bloco de código
+
+803
+01:07:43,235 --> 01:07:47,654
+com o 5.0 como operando. Entenderam?
+Então square é uma variável, ok?
+
+804
+01:07:47,654 --> 01:07:52,336
+Agora, você não precisa fazer o typedef,
+você pode colocar todas essas coisas
+
+805
+01:07:52,336 --> 01:07:56,927
+inline. É um pouco mais difícil de entender
+quando você faz desse jeito.
+
+806
+01:07:56,927 --> 01:08:01,778
+As vezes o iOS faz desse jeito. As vezes
+ele define um tupo e deixa um pouco
+
+807
+01:08:01,778 --> 01:08:08,432
+mais claro. Mas de qualquer forma, você pode
+fazer inline logo ali. Nós também poderíamos usar
+
+808
+01:08:08,432 --> 01:08:16,568
+o unary_operation_t como um tipo em outros lugares,
+como, por exemplo, nós poderíamos usá-lo para
+
+809
+01:08:16,568 --> 01:08:22,396
+guardar coisas em um dictionary. Aqui eu
+tenho um método em algum objeto chamado
+
+810
+01:08:22,396 --> 01:08:27,650
+addUnaryOperation, recebe uma string,
+whichExecuteBlock, que recebe uma unary_operation_t,
+
+811
+01:08:27,650 --> 01:08:32,796
+um block, certo? É um block que recebe
+um double e retorna um double. É isso que
+
+812
+01:08:32,796 --> 01:08:37,869
+o unary_operation_t é. Então aqui
+eu estou usando esse tipo, como o tipo
+
+813
+01:08:37,869 --> 01:08:43,460
+de um argumento para um método. Vêe? E então,
+vejam o que estou fazendo na próxima linha.
+
+814
+01:08:43,460 --> 01:08:48,682
+Eu estou colocando o block em um
+dicitonary. Ok? Blocks não são realmente
+
+815
+01:08:48,682 --> 01:08:53,342
+objetos. Ok? Você não pode enviar mensagens
+a eles, mas você pode colocá-los em
+
+816
+01:08:53,342 --> 01:08:59,741
+dicionários. Colocá-los em arrays,
+coisas assim. Ok? O ARC também funciona
+
+817
+01:08:59,741 --> 01:09:06,441
+com eles. Então o ARC vai liberá-losd a heap
+quando ninguém mais tiver um ponteiro strong,
+
+818
+01:09:06,441 --> 01:09:12,061
+e todas essas coisas, ok? Então, por exemplo,
+mais tarde, se nós temos esse
+
+819
+01:09:12,062 --> 01:09:17,073
+dicionário que tem esses unary_operation_t
+strings como keys, e o block disser
+
+820
+01:09:17,073 --> 01:09:21,593
+os values, bom, quando alguém disser
+execute essa operação para mim usando
+
+821
+01:09:21,593 --> 01:09:25,908
+esse argumento. Eu posso olhar nesse
+dictionary self.unaryOperations, achar qual é
+
+822
+01:09:25,908 --> 01:09:30,533
+o block, pegar o block em uma variável local
+e executá-lo, chamando-o como
+
+823
+01:09:30,533 --> 01:09:36,693
+uma função. Ok? Nós nem sempre
+usamos typedef,
+
+824
+01:09:36,693 --> 01:09:42,036
+e também quando estamos usando métodos,
+e isso é bem comum no iOS Então se você olhar
+
+825
+01:09:42,036 --> 01:09:47,348
+o NSDictionary e olhar o método
+enumerateKeysAndValuesUsingBlock,
+
+826
+01:09:47,348 --> 01:09:53,146
+ele não vai ter um typedef. Ele vai apenas
+definí-lo logo ali. Mas os argumentos são
+
+827
+01:09:53,146 --> 01:09:58,726
+exatamente iguais como se tivessem sido
+typedefs, é apenas o nome do typedef que se foi. Ok?
+
+828
+01:09:58,726 --> 01:10:04,052
+Então, ao invés de void, parentesis, ^,
+algum nome do tipo, parentesis, blá,
+
+829
+01:10:04,052 --> 01:10:09,302
+blá blá, é aepnas void, parentesis,
+^, fecha parentesis. E então
+
+830
+01:10:09,302 --> 01:10:15,214
+os argumentos. Ok? bom, de qualquer forma,
+para algum de vocês, tenho certeza. Seus cérebros
+
+831
+01:10:15,214 --> 01:10:21,205
+estão rodando (e derretendo!) com esse tipo
+de sintaxe, mas vocês vão se acostumar. Tem também
+
+832
+01:10:21,205 --> 01:10:25,678
+outra coisa que faz ficar ainda mais complicado
+de se acostumar com isso que é, por exemplo,
+
+833
+01:10:25,678 --> 01:10:30,449
+se algo não tem nenhum return type, você não
+precisa especificá-lo. Então, você não precisa
+
+834
+01:10:30,449 --> 01:10:35,280
+colocar o return type void ali.
+Você simplesmente o deixa de fora, como
+
+835
+01:10:35,280 --> 01:10:39,732
+o que está acontecendo aqui. Também,
+se ele não tiver argumentos, você não precisa
+
+836
+01:10:39,732 --> 01:10:44,459
+abrir parentesis, fechar parentesis.
+Apenas deixe-os de fora. Ok?
+
+837
+01:10:44,459 --> 01:10:49,471
+Aqui está um método que anima um certo block--
+algo que acontece em um block.
+
+838
+01:10:49,471 --> 01:10:54,189
+Ele anima a mudança para essa coisa
+e ele não tem argumentos ou return types.
+
+839
+01:10:54,189 --> 01:11:00,108
+É apenas ^ e as chaves, ok?
+Memory cycles, nós estamos sem tempo
+
+840
+01:11:00,108 --> 01:11:05,124
+então eu não vou falar sobre isso,
+mas o principal ponto sobre memory cycles é
+
+841
+01:11:05,124 --> 01:11:09,836
+se você tiver um ponteiro dentro do block
+que é um ponteiro para algo que tem um ponteiro
+
+842
+01:11:09,836 --> 01:11:14,726
+para o block. Normalmente é o self, certo?
+Você tem o self que é usado dentro do block
+
+843
+01:11:14,726 --> 01:11:18,646
+e o self tem um array ou dictionary
+que tem um ponteiro para aquele block.
+
+844
+01:11:18,646 --> 01:11:23,089
+Agora, você tem um memory cycle,
+nenhum desses objetos pode sair da heap
+
+845
+01:11:23,089 --> 01:11:27,329
+até que um deles sete o outro para nil.
+Vêem porquê? Porque eles estão
+
+846
+01:11:27,329 --> 01:11:31,747
+apontado um para o outro. O block está
+apontando para o self, certo? Self está
+
+847
+01:11:31,747 --> 01:11:36,155
+apontando para o block. Então como eles podem
+parar de ter um ponteiro strong para o outro?
+
+848
+01:11:36,155 --> 01:11:40,576
+Então um deles tem que setar o outro
+para nil. A correção para isso é esse
+
+849
+01:11:40,576 --> 01:11:46,588
+pequeno __weak, que você pode criar uma variável
+local com isso. Vêem o __weak MyClass *weakSelf =...
+
+850
+01:11:46,588 --> 01:11:51,090
+self? eu criei um ponteiro para self.
+É uma variável local, mas ela é weak.
+
+851
+01:11:51,090 --> 01:11:55,188
+Agora, se eu usar isso em um block,
+ele não vai ter um strong pointer. Eu não vou
+
+852
+01:11:55,188 --> 01:11:59,631
+manter um strong pointer para self.
+Aí está certo. Se o self for retirado
+
+853
+01:11:59,631 --> 01:12:03,987
+da heap, o block vai com ele, porque
+ele não tem um strong pointer
+
+854
+01:12:03,987 --> 01:12:08,340
+de volta par ao self para manter o self
+na heap. Bom, vocês podem ficar admirando esses
+
+855
+01:12:08,340 --> 01:12:12,973
+dois slides se vocês quiserem. E da próxima vez,
+nós vamos falar sobre o principal uso de blocks.
+
+856
+01:12:12,973 --> 01:12:17,068
+Os blocks são usados em vários lugares como
+enumeration que vocês acabaram de ver dentro
+
+857
+01:12:17,068 --> 01:12:21,542
+do dictionary. View animations, vocês viram
+quando eu fiz a demo de virar a carta. Ela usa
+
+858
+01:12:21,542 --> 01:12:25,969
+um block, vocês podem voltar e olhar aquilo.
+Ordenação, eu falei sobre isso.
+
+859
+01:12:25,969 --> 01:12:30,682
+Error handlers, completion handlers
+e tudo isso. Mas a principal é multi-threading.
+
+860
+01:12:30,682 --> 01:12:35,566
+E é sobre isso que vamos falar da próxima vez,
+é o Grand Central Dispatch, que é um
+
+861
+01:12:35,566 --> 01:12:40,847
+mecanismo para fazer multi-threading em iOS.
+E então eu vou mostrar a vocês uma demo e nós vamos
+
+862
+01:12:40,847 --> 01:12:42,847
+ver isso tudo. Se tiverem perguntas,
+estou aqui.
+
+863
+01:12:42,848 --> 01:12:47,847
+Visite nosso site:
+www.centraldosapps.com
+

@@ -1,0 +1,7826 @@
+1
+00:00:00,669 --> 00:00:11,869
+Legendas em português por
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:11,889 --> 00:00:17,969
+Bem vindos à aula número 8 do CS193P,
+inverno de 2013. Hoje nós vamos falar
+
+3
+00:00:17,989 --> 00:00:23,870
+sobre dois assuntos importantes.
+Um é Autolayout. E o outro
+
+4
+00:00:23,890 --> 00:00:28,189
+é Navigation, ok?
+Autolayout é uma maneira
+
+5
+00:00:28,209 --> 00:00:31,969
+para que possamos fazer nossas views
+terem um bom aspecto quando elas são
+
+6
+00:00:31,989 --> 00:00:35,699
+rotacionadas ou quando elas estão
+em um iPhone 5 vs. iPhone 4, ou até mesmo no iPad.
+
+7
+00:00:35,719 --> 00:00:38,959
+E Navigation é outro meio
+além de TabBarController que
+
+8
+00:00:38,979 --> 00:00:44,189
+você pode colocar múltiplos
+MVCs na tela, ok? Eu tenho duas demos
+
+9
+00:00:44,210 --> 00:00:47,379
+que eu poderia fazer hoje.
+Eu não acho que vou ter tempo para
+
+10
+00:00:47,379 --> 00:00:50,629
+a segunda. Então eu fiz os slides
+meio como
+
+11
+00:00:50,629 --> 00:00:51,879
+um walkthrough.
+
+
+12
+00:00:51,879 --> 00:00:55,129
+Assim como eram lá
+nas aulas 1 e 2, onde
+
+13
+00:00:55,129 --> 00:00:57,899
+ele meio que era um walkthrough.
+Então, se eu não conseguir,
+
+14
+00:00:57,899 --> 00:01:02,189
+sem problemas. Se eu começar
+e o nosso tempo acabar,
+
+15
+00:01:02,209 --> 00:01:05,099
+novamente, se vocês tiverem
+que sair da aula,
+
+16
+00:01:05,099 --> 00:01:07,390
+não tem problema nenhum. Vocês não vão
+estar perdendo muita coisa,
+
+17
+00:01:07,390 --> 00:01:10,629
+porque, novamente, esses slides
+estão bem explicados e são um walkthrough
+
+18
+00:01:10,649 --> 00:01:16,790
+da segunda demo, ok?
+Ok. Então, Autolayout. O que
+
+19
+00:01:16,810 --> 00:01:24,299
+é isso? É, essencialmente um mecanismo
+onde nós colocamos restrições
+
+20
+00:01:24,319 --> 00:01:29,469
+em views. E restrições
+em relacionamentos entre
+
+21
+00:01:29,489 --> 00:01:34,140
+duas views. Tipo "não fique
+maior do que isso", "não fique
+
+22
+00:01:34,159 --> 00:01:37,159
+menor do que isso", "e quando
+vier outra view, sempre
+
+23
+00:01:37,179 --> 00:01:41,469
+fique esse tanto do lado esquerdo
+dessa view", ok? Ou "seja sempre
+
+24
+00:01:41,489 --> 00:01:44,780
+duas vezes maior do que essa outra view",
+"seja do mesmo tamanho
+
+25
+00:01:44,780 --> 00:01:47,780
+dessa outra view o tempo todo".
+Nós podemos colocar um monte
+
+26
+00:01:47,780 --> 00:01:50,709
+dessas restrições e então,
+quando nosso "bounds" mudar,
+
+27
+00:01:50,729 --> 00:01:54,099
+nós passamos por essas restrições
+e tentamos aplicá-las, satisfazer
+
+28
+00:01:54,119 --> 00:01:57,539
+todas essas restrições,
+enquanto ocupamos o novo espaço.
+
+29
+00:01:57,559 --> 00:02:00,980
+Ok? Um espaço maior,
+ou um espaço menor ou tanto faz.
+
+
+30
+00:02:01,000 --> 00:02:05,500
+É um sistema de layout baseado em restrições.
+E como nós setamos
+
+
+31
+00:02:05,519 --> 00:02:08,419
+essas restrições? Bom,
+existe na verdade uma API inteira
+
+
+32
+00:02:08,439 --> 00:02:12,089
+NSLayoutConstraints, mas nós
+não vamos olhar para nada
+
+
+33
+00:02:12,109 --> 00:02:15,889
+dessa API. Nós não vamos
+aprender como fazer restrições
+
+
+34
+00:02:15,909 --> 00:02:19,299
+em código. Porque
+é um assunto muito grande
+
+
+35
+00:02:19,319 --> 00:02:22,569
+para cobrir nesse curto tempo
+que nós temos.
+
+
+36
+00:02:22,569 --> 00:02:25,479
+É bem impressionante, na verdade.
+Você pode até especificar
+
+
+37
+00:02:25,500 --> 00:02:29,849
+essas restrições com ASCII art.
+Então eu poderia dizer que
+
+
+38
+00:02:29,870 --> 00:02:33,539
+meu flipsLabel tem que ficar na esquerda,
+meu dealButton no meio
+
+
+39
+00:02:33,560 --> 00:02:35,560
+e meu scoreLabel na direita.
+
+
+40
+00:02:35,560 --> 00:02:38,560
+Apenas colocando um texto assim
+na API, que é realmente
+
+
+41
+00:02:38,560 --> 00:02:40,810
+impressionante. Mas nós não vamos,
+infelizmente, ter tempo
+
+
+42
+00:02:40,810 --> 00:02:43,810
+para olhar para nada disso.
+Porque outra maneira de fazer
+
+
+43
+00:02:43,810 --> 00:02:46,060
+as restrições é fazendo tudo
+no Xcode, ok? Agora,
+
+
+44
+00:02:46,060 --> 00:02:47,060
+você não pode
+
+
+45
+00:02:47,060 --> 00:02:50,250
+fazer tudo no Xcode.
+Você pode fazer, sabe, é
+
+
+46
+00:02:50,250 --> 00:02:53,750
+uma regra 90/10, você pode fazer
+90% no Xcode, mas os outros
+
+
+47
+00:02:53,750 --> 00:02:57,439
+10% de uma UI complicada
+você te que ir no código
+
+
+48
+00:02:57,459 --> 00:03:00,709
+e isso pode tomar 90% do tempo
+para fazer esses últimos 10%,
+
+
+49
+00:03:00,709 --> 00:03:04,589
+mas você pode andar um bom caminho
+apenas com o Xcode
+
+
+50
+00:03:04,609 --> 00:03:07,859
+e nesse curso vocês nunca farão
+uma UI tão complicada para vocês terem
+
+
+51
+00:03:07,859 --> 00:03:10,859
+que fazer autolayout no Xcode
+usando as coisas que eu vou mostrar
+
+
+52
+00:03:10,859 --> 00:03:16,379
+para vocês hoje. Então,
+os mecanismos que nós usamos dentro do Xcode
+
+
+53
+00:03:16,399 --> 00:03:19,259
+para setar essas restrições (constraints)
+entre views são essas
+
+
+54
+00:03:19,280 --> 00:03:22,329
+guidelines azuis, sabem,
+quando você arrasta coisas pra dentro,
+
+
+55
+00:03:22,349 --> 00:03:23,349
+você tem essas linhas
+tracejadas azuis, ok?
+
+
+56
+00:03:23,349 --> 00:03:26,999
+Elas são na verdade capazes
+de adicionar constraints e nós vamos ver
+
+
+57
+00:03:27,019 --> 00:03:31,549
+como isso funciona. Existem
+três modos para meio que impor
+
+
+58
+00:03:31,569 --> 00:03:34,999
+uma constraint. Que é estudando
+o tamanho intrínseco--
+
+
+59
+00:03:35,019 --> 00:03:39,239
+setando algo para ter um tamanho intrínsico,
+o seu tamanho natural.
+
+
+60
+00:03:39,259 --> 00:03:44,419
+Prendendo ela a outra view
+e a alinhando com outra view.
+
+
+61
+00:03:44,439 --> 00:03:48,449
+Eu vou mostrar a vocês como fazer isso.
+Essas constraints são objetos.
+
+
+62
+00:03:48,469 --> 00:03:50,869
+Vocês podem na verdade criar
+outlets para elas se vocês forem
+
+
+63
+00:03:50,869 --> 00:03:55,869
+fazer isso em código. É impressionante.
+Mas vocês podem também
+
+
+64
+00:03:55,889 --> 00:03:58,049
+editar as propriedades delas,
+ir no Attributes Inspector,
+
+
+65
+00:03:58,049 --> 00:04:02,879
+tanto faz, editar as propriedades
+e então, vocês podem também
+
+
+66
+00:04:02,899 --> 00:04:05,529
+controlar as prioridades
+dessas restrições. Porque vocês podem
+
+
+67
+00:04:05,549 --> 00:04:07,799
+imaginar, vocês podem ter
+algumas constraints que podem conflitar
+
+
+68
+00:04:07,799 --> 00:04:10,529
+um pouco, e vocês não podem ter
+nenhuma constraint
+
+
+69
+00:04:10,549 --> 00:04:13,909
+que entrem em conflito. Ok?
+Isso vai
+
+
+70
+00:04:13,929 --> 00:04:17,300
+gerar warnings no seu console.
+Então vocês podem
+
+
+71
+00:04:17,319 --> 00:04:21,860
+amenizar as coisas de duas
+possíveis constraints conflitantes fazendo
+
+
+72
+00:04:21,879 --> 00:04:24,980
+uma ter mais prioridade do que a outra,
+ok? E nós vamos
+
+
+73
+00:04:25,000 --> 00:04:26,000
+falar um pouco sobre isso.
+
+
+74
+00:04:26,000 --> 00:04:29,870
+Ok, então novamente, eu vou
+fazer tudo isso com esse jeito
+
+
+75
+00:04:29,889 --> 00:04:32,180
+de walkthrough.
+Não é um verdadeiro walkthrough
+
+
+76
+00:04:32,180 --> 00:04:35,729
+mas eu vou apenas
+mostrar um exemplo de como nós poderíamos
+
+
+77
+00:04:35,729 --> 00:04:41,269
+pegar a UI do Matchismo,
+como ela está desde a última...
+
+
+78
+00:04:41,289 --> 00:04:45,949
+do modo que deixamos ela da última vez
+e meio que consertá-la um pouco
+
+
+79
+00:04:45,969 --> 00:04:48,569
+para usar autolayout. Então,
+qual é o problema que nós estávamos tentando
+
+
+80
+00:04:48,569 --> 00:04:54,310
+resolver no Matchismo?
+Bom, o Matchismo fica bem em portraits.
+
+
+81
+00:04:54,329 --> 00:04:58,840
+Bom, não tão bem, mas ok.
+Ele fica ok, mas se nós rotacionarmos
+
+
+82
+00:04:58,860 --> 00:05:02,100
+para landscape, ele realmente
+não fica ok. Vocês vêem como o
+
+
+83
+00:05:02,120 --> 00:05:05,120
+botão de Deal... ele não fica no meio, ok?
+Nós meio que queremos
+
+
+84
+00:05:05,120 --> 00:05:08,370
+que o botão de Deal fique no meio
+e queremos que o "Flips" e
+
+
+85
+00:05:08,370 --> 00:05:11,620
+o Score usem os espaços do lado.
+Ele não está
+
+
+86
+00:05:11,620 --> 00:05:14,870
+fazendo o que nós queremos.
+Então, para consertar isso,
+
+
+87
+00:05:14,870 --> 00:05:18,120
+eu vou usar autolayout.
+É um conserto simples, mas eu vou
+
+
+88
+00:05:18,120 --> 00:05:21,550
+fazer uma análise muito elaborada
+de tudo que está acontecendo.
+
+
+89
+00:05:21,569 --> 00:05:24,149
+Não porque é assim que vocês
+fariam na verdade
+
+
+90
+00:05:24,149 --> 00:05:27,649
+para fazer isso funcionar.
+É somente porque eu quero mostrar a vocês
+
+
+91
+00:05:27,649 --> 00:05:30,399
+cada feature no autolayout
+no Xcode que eu tenho a possibilidade
+
+
+92
+00:05:30,399 --> 00:05:33,399
+de usar. Então, é isso
+que nós vamos fazer.
+
+
+93
+00:05:33,399 --> 00:05:35,399
+Nós sempre vamos começar
+ligando o autolayout.
+
+
+94
+00:05:35,399 --> 00:05:38,829
+Então, o primeiro walkthrough
+que vocês tiveram nesse curso,
+
+
+95
+00:05:38,849 --> 00:05:42,129
+nós desligamos o autolayout.
+Lembram-se disso? Bem no começo,
+
+
+96
+00:05:42,149 --> 00:05:44,649
+nós desativamos esse checkbox,
+porque ele fica ativado
+
+
+97
+00:05:44,649 --> 00:05:47,009
+por padrão, ok? Alguns de vocês
+podem ter esquecido disso,
+
+
+98
+00:05:47,009 --> 00:05:50,910
+ele pode estar ligado agora,
+o que é ok. Mas assim que ativarmos
+
+
+99
+00:05:50,930 --> 00:05:54,569
+esse checkbox, várias coisas
+vão acontecer do lado esquerdo
+
+
+100
+00:05:54,589 --> 00:05:57,089
+dessa tela. Ok? O lado esquerdo
+dessa tela é o document
+
+
+101
+00:05:57,089 --> 00:05:59,089
+outline, certo? Espero que vocês
+estejam familiarizados com isso
+
+
+102
+00:05:59,089 --> 00:06:02,089
+depois da última demo.
+E vejam o que acontece do lado esquerdo
+
+
+103
+00:06:02,089 --> 00:06:06,180
+quando eu ligo o autolayout, ok?
+Um monte de objetos aparecem ali.
+
+
+104
+00:06:06,199 --> 00:06:10,939
+Esses objetos roxos ali,
+esses são objetos
+
+
+105
+00:06:10,959 --> 00:06:16,030
+de constraint. Então quando você
+liga o autolayout, o iOS na verdade
+
+
+106
+00:06:16,050 --> 00:06:18,870
+passa por tudo isso e diz: "oh,
+eu vou gerar constraints
+
+
+107
+00:06:18,889 --> 00:06:22,399
+que vão desenhar essa coisa
+do jeito que ela está agora
+
+
+108
+00:06:22,419 --> 00:06:25,569
+baseado no que você fez quando
+você as arrastou pra cá."
+
+
+109
+00:06:25,569 --> 00:06:28,069
+Agora, isso não é sempre exatamente o que
+você quer, ok? Especialmente se você
+
+
+110
+00:06:28,089 --> 00:06:31,870
+ligar o autolayout depois de tê-lo desligado 
+porque ele
+
+
+111
+00:06:31,889 --> 00:06:35,049
+não viu você arrastar as coisas
+pra dentro então ele não sabe exatamente
+
+
+112
+00:06:35,049 --> 00:06:37,850
+quais guidelines azuis
+estavam por ali na hora.
+
+
+113
+00:06:37,870 --> 00:06:40,129
+Então ele está meio que usando
+o adivinhômetro e é isso que nós
+
+
+114
+00:06:40,129 --> 00:06:42,879
+vamos arrumar, ok? Alguns
+dos chutes que ele deu.
+
+
+115
+00:06:42,889 --> 00:06:44,740
+Se você começar com o autolayout
+desde o começo,
+
+
+116
+00:06:44,740 --> 00:06:45,740
+você vai ver
+
+
+117
+00:06:45,740 --> 00:06:49,120
+que ao arrastar as views para dentro
+e redimensioná-las e movê-las
+
+
+118
+00:06:49,139 --> 00:06:51,480
+estará criando constraints
+e geralmente são as constraints
+
+
+119
+00:06:51,500 --> 00:06:55,350
+que você quer. Não sempre,
+mas geralmente. Mas essa é
+
+
+120
+00:06:55,370 --> 00:06:58,120
+uma ótima oportunidade para nós
+vermos quais constraints
+
+
+121
+00:06:58,120 --> 00:07:00,689
+estão aqui e mudá-las
+para serem as constraints que
+
+
+122
+00:07:00,689 --> 00:07:06,670
+nós realmente queremos.
+Agora, como nós podemos olhar para essas constraints?
+
+
+123
+00:07:06,689 --> 00:07:09,969
+Uma maneira de olhar para essas constraints
+é selecionar uma view...
+
+
+124
+00:07:09,989 --> 00:07:14,480
+lembrem-se que as constraints
+estão anexadas na view, certo?
+
+
+125
+00:07:14,500 --> 00:07:17,699
+E quando há duas views envolvidas,
+ela está anexada ao ancestral comum
+
+
+126
+00:07:17,719 --> 00:07:21,569
+dessas duas views.
+Então se elas estão ambas
+
+
+127
+00:07:21,589 --> 00:07:24,339
+na mesma superview,
+então seria a superview. Se elas
+
+
+128
+00:07:24,339 --> 00:07:27,339
+estão espalhadas, sabe,
+compartilharem uma superview apenas
+
+
+129
+00:07:27,339 --> 00:07:30,339
+mais pra cima, poderia ser ela.
+Se é uma constraint apenas
+
+
+130
+00:07:30,339 --> 00:07:33,420
+em uma view, uma view é considerada
+o seu próprio ancestral, então seria
+
+
+131
+00:07:33,439 --> 00:07:36,439
+apenas nessa view. Então
+se alguma constraint tipo a largura
+
+
+132
+00:07:36,439 --> 00:07:39,189
+tem que ser maior do que
+uma certa quantidade, isso não é relevante
+
+
+133
+00:07:39,189 --> 00:07:41,189
+para nenhuma outra view,
+apenas para essa própria view.
+
+
+134
+00:07:41,189 --> 00:07:43,829
+Então, essas contraints são
+anexadas a views. Você pode
+
+
+135
+00:07:43,849 --> 00:07:46,909
+clicar numa view. Digamos que eu
+cliquei na CollectionView
+
+
+136
+00:07:46,909 --> 00:07:51,410
+logo aqui, ok? Aí está
+nossa grande verde e feia
+
+
+137
+00:07:51,430 --> 00:07:55,449
+Collection View e se eu for
+no Size Inspector
+
+
+138
+00:07:55,469 --> 00:07:58,829
+na direita, vocês vêem,
+lá embaixo, tem uma seção
+
+
+139
+00:07:58,849 --> 00:08:01,069
+chamada "Constraints". E,
+podem ver que há
+
+
+140
+00:08:01,069 --> 00:08:04,610
+quatro constraints ali.
+Essas constraints, essas pequenas
+
+
+141
+00:08:04,629 --> 00:08:07,439
+caixinhas retangulares, se você
+passar o mouse sobre elas, você não
+
+
+142
+00:08:07,439 --> 00:08:09,189
+precisa clicar, apenas
+passar o mouse sobre elas,
+
+
+143
+00:08:09,189 --> 00:08:12,339
+elas vão mostrar na UI
+onde está
+
+
+144
+00:08:12,359 --> 00:08:16,409
+essa constraint. Vocês vêem
+no canto esquerdo? Está mostrando
+
+
+145
+00:08:16,429 --> 00:08:24,060
+a constraint ali,
+deixando espaço para a superview, ok?
+
+
+146
+00:08:24,079 --> 00:08:28,259
+A próxima abaixo é "trailing space", ok?
+Essa constraint está
+
+
+147
+00:08:28,279 --> 00:08:31,659
+no canto direito. "Trailing"
+e "leading" são tipo se você...
+
+
+148
+00:08:31,679 --> 00:08:34,429
+se fosse texto na língua inglesa, certo?
+Leading se refere
+
+
+149
+00:08:34,429 --> 00:08:38,750
+à esquerda e trailing à direita.
+Então, essa aqui
+
+
+150
+00:08:38,769 --> 00:08:43,049
+está mostrando o canto direito.
+E essa constraint em particular,
+
+
+151
+00:08:43,069 --> 00:08:46,269
+"trailing space to superview"
+é uma distância
+
+
+152
+00:08:46,289 --> 00:08:50,200
+específica entre os cantos
+de duas views. Então essa é
+
+
+153
+00:08:50,220 --> 00:08:52,809
+a distância entre o canto direito
+da Collecion View e o
+
+
+154
+00:08:52,829 --> 00:08:55,829
+canto direito da sua superview.
+QUe é self.view a propósito.
+
+
+155
+00:08:55,829 --> 00:08:59,129
+E essa distância é zero.
+Ela poderia ser não-zero,
+
+
+156
+00:08:59,149 --> 00:09:02,149
+e nesse caso haveria
+um número aqui dizendo qual é
+
+
+157
+00:09:02,149 --> 00:09:04,899
+a distância, mas nesse caso
+é zero. Então esse é um tipo
+
+
+158
+00:09:04,899 --> 00:09:07,919
+de constraint. "Top" e "bottom"
+e "leading" e "trailing",
+
+
+159
+00:09:07,939 --> 00:09:11,889
+como eu disse, essas são
+
+
+160
+00:09:11,909 --> 00:09:16,990
+auto-explicativas. Notem que
+embaixo da CollectionView, entretanto,
+
+
+161
+00:09:17,009 --> 00:09:20,129
+se nós passarmos o mouse nessa coisa,
+ela não está conectada
+
+
+162
+00:09:20,149 --> 00:09:24,250
+à superview, certo? O fundo
+da Collection View está na verdade
+
+
+163
+00:09:24,269 --> 00:09:27,610
+conectado ao botão
+que existe abaixo dela.
+
+
+164
+00:09:27,629 --> 00:09:31,090
+Vocês vêem esse "Bottom Space To: Button"?
+E vocês vêem esse pequeno
+
+
+165
+00:09:31,110 --> 00:09:34,539
+[?] logo acima do botão Deal?
+Ok? Isso está mostrando
+
+
+166
+00:09:34,559 --> 00:09:37,419
+que existe uma constraint
+entre essas duas views que é
+
+
+167
+00:09:37,439 --> 00:09:40,819
+que a CollectionView
+sempre tem que estar no topo
+
+
+168
+00:09:40,839 --> 00:09:44,710
+do botão Deal por uma certa quantidade.
+E essa certa quantidade está
+
+
+169
+00:09:44,730 --> 00:09:50,970
+listada bem aqui: Default. Ok?
+Então, default é uma
+
+
+170
+00:09:50,990 --> 00:09:54,679
+distância importante. Ela é a distância
+que segue as
+
+
+171
+00:09:54,699 --> 00:09:58,080
+Apple Human Interface Guidelines,
+ok? O qual eu ainda
+
+
+172
+00:09:58,100 --> 00:10:00,899
+não havia mencionado antes,
+mas eu vou postar um link para elas
+
+
+173
+00:10:00,899 --> 00:10:03,809
+e vocês vão ler, ok?
+
+
+174
+00:10:03,809 --> 00:10:06,059
+É algo meio volumoso,
+mas vocês vão
+
+
+175
+00:10:06,059 --> 00:10:08,309
+ler tudo e entender
+que a Apple tem certos
+
+
+176
+00:10:08,309 --> 00:10:10,829
+guidelines para dizer onde
+você pode colocar coisas na sua UI
+
+
+177
+00:10:10,829 --> 00:10:14,539
+e coisas assim. "Default" é algo bom.
+Se você tiver Default quando
+
+
+178
+00:10:14,559 --> 00:10:17,279
+estiver fazendo o seu autolayout,
+você está no caminho certo
+
+
+179
+00:10:17,279 --> 00:10:20,000
+porque isso significa que
+está seguindo os guidelines.
+
+
+180
+00:10:20,019 --> 00:10:22,439
+E, em geral, quando você está
+fazendo autolayout, você não quer
+
+
+181
+00:10:22,439 --> 00:10:24,639
+nenhum número mágico. Assim como
+no seu código, você não quer
+
+
+182
+00:10:24,639 --> 00:10:25,649
+o número sete.
+
+
+183
+00:10:25,669 --> 00:10:27,990
+Você também não quer isso
+quando estiver fazendo autolayout.
+
+
+184
+00:10:27,990 --> 00:10:32,490
+Você ou quer 0 ou default.
+Esses são os dois números,
+
+
+185
+00:10:32,509 --> 00:10:37,029
+ok? Você nao quer outro número, ok?
+Se você quiser,
+
+
+186
+00:10:37,049 --> 00:10:39,129
+é melhor que você esteja
+realmente certo do que você quer, porque
+
+
+187
+00:10:39,129 --> 00:10:44,049
+você pode estar muito bem
+violando as User Interface Guidelines. Ok,
+
+
+188
+00:10:44,069 --> 00:10:46,830
+então vocês também podem
+clicar na constraint no
+
+
+189
+00:10:46,850 --> 00:10:50,189
+document outline. Vocês vêem essa
+no canto lá em cima?
+
+
+190
+00:10:50,209 --> 00:10:54,509
+Que é o flipsLabel que tem uma constraint.
+Essa é a "width" (largura).
+
+
+191
+00:10:54,529 --> 00:10:57,370
+Percebam que quando eu cliquei nela,
+ela foi destacada na scene.
+
+
+192
+00:10:57,370 --> 00:10:59,990
+Do mesmo modo que quando
+eu passei o mouse sobre ela no
+
+
+193
+00:10:59,990 --> 00:11:08,529
+Size Inspector, ok? Conseguem ver?
+...
+
+
+194
+00:11:08,549 --> 00:11:11,679
+Percebam que mesmo que
+
+
+195
+00:11:11,699 --> 00:11:14,519
+algumas outras constraints
+não estão selecionadas, elas ainda
+
+
+196
+00:11:14,539 --> 00:11:17,509
+estÃo aparecendo, mas elas são
+meio que menos prominentes. Elas são
+
+
+197
+00:11:17,529 --> 00:11:20,490
+linhas mais finas, sabe.
+Elas não tem esse negócio grande e amarelo
+
+
+198
+00:11:20,490 --> 00:11:23,480
+ao redor delas, então você
+meio que sempre vê
+
+
+199
+00:11:23,480 --> 00:11:34,360
+as constraints em volta de qualquer objeto selectionado.
+Mas se você clicar em um deles, ele vai se destacar em relação aos outros.
+
+
+200
+00:11:34,379 --> 00:11:38,120
+Certo. Nós podemos também selecionar o label
+e olhar para as constraints aqui,
+
+
+201
+00:11:38,139 --> 00:11:41,319
+igual fizemos antes
+com a Collection View.
+
+
+202
+00:11:41,339 --> 00:11:46,419
+Vamos olhar para essa
+primeira constraint aqui, "Width Equals: 92".
+
+
+203
+00:11:46,439 --> 00:11:49,240
+Ok? Então tem uma constraint
+nesse label
+
+
+204
+00:11:49,259 --> 00:11:54,509
+que ele vai ter 92 pontos de largura, ok?
+Essa é uma constraint ruim,
+
+
+205
+00:11:54,529 --> 00:11:58,409
+ok? Por que essa é uma constraint ruim?
+Porque ela tem
+
+
+206
+00:11:58,429 --> 00:11:59,429
+um número mágico ali.
+
+
+207
+00:11:59,429 --> 00:12:03,789
+92. Isso é ruim, ok?
+Constraints de largura fixas
+
+
+208
+00:12:03,809 --> 00:12:07,740
+no geral são ruins. Então,
+em qualquer momento que, na sua UI, você ver
+
+
+209
+00:12:07,759 --> 00:12:11,389
+Width Equal alguma coisa, algum número,
+isso vai ser ruim, ok?
+
+
+210
+00:12:11,409 --> 00:12:14,409
+Por que elas são ruins?
+E a resposta é: por causa
+
+
+211
+00:12:14,409 --> 00:12:19,600
+dos alemães, ok? E você pode dizer:
+QUE?!? Os Alemães?!? Bom, não é
+
+
+212
+00:12:19,620 --> 00:12:23,059
+por causa dos alemães em si,
+mas os alemães tendem a
+
+
+213
+00:12:23,079 --> 00:12:26,720
+ter grandes palavras
+para pequenas palavras em inglês, ok?
+
+
+214
+00:12:26,740 --> 00:12:29,960
+Então quando você coloca
+a versão alemã de flips aqui,
+
+
+215
+00:12:29,980 --> 00:12:33,939
+ela vai ficar realmente grande, ok?
+Então você não vai querer
+
+
+216
+00:12:33,959 --> 00:12:37,019
+que esse label seja fixo
+em um número onde a palavra alemã
+
+
+217
+00:12:37,039 --> 00:12:40,639
+não caberia, ok? Agora, outras línguas,
+talvez chinês
+
+
+218
+00:12:40,659 --> 00:12:43,219
+poderiam ser bem menores,
+ter talvez um ou dois caracteres,
+
+
+219
+00:12:43,219 --> 00:12:46,000
+um caractere para "flips".
+E ui! Você sabe,
+
+
+220
+00:12:46,019 --> 00:12:48,019
+vocês tem bastante espaço,
+mas as vezes
+
+
+221
+00:12:48,019 --> 00:12:49,019
+nem tanto assim.
+
+
+222
+00:12:49,019 --> 00:12:51,269
+É por causa dos alemães,
+é por causa de localização, ok?
+
+
+223
+00:12:51,269 --> 00:12:53,620
+É por isso que não queremos
+nenhuma largura fixa, porque nós
+
+
+224
+00:12:53,620 --> 00:12:56,349
+vamos mudar todas as strings
+da nossa aplicação
+
+
+225
+00:12:56,349 --> 00:12:59,149
+para outras linguagens e nós
+vamos querer que elas fiquem
+
+
+226
+00:12:59,169 --> 00:13:01,169
+maiores e menores
+e usem todo o espaço a coisas assim.
+
+
+227
+00:13:01,169 --> 00:13:09,269
+Então é esse o porquê, ok?
+Esse é o porquê. [...] Então nós queremos
+
+
+228
+00:13:09,289 --> 00:13:12,329
+nos livrar dessa largura.
+Eu vou mostrar a vocês algumas
+
+
+229
+00:13:12,329 --> 00:13:15,329
+das maneiras de nos livrarmos
+dessas larguras fixas. Elas são meio
+
+
+230
+00:13:15,329 --> 00:13:18,099
+tipo... "repetitivas" as vezes.
+Vocês vão arrumar uma
+
+
+231
+00:13:18,099 --> 00:13:20,870
+larguma fixa e então outra view
+vai ter largura fixa.
+
+
+232
+00:13:20,889 --> 00:13:24,319
+E você vai tipo: ÃNHR. Então é
+um pouco desafiador, mas
+
+
+233
+00:13:24,319 --> 00:13:27,289
+eu vou mostrar um modo bem direto,
+que é:
+
+
+234
+00:13:27,289 --> 00:13:30,539
+vocês vão no menu,
+o editor "menu" e diz
+
+
+235
+00:13:30,539 --> 00:13:34,519
+"sized to fit content".
+"sized to fit content". E quando você
+
+
+236
+00:13:34,539 --> 00:13:38,600
+coloca "sized to fit content",
+esse flips aí vai mudar para ser
+
+
+237
+00:13:38,620 --> 00:13:42,579
+do seu tamanho natural,
+seu tamanho intrínseco, ok? Agora, esse não é
+
+
+238
+00:13:42,599 --> 00:13:45,370
+o tamanho que você quer
+que ele fique, ok?
+
+
+239
+00:13:45,370 --> 00:13:48,250
+Mas ele se livra da constraint
+de largura fixa. Nós vamos
+
+
+240
+00:13:48,269 --> 00:13:51,019
+mostrar outras constraints
+que nós vamos colocar
+
+
+241
+00:13:51,019 --> 00:13:54,519
+nesse negócio para fazê-lo
+ficar do tamanho que queremos que seja.
+
+
+242
+00:13:54,519 --> 00:13:57,769
+Mas nós temos que nos livrar
+daquele negócio de largura fixa primeiro,
+
+
+243
+00:13:57,769 --> 00:14:01,019
+e essa é uma maneira fácil de se livrar
+das larguras fixas: "size to fit content".
+
+
+244
+00:14:01,019 --> 00:14:03,769
+Agora nem tudo tem um tamanho
+natural e intrínseco, ok? Por exemplo
+
+
+245
+00:14:03,769 --> 00:14:06,269
+uma Collection View, como ela é
+uma view "scrolante", ela pode ter
+
+
+246
+00:14:06,269 --> 00:14:08,769
+qualquer tamanho. Então ela
+não tem isso. Mas labels e buttons
+
+
+247
+00:14:08,769 --> 00:14:12,049
+obviamente vão vão se redimensionar
+para qualquer texto que esteja neles,
+
+
+248
+00:14:12,069 --> 00:14:14,209
+no momento, no seu Storyboard.
+
+
+249
+00:14:14,229 --> 00:14:16,509
+Mas estamos fazendo esse negócio
+de "size to fit content" par nos livrarmos
+
+
+250
+00:14:16,509 --> 00:14:20,279
+daquela largura fixa, ok?
+Percebam que ela se foi. Aquela
+
+
+251
+00:14:20,299 --> 00:14:23,850
+largura fixa. Não há uma constraint nova,
+está meio que implícito
+
+
+252
+00:14:23,870 --> 00:14:26,769
+que ele está usando
+o seu tamanho intrínseco porque
+
+
+253
+00:14:26,769 --> 00:14:32,209
+não existe uma constraint de largura fixa nele.
+Ok? E a respeito de score?
+
+
+254
+00:14:32,229 --> 00:14:35,479
+Ele tem exatamente o mesmo problema.
+Se você olhar para o score, ele tem
+
+
+255
+00:14:35,479 --> 00:14:38,229
+uma constraint nele.
+Vocês a vêem no document outline
+
+
+256
+00:14:38,229 --> 00:14:41,229
+ali? E vocês podem ver aqui na esquerda,
+"fixed width".
+
+
+257
+00:14:41,229 --> 00:14:43,979
+Então vamos fazer a mesma coisa aqui.
+Vamos no nosso menu,
+
+
+258
+00:14:43,979 --> 00:14:46,879
+"size to fit content"
+e arrumou o score, ok? Então, score tem apenas
+
+
+259
+00:14:46,899 --> 00:14:52,220
+duas constraints agora.
+Vocês podem ver que ele tem "bottom space", ok?
+
+
+260
+00:14:52,240 --> 00:14:54,429
+Está amarrado no fundo
+da superview. Nós não
+
+
+261
+00:14:54,429 --> 00:14:57,250
+queremos isso, a propósito.
+Nós vamos arrumar isso num minuto.
+
+
+262
+00:14:57,250 --> 00:15:00,000
+E o "trailing space" está ligado
+à direita da superview,
+
+
+263
+00:15:00,000 --> 00:15:03,250
+e nós queremos esse. Ok?
+Então nós vamos voltar
+
+
+264
+00:15:03,250 --> 00:15:07,259
+ao score e arrumá-lo em um instante.
+Mas vamos dar uma olhada
+
+
+265
+00:15:07,279 --> 00:15:10,339
+no botão deal. Sabe,
+o botão deal nessa UI é
+
+
+266
+00:15:10,339 --> 00:15:12,759
+meio que o centro da atividade, ok?
+Tudo meio que
+
+
+267
+00:15:12,759 --> 00:15:17,000
+está ligado a ele, ok?
+Os flips na esquerda,
+
+
+268
+00:15:17,019 --> 00:15:20,019
+o score na direita,
+a collection view em cima.
+
+
+269
+00:15:20,019 --> 00:15:22,970
+Sério, esse botão deal
+é o âncora para essa
+
+
+270
+00:15:22,990 --> 00:15:31,980
+interface com o usuário. Então,
+percebam que nós podemos ver a constraint
+
+
+271
+00:15:32,000 --> 00:15:36,220
+que é "top space: collection view".
+Essa é
+
+
+272
+00:15:36,240 --> 00:15:38,719
+a mesma constraint
+do ponto de vista do button. Certo,
+
+
+273
+00:15:38,719 --> 00:15:41,969
+aquele pequeno "I" azul
+no topo do botÃo, entre ele e
+
+
+274
+00:15:41,969 --> 00:15:44,219
+a collection view. A mesma constraint,
+nós apenas estamos vendo
+
+
+275
+00:15:44,219 --> 00:15:47,750
+do ponto de vista do button.
+Nós realmente queremos essa mesma constraint,
+
+
+276
+00:15:47,769 --> 00:15:51,470
+no formato de um "I",
+ligando a parte de baixo
+
+
+277
+00:15:51,490 --> 00:15:54,839
+com a superview também, ok?
+Nós não queremos esse botão
+
+
+278
+00:15:54,859 --> 00:15:55,859
+flutuando por aí.
+
+
+279
+00:15:55,859 --> 00:15:59,029
+Nós o queremos travado
+para estar sempre embaixo
+
+
+280
+00:15:59,029 --> 00:16:02,059
+e então nós queremos a collection view
+travada no o topo dele,
+
+
+281
+00:16:02,059 --> 00:16:05,889
+então o botão ficará tipo fixo ali.
+Então, vamos fazer isso.
+
+
+282
+00:16:05,909 --> 00:16:10,559
+O modo de fazer isso é muito fácil.
+Você traz esse menuzinho aqui
+
+
+283
+00:16:10,579 --> 00:16:14,209
+chamado de "pin menu".
+Ele é um dos dois menus que
+
+
+284
+00:16:14,229 --> 00:16:17,759
+vocês vão usar aqui embaixo,
+além do "size to fit content".
+
+
+285
+00:16:17,779 --> 00:16:20,679
+E nós vamos escolher "bottom space
+to superview",
+
+
+286
+00:16:20,699 --> 00:16:26,179
+que vai amarrar o espaço abaixo dessa view
+com a sua superview,
+
+
+287
+00:16:26,199 --> 00:16:29,120
+no canto da sua superview.
+Então nós fazemos isso
+
+
+288
+00:16:29,120 --> 00:16:35,569
+nós vamos ver - alou? -
+que nós temos essa nova constraint
+
+
+289
+00:16:35,589 --> 00:16:36,589
+e ela está travada ali.
+
+
+290
+00:16:36,589 --> 00:16:39,529
+Agora o problema é que essa
+não é a distância padrão.
+
+
+291
+00:16:39,529 --> 00:16:44,809
+Ok? Uma das
+"Apple Human Interface Guidelines" é
+
+
+292
+00:16:44,829 --> 00:16:48,250
+que os botões precisam estar
+a uma certa distância do canto
+
+
+293
+00:16:48,269 --> 00:16:51,909
+dos controllers que os contém,
+como as tabbars, ok? E também
+
+
+294
+00:16:51,929 --> 00:16:55,199
+do canto da tela.
+E nós violamos isso, ok?
+
+
+295
+00:16:55,219 --> 00:16:57,789
+Então isso não é uma boa coisa
+que nós violamos isso.
+
+
+296
+00:16:57,789 --> 00:17:01,449
+Ele não diz 0 ou default aqui.
+Ele diz 9. Então o que
+
+
+297
+00:17:01,469 --> 00:17:04,589
+nós vamos fazer a respeito?
+Bom, existem algumas coisas que poderíamos fazer.
+
+
+298
+00:17:04,589 --> 00:17:07,920
+Uma delas é que nós poderíamos
+simplesmente editar essa constraint, ok?
+
+
+299
+00:17:07,940 --> 00:17:11,190
+Ela é um objeto e nós podemos
+editá-la e fazemos isso
+
+
+300
+00:17:11,190 --> 00:17:15,430
+clicando na pequena engrenagem
+que está nela ali. Vêem? E trazemos
+
+
+301
+00:17:15,450 --> 00:17:18,409
+esse menuzinho. E nós dizemos:
+"Select and Edit..." E quando nós
+
+
+302
+00:17:18,409 --> 00:17:21,240
+fazemos isso, o inspector vai
+mudar para editarmos
+
+
+303
+00:17:21,259 --> 00:17:23,839
+essa constraint ao invés
+de editar aquele objeto. Agora
+
+
+304
+00:17:23,859 --> 00:17:28,440
+nós estamos editando essa constraint.
+Nós poderiamos simplesmente ativar
+
+
+305
+00:17:28,460 --> 00:17:31,129
+esse checkbox. Vocês vêem
+esse checkbox "Standard"? Isso mudaria
+
+
+306
+00:17:31,149 --> 00:17:32,740
+a distância para ser
+a distância default.
+
+
+307
+00:17:32,759 --> 00:17:36,649
+Mas, isso faria nossa UI
+ficar meio feia, ok?
+
+
+308
+00:17:36,669 --> 00:17:39,649
+Então na verdade, eu acho
+que a solução real para isso é
+
+
+309
+00:17:39,669 --> 00:17:42,500
+redesenhar a UI, ok? Termos esse
+deal button em baixo e no meio
+
+
+310
+00:17:42,519 --> 00:17:45,519
+e ter os flips e o score
+dos lados. Isso é
+
+
+311
+00:17:45,519 --> 00:17:48,519
+uma UI ruim. Pareceu uma boa idéia
+quando nós arrastamos
+
+
+312
+00:17:48,519 --> 00:17:51,519
+pela primeira vez, mas vêem?
+É aqui que você começa a usar
+
+
+313
+00:17:51,519 --> 00:17:54,519
+o autolayout, você começa a perceber
+que essa não é uma UI tão boa assim.
+
+
+314
+00:17:54,519 --> 00:17:57,519
+Então eu vou trocar para outra coisa.
+É isso que nós fazemos.
+
+
+315
+00:17:57,519 --> 00:18:00,269
+Mas nós não temos tempo para
+redesenhar nossa UI nesse curso.
+
+
+316
+00:18:00,269 --> 00:18:03,269
+Então eu não vou selecionar
+esse "Standard", nós vamos deixar ela em 9
+
+
+317
+00:18:03,269 --> 00:18:07,809
+e continuar violando nossas guidelines.
+Nós também podemos mudar nossas guid...
+
+
+318
+00:18:07,829 --> 00:18:10,940
+nossas constraints, a propósito,
+para serem apenas
+
+
+319
+00:18:10,960 --> 00:18:14,480
+limites. Então se eu não quiser
+que isso seja 9 pixels, mas eu
+
+
+320
+00:18:14,500 --> 00:18:18,980
+quiser que ela seja
+maior que 9 pixels, certo? Sempre
+
+
+321
+00:18:19,000 --> 00:18:21,950
+pelo menos 9 pixels,
+eu poderia mudar aqui para
+
+
+322
+00:18:21,970 --> 00:18:22,970
+"greater than or Equal".
+
+
+323
+00:18:22,970 --> 00:18:26,099
+As constraints não precisam ser fixas.
+Elas podem ser,
+
+
+324
+00:18:26,119 --> 00:18:27,730
+sabe, limites. Pergunta.
+
+
+325
+00:18:27,750 --> 00:18:34,269
+>> [Estudante perguntando]
+
+
+326
+00:18:34,289 --> 00:18:35,289
+Você vê? Todo mundo vê!
+
+
+327
+00:18:35,289 --> 00:18:36,289
+Anuncie aqui!
+(brincadeirinha...)
+
+
+328
+00:18:36,289 --> 00:18:39,039
+>> A pergunta é:
+fale-me mais sobre porque é um
+
+
+329
+00:18:39,039 --> 00:18:41,789
+design ruim termos esse deal button
+tão pra baixo aqui.
+
+
+330
+00:18:41,789 --> 00:18:44,539
+Somente 9 pontos da parte de baixo.
+E a resposta é:
+
+
+331
+00:18:44,539 --> 00:18:46,289
+porque isso viola as
+"Apple Human Interface Guidelines".
+
+
+332
+00:18:46,289 --> 00:18:49,039
+Essa é a resposta.
+E vocês podem não gostar dessas guidelines
+
+
+333
+00:18:49,039 --> 00:18:52,039
+ou algo assim, mas se vocês quiserem
+que o app de vocês esteja
+
+
+334
+00:18:52,039 --> 00:18:54,539
+na App Store, eu prestaria atenção
+a essas guidelines, ok?
+
+
+335
+00:18:54,539 --> 00:18:57,539
+Esse é o resumo, ok?
+Agora, por que? Se você quiser conversar
+
+
+336
+00:18:57,539 --> 00:19:00,539
+sobre porque a Apple decidiu isso,
+isso está fora do escopo
+
+
+337
+00:19:00,539 --> 00:19:02,929
+desse curso. Nós precisamos seguir.
+Mas, de qualquer forma...
+
+
+338
+00:19:02,929 --> 00:19:03,929
+Pergunta aqui?
+
+
+339
+00:19:03,929 --> 00:19:15,190
+>> [Estudante perguntando]
+
+
+340
+00:19:15,210 --> 00:19:16,210
+[estudante perguntando]
+
+
+341
+00:19:16,210 --> 00:19:18,210
+>> Eu vou falar sobre isso.
+Pergunta?
+
+
+342
+00:19:18,210 --> 00:19:21,210
+>> [Estudante perguntando]
+
+
+343
+00:19:21,210 --> 00:19:22,210
+[estudante perguntando]
+
+
+344
+00:19:22,210 --> 00:19:23,210
+>> Que?
+
+
+345
+00:19:23,210 --> 00:19:24,960
+>> [Estudante perguntando de novo]
+
+
+346
+00:19:24,960 --> 00:19:26,210
+[estudante pergutando]
+
+
+347
+00:19:26,210 --> 00:19:28,460
+>> A pergunta é:
+você pode parametrizar todas
+
+
+348
+00:19:28,460 --> 00:19:30,960
+essas constraints? E a resposta é:
+absolutamente. Eu disse a vocês
+
+
+349
+00:19:30,960 --> 00:19:34,210
+logo no começo. Vocês podem fazer
+tudo isso em código e tudo isso
+
+
+350
+00:19:34,210 --> 00:19:36,960
+são objetos e vocês podem
+enviar objetos à essas mensagens.
+
+
+351
+00:19:36,960 --> 00:19:39,960
+Vocês podem criar novos objetos
+tudo em código. Dá pra fazer tudo isso
+
+
+352
+00:19:39,960 --> 00:19:42,710
+em código, ok? Eu estou apenas
+mostrando o modo Xcode,
+
+
+353
+00:19:42,710 --> 00:19:45,210
+que é a maneira mais simples. Ok?
+Então cada constraint
+
+
+354
+00:19:45,210 --> 00:19:47,460
+também pode ter uma prioridade.
+Aqui eu estou mudando a prioridade
+
+
+355
+00:19:47,460 --> 00:19:49,960
+temporariamente para ser
+ou mais ou menos prioritário.
+
+
+356
+00:19:49,960 --> 00:19:53,710
+Está numa escala de 1 até 1000.
+Então vocês tem bastante espaço
+
+
+357
+00:19:53,710 --> 00:19:56,460
+para fazer uma view--
+uma constraint
+
+
+358
+00:19:56,460 --> 00:19:58,460
+ter uma prioridade maior
+do que outra.
+
+
+359
+00:19:58,460 --> 00:20:01,210
+E então vocês tem a flexibilidade
+de fazer isso.
+
+
+360
+00:20:01,210 --> 00:20:03,710
+Vocês na verdade não mudam
+essa prioridade tanto assim, ok?
+
+
+361
+00:20:03,710 --> 00:20:05,960
+Vocês fazer as vezes,
+mas existe outra prioridade que eu vou falar
+
+
+362
+00:20:05,960 --> 00:20:09,210
+daqui a alguns slides.
+Essa é a que vocês
+
+
+363
+00:20:09,210 --> 00:20:12,210
+vão querer mudar quando estiverem
+falando sobre tentar fazer duas views
+
+
+364
+00:20:12,210 --> 00:20:15,210
+dividirem um espaço. Quem ganha?
+É mais por aí. 1000, a propósito,
+
+
+365
+00:20:15,210 --> 00:20:17,710
+uma prioridade de 1000 significa
+que é mandatório. Ok?
+
+
+366
+00:20:17,710 --> 00:20:20,460
+Essa constraint precisa ser aplicada.
+Vocês tem um problema aqui
+
+
+367
+00:20:20,480 --> 00:20:24,359
+com essas mandatórias,
+porque todas as suas contraints
+
+
+368
+00:20:24,379 --> 00:20:30,659
+combinadas não podem conflitar, ok?
+Elas não tem permissão
+
+
+369
+00:20:30,679 --> 00:20:34,139
+para conflitar. E você vai receber
+warnings no seu console dizendo
+
+
+370
+00:20:34,159 --> 00:20:37,970
+"essas duas constraints conflitam".
+Ok? "Arrume-as".
+
+
+371
+00:20:37,990 --> 00:20:41,069
+Ok? Então isso não é tipo:
+
+
+372
+00:20:41,069 --> 00:20:43,819
+"urrul! vou jogar um monte de contraint ali
+e se elas conflitarem daí eu vejo o que eu vou fazer",
+
+
+373
+00:20:43,819 --> 00:20:46,569
+quero dizer, a regra é,
+elas não devem conflitar.
+
+
+374
+00:20:46,569 --> 00:20:48,569
+Ok? Agora, vocês não vão ver
+muitos conflitos
+
+
+375
+00:20:48,569 --> 00:20:51,369
+nas suas contraints
+no Xcode, porque ele faz
+
+
+376
+00:20:51,389 --> 00:20:53,819
+um trabalho muito bom
+de resolução de conflitos.
+
+
+377
+00:20:53,819 --> 00:20:56,569
+Se você colocar alguma coisa
+que conflita, ele simplesmente coloca
+
+
+378
+00:20:56,569 --> 00:20:59,319
+outra constraint ali
+para fazer de um modo que elas não conflitem mais.
+
+
+379
+00:20:59,319 --> 00:21:02,569
+Ok? Na maior parte do tempo.
+Mas nós vamos ver como nós poderíamos
+
+
+380
+00:21:02,569 --> 00:21:05,460
+resolver conflitos,
+que nós vamos fazer aqui
+
+
+381
+00:21:05,460 --> 00:21:11,440
+em um segundo. Ok, esse "leading",
+olhem para a constraint
+
+
+382
+00:21:11,460 --> 00:21:14,460
+"leading" no canto daquele button.
+Quer dizer que o botão está amarrado
+
+
+383
+00:21:14,480 --> 00:21:18,019
+ao canto esquerdo, ok?
+Isso é bem ruim. É por isso que
+
+
+384
+00:21:18,039 --> 00:21:20,619
+quando nós rotacionamos para landscape
+aquele botão não fica
+
+
+385
+00:21:20,619 --> 00:21:24,069
+no meio. Todo mundo entende isso?
+Lembram-se que no começo
+
+
+386
+00:21:24,089 --> 00:21:26,589
+eu rotacionei para landscape
+e o botão não estava
+
+
+387
+00:21:26,589 --> 00:21:27,589
+no meio.
+
+
+388
+00:21:27,589 --> 00:21:30,339
+Então nós precisamos mudar
+essa constraint. Então aqui vai
+
+
+389
+00:21:30,339 --> 00:21:34,149
+outro modo de alterarmos constraints,
+que é pegar o botão
+
+
+390
+00:21:34,169 --> 00:21:37,329
+e movê-lo para onde você quiser.
+E quando você faz isso, você verá
+
+
+391
+00:21:37,329 --> 00:21:41,399
+as linhas azuis tracejadas e você
+está basicamente criando constraints.
+
+
+392
+00:21:41,419 --> 00:21:45,139
+Então quando eu movo isso
+e a linha vertical azul
+
+
+393
+00:21:45,159 --> 00:21:48,859
+de constraint, ou linha-guia azul,
+aparece, isso está
+
+
+394
+00:21:48,879 --> 00:21:52,700
+basicamente criando uma nova constraint
+chamada "Allign X Center ...
+
+
+395
+00:21:52,720 --> 00:21:55,740
+to the Collection View's Center".
+Então agora que eu alinhei
+
+
+396
+00:21:55,759 --> 00:21:58,839
+a collection view com o botão,
+que é o que eu quero,
+
+
+397
+00:21:58,859 --> 00:22:01,859
+na verdade eu quero que esse deal
+fique logo abaixo
+
+
+398
+00:22:01,859 --> 00:22:04,109
+do centro da collection view
+
+
+399
+00:22:04,109 --> 00:22:06,609
+o tempo todo, certo?
+Esse é o modo fácil de
+
+
+400
+00:22:06,609 --> 00:22:08,859
+criar constraints. O modo mais fácil,
+onde você apenas
+
+
+401
+00:22:08,859 --> 00:22:11,859
+arrasta as coisas pra onde você quer.
+Nós vamos fazer mais isso
+
+
+402
+00:22:11,859 --> 00:22:14,859
+com algumas dessas outras coisas,
+para criar mais constraints
+
+
+403
+00:22:14,859 --> 00:22:16,359
+e vocês podem ver novamente,
+se eu highlight,
+
+
+404
+00:22:16,359 --> 00:22:19,359
+se eu passar o mouse por cima
+dessa nova constraint, esse
+
+
+405
+00:22:19,359 --> 00:22:21,859
+"Allign X Center", ele me mostra
+destacado essa barra vertical
+
+
+406
+00:22:21,859 --> 00:22:25,029
+no meio, ok? Então esse é
+o modo primário que vocês vão
+
+
+407
+00:22:25,049 --> 00:22:27,299
+criar um monte dessas constraints.
+Apenas arrastando
+
+
+408
+00:22:27,299 --> 00:22:28,299
+as coisas por aí. Pergunta?
+
+
+409
+00:22:28,299 --> 00:22:30,799
+>> [Estudante perguntando]
+
+
+410
+00:22:30,799 --> 00:22:31,799
+[estudante perguntando]
+
+
+411
+00:22:31,799 --> 00:22:34,549
+>> A pergunta é:
+eu posso fazer uma constraint onde
+
+
+412
+00:22:34,549 --> 00:22:37,299
+algo está afastado do centro
+por uma quantidade fixa?
+
+
+413
+00:22:37,299 --> 00:22:40,299
+E a resposta é sim, você pode.
+Nós não vamos mostrar isso, mas
+
+
+414
+00:22:40,299 --> 00:22:48,180
+sim, você pode. Então,
+(é, já falei isso). Aqui temos
+
+
+415
+00:22:48,200 --> 00:22:50,720
+uma constraint legal, bem aqui.
+Essa aqui apareceu automaticamente
+
+
+416
+00:22:50,740 --> 00:22:53,220
+aqui quando eu converti
+isso para autolayout.
+
+
+417
+00:22:53,220 --> 00:22:56,409
+O que é bom, porque eu quero isso.
+Que é, os centros
+
+
+418
+00:22:56,429 --> 00:23:01,539
+do flipsLabel e dos botões
+estão alinhados verticalmente,
+
+
+419
+00:23:01,559 --> 00:23:04,369
+vêem o que estou dizendo?
+Então a posição vertical do "flips"
+
+
+420
+00:23:04,389 --> 00:23:06,789
+é determinado por onde
+o botão está. Se o botão mover
+
+
+421
+00:23:06,789 --> 00:23:10,180
+para cima, o flips
+também vai mover para cima. Essa é uma
+
+
+422
+00:23:10,200 --> 00:23:12,929
+constraint da hora,
+e eu vou deixá-la ali. Eu só
+
+
+423
+00:23:12,929 --> 00:23:14,899
+queria que vocês a notassem
+que ela
+
+
+424
+00:23:14,899 --> 00:23:15,899
+está ali.
+
+
+425
+00:23:15,899 --> 00:23:18,399
+Infelizmente o "score" não tem uma dessas,
+então eu vou adicionar
+
+
+426
+00:23:18,399 --> 00:23:22,669
+uma para o score. Em um minuto.
+Agora, vamos falar sobre
+
+
+427
+00:23:22,689 --> 00:23:25,039
+as constraints
+azuis e roxas.
+
+
+428
+00:23:25,059 --> 00:23:27,809
+Então vou perguntar:
+qual a diferença entre
+
+
+429
+00:23:27,809 --> 00:23:30,500
+uma constraint azul, como essas duas
+e uma roxa?
+
+
+430
+00:23:30,500 --> 00:23:34,710
+E a resposta é: as azuis
+são chamadas user constraints.
+
+
+431
+00:23:34,730 --> 00:23:38,789
+E você pode deletá-las. As roxas
+não são user constraints.
+
+
+432
+00:23:38,809 --> 00:23:43,299
+Essas são as que
+o Xcode determinou. Elas precisam estar ali,
+
+
+433
+00:23:43,319 --> 00:23:46,389
+porque a regra número dois
+das constraints... regra número um
+
+
+434
+00:23:46,409 --> 00:23:49,200
+era que você não pode conflitá-las.
+Regra número dois é:
+
+
+435
+00:23:49,200 --> 00:23:52,480
+todas as constraints precisam
+ser suficientes para saber
+
+
+436
+00:23:52,500 --> 00:23:56,379
+onde as coisas vão.
+Vocês não podem ter tão poucas constaints onde
+
+
+437
+00:23:56,399 --> 00:23:59,399
+não fica claro
+o que aconteceria se
+
+
+438
+00:23:59,399 --> 00:24:02,649
+os "bounds" (limites)  mudarem.
+Vocês vêem o que eu estou dizendo?
+
+
+439
+00:24:02,649 --> 00:24:05,399
+Tem que ser determinístico, vocês
+tem que ser capazes de afirmar.
+
+
+440
+00:24:05,399 --> 00:24:07,500
+Então o Xcode, incrivelmente,
+através de uma matemática incrível
+
+
+441
+00:24:07,519 --> 00:24:09,579
+pode constantemente calcular
+se elas são suficientes
+
+
+442
+00:24:09,579 --> 00:24:10,579
+e se não forem,
+
+
+443
+00:24:10,579 --> 00:24:13,259
+ele vai transformar as existentes em roxas
+ou até mesmo adicionar
+
+
+444
+00:24:13,259 --> 00:24:14,259
+constraints roxas
+
+
+445
+00:24:14,259 --> 00:24:18,460
+para ter certeza que tudo
+pode ser determinado pra onde
+
+
+446
+00:24:18,480 --> 00:24:19,779
+tem que ir.
+
+
+447
+00:24:19,799 --> 00:24:21,700
+Então essa é a diferença
+entre as roxas e as azuis.
+
+
+448
+00:24:21,700 --> 00:24:22,700
+Agora,
+
+
+449
+00:24:22,700 --> 00:24:26,680
+É algo bom o fato
+dessas duas serem azuis, certo?
+
+
+450
+00:24:26,700 --> 00:24:27,700
+Por que elas meio que
+
+
+451
+00:24:27,700 --> 00:24:31,809
+conflitam, certo?
+Elas são duas coisas que
+
+
+452
+00:24:31,829 --> 00:24:35,119
+estão dizendo a mesma coisa, ok?
+Ambas estão tentando
+
+
+453
+00:24:35,139 --> 00:24:39,769
+especificar a posição vertical
+do "flips", ok?
+
+
+454
+00:24:39,789 --> 00:24:40,789
+Nós estamos
+
+
+455
+00:24:40,789 --> 00:24:44,029
+inspecionando o "flips" aqui. Certo?
+Uma delas está dizendo:
+
+
+456
+00:24:44,049 --> 00:24:46,940
+deixe o flips alinhado com o centro do botão.
+A outra está dizendo:
+
+
+457
+00:24:46,960 --> 00:24:50,169
+deixe o flips uma certa distância
+da parte de baixo
+
+
+458
+00:24:50,189 --> 00:24:54,789
+da superview. Vêem a marcação com formato de "I"
+que está selecionada? Ok?
+
+
+459
+00:24:54,809 --> 00:24:57,909
+Nós não queremos essa marcação ali.
+Nós queremos a do botão. Certo?
+
+
+460
+00:24:57,909 --> 00:25:00,529
+Nós queremos que o flips sempre
+esteja pareado com o nosso botão.
+
+
+461
+00:25:00,529 --> 00:25:03,710
+Nós não queremos nossa marcação
+o prendendo na borda inferior.
+
+
+462
+00:25:03,710 --> 00:25:08,240
+Então eu vou apenas deletar essa,
+clicando na engrenagem
+
+
+463
+00:25:08,259 --> 00:25:13,230
+e dizendo "delete". Ok? e então boom,
+ele foi embora
+
+
+464
+00:25:13,250 --> 00:25:17,069
+e todas as constraints continuam,
+sabe, sendo satisfeitas,
+
+
+465
+00:25:17,089 --> 00:25:23,169
+nada ficou roxo, tudo está bem.
+Ok?
+
+
+466
+00:25:23,189 --> 00:25:27,139
+Parece bom aqui no "flips".
+Flips está com uma cara boa.
+
+
+467
+00:25:27,159 --> 00:25:30,259
+Porem, outra coisa sobre o "flips"
+é que nós não queremos
+
+
+468
+00:25:30,279 --> 00:25:33,339
+que ele fique no seu tamanho natural
+preso no canto esquerdo.
+
+
+469
+00:25:33,359 --> 00:25:37,099
+Nós meio que queremos que ele
+use todo o espaço entre
+
+
+470
+00:25:37,119 --> 00:25:41,019
+o canto esquerdo e o canto direito
+do botão, ok? Então agora
+
+
+471
+00:25:41,039 --> 00:25:44,200
+queremos criar uma outra constraint
+que restringe
+
+
+472
+00:25:44,220 --> 00:25:48,490
+o canto direito do flipsLabel,
+para ser uma distância padrão
+
+
+473
+00:25:48,509 --> 00:25:51,699
+do canto esquerto do "deal".
+E o modo como fazemos isso é simplesmente
+
+
+474
+00:25:51,699 --> 00:25:56,000
+pegando a marca de redimensionar
+no canto do flips e arrastando
+
+
+475
+00:25:56,019 --> 00:25:59,299
+até que ele trave, ok?
+Até que tenhamos a linha
+
+
+476
+00:25:59,319 --> 00:26:02,919
+azul tracejada. Essa "travada"
+que acontece quando você arrasta
+
+
+477
+00:26:02,939 --> 00:26:06,490
+algo e ele "trava",
+isso significa que você está seguindo
+
+
+478
+00:26:06,509 --> 00:26:09,579
+as user interface guidelines. Você
+está fazendo o default, ok? Você escolheu
+
+
+479
+00:26:09,599 --> 00:26:11,500
+a distância default.
+Se não está "travando" você escolheu
+
+
+480
+00:26:11,500 --> 00:26:12,500
+uma distância errada,
+
+
+481
+00:26:12,500 --> 00:26:14,339
+e quando ele criar a constraint
+na direita,
+
+
+482
+00:26:14,339 --> 00:26:15,339
+você vai ver
+
+
+483
+00:26:15,339 --> 00:26:18,639
+que ela não vai ser "default" ok?
+Então depois que largamos
+
+
+484
+00:26:18,639 --> 00:26:21,720
+o redimensionador, nós vamos ver
+a nova constraint aqui em cima.
+
+
+485
+00:26:21,740 --> 00:26:26,000
+E aqui está. Ela está dizendo
+"trailing space equals to..."
+
+
+486
+00:26:26,019 --> 00:26:30,200
+o canto esquerdo do botão
+e é igual à distância default.
+
+
+487
+00:26:30,220 --> 00:26:33,119
+Então nós criamos uma distância default,
+o que por sinal é bem perto,
+
+
+488
+00:26:33,139 --> 00:26:36,389
+como vocês podem ver
+entre o canto direito do flips
+
+
+489
+00:26:36,389 --> 00:26:37,639
+e o canto esquerdo do deal.
+Pergunta.
+
+
+490
+00:26:37,639 --> 00:26:38,639
+>> [Estudante perguntando]
+
+
+491
+00:26:38,639 --> 00:26:41,269
+>> Por que essa é roxa?
+A razão dessa ser roxa
+
+
+492
+00:26:41,269 --> 00:26:44,409
+é porque uma vez que eu parei
+de deixá-lo no seu
+
+
+493
+00:26:44,429 --> 00:26:47,909
+tamanho instrínseco, agora ele precisa
+saber que tamanho ele será, ok?
+
+
+494
+00:26:47,929 --> 00:26:52,019
+E então, o que determina o seu tamanho é
+a distância para
+
+
+495
+00:26:52,039 --> 00:26:55,460
+o deal, ok? Então ele precisa estar ali,
+não pode determiná-lo de outro modo,
+
+
+496
+00:26:55,480 --> 00:27:00,099
+esse é o motivo. Ótima pergunta.
+Ok, então essas são
+
+
+497
+00:27:00,119 --> 00:27:02,649
+constraints perfeitas para o flip,
+isso é exatamente onde eu quero
+
+
+498
+00:27:02,669 --> 00:27:05,919
+que o flips esteja. Então nós
+vamos prosseguir. Vamos olhar
+
+
+499
+00:27:05,919 --> 00:27:10,740
+o nosso score agora.
+O score não está tão bom, ok? Score é,
+
+
+500
+00:27:10,759 --> 00:27:16,769
+por exemplo, restringido para ter
+o seu canto inferior preso à
+
+
+501
+00:27:16,789 --> 00:27:20,069
+superview, assim como o flips estava.
+Nós não queremos isso. Nós queremos
+
+
+502
+00:27:20,089 --> 00:27:23,710
+que o score esteja alinhado com o deal,
+centralizado assim como o flips está.
+
+
+503
+00:27:23,730 --> 00:27:26,599
+Infelizmente, score, nós não
+recebemos isso de graça.
+
+
+504
+00:27:26,619 --> 00:27:29,690
+Certo, nós devíamos ter o score
+desviado por um pixel ou algo assim,
+
+
+505
+00:27:29,710 --> 00:27:33,210
+talvez da primeira vez que nós o ajustamos.
+Então como nós pegamos essas duas views
+
+
+506
+00:27:33,210 --> 00:27:37,059
+e fazemos os seus centros se alinharem?
+E o que fazemos é
+
+
+507
+00:27:37,079 --> 00:27:40,240
+selecionar ambas as views,
+então aqui eu selecionei deal e selecionei
+
+
+508
+00:27:40,259 --> 00:27:43,669
+score, usando SHIFT + click você pode
+selecionar duas views
+
+
+509
+00:27:43,689 --> 00:27:46,939
+de uma vez, segurando o shift
+e clicando na segunda e eu vou
+
+
+510
+00:27:46,939 --> 00:27:49,689
+para esse outro menu aqui embaixo,
+esse é diferente do
+
+
+511
+00:27:49,689 --> 00:27:50,939
+"pin menu", é chamado
+de "align menu"
+
+
+512
+00:27:50,939 --> 00:27:54,189
+E eu vou escolher o negócio aqui
+para alinhá-los pelos
+
+
+513
+00:27:54,189 --> 00:27:56,599
+seus centros verticais.
+Então eu vou pegar o centro vertical
+
+
+514
+00:27:56,599 --> 00:27:59,509
+de cada um deles e alinhá-los
+e criar uma constraint
+
+
+515
+00:27:59,509 --> 00:28:04,839
+para isso. Eu faço isso e boom,
+nós temos o centro Y alinhado
+
+
+516
+00:28:04,859 --> 00:28:09,730
+entre os dois botões. Ok?
+Então score... de repente score está
+
+
+517
+00:28:09,750 --> 00:28:14,009
+com uma cara bem melhor. Score também
+quer ter o seu canto esquerdo
+
+
+518
+00:28:14,029 --> 00:28:18,069
+alinhado com o deal, da mesma forma
+que o flips tem o seu canto direito.
+
+
+519
+00:28:18,089 --> 00:28:22,460
+Então vamos escolhê-lo e redimensionar
+usando o cantinho na esquerda. Arrastamos, ok?
+
+
+520
+00:28:22,480 --> 00:28:24,279
+O simples fato de estarmos arrastando
+e movendo para o
+
+
+521
+00:28:24,279 --> 00:28:25,279
+ponto que "trava"
+
+
+522
+00:28:25,279 --> 00:28:31,599
+vai criar uma nova constraint aqui,
+que é o
+
+
+523
+00:28:31,619 --> 00:28:35,079
+"leading space" do score
+vai estar amarrado com a distância default
+
+
+524
+00:28:35,099 --> 00:28:39,689
+para o botão, ok?
+Então, a idéia é que o autolayout
+
+
+525
+00:28:39,709 --> 00:28:42,629
+é "all too easy" (tudo muito fácil),
+como o Darth Vader diria.
+
+
+526
+00:28:42,649 --> 00:28:45,730
+É só arrastar as coisas
+e fazer as coisas encaixarem
+
+
+527
+00:28:45,750 --> 00:28:49,669
+e acertar as guidelines azuis, ok?
+Algumas coisas não tão fáceis.
+
+
+528
+00:28:49,689 --> 00:28:52,710
+mas algumas coisas muito fáceis.
+Certo, então agora
+
+
+529
+00:28:52,730 --> 00:28:55,519
+nós temos score e flips
+do modo que queremos. Vamos voltar e
+
+
+530
+00:28:55,519 --> 00:29:00,470
+olhar para o deal, ok?
+O que está acontecendo com o deal? E eu vejo
+
+
+531
+00:29:00,490 --> 00:29:05,609
+um grande problema com o deal, ok?
+Olhem para a primeira constraint.
+
+
+532
+00:29:05,629 --> 00:29:09,149
+Largura fixa. Isso não
+estava aí antes. Como que agora
+
+
+533
+00:29:09,169 --> 00:29:12,549
+temos uma largura fixa aqui?
+Bom, o problema é, nós mudamos o flips
+
+
+534
+00:29:12,569 --> 00:29:17,740
+e o score para que as suas larguras
+fossem dependentes do botão,
+
+
+535
+00:29:17,759 --> 00:29:21,059
+na largura do deal, ok?
+E então agora que estamos de volta
+
+
+536
+00:29:21,079 --> 00:29:24,960
+isso precisa ser determinístico.
+E por isso o Xcode simplesmente fala
+
+
+537
+00:29:24,980 --> 00:29:28,409
+que ele vai deixar o deal dessa largura, ok?
+Essa foi a reação dele, certo?
+
+
+538
+00:29:28,429 --> 00:29:32,189
+Então ele fez um negócio roxo
+e disse: boom, o deal tem que ser
+
+
+539
+00:29:32,209 --> 00:29:34,959
+dessa largura.
+Agora eu consigo determinar o que está acontecendo,
+
+
+540
+00:29:34,959 --> 00:29:38,619
+ok? Mas isso não é o que queríamos.
+O Xcode fez isso.
+
+
+541
+00:29:38,639 --> 00:29:41,889
+Mas a razão pela qual o Xcode fez isso
+é porque nós precisamos dizer
+
+
+542
+00:29:41,909 --> 00:29:48,029
+uma coisa pra ele que nós geralmente
+falamos sobre botões. Que é
+
+
+543
+00:29:48,049 --> 00:29:53,329
+que botões-- deixa eu ter certeza
+que não estou esquecendo nada aqui...
+
+
+544
+00:29:53,349 --> 00:29:56,500
+Ah é, não é determinístico.
+Então, como nós vamos arrumar isso?
+
+
+545
+00:29:56,519 --> 00:30:01,559
+Botões, quano falamos de espaço extra
+ou menos espaço, os botões
+
+
+546
+00:30:01,579 --> 00:30:05,329
+sempre querem envolver para
+o seu tamanho intrínseco.
+
+
+547
+00:30:05,349 --> 00:30:07,569
+Ou quase todos os botões,
+não necessariamente todos os botões.
+
+
+548
+00:30:07,589 --> 00:30:10,269
+Às vezes os botões querem ter
+a mesma largura de
+
+
+549
+00:30:10,289 --> 00:30:12,789
+outros botões. Isso é algo comum
+que os botões querem, certo? Você tem
+
+
+550
+00:30:12,789 --> 00:30:15,789
+dois botões lado a lado,
+você quer que eles tenham
+
+
+551
+00:30:15,789 --> 00:30:19,039
+a mesma largura, certo?
+Então você poderia alinhá-los ou ancorá-los
+
+
+552
+00:30:19,039 --> 00:30:22,289
+e dizer que a largura das âncoras
+são iguais. Então esse é um modo de fazer isso.
+
+
+553
+00:30:22,289 --> 00:30:25,539
+Nós só podemos ter um botão aqui,
+então nós queremos que ele sempre fique--
+
+
+554
+00:30:25,539 --> 00:30:27,789
+que o seu retângulo sempre fique
+no seu tamanho intrínseco constante
+
+
+555
+00:30:27,789 --> 00:30:30,789
+mesmo que ele seja alemão
+e realmente grande. Nós queremos
+
+
+556
+00:30:30,789 --> 00:30:33,789
+sempre envolver. Ok? Nós queremos
+que esse espaço extra
+
+
+557
+00:30:33,789 --> 00:30:36,539
+seja dado ao botão, porque nós não
+queremos espaço extra ao redor
+
+
+558
+00:30:36,539 --> 00:30:39,789
+do nosso botão. Então temos que falar
+para o Xcode que... então isso é um conceito
+
+
+559
+00:30:39,789 --> 00:30:42,289
+que muitas pessoas
+simplesmente não entendem.
+
+
+560
+00:30:42,289 --> 00:30:45,289
+Tudo que estamos falando aqui
+é que esse botão tem uma prioridade
+
+
+561
+00:30:45,289 --> 00:30:49,659
+maior para envolver seu conteúdo
+do que qualquer outra coisa
+
+
+562
+00:30:49,679 --> 00:30:54,269
+nessa linha. O score, o flipsLabel.
+E nós fazemos isso indo ali em cima
+
+
+563
+00:30:54,289 --> 00:30:56,720
+no size inspector
+e acima de onde
+
+
+564
+00:30:56,720 --> 00:30:57,970
+estão todas as contraints,
+tem uma pequena coisa chamada
+
+
+565
+00:30:57,970 --> 00:30:58,970
+hugging priority.
+
+
+566
+00:30:58,970 --> 00:31:02,129
+Vocês vêm bem aqui?
+Não consigo ver muito bem porque,
+
+
+567
+00:31:02,149 --> 00:31:05,159
+meio que... estou movendo o slider
+então esse tool tio está
+
+
+568
+00:31:05,159 --> 00:31:08,379
+acima da parte de baixo dele.
+Mas, tudo que vocês precisam fazer
+
+
+569
+00:31:08,379 --> 00:31:11,879
+é pegar esse slider
+e aumentá-lo um pouco,
+
+
+570
+00:31:11,879 --> 00:31:14,879
+para que o botão tenha
+uma prioridade maior para envolver,
+
+
+571
+00:31:14,879 --> 00:31:18,210
+do que os outros dois carinhas.
+E assim que fazemos isso, ok?
+
+
+572
+00:31:18,230 --> 00:31:22,889
+Ele perde sua largura fixa.
+Porque o Xcode está tipo:
+
+
+573
+00:31:22,909 --> 00:31:26,329
+oh, ok. Bom, esse carinha envolve,
+então eu sei que tamanho ele vai ser.
+
+
+574
+00:31:26,329 --> 00:31:29,009
+Ele vai ser o seu tamanho intrínseco.
+Então agora que o Xcode sabe
+
+
+575
+00:31:29,009 --> 00:31:32,769
+o tamanho do botão,
+todo mundo pode, sabe,
+
+
+576
+00:31:32,789 --> 00:31:35,089
+se basear em todas suas outras constraints.
+Vocês vêem o que aconteceu
+
+
+577
+00:31:35,089 --> 00:31:39,279
+aqui? Ok? Então meio que
+a gente mudou o tamanho
+
+
+578
+00:31:39,299 --> 00:31:42,509
+de fixo para ser "envolvente"
+ao redor do intrínseco.
+
+
+579
+00:31:42,529 --> 00:31:45,929
+Ao redor do tamanho do seu texto.
+É para isso que mudamos o tamanho aqui.
+
+
+580
+00:31:45,949 --> 00:31:48,829
+É um pouco estranho, esse negócio de envolver.
+Vocês se acostumarão,
+
+
+581
+00:31:48,829 --> 00:31:55,109
+ok? Tem mais um aqui embaixo,
+que é-- bom,
+
+
+582
+00:31:55,129 --> 00:31:57,879
+ok, eu cobri tudo isso.
+Essa é a segunda maneira mais comum
+
+
+583
+00:31:57,879 --> 00:32:01,129
+de chegar aqui...
+Alguém pode perguntar: por que nós
+
+
+584
+00:32:01,129 --> 00:32:04,129
+não simplesmente vamos
+em "size To Fit Content" no menu
+para o botão?
+
+
+585
+00:32:04,129 --> 00:32:07,089
+Ok? Porque isso,
+enquanto nós estamos o deixando
+
+
+586
+00:32:07,109 --> 00:32:10,939
+no seu tamanho intrínseco
+ainda é... você ainda tem que ter alguém
+
+
+587
+00:32:10,959 --> 00:32:13,740
+cujo tamanho é conhecido.
+E como nós não sabemos que nós vamos envolver
+
+
+588
+00:32:13,740 --> 00:32:17,750
+o tamanho intrínseco do botão, ok,
+quando nós rodarmos,
+
+
+589
+00:32:17,769 --> 00:32:20,769
+nós temos que arrumar isso, ok?
+É por isso que precisamos desse "huggy".
+have to fix it, okay? So that's why we need a Huggy?
+
+
+590
+00:32:20,769 --> 00:32:24,189
+>> (???). Pronto,
+
+
+591
+00:32:24,209 --> 00:32:25,209
+sem largura fixa, ok?
+
+
+592
+00:32:25,209 --> 00:32:27,959
+Pergunta.
+>> [Estudante perguntando]
+
+
+593
+00:32:27,959 --> 00:32:29,209
+[estudante perguntando]
+
+
+
+594
+00:32:29,209 --> 00:32:34,509
+>> A pergunta é: quando eu digo
+tamanho intrínseco, o que eu quero dizer?
+
+
+595
+00:32:34,529 --> 00:32:38,179
+Isso basicamente diz
+o tamanho do botão que
+
+
+596
+00:32:38,199 --> 00:32:41,689
+faria com que seu conteúdo coubesse
+minimamente em qualquer momento. Não apenas
+
+
+597
+00:32:41,709 --> 00:32:44,710
+quando você arrasta ele,
+mas se você mudá-lo ou localizá-lo
+
+
+598
+00:32:44,730 --> 00:32:48,019
+ou qualquer coisa mudar nele,
+o tamanho intrínseco é qualquer tamanho
+
+
+599
+00:32:48,039 --> 00:32:53,379
+que caberia perfeitamente.
+Isso faz sentido? Então é tipo...
+
+
+600
+00:32:53,399 --> 00:32:56,149
+isso não é definido por um número,
+obviamente, isso seria
+
+
+601
+00:32:56,149 --> 00:32:58,899
+largura fixa. É definido como...
+o que precisar para que
+
+
+602
+00:32:58,899 --> 00:33:16,019
+caibam as coisas nele.
+[desculpem a nossa falha!]
+
+
+603
+00:33:16,039 --> 00:33:18,679
+Então você pode mudar o título
+desse botão a qualquer momento,
+
+
+604
+00:33:18,679 --> 00:33:21,679
+e ele vai ficar no seu tamanho intrínseco.
+Em outras palavras, se você mudar
+
+
+605
+00:33:21,679 --> 00:33:24,929
+para ser um termo alemão, WHOOP,
+ele vai ficar mais largo, e
+
+
+606
+00:33:24,929 --> 00:33:27,679
+os outros dois vão encolher, ok?
+Esse é o ponto disso tudo.
+
+
+607
+00:33:27,679 --> 00:33:32,609
+Sim?
+
+
+608
+00:33:32,629 --> 00:33:35,579
+>> [Estudante Perguntando]
+
+
+609
+00:33:35,599 --> 00:33:38,099
+[estudante perguntando]
+
+
+610
+00:33:38,099 --> 00:33:40,849
+[estudante perguntando]
+
+
+611
+00:33:40,849 --> 00:33:43,599
+[estudante perguntando]
+
+
+612
+00:33:43,599 --> 00:33:45,349
+[estudante perguntando]
+
+
+613
+00:33:45,349 --> 00:33:48,349
+>> Arram, a pergunta é:
+Existe algum modo Gelstáltico (go Wikipedia!)
+
+
+614
+00:33:48,349 --> 00:33:51,099
+de ver todas as minhas
+prioridades "hugging"? Eu acho que não,
+
+
+615
+00:33:51,099 --> 00:33:53,599
+a não ser que seja algo
+que eles tenham colocado recentemente,
+
+
+616
+00:33:53,599 --> 00:33:56,599
+que eu não tenha visto. Eu não acho
+que tenha um jeito de tipo,
+
+
+617
+00:33:56,599 --> 00:33:59,349
+apertar um botão e de, tipo,
+mostrar todas as prioridades "hugging"
+
+
+618
+00:33:59,349 --> 00:34:02,599
+de todas as views. Você sabe de algum modo?
+É... eu não acho que
+
+
+619
+00:34:02,599 --> 00:34:05,099
+tenha um jeito de fazer isso,
+infelizmente. :(
+
+
+620
+00:34:05,099 --> 00:34:07,599
+Sabe, o lance de ter prioridades,
+na verdade,
+
+
+621
+00:34:07,599 --> 00:34:09,849
+só importa relativamente
+com outras coisas que você está
+
+
+622
+00:34:09,849 --> 00:34:12,349
+dividindo espaco, verticamente
+ou horizontalmente. Não pode ter tantos
+
+
+623
+00:34:12,349 --> 00:34:14,849
+desses assim,
+você não vai ter centenas de botões
+
+
+624
+00:34:14,849 --> 00:34:16,099
+horizontalmente ou... sabe?
+
+
+625
+00:34:16,099 --> 00:34:16,849
+Pergunta?
+
+
+626
+00:34:16,849 --> 00:34:19,349
+>> [Estudante perguntando]
+
+
+627
+00:34:19,349 --> 00:34:22,349
+[estudante perguntando]
+
+
+628
+00:34:22,349 --> 00:34:24,849
+>> Ok, a pergunta é:
+eu posso ter outras contraints
+
+
+629
+00:34:24,849 --> 00:34:27,349
+além das constraints do frame,
+como por exemplo tamanho de fonte?
+
+
+630
+00:34:27,349 --> 00:34:30,099
+Ela não poder ficar menor que isso,
+ou algo assim.
+
+
+631
+00:34:30,099 --> 00:34:33,099
+Isso não é parte do sistema
+de constraints. Mas acontece que
+
+
+632
+00:34:33,099 --> 00:34:36,599
+você pode fazer isso no iOS
+porque existe outra API para isso,
+
+
+633
+00:34:36,599 --> 00:34:38,599
+mas constraints não fazem isso.
+Constraints server para
+
+
+634
+00:34:38,599 --> 00:34:41,539
+restringir o frame. É isso que
+as constraints restringem: o frame.
+
+
+635
+00:34:41,559 --> 00:34:46,769
+Ok, então se livrar dessas
+larguras fixas pode ser
+
+
+636
+00:34:46,789 --> 00:34:50,589
+meio repetitivo...
+E pode ser um pouco frustrante,
+
+
+637
+00:34:50,589 --> 00:34:53,089
+até você se acostumar a isso.
+Vocês vão ganhar
+
+
+638
+00:34:53,089 --> 00:34:55,839
+experiência com isso
+e vocês vão tipo: ah, sim.
+
+
+639
+00:34:55,839 --> 00:34:58,089
+Mas não se esqueça de
+setar o tamanho intrínseco,
+
+
+640
+00:34:58,089 --> 00:35:00,839
+o negócio de "size to fit"
+e não esqueçam do "hugging".
+
+
+641
+00:35:00,839 --> 00:35:03,839
+Ah sim, eu ia falar sobre
+essa outra coisa. Vocês vêem
+
+
+642
+00:35:03,839 --> 00:35:05,839
+a "Content Compression Resistance Priority"?
+Esse é meio que
+
+
+643
+00:35:05,839 --> 00:35:09,119
+o oposto de "hugging", que diz,
+quanto que essa coisa
+
+
+644
+00:35:09,139 --> 00:35:13,489
+quer de espaço extra? Ok?
+Então uma prioridade alta aqui significa que
+
+
+645
+00:35:13,509 --> 00:35:16,619
+se tiver espaço extra disponível
+nessa linha horizontal,
+
+
+646
+00:35:16,639 --> 00:35:19,769
+Esse caraa vai pegá-la,
+porque ele tem alta prioridade.
+
+
+647
+00:35:19,789 --> 00:35:22,789
+Nesse momento o score e o flip
+tem a mesma prioridade,
+
+
+648
+00:35:22,789 --> 00:35:25,789
+então eles iam dividir
+o espaço igualmente. Mas se nós
+
+
+649
+00:35:25,789 --> 00:35:29,279
+dissermos que o score tem
+uma prioridade de resistencia de compressão maior,
+
+
+650
+00:35:29,299 --> 00:35:32,019
+então se as coisas se apertarem,
+ele vi manter seu espaço.
+
+
+651
+00:35:32,039 --> 00:35:36,619
+Ok? E não cedê-lo. Então é
+meio que o oposto de "hugging".
+
+
+652
+00:35:36,639 --> 00:35:41,690
+É como se fosse: me dê meu espaço mínimo.
+Não me deixe ser espremido.
+
+
+653
+00:35:41,710 --> 00:35:45,259
+Scenes com larguras fixas.
+Se você fizer uma scene e ela tiver
+
+
+654
+00:35:45,279 --> 00:35:47,819
+largura fixa nela,
+É muito provável que você vá ter
+
+
+655
+00:35:47,819 --> 00:35:50,069
+problemas de localização.
+É bom que isso seja falado agora,
+
+
+656
+00:35:50,069 --> 00:35:52,909
+ok? As vezes existem alguns casos
+onde isso pode ser ok,
+
+
+657
+00:35:52,909 --> 00:35:55,750
+mas pensem bem sobre isso
+porque... pensem o que acontecerá quando
+
+
+658
+00:35:55,769 --> 00:35:56,769
+os alemães aparecerem.
+
+
+659
+00:35:56,769 --> 00:35:57,769
+Pergunta?
+
+
+660
+00:35:57,769 --> 00:35:59,269
+>> [Estudante perguntando]
+
+
+661
+00:35:59,269 --> 00:36:01,019
+[estudante perguntando]
+
+
+662
+00:36:01,019 --> 00:36:07,230
+>> A pergunta é:
+como que o score poderia ter
+
+
+663
+00:36:07,250 --> 00:36:10,000
+mais espaço que o flips?
+Bom, novamente, um pouco além do escopo.
+
+
+664
+00:36:10,019 --> 00:36:13,269
+Nós falamos sobre isso depois da aula,
+mas tem um modo que você seta
+
+
+665
+00:36:13,269 --> 00:36:15,769
+a prioridade relativa desse dois.
+Então um deles
+
+
+666
+00:36:15,769 --> 00:36:18,769
+poderia receber espaço extra
+e o outro não. Isso é
+
+
+667
+00:36:18,769 --> 00:36:21,769
+possivel de se fazer.
+E no código, você pode ter até
+
+
+668
+00:36:21,769 --> 00:36:24,519
+uma porcentagem, tipo:
+eu sempre quero que essa coisa seja, sabe,
+
+
+669
+00:36:24,519 --> 00:36:27,769
+duas vezes maior que essa outra.
+Ok? Você não pode fazer isso
+
+
+670
+00:36:27,769 --> 00:36:30,519
+no Xcode, então há lim--
+Xcode tem limites, você não pode
+
+
+671
+00:36:30,519 --> 00:36:33,269
+fazer tudo.
+Ok. Então. Agora que temos isso tudo
+
+
+672
+00:36:33,269 --> 00:36:36,239
+funcionando, temos todas as constraints
+que queremos, ok? Como nós
+
+
+673
+00:36:36,259 --> 00:36:39,759
+checamos para ver se tudo está funcionando?
+Bom, uma feature incrível no iOS 6.
+
+
+674
+00:36:39,779 --> 00:36:44,009
+É que você pode na verdade
+fazer isso no Xcode. Entõa eu vou
+
+
+675
+00:36:44,029 --> 00:36:46,779
+no Xcode, se eu clicar no meu controller,
+vocês verão no canto
+
+
+676
+00:36:46,779 --> 00:36:50,769
+superior direito, existe essa
+"simulated matrix", ok? Então
+
+
+677
+00:36:50,789 --> 00:36:54,579
+selecione o seu controller,
+vai no "attribute inspector",
+
+
+678
+00:36:54,599 --> 00:36:57,239
+para ver os atributos do controller,
+e você pode simular essa coisa.
+
+
+679
+00:36:57,259 --> 00:37:00,799
+Então, por exemplo,
+vamos mudar para uma orientação
+
+
+680
+00:37:00,819 --> 00:37:04,259
+diferente. Vamos ver como
+seria a cara da nossa view
+
+
+681
+00:37:04,279 --> 00:37:08,269
+se nós fossemos para landscape.
+E woohoo! Funcionou dessa vez.
+
+
+682
+00:37:08,289 --> 00:37:11,039
+O botão deal ficou no meio,
+eu não estou rodando o app aqui.
+
+
+683
+00:37:11,039 --> 00:37:13,789
+Estou apenas fazendo no Xcode,
+para checar. E eu posso checar
+
+
+684
+00:37:13,789 --> 00:37:16,719
+mais do que portrait e landscape.
+Vamos fizer que eu quero
+
+
+685
+00:37:16,719 --> 00:37:19,960
+checar como seria a cara da minha view
+se eu não estivesse em uma
+
+
+686
+00:37:19,960 --> 00:37:23,500
+tabbar? Eu ainda vou deixar na tabbar,
+eu não quero tirá-la
+
+
+687
+00:37:23,500 --> 00:37:27,250
+da minha tabbar, apenas para
+ver. Eu só quero ver
+
+
+688
+00:37:27,250 --> 00:37:30,500
+como que ficaria. Então eu posso
+simular como seria a cara da minha view
+
+
+689
+00:37:30,500 --> 00:37:33,000
+fora da tabbar. Oh,
+está funcionando também.
+
+
+690
+00:37:33,000 --> 00:37:35,250
+A collection view pega
+o espaço extra. Excelente.
+
+
+691
+00:37:35,250 --> 00:37:41,130
+Ok? Todas as minhas constraints devem
+estar certas. E então,
+
+
+692
+00:37:41,150 --> 00:37:43,929
+todas essas coisas, ou a maior parte
+dessas coisas tem essa opção "inferred".
+
+
+693
+00:37:43,949 --> 00:37:48,969
+O que significa "inferred" é
+ele vai para qualquer que seja
+
+
+694
+00:37:48,989 --> 00:37:52,929
+o que o seu Storyboard esteja infirindo.
+O que ele pode inferir, melhor,
+
+
+695
+00:37:52,949 --> 00:37:55,619
+do resto do seu Storboard.
+Nesse caso, como essa coisa
+
+
+696
+00:37:55,619 --> 00:37:59,089
+está em um TabBarController,
+ele vai inferir que você quer
+
+
+697
+00:37:59,109 --> 00:38:02,849
+a tabbar ligada. Então quando eu escolhi
+"inferred"... quando escolho o
+
+
+698
+00:38:02,869 --> 00:38:06,119
+"inferred" bara "bottom bar",
+eu vou ter a tabbar.
+
+
+699
+00:38:06,119 --> 00:38:08,869
+Isso faz sentido? Então,
+"inferred" vai ser inferido
+
+
+700
+00:38:08,869 --> 00:38:10,869
+do que quer que esteja
+nos seu storyboard.
+
+
+701
+00:38:10,869 --> 00:38:15,219
+Esse é tipo o default, certo?
+Ok, então nós poderíamos também
+
+
+702
+00:38:15,239 --> 00:38:17,849
+checar, a propósito, enquantoe stamos aqui,
+se estaria com uma cara boa
+
+
+703
+00:38:17,849 --> 00:38:21,599
+no iPhone 5. Então vamos para
+o "size", que é o que
+
+
+704
+00:38:21,599 --> 00:38:26,839
+está no top e dizer: tela de 4 polegadas.
+Ficou maior. O flips se moveu.
+
+
+705
+00:38:26,859 --> 00:38:30,909
+O deal ficou no meio, ok? Massa.
+Não importa o que você está
+
+
+706
+00:38:30,929 --> 00:38:33,949
+simulando aqui,
+quando você roda de fato--
+
+
+707
+00:38:33,969 --> 00:38:38,949
+eu vou em frente e rodar aqui,
+aqui vem meu simulador, ele vai se ajustar
+
+
+708
+00:38:38,969 --> 00:38:41,779
+para qualquer que seja
+o device que você está rodando. Então aqui
+
+
+709
+00:38:41,779 --> 00:38:45,549
+eu estou no modo portrait,
+Então eu troquei para o portrait
+
+
+710
+00:38:45,569 --> 00:38:48,809
+e se eu rotacionar essa coisa
+ele vai para landscape e fica
+
+
+711
+00:38:48,829 --> 00:38:52,509
+ótimo. E vocês podem rotacionar
+o iPhone no simulador ou
+
+
+712
+00:38:52,529 --> 00:38:55,839
+alternar entre retina
+e não-retina e todas essas coisas
+
+
+713
+00:38:55,859 --> 00:38:58,609
+no menu "hardware". Dêem uma olhada
+no menu "hardware".
+
+
+714
+00:38:58,609 --> 00:39:05,150
+E é isso.
+Só uma coisinha aqui no final.
+
+
+715
+00:39:05,170 --> 00:39:08,480
+Ser um mestre em autolayout
+é algo que vem com
+
+
+716
+00:39:08,500 --> 00:39:13,089
+a experiência. Eu posso explicar
+o que os menus fazem o dia inteiro,
+
+
+717
+00:39:13,109 --> 00:39:15,109
+mas a verdade é
+que isso vem com a experiência.
+
+
+718
+00:39:15,109 --> 00:39:17,380
+Entender quando aplicar o hugging,
+uquando fazer algo
+
+
+719
+00:39:17,400 --> 00:39:21,000
+ser do tamanho intrínseco,
+sabe, que configuração
+
+
+720
+00:39:21,019 --> 00:39:24,469
+usar par alinhar...
+todas essas coisas precisam de experiência, ok?
+
+
+721
+00:39:24,489 --> 00:39:28,170
+Então eu não espero que vocês
+se tornem instantaneamente experts nisso.
+
+
+722
+00:39:28,190 --> 00:39:30,549
+Sua primeira chance de tentar
+usar isso tudo será no homework
+
+
+723
+00:39:30,549 --> 00:39:33,549
+atual de vocês. É bem simples, certo?
+O homework atual
+
+
+724
+00:39:33,569 --> 00:39:36,319
+não tem um monte de botões
+e sliders e coisas assim.
+
+
+725
+00:39:36,319 --> 00:39:39,509
+É bem semelhante a isso.
+Então tentem fazer. Mas realmente,
+
+
+726
+00:39:39,509 --> 00:39:42,989
+o resto desse trimestre,
+a não ser que o homework diga para não usar,
+
+
+727
+00:39:43,009 --> 00:39:45,529
+vocês devem tentar usar
+autolayout para fazer tudo
+
+
+728
+00:39:45,529 --> 00:39:47,659
+ficar com uma cara boa
+em todos as rotações e coisas assim.
+
+
+729
+00:39:47,679 --> 00:39:53,519
+Ok? Certo. Então é isso para autolayout.
+Alguma pergunta final
+
+
+730
+00:39:53,539 --> 00:39:56,139
+sobre autolayout?
+Eu posso adiantar que eu não
+
+
+731
+00:39:56,139 --> 00:40:00,460
+vou fazer nenhuma demo sobre isso.
+Isso tomaria muito tempo.
+
+
+732
+00:40:00,480 --> 00:40:03,389
+Mas eu apenas faria
+o que esses slides estão
+
+
+733
+00:40:03,409 --> 00:40:07,400
+dizendo. Eu não iria fazer
+nada diferente, ok? Certo,
+
+
+734
+00:40:07,420 --> 00:40:11,179
+novo assunto. MVCs trabalhando juntos,
+ok?
+
+
+735
+00:40:11,199 --> 00:40:13,359
+Isso é o que nós falamos na nossa
+primeira aula. Como nós fazemos
+
+
+736
+00:40:13,359 --> 00:40:18,009
+com que nossos MVCs trabalhem juntos,
+entao eu tenho... eu construí
+
+
+737
+00:40:18,029 --> 00:40:20,779
+meu pequeno app e agora eu vou
+adicionar mais e mais funcionalidades.
+
+
+738
+00:40:20,779 --> 00:40:24,029
+E eu não consigo fazer cabê-las
+todas na mesma tela, ok?
+
+
+739
+00:40:24,029 --> 00:40:28,980
+Eu preciso de mais espaço,
+eu estou adicionando pontuações no meu Matchismo,
+
+
+740
+00:40:29,000 --> 00:40:30,639
+e eu preciso que
+isso esteja em outro lugar.
+
+
+741
+00:40:30,659 --> 00:40:33,460
+Porque eu não posso colcoar
+a pontuação na mesma tela
+
+
+742
+00:40:33,460 --> 00:40:36,460
+que eu tenho as cartas e coisas assim.
+Simplesmente não vai caber.
+
+
+743
+00:40:36,460 --> 00:40:39,460
+Então vocês já aprenderam uma maneira
+de fazer isso, que é o
+
+
+744
+00:40:39,460 --> 00:40:41,960
+TabBarController, certo? Vocês
+simplesmente colocam as views de alguma coisa,
+
+
+745
+00:40:41,960 --> 00:40:45,210
+por exemplo do jogo, na sua tab
+e então você coloca a pontuação
+
+
+746
+00:40:45,210 --> 00:40:47,909
+na outra tab para quando alguém
+clicar nessa outra tab
+
+
+747
+00:40:47,909 --> 00:40:50,909
+e então se elas clicarem de volta
+você mostra a outra.
+
+
+748
+00:40:50,909 --> 00:40:53,670
+Vocês vêem como nós temos
+2 MVCs trabalhando juntos com
+
+
+749
+00:40:53,670 --> 00:40:58,159
+o TabBarController fazendo isso.
+Bom, que outras maneiras nos podemos
+
+
+750
+00:40:58,179 --> 00:41:01,739
+colocar múltiplos MVCs na tela?
+Existem alguns, na verdade.
+
+
+751
+00:41:01,759 --> 00:41:05,099
+Hoje nós vamos falar sobre
+uma das maneiras,
+
+
+752
+00:41:05,119 --> 00:41:09,969
+é chamada Navigation Controller,
+ok? Vocês já viram isso na UI
+
+
+753
+00:41:09,989 --> 00:41:13,630
+nos apps de iPhone que vocês tem.
+Muito, muito comum, mas
+
+
+754
+00:41:13,650 --> 00:41:42,279
+[Problema com a legenda de novo :( ]
+
+
+
+755
+00:41:42,299 --> 00:41:46,239
+E então a view desse MVC aparece na
+área branca do Navigation Controller, ok?
+
+
+756
+00:41:46,259 --> 00:41:48,779
+Super simples, é muito similar
+à TabBar de um certo modo.
+
+
+757
+00:41:48,779 --> 00:41:53,159
+A diferença é que agora
+nós vamos ter um elemento de UI
+
+
+758
+00:41:53,179 --> 00:41:57,349
+nessa view, um botão geralmente,
+mas poderia ser alguma outra coisa
+
+
+759
+00:41:57,369 --> 00:41:59,869
+que vocês vão aprender na próxima semana,
+mas vocês poderiam ter
+
+
+760
+00:41:59,869 --> 00:42:03,369
+algum elemento de UI nessa view
+e quando você clica nele,
+
+
+761
+00:42:03,369 --> 00:42:08,980
+ele vai fazer com que outro MVC
+tome o espaço, ok?
+
+
+762
+00:42:09,000 --> 00:42:11,759
+E não só vai aparecer esse outro MVC,
+mas também vai aparecer
+
+
+763
+00:42:11,759 --> 00:42:17,920
+esse pequeno botão de back automaticamente
+no canto superior esquerdo, ok?
+
+
+764
+00:42:17,940 --> 00:42:22,650
+E se você apertar o botão de back,
+ele vai voltar
+
+
+765
+00:42:22,670 --> 00:42:25,349
+para o outro MVC. Então é bem simples.
+É isso que é
+
+
+766
+00:42:25,369 --> 00:42:28,259
+Navigation Controller, você apenas
+navega e você pode descer em
+
+
+767
+00:42:28,279 --> 00:42:31,029
+níveis múltiplos, não só um
+e voltar. Você pode descer, descer, descer,
+
+
+768
+00:42:31,029 --> 00:42:32,029
+e descer.
+
+
+769
+00:42:32,029 --> 00:42:34,529
+O exemplo clássico disso,
+você está usando o app do iPod,
+
+
+770
+00:42:34,529 --> 00:42:37,889
+nas músicas do seu iPod
+e então você clica no topo e ele te mostra
+
+
+771
+00:42:37,889 --> 00:42:41,679
+uma lísta de gêneros e ele
+aparece deslizando. A lista de todos
+
+
+772
+00:42:41,699 --> 00:42:45,019
+os álbuns nesse gênero ou artistas, digamos.
+E então você clica
+
+
+773
+00:42:45,039 --> 00:42:48,039
+no artista e ele desliza para 
+todos os álbuns desse artista.
+
+
+774
+00:42:48,039 --> 00:42:51,039
+Você clica no álbum e ele desliza
+para as músicas, certo? E ele
+
+
+775
+00:42:51,039 --> 00:42:54,039
+continua deslizando na
+nova UI e você sempre pode
+
+
+776
+00:42:54,039 --> 00:42:56,289
+voltar, voltar, voltar, voltar, voltar, voltar
+para outros níveis. Essa é
+
+
+777
+00:42:56,289 --> 00:42:59,039
+a navegação clássica, ok?
+Então, nós vamos falar sobre como
+
+
+778
+00:42:59,059 --> 00:43:01,559
+fazer essa naveação e essas coisas
+funcionarem no Xcode e em código,
+
+
+779
+00:43:01,559 --> 00:43:10,799
+O principal conceito que você tem que entender para fazer
+isso tudo funcionar é "Segue", ok? Um "segue" é
+
+
+780
+00:43:10,819 --> 00:43:13,569
+exatamente o que a palavra diz em inglês,
+é uma transição de uma coisa
+
+
+781
+00:43:13,569 --> 00:43:16,710
+para outra. Então um "segue" é como você
+vai de uma coisa no
+
+
+782
+00:43:16,710 --> 00:43:17,710
+navigation controller,
+
+
+783
+00:43:17,710 --> 00:43:18,710
+JUUUUUUUUUUUUUP,
+para o próximo.
+
+
+784
+00:43:18,710 --> 00:43:22,699
+OK? Então é isso que é um "segue".
+Então vamos falar sobre
+
+
+785
+00:43:22,719 --> 00:43:25,190
+os "segues" e como nós os setamos
+antes de falarmos sobre
+
+
+786
+00:43:25,190 --> 00:43:29,670
+como nós colocamos nossos MVCs
+no Navigation Controller.
+
+
+787
+00:43:29,690 --> 00:43:32,980
+Então para criar um segue
+é muito simples na verdade. Você tem dois MVCs,
+
+
+788
+00:43:33,000 --> 00:43:36,889
+você tem um botão em um.
+você apenas CTRL + arrasta de
+
+
+789
+00:43:36,909 --> 00:43:41,690
+um botão para o outro view controller.
+Ok? Para o view controller
+
+
+790
+00:43:41,710 --> 00:43:44,549
+inteiro, certo? Apenas CTRL + arraste.
+Você não está
+
+
+791
+00:43:44,569 --> 00:43:47,069
+criando um outlet aqui,
+embora esteja criando um "segue"
+
+
+792
+00:43:47,069 --> 00:43:50,190
+E ele vai criar esse pequeno "segue"
+que é clicável,
+
+
+793
+00:43:50,210 --> 00:43:53,289
+vocês podem clicar nele e inspecioná-lo
+e quando vocês fizerem, vocês vão ver
+
+
+794
+00:43:53,289 --> 00:43:59,519
+que existem alguns atributos
+no "segue". Não muitos.
+
+
+795
+00:43:59,539 --> 00:44:02,980
+Um dos atributos mais importantes
+é o nome, ok?
+
+
+796
+00:44:03,000 --> 00:44:08,380
+Então o nome ali em cima "ShowOther"
+vai ser a coisa que nós
+
+
+797
+00:44:08,400 --> 00:44:12,130
+podemos usar no nosso código
+para nos referirmos a esse "segue".
+
+
+798
+00:44:12,150 --> 00:44:15,199
+Podem haver momentos no seu código
+onde nós vamos querer nos referir ao "segue"
+
+
+799
+00:44:15,219 --> 00:44:16,719
+e vamos fazer isso pelo nome.
+
+
+800
+00:44:16,719 --> 00:44:19,719
+Esse é o seu nome.
+A segunda coisa que vocês podem ver aqui
+
+
+801
+00:44:19,719 --> 00:44:22,219
+é o tipo de "segue". Agora,
+se você está em um navigation controller,
+
+
+802
+00:44:22,219 --> 00:44:25,619
+existe apenas um tipo de segue que
+vocês podem fazer. É chamado "push".
+
+
+803
+00:44:25,619 --> 00:44:28,639
+Ok? Porque um navigation controller
+pode ser imaginado como
+
+
+804
+00:44:28,659 --> 00:44:31,659
+um pequeno maço de cartas
+e você fica colocando cartas
+
+805
+00:44:31,659 --> 00:44:34,659
+no maço e você está sempre olhando
+para a carta do topo e então
+
+
+806
+00:44:34,659 --> 00:44:37,409
+você pode tirá-las de lá.
+É por isso chamamos de "push",
+
+
+807
+00:44:37,409 --> 00:44:43,269
+você está realmente "pushing"
+coisas nele. Agora, isos é quase tudo
+
+
+808
+00:44:43,289 --> 00:44:46,889
+que precisamos para fazer
+um segue acontecer. Exceto pelo fato de que
+
+
+809
+00:44:46,909 --> 00:44:50,569
+se nós tivermos um segue push,
+ambos view controllers precisam estar
+
+
+810
+00:44:50,589 --> 00:44:53,900
+em um navigation controller, certo?
+Nós precisamos colocar um
+
+
+811
+00:44:53,920 --> 00:44:57,170
+navigation controller em volta deles
+e a maneira como fazemos isso é com um
+
+
+812
+00:44:57,170 --> 00:45:00,420
+item do menu chamado... está no menu "Editor",
+é chamado Embed in...
+
+
+813
+00:45:00,420 --> 00:45:03,549
+Navigation Controller, ok?
+E isso vai ser fácil de lembrar.
+
+
+814
+00:45:03,569 --> 00:45:06,569
+Então você faz isso e ele vai colocar
+um Navigation Controller
+
+
+815
+00:45:06,569 --> 00:45:09,359
+em volta desses dois MVCs.
+Percebam que ele vai manter
+
+
+816
+00:45:09,379 --> 00:45:12,750
+a setinha que inicia o seu app.
+Ele vai movê-la para
+
+
+817
+00:45:12,769 --> 00:45:15,129
+o navigation controller, se ela estava
+na coisa que você
+
+
+818
+00:45:15,129 --> 00:45:19,529
+envolveu. E essa coisinha, agora,
+entre o
+
+
+819
+00:45:19,549 --> 00:45:23,119
+navigation controller e
+o primeiro MVC,
+
+
+820
+00:45:23,139 --> 00:45:25,750
+o "root view controller", esse não é
+um segue. Isso é meio que
+
+
+821
+00:45:25,750 --> 00:45:28,609
+o mesmo que uma conexão entre
+o seu tabbar controller, certo?
+
+
+822
+00:45:28,629 --> 00:45:31,130
+Que era a conexão do view controller.
+Essa é a conexão do
+
+
+823
+00:45:31,150 --> 00:45:34,089
+"root view controller".
+Mas essa coisa
+
+
+824
+00:45:34,109 --> 00:45:36,969
+logo ali, isso é um segue.
+Esse é o segue que
+
+
+825
+00:45:36,969 --> 00:45:40,489
+nós criamos na última página,
+fazendo o CTRL + arrastando, ok?
+
+
+826
+00:45:40,509 --> 00:45:43,170
+E nós poderíamos ter
+um outro segue para outro, sabe,
+
+
+827
+00:45:43,190 --> 00:45:46,650
+de algum botão no MVC da esquerda.
+Nós poderíamos ter outro
+
+
+828
+00:45:46,670 --> 00:45:49,170
+botão ali que ligasse
+para outra coisa,
+
+
+829
+00:45:49,170 --> 00:45:51,920
+que ligasse
+para outra coisa, certo?
+
+
+830
+00:45:51,920 --> 00:45:55,259
+e que ficasse "segue-ando",
+trazendo mais telas. Percebam que
+
+
+831
+00:45:55,279 --> 00:45:58,460
+assim que colocamos
+esses MVCs em um
+
+
+832
+00:45:58,480 --> 00:46:02,009
+navigation controller, nós temos
+essa barra no topo, a barra de título
+
+
+833
+00:46:02,029 --> 00:46:04,779
+e vocês podem dar um clique duplo
+nessa barra de título e setar
+
+
+834
+00:46:04,779 --> 00:46:08,279
+o título, ok? Ou vocês podem
+setá-lo em código e nós vamos fazer
+
+
+835
+00:46:08,279 --> 00:46:11,029
+ambas na nossa demo hoje.
+Tanto no código como
+
+
+836
+00:46:11,029 --> 00:46:13,529
+dando um duplo clique.
+Você recebe essa barra automaticamente
+
+
+837
+00:46:13,529 --> 00:46:15,779
+no navigation controller. Certo,
+então agora vamos olhar
+
+
+838
+00:46:15,779 --> 00:46:18,489
+para as partes de
+um navigation controller. Do que é
+
+
+839
+00:46:18,509 --> 00:46:21,710
+feito uma view de um
+navigation controller, basicamente.
+
+
+840
+00:46:21,730 --> 00:46:25,449
+A parte mais importante
+é a área de conteúdo bem aqui.
+
+
+841
+00:46:25,469 --> 00:46:31,039
+Essa é a self.view de qualquer que
+seja o MVC que está
+
+
+842
+00:46:31,059 --> 00:46:35,509
+sendo mostrado.
+Todo mundo entende isso? Muito simples.
+
+
+843
+00:46:35,529 --> 00:46:41,119
+É a self.view de qualquer coisa
+que foi "pushada", ok? Ela fica
+
+
+844
+00:46:41,139 --> 00:46:44,920
+nesse espaço, bam.
+E o MVC faz o que ele tiver que fazer.
+
+
+845
+00:46:44,940 --> 00:46:48,809
+Assim como era em um
+TabBarController ou se ele estivesse
+
+
+846
+00:46:48,829 --> 00:46:50,829
+na tela inteira, não importa.
+Não deveria importar
+
+
+847
+00:46:50,829 --> 00:46:54,230
+para o MVC se ele foi "pushado".
+Então é isso que essa coisa
+
+
+848
+00:46:54,250 --> 00:46:57,179
+aí no meio significa.
+Esse é o título, o qual, novamente,
+
+
+849
+00:46:57,179 --> 00:47:02,299
+vocês podem setar no Xcode,
+mas ele também é a property "title" no
+
+
+850
+00:47:02,319 --> 00:47:04,759
+view controller.
+UIViewController tem uma property "title",
+
+
+851
+00:47:04,779 --> 00:47:07,849
+ela será colocada aí,
+se você não setá-la no Xcode. Temos
+
+
+852
+00:47:07,849 --> 00:47:11,199
+essa pequena barrinha de botões
+embaixo, ok? Existe uma property
+
+
+853
+00:47:11,219 --> 00:47:15,179
+no view controller.
+No view controller, não no
+
+
+854
+00:47:15,199 --> 00:47:18,199
+navigation controller,
+no view controller chamada "toolBarItems" que
+
+
+855
+00:47:18,219 --> 00:47:20,880
+vai retornar os "toolbar items"
+que o navigation controller
+
+
+856
+00:47:20,900 --> 00:47:25,519
+deveria usar quando você
+é pushado. Então, quando eu "pusho"
+
+
+857
+00:47:25,539 --> 00:47:36,309
+e vou para telas diverentes,
+os botões embaixo mudam.
+
+
+858
+00:47:36,329 --> 00:47:51,469
+[desculpa de novo!] Esse botão de back vai ter o título
+do view controller para qual voltará, então ele não dirá "back"
+
+
+859
+00:47:51,489 --> 00:47:54,789
+a não ser que o view controller
+para qual ele vai voltar não tenha título, daí
+
+
+860
+00:47:54,809 --> 00:47:58,309
+ele diria "back". Então aqui
+a coisa que pushou essa tela
+
+
+861
+00:47:58,309 --> 00:48:00,059
+devia se chamar "Accounts".
+
+
+862
+00:48:00,059 --> 00:48:02,559
+Esse deve ter sido o título
+da view controller anterior.
+
+
+863
+00:48:02,559 --> 00:48:06,710
+Ok. Tudo isso acontece automaticamente.
+Isso tudo faz parte.
+
+
+864
+00:48:06,730 --> 00:48:10,389
+Então, quando nós pushamos
+um view controller, quando que ele
+
+
+865
+00:48:10,409 --> 00:48:13,759
+é "popado" (sai da tela)?
+Bom, o modo mais comum de ele ser "popado" é
+
+
+866
+00:48:13,779 --> 00:48:16,529
+quando eles tocam o botão back, certo?
+O usuário toca o botão
+
+
+867
+00:48:16,529 --> 00:48:19,779
+back e boom, nós "popamos",
+voltamos para a anterior. Mas,
+
+
+868
+00:48:19,779 --> 00:48:22,679
+vocês podem fazer isso em código,
+enviando um "popViewControllerAnimated:",
+
+
+869
+00:48:22,699 --> 00:48:26,059
+e você envia isso
+para o view controller
+
+
+870
+00:48:26,079 --> 00:48:30,920
+que está na pilha no momento.
+Ok? Então basicamente
+
+
+871
+00:48:30,940 --> 00:48:34,420
+você envia isso para "self"
+em qualquer controller que esteja
+
+
+872
+00:48:34,440 --> 00:48:37,589
+na pilha. Agora, por que que vamos querer
+fazer isso manualmente ao invés de
+
+
+873
+00:48:37,609 --> 00:48:40,609
+tocar o botão back? Bom,
+vamos dizer por exemplo que o seu
+
+
+874
+00:48:40,609 --> 00:48:43,400
+view controller adicionou algum registro,
+ok? Você é algum editor de dados
+
+
+875
+00:48:43,420 --> 00:48:46,299
+e uma das opções
+para editar os campos
+
+
+876
+00:48:46,299 --> 00:48:49,960
+é deletar essa entrada inteira.
+Ok? Um botão
+
+
+877
+00:48:49,980 --> 00:48:53,319
+grande e vermelho, provavelmente
+"delete", certo? "Deletar Entrada" e nós
+
+
+878
+00:48:53,339 --> 00:48:56,789
+deletamos o registro.
+Agora não faz mais sentido para estarmos
+
+
+879
+00:48:56,809 --> 00:48:59,809
+nessa tela. Ok? Porque
+esse registro se foi. Então,
+
+
+880
+00:48:59,809 --> 00:49:03,819
+você quer "popar". Vêem?
+E percebam esse fato interessante
+
+
+881
+00:49:03,839 --> 00:49:06,849
+aqui.
+"self.navigationController popView...
+
+
+882
+00:49:06,869 --> 00:49:10,609
+ControllerAnimated:".
+Acho que eu acabei de dizer que você envia
+
+
+883
+00:49:10,629 --> 00:49:12,589
+para o view controller. Na verdade,
+você envia para o navigation
+
+
+884
+00:49:12,589 --> 00:49:15,529
+controller. Mas todos os views controllers
+conhecem o navigation
+
+
+885
+00:49:15,549 --> 00:49:19,379
+controller em que ele está.
+Se ele estiver em um. Se ele não estiver
+
+
+886
+00:49:19,379 --> 00:49:22,679
+em um, o self.navigatoinController
+no UIViewController vai retornar nil.
+
+
+887
+00:49:22,699 --> 00:49:25,650
+Mas se você está em um navigation controller,
+mesmo se você não for
+
+
+888
+00:49:25,650 --> 00:49:28,699
+o que está sendo mostrado na tela,
+mas se você estiver ali, então
+
+
+889
+00:49:28,719 --> 00:49:31,099
+o self.navigationController
+vai retornar o
+
+
+890
+00:49:31,119 --> 00:49:34,909
+navigation controller
+e você pode enviar o
+
+
+891
+00:49:34,929 --> 00:49:35,929
+"popViewControllerAnimated:".
+
+
+892
+00:49:35,929 --> 00:49:38,880
+o "Animated" vai quase sempre
+ser animado porque se você está popando
+
+
+893
+00:49:38,900 --> 00:49:41,509
+é porque você provavelmente está na tela
+e para sair da tela nós queremos
+
+
+894
+00:49:41,509 --> 00:49:45,429
+deslizar, ok?
+Nós queremos deslizar
+
+
+895
+00:49:45,449 --> 00:49:48,569
+de volta para para o último
+viewController, certo?
+
+
+896
+00:49:48,589 --> 00:49:55,139
+Animadamente. Nós não queremos apenas
+PUM aparecer, isso é muito grosseiro.
+
+
+897
+00:49:55,159 --> 00:49:58,279
+Que outros tipos de segue
+existem, a propósito,
+
+
+898
+00:49:58,299 --> 00:50:01,400
+além do push? Existem apenas
+alguns poucos outros. Existe o "replace"
+
+
+899
+00:50:01,420 --> 00:50:04,369
+e o "popover", que são usados
+no iPad, nós falaremos sobre eles
+
+
+900
+00:50:04,369 --> 00:50:06,869
+na próxima semana. Existe o "modal",
+que toma a tela inteira.
+
+
+901
+00:50:06,869 --> 00:50:09,869
+Eu não vou mostrar esse
+até mais tarde nesse semestre porque
+
+
+902
+00:50:09,869 --> 00:50:12,869
+as pessoas usam isso como uma
+"muleta". E vocês podem
+
+
+903
+00:50:12,869 --> 00:50:15,619
+fazer segues customizados
+que vão bem além do escopo
+
+
+904
+00:50:15,619 --> 00:50:19,579
+desse curso. Certo.
+E se vocês quiserem disparar
+
+
+905
+00:50:19,599 --> 00:50:22,559
+um segue a partir do código,
+nós falamos sobre como vocês podem disparar
+
+
+906
+00:50:22,559 --> 00:50:25,119
+um segue usando o CTRL + arrastar
+e você aperta o botão e BOOM,
+
+
+907
+00:50:25,119 --> 00:50:28,119
+o segue acontece, ok?
+Faz sentido e é fácil.
+
+
+908
+00:50:28,119 --> 00:50:30,869
+Mas e se vocês quiser
+fazer isso no código?
+
+
+909
+00:50:30,869 --> 00:50:34,119
+Certo? Algum código que diga:
+"faça o segue". Bom, vocês sabem
+
+
+910
+00:50:34,119 --> 00:50:36,869
+o nome do segue, certo? Porque
+quando nós o inspecionamos,
+
+
+911
+00:50:36,869 --> 00:50:39,869
+o segue era chamado "ShowOther".
+Então vocês sabem o nome dele
+
+
+912
+00:50:39,869 --> 00:50:42,869
+e se vocês sabem o nome dele,
+vocês podem chamar esse método
+
+
+913
+00:50:42,869 --> 00:50:45,559
+"performSegueWithIdentifier",
+você passa o nome e
+
+
+914
+00:50:45,579 --> 00:50:49,099
+entõa o "sender" é apenas
+quem está pedindo para fazer isso,
+
+
+915
+00:50:49,119 --> 00:50:52,000
+geralmente é o view controller,
+poderia ser o botão que foi pressionado
+
+
+916
+00:50:52,019 --> 00:50:55,109
+para fazer isso. E por que
+que vocês iriam querer fazer isso em código?
+
+
+917
+00:50:55,109 --> 00:50:58,710
+Bom, uma razão comum é que vocês
+podem ter um segue condicional, ok?
+
+
+918
+00:50:58,730 --> 00:51:02,629
+Então, existe um app de iPhone,
+[Squaw Valley?]. O cara faz um checkin
+
+
+919
+00:51:02,649 --> 00:51:06,199
+para aluguel de ski. E ele diz:
+você é um snowboarder ou
+
+
+920
+00:51:06,219 --> 00:51:09,139
+um esquiador? E você diz snowboarder.
+E então aperta um botão
+
+
+921
+00:51:09,159 --> 00:51:13,650
+e ele transiciona para a página
+de perguntas sobre snowboard. Certo?
+
+
+922
+00:51:13,670 --> 00:51:16,619
+Como "goofy ou não goofy [?]",
+esse tipo de perguntas
+
+
+923
+00:51:16,639 --> 00:51:19,839
+versus se você disser que é esquiador,
+ele poderia dizer: oh, qual o tamanho
+
+
+924
+00:51:19,839 --> 00:51:22,589
+que você quer seus esquis?
+Que configuração de travas? Vêem o que estou dizendo?
+
+
+925
+00:51:22,589 --> 00:51:25,489
+Então vocês poderiam ter
+algo condicional aqui. Então o botão
+
+
+926
+00:51:25,509 --> 00:51:28,789
+nesse caso iria apenas ter
+um target-action para o controller.
+
+
+927
+00:51:28,809 --> 00:51:35,980
+Esse poderia ser o método
+target-action no controller.
+
+
+928
+00:51:36,000 --> 00:51:39,250
+Então, quando um segue acontece--
+Nós falamos sobre como você faz
+
+
+929
+00:51:39,259 --> 00:51:40,259
+um segue acontecer.
+
+
+930
+00:51:40,269 --> 00:51:43,710
+Então, quando ele acontece,
+o que acontece? Ok? O que está acontecendo
+
+
+931
+00:51:43,730 --> 00:51:46,230
+no meu código quando
+ele acontece e existe esse método
+
+
+932
+00:51:46,230 --> 00:51:51,339
+realmente importante chamado
+"prepareForSegue". "prepareforSegue:sender:"
+
+
+933
+00:51:51,359 --> 00:51:57,019
+é o nome dele. E isso é enviado
+para o view controller da onde
+
+
+934
+00:51:57,039 --> 00:52:00,529
+o segue está "saindo".
+E ele basicamente pergunta
+
+
+935
+00:52:00,549 --> 00:52:03,509
+ao view controller: por favor,
+prepare esse view controller
+
+
+936
+00:52:03,529 --> 00:52:08,719
+para o qual você está "segueando",
+para aparecer na tela Então, vamos voltar
+
+
+937
+00:52:08,739 --> 00:52:12,449
+ao exemplo de... eu tenho os albuns
+e dentro do álbum eu tenho
+
+
+938
+00:52:12,469 --> 00:52:13,469
+as músicas ou coisa assim.
+
+
+939
+00:52:13,469 --> 00:52:17,400
+Ok? Quando eu clico no artirsta,
+vamos dizer, ok? Eu vou
+
+
+940
+00:52:17,420 --> 00:52:20,789
+colocar um AlbumViewController na tela,
+que mostra todos os álbuns
+
+
+941
+00:52:20,809 --> 00:52:25,029
+por artista, ok? Bom, o
+ArtistViewController tem
+
+
+942
+00:52:25,049 --> 00:52:29,809
+que dizer ao AlbumViewController
+qual é o artista que ele
+
+
+943
+00:52:29,829 --> 00:52:37,449
+deve mostrar os álbuns. Então,
+no "prepareForSegue", o AlbumViewController
+
+
+944
+00:52:37,469 --> 00:52:43,059
+vai setar o artista para ser
+os Beatles e é isso.
+
+
+945
+00:52:43,079 --> 00:52:46,359
+Então, ele preparou aquele segue
+para fazer o seu trabalho, que é
+
+
+946
+00:52:46,379 --> 00:52:49,509
+mostrar todos os álbuns
+para um artista. E então ele sai da frente.
+
+
+947
+00:52:49,509 --> 00:52:52,509
+E ele não faz nada ais,
+até que o botão back
+
+
+948
+00:52:52,509 --> 00:52:55,509
+seja pressionado, ou o "pop" aconteça
+e agora ele está de volta na tela,
+
+
+949
+00:52:55,509 --> 00:52:58,449
+ele vai fazer o seu trabalho de novo.
+Mas uma vez que
+
+
+950
+00:52:58,449 --> 00:53:01,129
+o outro cara foi preparado
+e o segue é lançado,
+
+
+951
+00:53:01,149 --> 00:53:06,119
+Você precisa pensar na coisa
+que estamos enviando o segue
+
+
+952
+00:53:06,139 --> 00:53:10,739
+como se fosse parte da view
+do cara que enviou o segue.
+
+
+953
+00:53:10,759 --> 00:53:13,259
+Certo? E lembrem-se
+que nós temos que ter uma
+
+
+954
+00:53:13,269 --> 00:53:15,769
+comunicação cega com a nosas view.
+Então o único modo que
+
+
+955
+00:53:15,769 --> 00:53:18,269
+o view controller poderia
+receber de volta, por exemplo, seria
+
+
+956
+00:53:18,289 --> 00:53:21,779
+através de delegação ou algo assim, certo?
+Algo que seja cego.
+
+
+957
+00:53:21,799 --> 00:53:25,960
+Algum tipo de comunicação cega.
+Então, isso é muito importante
+
+
+958
+00:53:25,980 --> 00:53:29,049
+e nós vamos falar mais sobre isso
+quando nós falarmos sobre
+
+
+959
+00:53:29,069 --> 00:53:32,449
+table views, por exemplo,
+para vocês preparaem
+
+
+960
+00:53:32,469 --> 00:53:34,920
+o novo controller para que ele
+faça o seu trabalho e então você deixa
+
+
+961
+00:53:34,920 --> 00:53:38,639
+ele fazer seu trabalho até ele acabar.
+E ele provavelmente não vai falar com você
+
+
+962
+00:53:38,659 --> 00:53:41,659
+de volta até lá e se ele o fizer,
+tem que ser uma comunicação
+
+
+963
+00:53:41,659 --> 00:53:47,299
+que siga as regras "cegas" do MVC, ok?
+Como delegation ou algo assim.
+
+
+964
+00:53:47,319 --> 00:53:50,259
+Você pode prevenir um segue
+de acontecer com esse
+
+
+965
+00:53:50,279 --> 00:53:53,239
+shouldPrevent, mas olhem
+esse slide aqui. Vocês não vão
+
+
+966
+00:53:53,259 --> 00:53:56,259
+precisar fazer isso nesse curso.
+É bem raro, foi adicionado
+
+
+967
+00:53:56,259 --> 00:54:01,289
+no iOS 6, ok? Outra coisa
+é que vocês podem "unwind" um segue
+
+
+968
+00:54:01,309 --> 00:54:04,509
+também. Vocês também nunca vão precisar
+fazer isso nesse curso. Eu
+
+
+969
+00:54:04,509 --> 00:54:06,230
+falei sobre isso mais porque
+alguns de vocês vão se perguntar
+
+
+970
+00:54:06,230 --> 00:54:09,039
+o que é esse botãozinho verde
+lá embaixo? Que todos os meus
+
+
+971
+00:54:09,059 --> 00:54:12,500
+view controller no Storyboard tem.
+Isso é apenas uma pequena coisa
+
+
+972
+00:54:12,519 --> 00:54:15,799
+que você pode amarrar um botão
+para "unwind", por exempo
+
+
+973
+00:54:15,819 --> 00:54:18,289
+se você quiser popar múltiplos
+níveis de volta no seu
+
+
+974
+00:54:18,289 --> 00:54:19,289
+Navigation Controller.
+
+
+975
+00:54:19,289 --> 00:54:21,789
+Porque popViewController
+popa apenas um controller.
+
+
+976
+00:54:21,789 --> 00:54:25,469
+Então se você quiser popar para algo
+maior então você tem que usar
+
+
+977
+00:54:25,489 --> 00:54:28,239
+esse "unwind" aqui,
+que vocês não vão fazer
+
+
+978
+00:54:28,239 --> 00:54:31,239
+nesse curso, eu só queria
+que vocês soubessem que ele existe.
+
+
+979
+00:54:31,239 --> 00:54:34,239
+Então quando vocês se graduarem desse curso
+e forem pro mundo vocês saberem que
+
+
+980
+00:54:34,239 --> 00:54:39,900
+é possível para "unwind"
+as sua cadeia de segues.
+
+
+981
+00:54:39,920 --> 00:54:43,819
+Também é possível instanciar
+um viewcontroller, tipo criar
+
+
+982
+00:54:43,839 --> 00:54:48,009
+um view controller em código
+ao invés de fazer um segue pra ele.
+
+
+983
+00:54:48,029 --> 00:54:51,279
+Mas nós não vamos falar sobre isso
+nesse curso, ok?
+
+
+984
+00:54:51,279 --> 00:54:54,029
+Eu coloquei esse slide, vocês
+podem revisá-lo, mas não vai ser
+
+
+985
+00:54:54,029 --> 00:54:59,019
+requisitado para nada nesse curso,
+mas pode ser feito.
+
+
+986
+00:54:59,039 --> 00:55:02,539
+A maneira que você faz isso, a propósito,
+só uma visão geral, é que
+
+
+987
+00:55:02,559 --> 00:55:06,389
+os view controllers também tem nomes.
+Assim como o segue tem um nome,
+
+
+988
+00:55:06,409 --> 00:55:09,460
+o view controller tem um nome
+e você pode dizer: me dê um
+
+
+989
+00:55:09,460 --> 00:55:12,710
+view controller com esse nome
+e eu vou fazer um a partir
+
+
+990
+00:55:12,710 --> 00:55:15,549
+do Storyboard, ok? Mas então
+você tem quecolocá-lo na tela
+
+
+991
+00:55:15,549 --> 00:55:19,609
+e usar outras APIs e nós não vamos falar
+sobre isso. Ok. A demo
+
+
+992
+00:55:19,629 --> 00:55:23,779
+que eu vou fazer hoje é,
+eu vou construir um visualizador de carta.
+
+
+993
+00:55:23,799 --> 00:55:27,329
+Será apenas esse app simples,
+que tem dois MVCs.
+
+
+994
+00:55:27,349 --> 00:55:32,279
+Um MVC permite que você escolha
+um rank e um naipe e o outro MVC
+
+
+995
+00:55:32,299 --> 00:55:36,429
+mostra a carta com esse rank e naipe, ok?
+Então eu vou usar
+
+
+996
+00:55:36,449 --> 00:55:38,849
+navigation controller. Quando eu escolher
+o rank e o naipe,
+
+
+997
+00:55:38,849 --> 00:55:41,849
+eu vou dizer: mostre me a carta,
+e ele vai pushar
+
+
+998
+00:55:41,849 --> 00:55:45,349
+o outro MVC e vai me mostrar a carta.
+E eu posso voltar e escolher
+
+
+999
+00:55:45,349 --> 00:55:48,349
+uma carta diferente,
+mostre me a carta e ele vai pushar de novo.
+
+
+1000
+00:55:48,349 --> 00:55:51,489
+Uma coisa importante de se dizer,
+eu acho que eu não falei
+
+
+1001
+00:55:51,509 --> 00:55:54,509
+sobre segues. Quando você "segueia"
+para um novo view controller,
+
+
+1002
+00:55:54,509 --> 00:55:59,029
+ele instancia um novo, ok?
+Então quando eu estiver fazendo meu
+
+
+1003
+00:55:59,049 --> 00:56:02,210
+jogo de visualização de cartas, quando eu
+escolher um naipe e um rank e eu disser
+
+
+1004
+00:56:02,210 --> 00:56:04,809
+"mostre me a carta" e ele fizer
+um view controller e me mostrar a carta,
+
+
+1005
+00:56:04,809 --> 00:56:06,139
+quando eu voltar,
+
+
+1006
+00:56:06,159 --> 00:56:08,759
+o view controller que me mostrou
+a carta é liberado
+
+
+1007
+00:56:08,759 --> 00:56:13,710
+da heap. E quando eu disser
+"me mostre outra carta" ele vai criar
+
+
+1008
+00:56:13,730 --> 00:56:17,489
+um novo. Segues sempre criam
+uma nova instância de
+
+
+1009
+00:56:17,509 --> 00:56:21,670
+view controller. Sempre, ok?
+Isso é fundamental de segues,
+
+
+1010
+00:56:21,690 --> 00:56:24,849
+eles criam nova instâncias
+de view controllers.
+
+
+1011
+00:56:24,869 --> 00:56:27,349
+Então quando você entende isso,
+você vai entender os view controllers
+
+
+1012
+00:56:27,369 --> 00:56:31,920
+são desenhados para
+serem criados para
+
+
+1013
+00:56:31,940 --> 00:56:35,940
+fazer o que eles tem que fazer
+e então ir embora. Normalmente
+
+
+1014
+00:56:35,960 --> 00:56:38,460
+não é a idéia que os view controllers
+venham para a existência e então
+
+
+1015
+00:56:38,460 --> 00:56:42,129
+fiquem por aí por um longo período, ok?
+Apenas se eles forem, talvez,
+
+
+1016
+00:56:42,149 --> 00:56:44,650
+o view controller roteador
+do seu navigation controller,
+
+
+1017
+00:56:44,670 --> 00:56:47,409
+isso seria verdade.
+A maioria dos view controllers vem e vão.
+
+
+1018
+00:56:47,429 --> 00:56:50,239
+Eles são desenhados para fazer
+uma certa tarefa e quando eles
+
+
+1019
+00:56:50,239 --> 00:56:51,359
+aacbarem, eles vão embora.
+
+
+1020
+00:56:51,379 --> 00:56:52,480
+Ok? Sim.
+
+
+1021
+00:56:52,500 --> 00:56:55,000
+>> [Estudante perguntando]
+
+
+1022
+00:56:55,000 --> 00:56:57,750
+[estudante perguntando]
+
+
+
+1023
+00:56:57,750 --> 00:57:05,659
+[estudante perguntando]
+
+
+
+1024
+00:57:05,679 --> 00:57:07,179
+[estudante perguntando]
+
+
+
+1025
+00:57:07,179 --> 00:57:10,179
+>> A pergunta é:
+no app do Facebook, eles tem
+
+
+1026
+00:57:10,179 --> 00:57:13,179
+uma pequena coisa onde quando
+você faz um gesto ele meio que
+
+
+1027
+00:57:13,179 --> 00:57:16,000
+faz um slide para uma outra coisa.
+Isos é na verdade algo customizado que eles fizeram.
+
+
+1028
+00:57:16,000 --> 00:57:18,980
+Isso não é parte do iOS no iPhone,
+mas isso é bem similar
+
+
+1029
+00:57:18,980 --> 00:57:22,230
+do que é feito no iPad.
+Eu não sei se você já viu no iPad,
+
+
+1030
+00:57:22,230 --> 00:57:25,730
+no iPad, em vários apps,
+se você fizer o swipe
+
+
+1031
+00:57:25,730 --> 00:57:28,730
+da esquerda, ele vai meio que
+mover uma coisa... certo?
+
+
+1032
+00:57:28,730 --> 00:57:31,480
+Um View Controller. E então
+você faz o swipe e ele volta.
+
+
+1033
+00:57:31,489 --> 00:57:34,739
+Mas a resposta é sim,
+tenho certeza que isso que
+
+
+1034
+00:57:34,739 --> 00:57:37,539
+você faz o swipe é um view controller.
+Ok? Agora, eles nõa usaram
+
+
+1035
+00:57:37,559 --> 00:57:39,179
+navigation controller para construir
+essa coisa. Eles provavelmente escreveram
+
+
+1036
+00:57:39,179 --> 00:57:43,500
+seu próprio controller de controllers, ok?
+Alguma coisa própria deles tipo
+
+
+1037
+00:57:43,519 --> 00:57:46,779
+um navigation controller
+ou um tabbar controller, porque
+
+
+1038
+00:57:46,799 --> 00:57:50,309
+não tem algo no iOS para fazer isso
+no iPhone. Isso responde
+
+
+1039
+00:57:50,329 --> 00:57:56,379
+a sua pergunta? Ok. Hora da demo.
+Eu preciso mudar o display aqui
+
+
+1040
+00:57:56,399 --> 00:58:03,329
+rapidamente. Vamos para o Xcode.
+Eu vou cirar essa aplicação
+
+
+1041
+00:58:03,349 --> 00:58:04,940
+do zero, ok?
+
+
+1042
+00:58:04,960 --> 00:58:09,309
+Acho que eu tenho tempo para fazer isso.
+E nós vamos criar um
+
+
+1043
+00:58:09,329 --> 00:58:12,079
+novo projeto.
+Eu vou chamá-lo de... Ele vai começar
+
+
+1044
+00:58:12,079 --> 00:58:15,329
+sendo um Single View MVC e eu
+vou adicionar outro.
+
+
+1045
+00:58:15,329 --> 00:58:19,409
+Vou chamá-lo de CardViewer.
+Eu quero... o primeiro MVC que
+
+
+1046
+00:58:19,429 --> 00:58:22,889
+eu criei que seja chamado
+CardChooserViewController.
+
+
+1047
+00:58:22,909 --> 00:58:25,509
+Então eu vou chamar esse
+prefixo de classe pois esse é um caso
+
+
+1048
+00:58:25,509 --> 00:58:28,759
+onde você não quer o mesmo nome.
+Então vou ter
+
+
+1049
+00:58:28,759 --> 00:58:31,509
+o CardChooser MVC
+e eu vou ter o
+
+
+1050
+00:58:31,509 --> 00:58:32,539
+CardDisplay MVC... er,
+View Controller.
+
+
+1051
+00:58:32,559 --> 00:58:35,259
+Esses vão ser os meus
+dois view controllers. Esses são
+
+
+1052
+00:58:35,259 --> 00:58:39,589
+os nomes que eles vão ter.
+Certo, então eu vou aqui, coloco no nosso
+
+
+1053
+00:58:39,609 --> 00:58:44,529
+"home directory developer". Aqui está.
+Vamos para o nosso Storyboard, vamos
+
+
+1054
+00:58:44,549 --> 00:58:48,989
+construir nossa UI primeiro. Ajuda
+vocês a endender o que estamos fazendo.
+
+
+1055
+00:58:49,009 --> 00:58:52,659
+Vamos fazer isso por motivo de espaço,
+tirar isso daqui, nós não
+
+
+1056
+00:58:52,679 --> 00:58:58,259
+precisamos disso. Então eu vou
+colcoar alguns elementos básicos de UI
+
+
+1057
+00:58:58,279 --> 00:59:01,279
+vou aproveitar a chance para mostrar
+alguma dessas coisas também. Nós vamos
+
+
+1058
+00:59:01,279 --> 00:59:05,179
+usar um "Segmented Control"
+para escolher nossos naipers, ok?
+
+
+1059
+00:59:05,199 --> 00:59:08,929
+Nossos quatro naipes. Então, segmented control,
+eu vou ter quatro coisas
+
+
+1060
+00:59:08,949 --> 00:59:12,949
+aqui. Vamos colocá-lo aqui.
+Vamos editar
+
+
+1061
+00:59:12,969 --> 00:59:15,969
+aqui... Eu vou tentar
+escrever
+
+
+1062
+00:59:15,969 --> 00:59:19,609
+o menor número possível
+de linhas de códigos que eu conseguir,
+
+
+1063
+00:59:19,629 --> 00:59:21,319
+por causa de restrições de tempo.
+
+
+1064
+00:59:21,339 --> 00:59:38,509
+Vamos colcoar essas coisas aqui.
+Oops, essa aqui... essa aqui,
+
+
+1065
+00:59:38,529 --> 00:59:41,279
+oops, podemos fechar aqui,
+vamos alinhar aqui...
+
+
+1066
+00:59:41,279 --> 00:59:43,779
+Ok. Então é assim que vamos
+escolher nosso naipe.
+
+
+1067
+00:59:43,779 --> 00:59:46,779
+Eu vou escolher o rank
+através dessa UI incrível
+
+
+1068
+00:59:46,779 --> 00:59:49,779
+do slider. Ok? Eu estou fazendo isso
+para que vocês possam ver
+
+
+1069
+00:59:49,779 --> 00:59:52,329
+o slider e o segmented control na demo.
+Vamos colocar um... oops,
+
+
+1070
+00:59:52,329 --> 00:59:56,819
+um pequeno label aqui em cima,
+apenas para dizer ao usuário o que
+
+
+1071
+00:59:56,839 --> 01:00:03,139
+fazer. "Escolha a carta que você quer"
+ou algo assim.
+
+
+1072
+01:00:03,159 --> 01:00:08,839
+Vamos colocar um pequeno label aqui.
+Essa é uma UI linda, não é?
+
+
+1073
+01:00:08,859 --> 01:00:11,859
+Isso é incrível. Vamos deixar
+uma fonte grande, vamos deixar
+
+
+1074
+01:00:11,859 --> 01:00:16,089
+com 36 pontos ou algo assim,
+uma fonte grande.
+
+
+1075
+01:00:16,109 --> 01:00:22,049
+É aqui que vamos colocar o rank,
+tipo ás de espadas ou algo assim,
+
+
+1076
+01:00:22,069 --> 01:00:25,319
+ok? Vou deixar isso aqui.
+Então quando eu mover o slider
+
+
+1077
+01:00:25,319 --> 01:00:28,319
+ele vai mudar isso aqui.
+O slider vai de um até
+
+
+1078
+01:00:28,319 --> 01:00:30,969
+treze, esses são meus ranks,
+e ele vai escolher isso.
+
+
+1079
+01:00:30,969 --> 01:00:33,719
+E então, eu vou ter esse
+importante botão, esse é
+
+
+1080
+01:00:33,719 --> 01:00:36,719
+o ponto disso tudo,
+e esse botão vai
+
+
+1081
+01:00:36,719 --> 01:00:40,579
+se chamar, "mostre me a carta", ok?
+E então, quando eu clicar
+
+
+1082
+01:00:40,599 --> 01:00:45,589
+nesse botão, ele vai "segue"
+para outra view controller
+
+
+1083
+01:00:45,609 --> 01:00:49,389
+que vai motrar a carta. Ok?
+Vamos dar uma olhada
+
+
+1084
+01:00:49,409 --> 01:00:52,409
+nesse outro view controller.
+Então eu vou aqui, arrasto pra dentro,
+
+
+1085
+01:00:52,409 --> 01:00:54,969
+aqui está. Esse view controller
+bem aqui. Agora,
+
+
+1086
+01:00:54,969 --> 01:00:58,019
+obviamente, eu preciso criar
+uma subclasse customizada. Para cada
+
+
+1087
+01:00:58,039 --> 01:01:00,789
+view controller que você cria,
+você precisa ter uma subclasse
+
+
+1088
+01:01:00,789 --> 01:01:04,039
+customizada. E eu disse a vocês
+que eu ia chamar esse aqui de
+
+
+1089
+01:01:04,039 --> 01:01:05,039
+CardDisplayViewController.
+
+
+1090
+01:01:05,039 --> 01:01:12,579
+E ele é uma subclasse
+de UIViewController, ok?
+
+
+1091
+01:01:12,599 --> 01:01:16,529
+É isso. Coloco no mesmo lugar
+que todo o resto.
+
+
+1092
+01:01:16,549 --> 01:01:23,409
+Aqui está. Vamos ao Storyboard.
+Vamos setar a classe
+
+
+1093
+01:01:23,429 --> 01:01:25,980
+certo? Sempre que criamos
+um novo view controller nós precisamos
+
+
+1094
+01:01:25,980 --> 01:01:28,109
+setar a classe e nós
+temos esse pequeno
+
+
+1095
+01:01:28,109 --> 01:01:31,529
+"Class" bem aqui.
+Eu vou ter apenas uma coisa aqui,
+
+
+1096
+01:01:31,549 --> 01:01:35,920
+que é uma PlayingCardView.
+Então nós precisamos de uma
+
+
+1097
+01:01:35,940 --> 01:01:39,389
+view genérica novamente.
+Espero que vocês estejam se acostumando a
+
+
+1098
+01:01:39,409 --> 01:01:43,449
+fazer isso. Mas aqui eu não vou
+usar aqui o espaço inteiro.
+
+
+1099
+01:01:43,469 --> 01:01:47,649
+Vamos usar as coisas padrão.
+Isso, a propósito,
+
+
+1100
+01:01:47,669 --> 01:01:50,169
+está criando todos os tipos de constraints
+por baixo dos panos aqui.
+
+
+1101
+01:01:50,169 --> 01:01:52,919
+Vamos olhar aqui...
+...
+
+
+1102
+01:01:52,919 --> 01:01:56,169
+er, ar, er, ar, er.
+
+
+1103
+01:01:56,169 --> 01:02:04,670
+Pronto.
+
+
+1104
+01:02:04,690 --> 01:02:07,690
+Então se olharmos aqui
+nós temos as constraints
+
+
+1105
+01:02:07,699 --> 01:02:12,399
+aqui em baixo, ok?
+Eu deveria ter usado
+
+
+1106
+01:02:12,419 --> 01:02:17,119
+o "snapping" aqui. Bom,
+esse é esse cara, vamos
+
+
+1107
+01:02:17,139 --> 01:02:22,349
+seguir e setar o background
+da nossa self.view para ser
+
+
+1108
+01:02:22,369 --> 01:02:27,129
+verde, cor favorita,
+e vamos setar esse cara para ser
+
+
+1109
+01:02:27,149 --> 01:02:30,500
+não opaco e transparente,
+e nós sabemos que fazemos isso
+
+
+1110
+01:02:30,519 --> 01:02:33,739
+por causa dos cantos do PlayingView.
+Então nós precisamos
+
+
+1111
+01:02:33,759 --> 01:02:37,009
+setar isso para PlayingView,
+então preciso arrastar nossa PlayingCardView,
+
+
+1112
+01:02:37,009 --> 01:02:40,509
+está bem aqui... eu acho que posso pegar
+aqui do SuperCard ou
+
+
+1113
+01:02:40,509 --> 01:03:06,809
+do Matchismo, vamos pegar
+do SuperCard [...]
+
+
+1114
+01:03:06,829 --> 01:03:10,349
+E a última coisa que eu vou fazer
+é setar um outlet nesse controller
+
+
+1115
+01:03:10,369 --> 01:03:14,329
+para que eu possa acessar
+esse PlayingCardView obviamente.
+
+
+1116
+01:03:14,349 --> 01:03:19,349
+Então vamos abrir mais espaço, 
+assim, vou abrir o .m,
+
+
+1117
+01:03:19,369 --> 01:03:23,589
+eu não preciso de nada disso.
+Aqui, na verdade, vou fazer
+
+
+1118
+01:03:23,609 --> 01:03:25,859
+uma property pública.
+Porque eu estou fazendo isso
+
+
+1119
+01:03:25,859 --> 01:03:26,859
+uma property pública?
+
+
+1120
+01:03:26,859 --> 01:03:29,609
+É algo importante
+para se comentar aqui.
+
+
+1121
+01:03:29,609 --> 01:03:33,149
+Quando eu pushar essa coisa
+no meu Navigation Controller, eu preciso
+
+
+1122
+01:03:33,169 --> 01:03:36,419
+prepará-lo. O modo que eu vou
+prepará-lo é dizendo
+
+
+1123
+01:03:36,419 --> 01:03:39,919
+o rank e o naipe da carta.
+Eu não posso dizer o rank e
+
+
+1124
+01:03:39,919 --> 01:03:43,889
+o naipe da carta a não ser
+que eu tenha alguma API pública nele
+
+
+1125
+01:03:43,909 --> 01:03:48,069
+para fazer isso. Então eu preciso
+de alguma API pública aqui, que é
+
+
+1126
+01:03:48,089 --> 01:03:56,539
+nonatomic, NSUInteger rank
+e eu preciso... nonatomic strong
+
+
+1127
+01:03:56,559 --> 01:04:02,190
+NSString *suit. Ok?
+Então essas são públicas. Eu estou
+
+
+1128
+01:04:02,210 --> 01:04:07,259
+fazendo-as públicas. No lado privado,
+eu vou ter minha PlayingCardView.
+
+
+1129
+01:04:07,279 --> 01:04:12,679
+Ok? Então eu estou fazendo isso privado
+porque eu não quero permitir...
+
+
+1130
+01:04:12,699 --> 01:04:16,299
+eu não quero que a pessoa que está
+me pushando consiga entrar
+
+
+1131
+01:04:16,319 --> 01:04:20,089
+e zoar minhas views.
+Eu quero que ele use
+
+
+1132
+01:04:20,109 --> 01:04:23,359
+minha API pública que é rank e naipe.
+Deixe que eu decida
+
+
+1133
+01:04:23,359 --> 01:04:26,609
+como fazer isso. É isso o que eu faço.
+Eu sou a view que apresenta
+
+
+1134
+01:04:26,609 --> 01:04:29,609
+a PlayingCard. Vêem o que
+estou dizendo? Então nós queremos ter
+
+
+1135
+01:04:29,609 --> 01:04:33,789
+os encarregados certos aqui.
+Então, PlayingCardView.h.
+
+
+1136
+01:04:33,809 --> 01:04:38,429
+Nós temos isso. A implementação
+dessa classe é super simples,
+
+
+1137
+01:04:38,449 --> 01:04:47,029
+nós vamos apenas no "viewWillAppear:",
+eu vou apenas
+
+
+1138
+01:04:47,049 --> 01:04:52,269
+setar o meu playingCardView.rank
+igual ao meu rank, e eu vou setar
+
+
+1139
+01:04:52,289 --> 01:04:55,629
+meu playingCardView.suit
+igual ao meu suit.
+
+
+1140
+01:04:55,649 --> 01:05:03,779
+E eu vou garantir que estou
+virado pra cima, caso contrário vai ser meio sem graça.
+
+
+1141
+01:05:03,799 --> 01:05:06,319
+Ok? É isso. Essa é a implementação
+inteira desse
+
+
+1142
+01:05:06,319 --> 01:05:10,829
+MVC verde, certo? Então
+algué precisa me preparar, me dando
+
+
+1143
+01:05:10,849 --> 01:05:14,699
+essas duas coisas, mas uma vez que
+isso é feito, eles apenas me liberam
+
+
+1144
+01:05:14,719 --> 01:05:19,139
+e eu vou fazer a coisa certa,
+que é mostrar a carta. Agora vamos
+
+
+1145
+01:05:19,159 --> 01:05:23,409
+voltar para esse carinha aqui.
+Nós temos que trabalhar
+
+
+1146
+01:05:23,429 --> 01:05:27,269
+um pouco mais com essa UI. Vamos fazer isso.
+Vamos, digamos, o que nós devemos
+
+
+1147
+01:05:27,289 --> 01:05:31,179
+fazer aqui? Vamos fazer algo assim...
+Esse é nosso
+
+
+1148
+01:05:31,199 --> 01:05:35,149
+CardChooser, é... vamos aqui.
+Eu vou fazer...
+
+
+1149
+01:05:35,169 --> 01:05:40,230
+woo, "hello", esqueci o CTRL.
+CTRL.... vamos ligar aqui,
+
+
+1150
+01:05:40,250 --> 01:05:43,319
+esse é nosso segmented control.
+Então esse é o
+
+
+1151
+01:05:43,339 --> 01:05:50,569
+suitSegmentedControl e nós
+também precisamos conseguir falar
+
+
+1152
+01:05:50,589 --> 01:05:55,889
+com esse aqui. Esse é o rankLabel,
+ok? Nós precisamos falar
+
+
+1153
+01:05:55,909 --> 01:05:59,659
+com esse para passar o valor desse,
+
+
+1154
+01:05:59,659 --> 01:06:03,129
+E também cada vez que
+o slider se mover eu quero fazer um update
+
+
+1155
+01:06:03,149 --> 01:06:05,919
+nesse label. Então eu preciso
+de um target-action a partir dele.
+
+
+1156
+01:06:05,939 --> 01:06:18,489
+Logo aqui, changeRank. Ok?
+
+
+1157
+01:06:18,509 --> 01:06:21,259
+E eu vou fazer esse aqui
+um UISlider, ok?
+
+
+1158
+01:06:21,259 --> 01:06:24,759
+Então eu não preciso
+do viewDidLoad e eu também não vou
+
+
+1159
+01:06:24,759 --> 01:06:27,009
+mexer com memory warnings.
+Ok, novamente, eu estou fazendo
+
+
+1160
+01:06:27,009 --> 01:06:31,440
+uma implementação mínima aqui por questões
+de demonstração. Não vai ser
+
+
+1161
+01:06:31,460 --> 01:06:36,619
+uma implementação tão ruim, eu acho.
+Eu vou...
+
+
+1162
+01:06:36,639 --> 01:06:39,639
+eu vou ter uma property,
+que é o rank.
+
+
+1163
+01:06:39,639 --> 01:06:44,519
+E eu vou ter...
+na verdade vou fazer essa property ser
+
+
+1164
+01:06:44,539 --> 01:06:48,869
+readonly por enquanto.
+E eu vou ter uma property
+
+
+1165
+01:06:48,889 --> 01:06:54,029
+que é...
+
+
+1166
+01:06:54,049 --> 01:06:57,299
+vamos deixar isso mais fácil,
+fazendo com que ela não seja
+
+
+1167
+01:06:57,299 --> 01:07:03,919
+readonly. Mas nós vamos fazer
+a outra ser readonly... NSString *suit...
+
+
+1168
+01:07:03,939 --> 01:07:07,719
+Ok? Então eu vou fazer apenas o suit
+ser readonly e
+
+
+1169
+01:07:07,739 --> 01:07:10,489
+o getter vai apenas
+olhar para esse segmented control,
+
+
+1170
+01:07:10,489 --> 01:07:15,190
+ok? E então o rank... nós vamos
+setar o rank para o que
+
+
+1171
+01:07:15,210 --> 01:07:22,379
+estiver no slider aqui... e mudar o rank.
+E o getter vai apenas... sabe,
+
+
+1172
+01:07:22,399 --> 01:07:25,649
+fazer o que ele tem que fazer.
+Vamos seguir e fazer
+
+
+1173
+01:07:25,649 --> 01:07:30,190
+o setRank. Se você quiser
+setar o rank, então vamos dizer
+
+
+1174
+01:07:30,210 --> 01:07:37,000
+_rank = rank. Vamos fazer
+o update do rankLabel
+
+
+1175
+01:07:37,019 --> 01:07:38,449
+igual a [self rankAsString].
+
+
+1176
+01:07:38,469 --> 01:07:44,589
+Agora vários de vocês riram de mim
+quando eu fiz um "code snippet"
+
+
+1177
+01:07:44,609 --> 01:07:47,359
+para o rankAsStirng, mas agora
+vocês provavelmente estão felizes.
+
+
+1178
+01:07:47,369 --> 01:07:51,690
+Aqui está, ok? Cada vez que
+setarmos o rank
+
+
+1179
+01:07:51,710 --> 01:07:57,179
+nós vamos updatear o label.
+Isso deve .text. Ok.
+
+
+1180
+01:07:57,199 --> 01:08:03,219
+E então, similarmente aqui,
+vamos ter o getter do
+
+
+1181
+01:08:03,239 --> 01:08:13,159
+suit retornar o
+[self.suitSegmentedControl...
+
+
+1182
+01:08:13,179 --> 01:08:20,629
+[ditando código]
+
+
+1183
+01:08:20,649 --> 01:08:26,309
+O que vocês acham
+
+
+1184
+01:08:26,329 --> 01:08:27,329
+dessa linha de código?
+
+
+1185
+01:08:27,329 --> 01:08:31,119
+Okay? Isso vai
+pegar o naipe daqui. Novamente,
+
+
+1186
+01:08:31,139 --> 01:08:34,719
+estamos sendo convenientes aqui.
+E então,
+
+
+1187
+01:08:34,739 --> 01:08:38,239
+changeRank é realmente realmente
+fácil de implementar.
+
+
+1188
+01:08:38,260 --> 01:08:44,269
+É apenas
+self.rank = round(sender.value). Porque o valor
+
+
+1189
+01:08:44,289 --> 01:08:47,170
+do slider, para aqueles que não
+fizeram o crédito extra do slider,
+
+
+1190
+01:08:47,170 --> 01:08:51,089
+é um float. Ok?
+Então eu estou apenas arredondando
+
+
+1191
+01:08:51,109 --> 01:08:56,289
+para o inteiro mais próximo.
+Porque o rank é inteiro, ok?
+
+
+1192
+01:08:56,309 --> 01:09:02,409
+Então, vamos lá. Antes de fazermos
+nosso segue, vamos ter certeza
+
+
+1193
+01:09:02,429 --> 01:09:08,459
+que isso está funcionando.
+Então aqui vamos nós. Parece que
+
+
+1194
+01:09:08,479 --> 01:09:11,799
+está funcionando. Certo.
+E nós podemos setar... escolher nosso negócio.
+
+
+1195
+01:09:11,819 --> 01:09:16,429
+Então o que eu quero é que
+quando eu clicar aqui, fazer o segue para me mostrar
+
+
+1196
+01:09:16,449 --> 01:09:19,169
+o 7 de espadas, ok? Todo mundo
+entende o que nós vamos
+
+
+1197
+01:09:19,189 --> 01:09:24,569
+fazer aqui? Ok, vamos fazer isso.
+Nós começarmos fazendo isso aqui
+
+
+1198
+01:09:24,590 --> 01:09:26,849
+e vou mostrar como fazer
+
+
+1199
+01:09:26,869 --> 01:09:30,039
+o segue aqui.
+Para criar o segue
+
+
+1200
+01:09:30,059 --> 01:09:33,029
+daqui pra cá, eu apenas
+seguro o CTRL. Eu estou segurando
+
+
+1201
+01:09:33,050 --> 01:09:37,339
+o CTRL. Estou CTRL + arrastando
+desse botão
+
+
+1202
+01:09:37,359 --> 01:09:40,189
+até esse controller. Vêem como ele está
+selecionando o controller inteiro aqui?
+
+
+1203
+01:09:40,210 --> 01:09:43,210
+Vocês podem dizer por esse
+coisinha preta aqui no canto, ok?
+
+
+1204
+01:09:43,210 --> 01:09:45,819
+E eu faço isso. Ele pergunta
+que tipo de segue
+
+
+1205
+01:09:45,840 --> 01:09:49,239
+que eu quero. Um push, um modal,
+ou um custom, ok?
+
+
+1206
+01:09:49,260 --> 01:09:52,809
+Então modal iria tomar a tela inteira,
+nós não queremos isso.
+
+
+1207
+01:09:52,829 --> 01:09:55,869
+Push apenas funciona dentro
+de um navigation controller.
+
+
+1208
+01:09:55,889 --> 01:09:59,369
+Então eu quero o push.
+Eu tenho meu segue aqui. Eu posso clicar nele
+
+
+1209
+01:09:59,369 --> 01:10:04,109
+e inspecioná-lo.
+
+
+1210
+01:10:04,130 --> 01:10:06,470
+Aqui está o identifier,
+então nós podemos chamá-lo de
+
+
+1211
+01:10:06,470 --> 01:10:09,629
+ShowCard ou algo assim.
+Algum identificador bom que
+
+
+1212
+01:10:09,649 --> 01:10:12,710
+descreve o que esse segue
+vai fazer e claro, ele é
+
+
+1213
+01:10:12,710 --> 01:10:15,710
+um push segue, certo? E então
+a única outra coisa que nós preciamos fazer
+
+
+1214
+01:10:15,710 --> 01:10:18,460
+aqui no storyboard é
+colocar essas coisas
+
+
+1215
+01:10:18,460 --> 01:10:21,460
+dentro de um navigation controller
+e eu disse como fazer isso.
+
+
+1216
+01:10:21,460 --> 01:10:24,460
+Nós vamos pegar nosso rootViewController,
+que é esse e nós vamos
+
+
+1217
+01:10:24,460 --> 01:10:27,039
+incorporar em um navigation controller.
+Ok? Então colocamos
+
+
+1218
+01:10:27,059 --> 01:10:30,349
+em um navigation controller,
+e é agora o ponto inicial
+
+
+1219
+01:10:30,369 --> 01:10:33,779
+da nossa aplicação. E ele pões
+essas barras aqui, certo? Falei a vocês
+
+
+1220
+01:10:33,800 --> 01:10:37,859
+sobre isso. Então vamos colocar aqui,
+digamos, Choose Card ou
+
+
+1221
+01:10:37,880 --> 01:10:41,359
+algo assim. E esse aqui nós vamos
+setar no código para ser
+
+
+1222
+01:10:41,359 --> 01:10:45,149
+a carta atual que está
+sendo mostrada no momento, ok?
+
+
+1223
+01:10:45,170 --> 01:10:46,920
+Então nós vamos setar isso em código.
+
+
+1224
+01:10:46,920 --> 01:10:50,979
+Então tudo está pronto aqui,
+menos uma coisa que é
+
+
+1225
+01:10:51,000 --> 01:10:54,709
+o "preparing", que é um passo aqui, ok?
+Quando o segue
+
+
+1226
+01:10:54,729 --> 01:11:00,779
+acontece, esse cara precisa
+preparar esse outro cara para fazer o seu trabalho.
+
+
+1227
+01:11:00,800 --> 01:11:03,340
+O que está envolvido nessa preparação?
+Ele precisa apenas dizer
+
+
+1228
+01:11:03,340 --> 01:11:06,590
+para ele qual é o naipe e o rank
+da carta. Isso é tudo
+
+
+1229
+01:11:06,590 --> 01:11:09,590
+que ele precisa fazer. Dizer
+o naipe e o rank. Não precisa fazer
+
+
+1230
+01:11:09,590 --> 01:11:13,419
+nada além disso. Isso tudo acontece
+automaticamente depois disso, certo?
+
+
+1231
+01:11:13,439 --> 01:11:17,739
+Então vamos aqui fazer isso.
+Aqui está nosso...
+
+
+1232
+01:11:17,760 --> 01:11:20,630
+... certo. Então eu
+
+
+1233
+01:11:20,630 --> 01:11:23,199
+estou no "chooser". Vou descer aqui
+e eu preciso apenas
+
+
+1234
+01:11:23,199 --> 01:11:29,569
+implementar esse método.
+prepareForSegue:, ok?
+
+
+1235
+01:11:29,590 --> 01:11:34,829
+Agora, prepareForSegue
+tem apenas esses dois argumentos.
+
+
+1236
+01:11:34,849 --> 01:11:37,809
+o sender que nós não nos importamos,
+que vai ser
+
+
+1237
+01:11:37,809 --> 01:11:41,259
+aquele botão, "show me the card!".
+Mas o segue tem algumas
+
+
+1238
+01:11:41,279 --> 01:11:44,959
+propriedades interessantes.
+Se nós olharmos na documentação do
+
+
+1239
+01:11:44,979 --> 01:11:47,630
+UIStoryboardSegue, nós vamos ver
+algumas propriedades
+
+
+1240
+01:11:47,630 --> 01:11:51,079
+realmente importantes.
+Uma é "identifier". Isso nós diz
+
+
+1241
+01:11:51,099 --> 01:11:54,569
+o identifier desse segue. Ok?
+Isso é a mesma coisa
+
+
+1242
+01:11:54,590 --> 01:11:59,059
+que nós inspecionamos bem aqui, certo?
+Vamos trazer
+
+
+1243
+01:11:59,079 --> 01:12:01,829
+o inspector. Ele será "ShowCard".
+Isso vai ser
+
+
+1244
+01:12:01,829 --> 01:12:03,829
+a property identifier desse objeto.
+
+
+1245
+01:12:03,829 --> 01:12:07,619
+Ok? A outra coisa que que vai
+estar aqui que é realmente
+
+
+1246
+01:12:07,639 --> 01:12:11,399
+importante é a property
+chamada destinationViewController,
+
+
+1247
+01:12:11,420 --> 01:12:16,009
+que é esse view controller. Ok?
+Ele foi instanciado,
+
+
+1248
+01:12:16,029 --> 01:12:20,169
+muito importante. Me ouçam com cuidado.
+Não percam isso.
+
+
+1249
+01:12:20,189 --> 01:12:24,059
+Esse view controller, nesse ponto,
+ok? ...
+
+
+1250
+01:12:24,079 --> 01:12:30,749
+Quando nós estamos aqui
+nesse prepareForSegue,
+
+
+1251
+01:12:30,769 --> 01:12:34,009
+esse view controller, o verde,
+já foi instanciado,
+
+
+1252
+01:12:34,029 --> 01:12:39,249
+mas não foi carregado. Nenhum dos
+seus outlets foram setados. O viewDidLoad
+
+
+1253
+01:12:39,269 --> 01:12:40,679
+ainda não foi chamado.
+
+
+1254
+01:12:40,699 --> 01:12:44,799
+Não nesse ponto, ok?
+Então vocês não podem-- esse é outro
+
+
+1255
+01:12:44,819 --> 01:12:47,069
+motivo que vocês não querem
+deixar os outlets públicos, porque
+
+
+1256
+01:12:47,069 --> 01:12:49,819
+eles serão nil de qualquer jeito.
+Tipo, se eu deixar PlayingCardView,
+
+
+1257
+01:12:49,819 --> 01:12:52,819
+esse outlet ser público,
+ele será nil nesse ponto.
+
+
+1258
+01:12:52,819 --> 01:12:56,069
+Então aqui, o que você faz
+nesse método é: você chama a API pública,
+
+
+1259
+01:12:56,069 --> 01:12:59,679
+que prepara essa coisa. E então
+ela é carregada, viewDidLoad
+
+
+1260
+01:12:59,699 --> 01:13:03,999
+é chamado. Aí ele recebe
+o viewWillAppear, viewDidAppear e aparece
+
+
+1261
+01:13:04,019 --> 01:13:06,519
+na tela. Vêem o que eu estou dizendo?
+Muito importante. Isso vai
+
+
+1262
+01:13:06,519 --> 01:13:09,519
+te atrapalhar todo se você não
+entender esse ponto.
+
+
+1263
+01:13:09,519 --> 01:13:11,269
+Os outlets não estão
+carregados nesse ponto.
+
+
+1264
+01:13:11,269 --> 01:13:16,919
+Ok. O que precisamos fazer aqui?
+Duas linhas de código aqui
+
+
+1265
+01:13:16,939 --> 01:13:19,689
+que vocês vão precisar em todos
+os prepareForSegue. A primeira
+
+
+1266
+01:13:19,689 --> 01:13:23,499
+é: nós vamos descobrir
+se esse segue
+
+
+1267
+01:13:23,519 --> 01:13:26,019
+é o que nós estamos interessados.
+Porque vocês podem ter múltiplos
+
+
+1268
+01:13:26,019 --> 01:13:28,439
+botões em seu controller
+que estão todos seguezados
+
+
+1269
+01:13:28,460 --> 01:13:31,159
+para coisas diferentes. Então
+a primeira coisa que nós vamos fazer é
+
+
+1270
+01:13:31,159 --> 01:13:34,799
+usar um simples "equalToString"
+para ver se esse é o segue
+
+
+1271
+01:13:34,819 --> 01:13:39,199
+ShowCard. Ok? Então é aqui
+que nós meio que fazemos o link
+
+
+1272
+01:13:39,220 --> 01:13:42,469
+com o que está no Storyboard.
+E nós poderíamos ter "else if isEqualToString..."
+
+
+1273
+01:13:42,469 --> 01:13:45,219
+e algum outro segue.
+"else if" algum outro segue e
+
+
+1274
+01:13:45,219 --> 01:13:48,119
+é assim que trataríamos
+múltiplos segues aqui.
+
+
+1275
+01:13:48,139 --> 01:13:51,639
+A outra coisa que nós vamos fazer é:
+nós vamos nos certificar que
+
+
+1276
+01:13:51,639 --> 01:13:55,669
+o destinationViewController do segue é
+
+
+1277
+01:13:55,689 --> 01:13:58,559
+uma dessas coisas que nós
+sabemos como conversar,
+
+
+1278
+01:13:58,559 --> 01:14:05,229
+ok? Então nesse caso
+é um CardDisplayViewController.
+
+
+1279
+01:14:05,250 --> 01:14:09,119
+Então vamos ter certeza
+que é do tipo da classe
+
+
+1280
+01:14:09,139 --> 01:14:15,299
+[CardDisplayViewController class].
+Agora vocês poderiam usar outro tipo...
+
+
+1281
+01:14:15,319 --> 01:14:20,449
+Vocês poderiam usar outro tipo
+de introspecção aqui.
+
+
+1282
+01:14:20,469 --> 01:14:24,169
+Como, vocês poderiam perguntar
+se essa coisa responde por um
+
+
+1283
+01:14:24,189 --> 01:14:28,529
+certo método, ok? Desculpem,
+eu tenho uma tendência de fazer isso.
+
+
+1284
+01:14:28,550 --> 01:14:36,979
+Deixa eu arrumar aqui...
+acho que estamos bem
+
+
+1285
+01:14:37,000 --> 01:14:40,000
+agora. Ok. Vocês poderiam dizer:
+essa coisa que eu estou
+
+
+1286
+01:14:40,000 --> 01:14:42,509
+segueando responde para um
+certo selector, certo?
+
+
+1287
+01:14:42,529 --> 01:14:45,399
+O selector de qualquer que seja
+a coisa que você está
+
+
+1288
+01:14:45,420 --> 01:14:49,889
+preparando. Então você poderia
+fazer isso também. Geralmente,
+
+
+1289
+01:14:49,909 --> 01:14:54,619
+se as duas classes sabem sobre
+elas e geralmente
+
+
+1290
+01:14:54,639 --> 01:14:57,109
+essa classe-- esse view controller
+bem aqui, conheceria
+
+
+1291
+01:14:57,109 --> 01:15:00,109
+o outro porque é parte
+da sua view, ok? Coisas para as quais
+
+
+1292
+01:15:00,109 --> 01:15:04,249
+você faz um segue são basicamente,
+conceitualmente, parte da sua view.
+
+
+1293
+01:15:04,269 --> 01:15:07,109
+Então você iria geralmente saber
+que classe elas são. Isso
+
+
+1294
+01:15:07,130 --> 01:15:10,889
+faz sentido? Certo?
+São parte da sua view. Você conhece UIButtom,
+
+
+1295
+01:15:10,909 --> 01:15:13,149
+você sabe o que está ali.
+O contrário não é verdade.
+
+
+1296
+01:15:13,149 --> 01:15:16,149
+A view não sabe que classe você é,
+mas você sabe
+
+
+1297
+01:15:16,149 --> 01:15:19,149
+que classe a sua view é.
+Então, ter esse import aqui não é tão ruim.
+
+
+1298
+01:15:19,149 --> 01:15:22,639
+Porém, nós não iríamos querer
+importar esse aqui nesse cara.
+
+
+1299
+01:15:22,659 --> 01:15:26,729
+Isso seria ruim. Então aqui eu vou usar
+"isKindOfClass:" para ter
+
+
+1300
+01:15:26,750 --> 01:15:29,750
+certeza que é esse mesmo,
+e então eu vou criar uma
+
+
+1301
+01:15:29,750 --> 01:15:32,379
+variável local aqui, que eu vou chamar
+[ditando código]
+
+
+1302
+01:15:32,399 --> 01:15:37,159
+[ditando código]
+
+
+1303
+01:15:37,179 --> 01:15:40,319
+Ok? Então agora eu tenho
+
+
+1304
+01:15:40,340 --> 01:15:42,590
+uma variável local aqui,
+que aponta para o view controller
+
+
+1305
+01:15:42,590 --> 01:15:46,769
+para o qual eu estou segueando.
+Eu vou apenas setar o seu suit
+
+
+1306
+01:15:46,789 --> 01:15:52,769
+para ser o meu suit. Vou setar
+o rank para ser o meu rank. Pronto.
+
+
+1307
+01:15:52,789 --> 01:15:55,789
+Ok? Ah, na verdade,
+eu falei que eu ia setar o título também.
+
+
+1308
+01:15:55,789 --> 01:16:01,229
+Vamos fazer isso também.
+cdvc.title =... vamos ver...
+
+
+1309
+01:16:01,250 --> 01:16:07,749
+[ditando código]
+
+
+1310
+01:16:07,769 --> 01:16:12,929
+[ditando código], ok?
+
+
+1311
+01:16:12,949 --> 01:16:17,719
+Então eu vou setar isso
+para ser o título do view controller.
+
+
+1312
+01:16:17,739 --> 01:16:19,989
+E sempre existe um pouco de
+controvérsia sobre
+
+
+1313
+01:16:19,989 --> 01:16:22,380
+se esse negócio de prepare
+deveria setar o título ou a coisa
+
+
+1314
+01:16:22,380 --> 01:16:26,119
+deveria setar seu próprio título, ok?
+E tipo... vocês sabem,
+
+
+1315
+01:16:26,139 --> 01:16:28,669
+façam orientação a objetos. Façam
+o que vocês acharem certo.
+
+
+1316
+01:16:28,689 --> 01:16:31,689
+Nesse caso eu acho que
+poderia ser dos dois jeitos.
+
+
+1317
+01:16:31,689 --> 01:16:33,439
+Alguém poderia dizer que
+possui o próprio título.
+
+
+1318
+01:16:33,439 --> 01:16:36,139
+Poderia ser um pouco melhor
+que o outro cara fizesse isso...
+
+
+1319
+01:16:36,139 --> 01:16:38,880
+mas nós vamos fazer isso aqui,
+talvez um pouco
+
+
+1320
+01:16:38,880 --> 01:16:46,129
+por conveniência.
+Vamos rodar isso, ver se funciona. Aqui está.
+
+
+1321
+01:16:46,149 --> 01:16:49,449
+Ok? Aqui vamos nós.
+Vamos escolher a Dama, aqui está.
+
+
+1322
+01:16:49,449 --> 01:16:55,299
+Nós temos cantos arredondados e tudo mais.
+Vamos tentar isso talvez.
+
+
+1323
+01:16:55,319 --> 01:17:04,179
+Ok? É isso.
+Eu vou postar esse código
+
+
+1324
+01:17:04,199 --> 01:17:06,879
+e se vocês tiverem dúvias estarei aqui.
+
+
+1325
+01:17:06,899 --> 01:17:09,879
+Visite nosso site:
+www.centraldosapps.com
+

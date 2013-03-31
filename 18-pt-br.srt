@@ -1,0 +1,7652 @@
+1
+00:00:00,419 --> 00:00:02,419
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:08,832 --> 00:00:08,833
+
+
+3
+00:00:08,846 --> 00:00:08,847
+
+4
+00:00:08,847 --> 00:00:11,536
+Bem-vindos à aula número 18
+
+5
+00:00:11,626 --> 00:00:15,826
+do CS193P, inverno de 2013.
+
+6
+00:00:16,446 --> 00:00:19,626
+E hoje nós temos três
+grandes assuntos.
+
+7
+00:00:19,626 --> 00:00:22,696
+Um vai ser como acessar a câmera
+
+8
+00:00:22,696 --> 00:00:25,226
+e a biblioteca de fotos
+no device.
+
+9
+00:00:25,626 --> 00:00:29,966
+O segundo é Core Motion,
+então isso é o Acelerômetro,
+
+10
+00:00:29,966 --> 00:00:31,546
+o Giroscópio e tudo que tem
+a ver com movimento
+
+11
+00:00:31,546 --> 00:00:32,776
+do device e espaço.
+
+12
+00:00:33,526 --> 00:00:35,876
+E daí, finalmente, nós vamos
+falar sobre Localization
+
+13
+00:00:35,876 --> 00:00:40,416
+que teve um upgade
+significante no iOS 6.
+
+14
+00:00:41,186 --> 00:00:45,016
+Certo, então ac câmera e os
+
+15
+00:00:45,336 --> 00:00:52,856
+hardwares e armazenamento relacionados
+para imagens e vídeos
+
+16
+00:00:52,856 --> 00:00:57,906
+no seu device...
+Existem vários frameworks
+
+17
+00:00:57,906 --> 00:01:01,656
+e coisas no iOS para
+tratar mídia, ok?
+
+18
+00:01:01,656 --> 00:01:04,296
+E vocês podem procurar na
+documentação e ver todos eles.
+
+19
+00:01:04,676 --> 00:01:05,686
+A principal que eu vou falar hoje
+
+20
+00:01:05,686 --> 00:01:09,246
+é essa classe chamada
+UIImagePickerController,
+
+21
+00:01:09,246 --> 00:01:10,926
+e ela é um UIViewController.
+
+22
+00:01:11,326 --> 00:01:14,206
+E seu propósito na vida é para
+vocês serem capazes de apresentá-la
+
+23
+00:01:14,206 --> 00:01:18,266
+na tela para que o usuário possa
+pegar uma imagem com a câmera
+
+24
+00:01:18,506 --> 00:01:19,716
+ou eles possam escolher uma foto
+
+25
+00:01:19,716 --> 00:01:24,316
+das fotos existentes deles,
+salvas no device.
+
+26
+00:01:24,786 --> 00:01:27,556
+E a câmera é sempre
+apresentada modalmente,
+
+27
+00:01:27,876 --> 00:01:31,006
+como vocês podem meio que imaginar
+isso seria porque, sabe,
+
+28
+00:01:31,136 --> 00:01:33,576
+o usuário vai pegar o telefone
+e ir tirar uma foto,
+
+29
+00:01:33,576 --> 00:01:36,546
+então é meio que... você quer
+estar fazendo isso em um modo.
+
+30
+00:01:36,836 --> 00:01:40,916
+Entretanto, no iPad,
+especialmente se você está escolhendo
+
+31
+00:01:40,916 --> 00:01:42,276
+da biblioteca de fotos,
+você vai
+
+32
+00:01:42,276 --> 00:01:43,516
+apresentá-la em um popover.
+
+33
+00:01:44,016 --> 00:01:47,966
+A câmera no iPad--
+ela suporta ambos, mas--
+
+34
+00:01:47,966 --> 00:01:49,996
+e eu acho que a recomendação
+é, no geral, que também
+
+35
+00:01:49,996 --> 00:01:51,686
+seja feito em modal,
+então ela ocupa
+
+36
+00:01:51,686 --> 00:01:53,106
+a tela inteira no iPad.
+
+37
+00:01:53,576 --> 00:01:55,746
+Mas você pode fazer dos dois modos.
+
+38
+00:01:55,886 --> 00:01:58,446
+E como é um modal,
+ele é apenas um view controller.
+
+39
+00:01:58,446 --> 00:02:00,596
+E você vai chamar a API
+que vocês ja conhecem
+
+40
+00:02:00,596 --> 00:02:01,586
+para modal view controllers
+
+41
+00:02:01,586 --> 00:02:03,896
+que é
+presentViewController:animated:completion. 
+
+42
+00:02:04,426 --> 00:02:06,746
+E sério, isso é tudo
+que vocês precisam saber.
+
+43
+00:02:06,746 --> 00:02:10,686
+Basicamente para usar o
+...
+
+44
+00:02:10,686 --> 00:02:14,646
+UIImagePickerController basta apenas
+configurá-lo primeiro
+
+45
+00:02:14,846 --> 00:02:17,096
+e depois tratando o método
+de delegate que você recebe
+
+46
+00:02:17,096 --> 00:02:19,166
+quando ele escolhe uma foto.
+
+47
+00:02:19,996 --> 00:02:24,946
+Então você cria com alloc+init,
+e daí nós vamos falar como
+
+48
+00:02:24,946 --> 00:02:25,946
+você configura ele
+
+49
+00:02:25,946 --> 00:02:28,336
+com o source type
+e coisas assim.
+
+50
+00:02:28,736 --> 00:02:30,326
+E daí você o apresenta normalmente.
+
+51
+00:02:30,326 --> 00:02:32,496
+E quando o método de delegate
+é chamado,
+
+52
+00:02:32,626 --> 00:02:35,436
+você vai descobrir
+que imagem o user escolheu, se houver.
+
+53
+00:02:36,366 --> 00:02:40,596
+O que o usuário pode fazer com o
+UIImagePickerController depende
+
+54
+00:02:40,596 --> 00:02:44,466
+do device porque não é todo
+device que pode
+
+55
+00:02:44,676 --> 00:02:45,346
+gravar vídeo, por exemplo.
+
+56
+00:02:45,996 --> 00:02:50,496
+E então, o que você precisa fazer
+é decidir o que é que você
+
+57
+00:02:50,496 --> 00:02:52,136
+está querendo obter
+do usuário. É a câmera
+
+58
+00:02:52,136 --> 00:02:53,926
+ou é apenas alguma coisa
+da biblioteca de fotos?
+
+59
+00:02:54,256 --> 00:02:56,176
+E chamar esse método de classe
+
+60
+00:02:56,176 --> 00:02:59,356
+no UIImagePickerController chamado
+isSourceTypeAvailable, ok?
+
+61
+00:02:59,356 --> 00:03:00,926
+E ele tem um enumerated type,
+
+62
+00:03:01,356 --> 00:03:02,946
+UIImagePickerControllerSourceType. 
+
+63
+00:03:03,346 --> 00:03:04,986
+E isso geralmente vai
+ser Camera
+
+64
+00:03:04,986 --> 00:03:07,596
+ou SavedPhotos, ok?
+
+
+65
+00:03:07,906 --> 00:03:10,676
+Então uma vez que você escolheu
+qual vai ser o source da imagem,
+
+66
+00:03:10,676 --> 00:03:13,876
+daí você tem que checar
+que mídia,
+
+67
+00:03:14,136 --> 00:03:17,116
+vídeo ou imagens,
+estão disponíveis, ok?
+
+68
+00:03:17,116 --> 00:03:19,226
+E para isso você chama outro
+método de classe chamado
+
+69
+00:03:19,226 --> 00:03:21,386
+availableMediaTypesForSourceType.
+
+70
+00:03:21,736 --> 00:03:24,256
+O mesmo sourceType do outro.
+
+71
+00:03:24,526 --> 00:03:27,956
+E ele vai te dar um array
+de NSStrings.
+
+72
+00:03:28,006 --> 00:03:31,046
+Infelizmente as constants
+
+73
+00:03:31,096 --> 00:03:34,356
+com que você compara
+essas NSStrings são declaradas
+
+74
+00:03:34,356 --> 00:03:36,036
+em um framework completamente diferente
+
+75
+00:03:36,126 --> 00:03:38,296
+que você não vai ter que apenas importar
+
+76
+00:03:38,296 --> 00:03:40,426
+o arquivo header,
+mas você também terá que
+
+77
+00:03:40,426 --> 00:03:43,146
+ir nas suas bibliotecas
+linkadas do seu projeto
+
+78
+00:03:43,146 --> 00:03:45,156
+e escolher esse framework
+para ser linkado.
+
+79
+00:03:45,156 --> 00:03:46,796
+E nós vamos falar sober isso
+em um segundo.
+
+80
+00:03:46,986 --> 00:03:49,046
+Mas as duas constantes aqui
+que são de interesse
+
+81
+00:03:49,046 --> 00:03:53,136
+são kUTTypeImage
+e kUTTypeMovie. 
+
+82
+00:03:53,206 --> 00:03:54,996
+É auto-explicativo,
+
+83
+00:03:54,996 --> 00:03:58,256
+o Image são imagem estáticas
+e Movie é vídeo.
+
+84
+00:03:59,166 --> 00:04:02,966
+MobileCoreServices é o nome
+desse framework, 
+
+85
+00:04:03,016 --> 00:04:05,216
+a propósito, e eu vou mostrar
+na demo, eu vou fazer isso,
+
+86
+00:04:05,526 --> 00:04:08,926
+mas aqui está no slide.
+
+87
+00:04:08,986 --> 00:04:10,506
+Também existe uma API aqui
+
+88
+00:04:10,506 --> 00:04:13,486
+para controlar se a foto
+está sendo tirada 
+
+89
+00:04:13,486 --> 00:04:15,556
+da câmera da frente
+ou possivelmente--
+
+90
+00:04:15,616 --> 00:04:18,126
+possivelmente a câmera da frente
+ou se é da câmera de trás.
+
+91
+00:04:18,466 --> 00:04:20,666
+Geralmente você não precisa
+fazer isso porque a UI
+
+92
+00:04:20,666 --> 00:04:23,686
+que o UIImagePickerController
+apresenta, sabe,
+
+93
+00:04:23,686 --> 00:04:25,686
+o usuário pode escolher
+se eles estão usando a câmera
+
+94
+00:04:25,686 --> 00:04:27,326
+da frente ou de trás
+e você geralmente não se importa.
+
+95
+00:04:27,326 --> 00:04:30,656
+Mesmo assim, as câmeras podem ser
+um pouco diferentes na frente e
+
+96
+00:04:30,656 --> 00:04:32,136
+atrás em termos do
+que elas podem fazer.
+
+97
+00:04:32,136 --> 00:04:34,616
+Então aqui temos uma API para
+lidarmos com as câmeras da frente
+
+98
+00:04:34,616 --> 00:04:37,816
+e de trás, mas geralmente
+você não se importa.
+
+99
+00:04:38,176 --> 00:04:40,806
+Aqui é como é a cara
+desse código ficaria...
+
+100
+00:04:40,806 --> 00:04:44,956
+isso é tipo um pseudo-código
+para configurar
+
+101
+00:04:45,066 --> 00:04:48,146
+o picker controller
+para fazer seu trabalho.
+
+102
+00:04:48,486 --> 00:04:50,786
+Aqui, eu abreviei
+UIImagePickerController
+
+103
+00:04:50,786 --> 00:04:54,466
+para UIIPC, apenas para que
+tudo caiba no meu slide.
+
+104
+00:04:55,086 --> 00:04:56,756
+Aqui, vocês vêem,
+eu tenho alloc, init.
+
+105
+00:04:56,756 --> 00:04:58,116
+O init ali na primeira linha.
+
+106
+00:04:58,446 --> 00:05:01,086
+Daí eu seto eu mesmo
+como delegate,
+
+107
+00:05:01,086 --> 00:05:02,276
+porque quando o picker
+escolher alguma coisa,
+
+108
+00:05:02,276 --> 00:05:03,476
+eu quero receber
+o método de delegate
+
+109
+00:05:03,476 --> 00:05:05,816
+que nós vamos falar
+em um momento.
+
+110
+00:05:05,816 --> 00:05:07,766
+Aqui eu estou fazendo aquele
+isSourceTypeAvailable. 
+
+111
+00:05:07,766 --> 00:05:09,666
+Nesse caso, eu quero tirar
+uma foto com a câmera.
+
+112
+00:05:09,666 --> 00:05:11,226
+Então eu estou dizendo
+SourceTypeCamera.
+
+113
+00:05:11,616 --> 00:05:14,066
+E se ela estiver disponível,
+daí eu vou setar
+available, then I'm going 
+
+114
+00:05:14,066 --> 00:05:17,766
+o source type do picker
+para ser a câmera, ok?
+
+115
+00:05:17,916 --> 00:05:19,426
+Então eu checo, vejo se está
+disponível, se estiver
+
+116
+00:05:19,426 --> 00:05:22,796
+daí eu seto isso como
+o source type.
+
+117
+00:05:23,176 --> 00:05:28,176
+Daí aqui, eu estou tentando
+decidir se a câmera pode
+
+118
+00:05:28,176 --> 00:05:28,636
+fazer vídeos ou não.
+
+119
+00:05:28,896 --> 00:05:30,806
+Nesse caso eu quero
+fazer um vídeo.
+
+120
+00:05:30,806 --> 00:05:33,276
+Então estou setado essa
+variável local desired
+
+121
+00:05:33,276 --> 00:05:34,986
+para ser o kUTTypeMovie.
+
+
+122
+00:05:35,436 --> 00:05:38,356
+E daí estou dizendo-- perguntando
+o UIImagePickerController:
+
+123
+00:05:38,616 --> 00:05:42,556
+me diga os tipos disponíveis
+que são suportados pela câmera
+
+124
+00:05:43,006 --> 00:05:47,356
+e ela contém esse objeto
+kUTTypeVideo? Ok? 
+
+125
+00:05:47,356 --> 00:05:51,116
+E se conter, daí eu vou
+setar outra property
+
+126
+00:05:51,116 --> 00:05:54,096
+no UIImagePickerController
+chamado mediaTypes
+
+127
+00:05:54,096 --> 00:05:54,956
+que é um array.
+
+128
+00:05:55,256 --> 00:05:58,176
+E lá dentro estão
+essas coisas kUT.
+
+129
+00:05:58,176 --> 00:06:00,056
+Nesse caso, eu vou
+pegar apenas o vídeo.
+
+130
+00:06:00,056 --> 00:06:01,936
+Eu não quero imagem,
+eu quero apenas vídeo.
+
+131
+00:06:02,326 --> 00:06:06,486
+E agora eu posso apresentar
+o picker modalmente ou em um popover.
+
+132
+00:06:06,576 --> 00:06:08,806
+Nesse caso eu provavelmente
+o apresentaria modalmente.
+
+133
+00:06:08,806 --> 00:06:11,816
+Ele tomaria a tela toda,
+o usuário poderia, sabe,
+
+134
+00:06:11,816 --> 00:06:14,406
+usar todos os controlers tem lá
+para gravar o vídeo
+
+135
+00:06:14,406 --> 00:06:17,536
+e eles poderiam até editar
+o vídeo e todas as coisas desse tipo.
+
+136
+00:06:17,536 --> 00:06:19,036
+E daí quando eles
+finalmente clicarem: é,
+
+137
+00:06:19,036 --> 00:06:21,236
+use esse vídeo, daí
+eu receberia um callback,
+
+138
+00:06:21,786 --> 00:06:22,836
+ok? Através do meu delegate.
+
+139
+00:06:23,726 --> 00:06:26,886
+Se vocês olharem atentamente
+para esse código,
+
+140
+00:06:26,886 --> 00:06:30,946
+vocês verão que aquele
+kUTTypeMovie não é na verdade
+
+141
+00:06:31,006 --> 00:06:31,996
+uma NSString, ok?
+
+142
+00:06:31,996 --> 00:06:34,016
+é uma CFStringRef.
+
+
+143
+00:06:34,066 --> 00:06:36,446
+Eu não sei se nós falamos sobre isso...
+
+144
+00:06:36,446 --> 00:06:38,866
+talvez tenhamos falando...
+
+145
+00:06:39,146 --> 00:06:42,116
+Mas existe essa outra coisa
+chamada Core Foundation,
+
+146
+00:06:42,416 --> 00:06:42,626
+ok?
+
+147
+00:06:42,626 --> 00:06:46,796
+Biblioteca Core Foundation e
+ele tem um monde de APIs em C
+
+148
+00:06:47,176 --> 00:06:50,496
+para fazer exatamente a mesma coisa
+que nós fazemos com o Foundation
+
+149
+00:06:50,826 --> 00:06:52,776
+quando falamos de coisas
+tipo strings e arrays
+
+150
+00:06:52,776 --> 00:06:54,006
+e dicionários e todas essas coisas.
+
+151
+00:06:54,006 --> 00:06:55,966
+Então tem uma API inteira
+em C para isso.
+
+152
+00:06:56,296 --> 00:06:57,276
+Nós não usamos nada disso.
+
+153
+00:06:57,626 --> 00:06:59,916
+Mas uma das coisas legais
+sobre ela é que
+
+154
+00:06:59,966 --> 00:07:03,626
+os tipos nessa
+API em C e nosso NSString
+
+155
+00:07:03,626 --> 00:07:07,546
+s NSArray, são na verdade
+ponteiros compatíveis.
+
+156
+00:07:07,546 --> 00:07:10,126
+Que é meio estranho, mas
+você pode passá-los entre eles.
+
+157
+00:07:10,126 --> 00:07:13,156
+Então esse kUTTypeMovie
+é na verdade uma CFString,
+
+158
+00:07:13,586 --> 00:07:16,206
+mas nós podemos simplesmente
+fazer o cast dele para NSString
+
+159
+00:07:16,206 --> 00:07:18,096
+e vai funcionar, ok?
+
+160
+00:07:18,276 --> 00:07:19,126
+Então é meio estranho.
+
+161
+00:07:19,406 --> 00:07:21,666
+>> [Estudante perguntando]
+
+162
+00:07:22,126 --> 00:07:24,686
+A pergunta é: você 
+tem quem que fazer um "bridge"?
+
+163
+00:07:24,816 --> 00:07:28,556
+Bom, essa pessoa está
+provavelmente olhando um pouco
+
+164
+00:07:28,556 --> 00:07:30,096
+sobre as coisas de gerenciamento
+de memória.
+
+165
+00:07:30,146 --> 00:07:33,456
+E lembrem-se que o ARC está
+gerenciando toda nossa memória aqui.
+
+166
+00:07:33,726 --> 00:07:37,536
+Mas quando você começa a passar
+essas CFStrings para NSStrings
+
+167
+00:07:37,536 --> 00:07:41,186
+ou NSStrings para CFStrings,
+daí existe um problema do tipo:
+
+168
+00:07:41,186 --> 00:07:44,276
+o ARC vai aumentar o contador de
+referência disso e depois diminuir
+
+169
+00:07:44,276 --> 00:07:48,266
+e... falar sobre isso está
+realmente aém do escopo.
+
+170
+00:07:48,606 --> 00:07:51,446
+Nesse caso aqui, eu acho que
+você pode apenas fazer o cast,
+
+171
+00:07:51,446 --> 00:07:52,876
+você não precisa fazer
+o __bridge,
+
+172
+00:07:52,876 --> 00:07:53,726
+você não precisa fazer o bridge.
+
+173
+00:07:54,116 --> 00:07:55,356
+Eu não acho que você vai ter
+
+174
+00:07:55,356 --> 00:07:57,476
+nenhum problema de
+gerenciamento de memória aqui,
+
+175
+00:07:57,476 --> 00:07:58,866
+se eu lembro corretamente.
+
+176
+00:07:59,216 --> 00:08:03,836
+Mas no geral, existem apenas,
+eu não sei...
+
+177
+00:08:03,836 --> 00:08:06,966
+uns 12 lugares na API
+onde você vai estar
+
+178
+00:08:06,966 --> 00:08:08,566
+"bridging" essas coisas.
+
+179
+00:08:09,016 --> 00:08:10,816
+E se você está começando
+a fazer isso,
+
+180
+00:08:10,816 --> 00:08:13,656
+então dê uma olhada
+na documentação.
+
+181
+00:08:13,766 --> 00:08:16,576
+Você pode procurar por
+__bridge que é tipo...
+
+182
+00:08:16,576 --> 00:08:20,476
+a sintaxe que é usada
+para fazer o bridging
+
+183
+00:08:20,846 --> 00:08:22,246
+e você pode checar lá
+por isso.
+
+184
+00:08:22,246 --> 00:08:23,676
+Mas nós não vamos ter tempo
+para falar sobre isso.
+
+185
+00:08:23,676 --> 00:08:25,686
+Eu mal tenho tempo
+para falar sobre isso tudo.
+
+186
+00:08:25,776 --> 00:08:29,776
+Bom... nós ainda estamos
+configurando o picker aqui.
+
+187
+00:08:29,776 --> 00:08:31,636
+Agora, nós temos
+os source types configurados,
+
+188
+00:08:32,026 --> 00:08:34,806
+e existem algumas outras coisas
+que nós podemos configurar no
+
+189
+00:08:34,806 --> 00:08:37,176
+picker como: nós vamos permitir
+que o user edite a imagem?
+
+190
+00:08:37,176 --> 00:08:39,486
+Se for uma imagem estática,
+nós vamos deixá-lo cropá-la
+
+191
+00:08:39,486 --> 00:08:41,526
+e tipo dar zoom
+e todas essas coisas?
+
+192
+00:08:41,526 --> 00:08:42,306
+Ou nós vamos apenas--
+
+193
+00:08:42,486 --> 00:08:44,436
+o que quer que a câmera tenha tirado,
+nós vamos pegá-la assim.
+
+194
+00:08:44,436 --> 00:08:46,516
+Então allowsEditing
+te permite configurar isso.
+
+195
+00:08:47,046 --> 00:08:50,256
+E do lado do vídeo,
+você pode tipo controlar um pouco
+
+196
+00:08:50,256 --> 00:08:53,636
+da qualidade. Quanto de dados
+ele vai receber nesse vídeo.
+
+197
+00:08:54,326 --> 00:08:55,436
+E você pode procurar mais
+sobre essas coisas também.
+
+198
+00:08:55,436 --> 00:08:58,786
+Duração, você pode não querê-los
+que gravem mais de, sabe,
+
+199
+00:08:58,786 --> 00:09:01,736
+um vídeo de 30 segundos
+com a câmera, dependendo
+
+200
+00:09:01,736 --> 00:09:03,686
+do que sua aplicação faz.
+
+201
+00:09:04,146 --> 00:09:07,316
+Existem coisas pra controlar
+o flash, todas essas coisas.
+
+202
+00:09:07,316 --> 00:09:08,986
+Como de costume, sempre que eu
+falo de alguma coisa aqui,
+
+203
+00:09:08,986 --> 00:09:10,586
+eu não consigo cobrir todos
+os métodos nessa aula.
+
+204
+00:09:10,586 --> 00:09:12,576
+Então vocês vão ter que dar uma olhada
+no UIImagePickerController
+
+205
+00:09:12,576 --> 00:09:13,626
+e ver o que mais vocês podem fazer.
+
+206
+00:09:14,376 --> 00:09:17,236
+Certo, agora é a hora de
+apresentar o picker.
+
+207
+00:09:17,466 --> 00:09:19,776
+Como eu disse, no iPad,
+se for a câmera,
+
+208
+00:09:19,916 --> 00:09:21,656
+nós vamos fazer
+modal de tela cheia.
+
+209
+00:09:21,656 --> 00:09:23,936
+No iPhone nós sempre
+vamos fazer modal de tela cheia.
+
+210
+00:09:24,336 --> 00:09:27,426
+Se, no iPad, nós estamos
+apenas olhando na biblioteca de fotos,
+
+211
+00:09:27,426 --> 00:09:29,216
+sabe, essas fotos que já
+foram tiradas,
+
+212
+00:09:29,426 --> 00:09:30,816
+daí nós vamos 
+colocar em um popover.
+
+213
+00:09:31,326 --> 00:09:32,216
+Uma coisa para entender sobre
+
+214
+00:09:32,216 --> 00:09:36,896
+o iPad é uqe você não pode
+ter uma apresentação única
+
+215
+00:09:36,976 --> 00:09:39,806
+que seja a biblioteca de fotos
+ou câmera na UI ao mesmo tempo.
+
+216
+00:09:39,806 --> 00:09:41,016
+Você pode fazer isso no iPhone.
+
+217
+00:09:41,016 --> 00:09:42,076
+Mas no iPad, você não pode.
+
+218
+00:09:42,076 --> 00:09:44,206
+Então no iPad, você poderia
+ter dois botões diferentes,
+
+219
+00:09:44,496 --> 00:09:47,456
+um para trazer um pequeno
+popover com a biblioteca de fotos
+
+220
+00:09:47,696 --> 00:09:49,906
+e outro que tomaria a tela toda
+para usar a câmera,
+
+221
+00:09:49,906 --> 00:09:51,346
+e isso é exatamente o que nós
+vamos fazer na demo.
+
+222
+00:09:51,496 --> 00:09:52,886
+Então vai fazer sentido
+quando fizermos isso.
+
+223
+00:09:53,526 --> 00:09:57,156
+Depois que o usuário
+acabou de escolher,
+
+224
+00:09:57,156 --> 00:09:58,846
+de tirar a foto uo qualquer coisa
+ou escolher da
+
+225
+00:09:58,846 --> 00:09:59,566
+biblioteca de fotos,
+
+226
+00:09:59,566 --> 00:10:02,326
+você vai ter esse método
+de delegate imagePickerController...
+
+227
+00:10:02,366 --> 00:10:05,156
+didFinishPickingMediaWithInfo,
+certo? 
+
+228
+00:10:05,156 --> 00:10:08,926
+E esse info é um dicionário
+e você olha nas chaves
+
+229
+00:10:08,926 --> 00:10:12,576
+e valores nesse dicionário
+para receber a informação de volta, ok?
+
+230
+00:10:13,046 --> 00:10:13,946
+E nós vamos falar sobre isso
+em um segundo.
+
+231
+00:10:13,946 --> 00:10:15,036
+O que tem nesse dicionário.
+
+232
+00:10:15,376 --> 00:10:17,916
+Aqui, também, você quer
+se certificar que você
+
+233
+00:10:17,916 --> 00:10:18,696
+dismiss o view controller.
+
+234
+00:10:19,286 --> 00:10:22,086
+Se for um popover, você usaria
+o popover dismiss
+
+235
+00:10:22,126 --> 00:10:24,106
+ou se for full modal
+você usaria
+
+236
+00:10:24,106 --> 00:10:26,936
+dismissViewControllerAnimated:completion:
+
+237
+00:10:26,936 --> 00:10:29,946
+Que é como nós dismiss
+um modal view controller.
+
+238
+00:10:30,706 --> 00:10:34,456
+Aqui temos outro método de delegate
+que o image picker vai te enviar
+
+239
+00:10:34,456 --> 00:10:36,616
+quando o usuário clicar
+em cancel, certo?
+
+240
+00:10:36,616 --> 00:10:38,626
+Então eles vão tirar uma foto
+mas decidem: er, eu não quero
+
+241
+00:10:38,626 --> 00:10:39,926
+tirar uma foto. E eles
+clicam em cancel
+
+242
+00:10:39,966 --> 00:10:42,536
+na UI e você recebe essa mensagem
+e tudo que você precisa fazer
+
+243
+00:10:42,536 --> 00:10:47,956
+aqui é dismiss o modal
+ou dismiss o popover.
+
+244
+00:10:48,656 --> 00:10:50,256
+Embora você não iria dismiss
+o popover nesse caso
+
+245
+00:10:50,256 --> 00:10:53,326
+porque a biblioteca de fotos
+
+246
+00:10:53,326 --> 00:10:55,196
+em um popover não tem
+um botão de cancel
+
+247
+00:10:55,196 --> 00:10:57,206
+por causa daquilo
+que nós falamos antes
+
+248
+00:10:57,206 --> 00:11:01,626
+onde popovers são dismissed
+clicando fora deles, ok?
+
+249
+00:11:01,706 --> 00:11:04,986
+Então você na verdade não teria
+aquele método de delegate anterior
+
+250
+00:11:05,226 --> 00:11:06,836
+no caso da biblioteca
+de fotos do iPad.
+
+251
+00:11:07,246 --> 00:11:09,946
+E o que há naquele
+dicionário info que você recebeu?
+
+252
+00:11:10,266 --> 00:11:14,416
+A coisa principal aqui é se
+é uma imagem original ou editada,
+
+253
+00:11:14,416 --> 00:11:16,826
+Vocês vêem o segundo 
+e o terceiro aqui,
+
+254
+00:11:17,506 --> 00:11:19,776
+isso é exatamente o que
+você imaginaria nesse caso.
+
+255
+00:11:20,146 --> 00:11:21,586
+E se você está capturando vídeo,
+
+256
+00:11:21,586 --> 00:11:23,616
+daí você receberia essa coisa
+MediaURL.
+
+257
+00:11:23,616 --> 00:11:26,616
+Vêem? O segundo de baixo pra cima,
+essa é a URL para
+
+258
+00:11:26,716 --> 00:11:29,206
+a mídia, para o vídeo
+
+259
+00:11:29,206 --> 00:11:31,306
+que foi tirado porque o vídeo
+vai ser armazenado em algum lugar
+
+260
+00:11:31,736 --> 00:11:34,936
+no file system, no seu sandbox,
+e você vai obter uma URL
+
+261
+00:11:34,936 --> 00:11:37,706
+que aponta para ele e daí você
+pode fazer com ele o que você faria.
+
+262
+00:11:37,706 --> 00:11:42,236
+O resto dessas coisas, os 
+metadados são interessantes.
+
+263
+00:11:42,236 --> 00:11:45,416
+Se você tirou uma foto, se a pessoa
+tem os location services ligados,
+
+264
+00:11:45,416 --> 00:11:46,846
+ela vai ter a latitude
+
+265
+00:11:46,846 --> 00:11:49,326
+e a longitude de onde
+a foto foi tirada, ela vai ter,
+
+266
+00:11:49,416 --> 00:11:53,106
+sabe, portrait ou landscape,
+alguns outro tipos de metadados
+
+267
+00:11:53,336 --> 00:11:54,796
+sobre o que está
+acontecendo na imagem.
+
+268
+00:11:55,236 --> 00:11:59,116
+E também o cropRect
+se o usuário cropou a imagem,
+
+269
+00:11:59,116 --> 00:12:00,796
+ele vai te dizer qual foi
+o retângulo, etc.
+
+270
+00:12:00,796 --> 00:12:03,676
+Então esas imagem... novamente,
+você pode olhar o UIImagePickerController
+
+271
+00:12:03,676 --> 00:12:06,806
+e descobrir quais são todas
+as keys nesse dicionário.
+
+272
+00:12:07,556 --> 00:12:11,466
+Se você tem uma foto que você
+tirou ou um vídeo e você quer
+
+273
+00:12:11,466 --> 00:12:15,776
+salvá-lo, ok? Você usa
+ALAssetsLibrary.
+
+274
+00:12:16,136 --> 00:12:18,036
+Esse é o framework
+Assets Library.
+
+275
+00:12:18,036 --> 00:12:19,876
+Você pode olhar
+a documentação disso.
+
+276
+00:12:19,876 --> 00:12:21,926
+Eu não vou falar sobre ela,
+mas se você olhar
+
+277
+00:12:21,926 --> 00:12:25,266
+a classe ALAssetsLibrary,
+ela tem alguns métodos lá
+
+278
+00:12:25,266 --> 00:12:27,946
+para pegar o que você
+obteve de volta desse info
+
+279
+00:12:28,206 --> 00:12:30,796
+e armazená-lo em algum lugar
+permanentemente, ok?
+
+280
+00:12:31,216 --> 00:12:34,316
+Pergunta?
+>> [Estudante perguntando]
+
+281
+00:12:34,566 --> 00:12:36,466
+[estudante perguntando]
+
+282
+00:12:36,686 --> 00:12:38,416
+>> A pergunta é: qual é
+a diferença entre
+
+283
+00:12:38,456 --> 00:12:39,626
+Original e Edited nessas keys?
+
+284
+00:12:39,886 --> 00:12:42,516
+Original é o que
+a câmera tirou, ok?
+
+285
+00:12:42,516 --> 00:12:43,546
+E coisa inteira
+que a câmera tirou.
+
+286
+00:12:43,626 --> 00:12:46,506
+Edited é, se você permitiu
+edição, e nós falamos sobre isso
+
+287
+00:12:46,506 --> 00:12:49,756
+dois slides atrás, aquele
+allowsEditing, o usuário pode dar zoom,
+
+288
+00:12:49,756 --> 00:12:51,776
+ou cropar, então esse seria
+a imagem com zoom
+
+289
+00:12:51,776 --> 00:12:54,206
+ou cropada, ok?
+
+290
+00:12:54,206 --> 00:12:58,486
+É isso que é o EditedImage.
+
+291
+00:12:58,486 --> 00:13:00,106
+Ok? A câmera que... sabe,
+
+292
+00:13:00,106 --> 00:13:02,476
+a imagem da câmera que aparece
+
+293
+00:13:02,476 --> 00:13:05,266
+nesse picker controller
+quando a pessoa está olhando
+
+294
+00:13:05,266 --> 00:13:07,926
+ao redor com o device dela,
+ela pode ter um overlay nela,
+
+295
+00:13:08,026 --> 00:13:09,236
+uma view que sobrepõe.
+
+296
+00:13:09,236 --> 00:13:11,126
+Você poderia colocar
+seus próprios controllers ali,
+
+297
+00:13:11,126 --> 00:13:12,596
+botões, outras coisas.
+
+298
+00:13:12,866 --> 00:13:15,396
+De novo, eu não vou falar sobre isso
+em detalhes, mas saibam que
+
+299
+00:13:15,396 --> 00:13:18,806
+existe isso está aí, então vocês
+podem certamente melhorar a experiência
+
+300
+00:13:18,866 --> 00:13:21,076
+que está sendo-- que está
+acontecendo ao tirar a foto.
+
+301
+00:13:21,076 --> 00:13:25,956
+Se sua Overlay view provê
+o controle pra tipo
+
+302
+00:13:25,956 --> 00:13:28,346
+tirar essa foto,
+tipo, sabe,
+
+303
+00:13:28,346 --> 00:13:32,416
+na verdade tirar essa foto,
+daí você pode esconder os
+
+304
+00:13:32,416 --> 00:13:33,626
+controles da câmera que o
+picker geralmente coloca
+
+305
+00:13:33,626 --> 00:13:37,106
+dizendo showCameraControls
+igual a NO, ok?
+
+306
+00:13:37,606 --> 00:13:41,646
+E você também pode zoom
+ou transladar usando esse transform,
+
+307
+00:13:41,646 --> 00:13:44,326
+esse affine transform, a imagem
+que está vindo da
+
+308
+00:13:44,326 --> 00:13:47,686
+câmera, então você pode,
+por exemplo, fazer um match dela
+
+309
+00:13:47,726 --> 00:13:50,486
+com a sua overlay view, ok?
+
+310
+00:13:50,716 --> 00:13:52,546
+Você poderia dar zoom
+ou você poderia querer
+
+311
+00:13:52,546 --> 00:13:55,416
+oara sempre encher a tela
+ou algo assim.
+
+312
+00:13:55,546 --> 00:13:57,666
+Você pode certamente
+fazer isso também.
+
+313
+00:13:58,596 --> 00:14:01,576
+Certo, então vamos
+fazer uma demo disso.
+
+314
+00:14:01,576 --> 00:14:04,036
+Ver isso em ação.
+
+315
+00:14:04,976 --> 00:14:09,656
+Nós vamos melhorar nosso
+KitchenSink para fazê-lo
+
+316
+00:14:09,656 --> 00:14:12,836
+de modo que ao invés de apenas
+colocar palavras de comida,
+
+317
+00:14:13,196 --> 00:14:16,156
+nós possamos na verdade
+tirar uma foto de comida ou
+
+318
+00:14:16,156 --> 00:14:18,816
+escolher da biblioteca e
+jogar lá essa imagem, ok?
+
+319
+00:14:19,076 --> 00:14:25,986
+Então vamos seguir aqui
+para o nosso KitchenSink.
+
+320
+00:14:29,846 --> 00:14:31,196
+E vamos melhorar nossa UI.
+
+321
+00:14:31,886 --> 00:14:33,836
+Aqui está a nossa UI agora.
+
+322
+00:14:33,836 --> 00:14:35,606
+O que eu vou fazer é:
+eu vou adicionar alguns
+
+323
+00:14:35,606 --> 00:14:39,426
+botões a mais aqui, um para
+tirar uma foto de comida
+
+324
+00:14:39,666 --> 00:14:42,016
+e um para escolher
+a foto de uma comida
+
+325
+00:14:42,016 --> 00:14:43,946
+da biblioteca de fotos, ok?
+
+326
+00:14:44,516 --> 00:14:46,646
+Para fazer isso eu vou
+dar um zoom aqui
+
+327
+00:14:46,646 --> 00:14:48,586
+e pegar alguns
+bar buttons.
+
+328
+00:14:49,086 --> 00:14:52,746
+Vamos aqui em baixo...
+
+329
+00:14:53,986 --> 00:14:54,806
+em algu lugar... aqui está.
+
+330
+00:14:54,806 --> 00:14:56,126
+Vou colocar um aqui.
+
+331
+00:14:56,636 --> 00:14:59,936
+Vou chamar esse de
+"Take Food Photo".
+
+332
+00:15:01,456 --> 00:15:02,886
+E vamos colocar outro aqui
+
+333
+00:15:04,036 --> 00:15:07,836
+e nós vamos chamar esse aqui de,
+sabe, "Add Food Photo", ok?
+
+334
+00:15:08,336 --> 00:15:10,886
+Então esse aqui vai 
+trazer a câmera,
+
+335
+00:15:11,056 --> 00:15:12,996
+e esse aqui vai apenas
+colocar um popover bem aqui
+
+336
+00:15:13,246 --> 00:15:16,766
+que te permite procurar na sua
+biblioteca de fotos por comida.
+
+337
+00:15:17,846 --> 00:15:20,426
+E vamos linkar essas coisas.
+
+338
+00:15:22,036 --> 00:15:24,736
+Então vamos começar...
+talvez aqui...
+
+339
+00:15:25,026 --> 00:15:29,766
+Eu vou CTRL + arrastar aqui,
+bem aqui.
+
+340
+00:15:30,666 --> 00:15:33,716
+E esse aqui é o addFoodPhoto.
+
+341
+00:15:34,786 --> 00:15:37,396
+E nós vamos ter
+nosso bar button aqui.
+
+342
+00:15:37,786 --> 00:15:43,476
+E esse carinha aqui, vamos chamar
+de takeFoodPhoto.
+
+343
+00:15:43,836 --> 00:15:46,546
+Eu não sei por que isso
+não é o default aqui.
+
+344
+00:15:46,546 --> 00:15:50,856
+Ambos vão fazer exatamente
+a mesma coisa.
+
+345
+00:15:51,126 --> 00:15:54,546
+A única diferença vai ser
+o sourceType, ok?
+
+346
+00:15:54,546 --> 00:15:56,356
+do UIImagePickerController.
+
+347
+00:15:56,746 --> 00:15:58,486
+O source type de um deles
+vai ser a câmera,
+
+348
+00:15:58,856 --> 00:16:01,496
+o do outro vai ser
+as fotos salvas na biblioteca.
+
+349
+00:16:01,496 --> 00:16:04,216
+Então eu vou fazê-los ambos
+chamar o mesmo método.
+
+350
+00:16:04,216 --> 00:16:08,896
+Vamos chamá-lo de
+presentImagePicker, 
+
+351
+00:16:09,586 --> 00:16:12,006
+E nós vamos passar
+o source type.
+
+352
+00:16:12,226 --> 00:16:13,956
+Então esse vai ser, por exemplo.
+
+353
+00:16:13,956 --> 00:16:16,556
+UIImagePickerController...
+
+
+354
+00:16:16,556 --> 00:16:21,786
+Esse aqui vai adicionar comida,
+então será SourceTypeSavedPhotoAlbums
+
+355
+00:16:22,186 --> 00:16:25,016
+E nós precisamos passra
+o sender também, como vocês verão.
+
+356
+00:16:25,866 --> 00:16:29,096
+E vou deixar isso maior...
+
+357
+00:16:29,096 --> 00:16:30,136
+para vocÊs verem o que
+está acontecendo.
+
+358
+00:16:30,136 --> 00:16:31,176
+Nós não precisamos disso.
+
+359
+00:16:31,946 --> 00:16:35,836
+Ok? Então está aqui. E nós vamos
+fazer a mesma coisa aqui, exceto
+
+360
+00:16:35,836 --> 00:16:38,046
+que para esse
+nós vamos fazer
+
+361
+00:16:38,046 --> 00:16:40,996
+UIImagePickerControllerSourceTypeCamera,
+okay? 
+
+362
+00:16:40,996 --> 00:16:43,636
+Então nós vamos ter que escrever
+esse método e ele vai
+
+363
+00:16:44,006 --> 00:16:46,416
+fazer a apresentação do
+UIImagePickerController.
+
+364
+00:16:46,416 --> 00:16:50,086
+Então vai ser algo assim
+[ditando código]
+
+365
+00:16:50,766 --> 00:16:54,726
+[ditando código]
+
+366
+00:16:56,556 --> 00:17:02,556
+e um sender que vai ser um
+UIBarButonItem, ok?
+
+367
+00:17:03,336 --> 00:17:05,256
+Bem direto, fazer essas coisas.
+
+368
+00:17:05,556 --> 00:17:07,686
+A chave aqui é sempre checar
+para ter certeza que
+
+369
+00:17:07,686 --> 00:17:10,706
+o device que você está
+pode fazer o que você quer.
+
+370
+00:17:10,706 --> 00:17:15,016
+Então vamos fazer isso,
+[ditando código]
+
+371
+00:17:15,016 --> 00:17:18,066
+[ditando código]
+o source type que queremos, certo?
+
+372
+00:17:18,066 --> 00:17:21,346
+Esse é o argumento
+bem aqui, ok?
+
+373
+00:17:21,346 --> 00:17:23,576
+Que é esse ou esse.
+
+374
+00:17:24,066 --> 00:17:27,266
+E se estiver, então eu vou
+checar quais
+
+375
+00:17:27,266 --> 00:17:31,716
+tipos de mídia estão disponíveis
+para esse source type,
+
+376
+00:17:31,716 --> 00:17:37,626
+[ditando código]
+
+377
+00:17:38,236 --> 00:17:43,076
+[ditando código]
+
+378
+00:17:43,396 --> 00:17:46,066
+Agora eu vou me certificar
+que ele pode usar uma imagem,
+
+379
+00:17:46,066 --> 00:17:47,526
+porque eu estou apenas
+usando imagens aqui.
+
+380
+00:17:47,526 --> 00:17:49,346
+Nós estamos jogando
+imagens no nosso KitchenSink.
+
+381
+00:17:49,346 --> 00:17:50,016
+Então eu vou dizer
+
+382
+00:17:50,016 --> 00:17:55,146
+[ditando código]
+
+383
+00:17:55,336 --> 00:17:59,436
+oops, temos que NSStringá-lo.
+
+384
+00:18:00,176 --> 00:18:02,036
+kUTTypeImage, ok?
+
+
+385
+00:18:02,036 --> 00:18:05,566
+Vocês podem ver que ele não
+está sabendo o que é isso,
+
+386
+00:18:05,566 --> 00:18:06,376
+não está colorindo ele.
+
+387
+00:18:06,376 --> 00:18:13,936
+Isso é porque nós precisamos
+importar MobileCoreServices.
+
+388
+00:18:15,556 --> 00:18:17,506
+
+
+389
+00:18:17,816 --> 00:18:21,186
+E enquanto eu estou aqui
+eu vou aproveitar e adicioná-lo à lista
+
+390
+00:18:21,186 --> 00:18:23,986
+das coisas que eu preciso linkar.
+
+391
+00:18:23,986 --> 00:18:27,536
+Então eu vou aqui
+no meu projeto, build phases.
+
+392
+00:18:27,646 --> 00:18:29,456
+Aqui estão as outras coisas
+que eu estou linkando.
+
+393
+00:18:29,456 --> 00:18:30,926
+Eu vou procurar por ele...
+
+
+394
+00:18:30,926 --> 00:18:33,426
+Aqui está...
+MobileCoreServices.
+
+395
+00:18:34,106 --> 00:18:36,326
+Se você não fizer isso,
+quando você rodar ele vai dizer
+
+396
+00:18:36,646 --> 00:18:41,596
+que ele não sabe o que
+esse símbolo kUTTypeImage é.
+
+397
+00:18:41,796 --> 00:18:44,186
+Certo? Agora ele sabe. Está roxo.
+O que deve ser bom.
+
+398
+00:18:44,316 --> 00:18:45,836
+Ok, agora eu vou apenas
+
+399
+00:18:45,836 --> 00:18:47,596
+criar o
+UIImagePickerController.
+
+400
+00:18:47,596 --> 00:18:49,176
+Eu vou chamá-lo de picker,
+I'm going to call it picker,
+
+
+401
+00:18:49,836 --> 00:18:51,826
+UIImagePickerController
+alloc, init. 
+
+402
+00:18:52,496 --> 00:18:56,816
+Eu não uso o designated initializer
+do UIViewController aqui.
+
+403
+00:18:56,816 --> 00:18:57,666
+Uso apenas o init.
+
+
+404
+00:18:58,986 --> 00:19:01,886
+e vamos setar nosso
+picker.sourceType 
+
+405
+00:19:01,916 --> 00:19:03,096
+para ser sourceType.
+
+406
+00:19:03,186 --> 00:19:07,046
+Vamos setar o mediaTypes
+do picker para ser um array
+
+407
+00:19:07,156 --> 00:19:10,256
+com esse lance de imagem aqui.
+
+408
+00:19:12,696 --> 00:19:14,816
+Oops, assim.
+
+409
+00:19:15,696 --> 00:19:21,516
+Vamos permitir edição.
+
+410
+00:19:22,106 --> 00:19:24,626
+E, muito importante,
+nós temos que lembrar
+
+411
+00:19:24,626 --> 00:19:26,906
+para nos setarmos
+como delegate.
+
+412
+00:19:27,536 --> 00:19:31,696
+E daí nós vamos apresentar 
+o picker aqui, ok?
+
+413
+00:19:31,696 --> 00:19:34,646
+E esse, nós vamos apresentá-lo
+tanto modalmente ou em um popover,
+
+414
+00:19:34,646 --> 00:19:35,796
+nós vamos falar sobre isso
+em um segundo.
+
+415
+00:19:36,286 --> 00:19:37,946
+Obviamente nós temos
+um warning aqui
+
+416
+00:19:37,946 --> 00:19:41,716
+porque nós dissemos delegate
+igual a self e nós temos que dizer
+
+417
+00:19:41,716 --> 00:19:43,076
+que nós implementamos
+esse protocol.
+
+418
+00:19:43,076 --> 00:19:44,716
+Agora, tem um probleminha aqui.
+
+419
+00:19:45,206 --> 00:19:48,216
+Se eu disser apenas
+UIImagePickerControllerDelegate, 
+
+420
+00:19:48,686 --> 00:19:50,816
+isso não vai fazer
+esse warning sumir.
+
+421
+00:19:51,316 --> 00:19:52,976
+Vêem? E por que isso?
+
+422
+00:19:53,456 --> 00:19:56,356
+Isso é porque o
+UIImagePickerController herda
+
+423
+00:19:56,356 --> 00:20:00,156
+de UINavigationController,
+ok?
+
+424
+00:20:00,436 --> 00:20:02,166
+E isso é porque
+quando o picker está na tela,
+
+425
+00:20:02,466 --> 00:20:03,926
+você pode navegar um pouco
+por ele.
+
+426
+00:20:04,326 --> 00:20:08,836
+Então você também tem que dizer
+UINavigationControllerDelegate. 
+
+427
+00:20:08,836 --> 00:20:10,346
+Mesmo que nós não vamos
+implementar nenhum dos
+
+428
+00:20:10,346 --> 00:20:12,946
+métodos de delegate
+do UINavigationController, 
+
+429
+00:20:13,326 --> 00:20:15,816
+você ainda precisa dizer
+que você implementa.
+
+430
+00:20:15,816 --> 00:20:18,596
+Eles são todos opcionais,
+então estamos bem, ok?
+
+431
+00:20:19,216 --> 00:20:21,326
+Agora, nós precisamos
+apresentar esse picker.
+
+432
+00:20:21,326 --> 00:20:24,766
+No caso normal, se nós estivéssemos
+apenas usando a câmera,
+
+433
+00:20:25,306 --> 00:20:28,686
+por exemplo, nós poderíamos
+dizer apenas
+
+434
+00:20:28,686 --> 00:20:32,366
+[ditando código]
+
+435
+00:20:32,796 --> 00:20:34,736
+Nós nõa precisamos de
+nenhum completion, certo?
+
+436
+00:20:34,736 --> 00:20:37,126
+Esse seria a apresentação
+normal do modal.
+
+437
+00:20:37,576 --> 00:20:41,616
+Entretanto, se o sourceType
+é o SavedPhotosAlbum, ok?
+
+438
+00:20:41,616 --> 00:20:43,906
+Que são as fotos que eu tirei
+no assado, daí nós supostamente
+
+439
+00:20:43,906 --> 00:20:49,196
+apresentaríamos isso em um popover
+no iPad, então temos que fazer isso.
+
+440
+00:20:49,196 --> 00:20:53,936
+Então digamos
+[ditando código]
+
+441
+00:20:54,816 --> 00:20:58,926
+Vamos ser mais claros...
+[ditando código]
+
+442
+00:20:59,216 --> 00:21:02,126
+Se não for a câmera,
+qualquer outro tupo, menos a câmera.
+
+443
+00:21:03,546 --> 00:21:11,816
+E nós estamos no iPad.
+
+444
+00:21:12,436 --> 00:21:19,866
+Ok? Daí nós precisamos
+fazer o popover, caso contrário,
+
+445
+00:21:20,126 --> 00:21:23,956
+nós vamos fazer modal,
+nas duas plataformas.
+
+446
+00:21:24,616 --> 00:21:27,476
+Ok? Então como
+nós fazemos o popover aqui?
+
+447
+00:21:27,476 --> 00:21:31,136
+Essa é uma boa revisão
+de como apresentamos popover.
+
+448
+00:21:31,716 --> 00:21:34,296
+Nós vamos primeiro
+ter que ter
+
+449
+00:21:34,346 --> 00:21:37,396
+uma property ImagePickerPopover
+
+450
+00:21:38,216 --> 00:21:40,136
+Então vamos fazer isso.
+
+451
+00:21:40,136 --> 00:21:42,586
+Colocar isso aqui.
+
+452
+00:21:42,816 --> 00:21:45,856
+[ditando código]
+
+453
+00:21:45,986 --> 00:21:50,986
+[ditando código]
+certo,
+
+454
+00:21:51,706 --> 00:21:55,486
+então nós temos isso
+e nós vamos criá-lo
+
+455
+00:21:55,486 --> 00:21:58,566
+fazendo 
+[ditando código]
+
+456
+00:21:58,566 --> 00:22:00,416
+e o designated initializer é
+
+457
+00:22:00,416 --> 00:22:02,336
+initWithContentViewController,
+
+
+458
+00:22:02,626 --> 00:22:04,386
+esse é o view controller
+que vai estar dentro do popover
+
+459
+00:22:04,386 --> 00:22:07,856
+que é o picker nesse caso.
+
+460
+00:22:08,206 --> 00:22:12,186
+Ok? Isso é apenas
+as coisas normais de popover.
+
+461
+00:22:12,566 --> 00:22:16,156
+Daí nós vamos
+apresentar o popover.
+
+462
+00:22:16,366 --> 00:22:19,666
+Um dos métodos de apresentação
+é do barButtonItem, que é
+
+463
+00:22:19,666 --> 00:22:21,936
+o que nós temos aqui, certo?
+
+464
+00:22:22,116 --> 00:22:23,086
+Então eu vou usar esse.
+
+465
+00:22:23,616 --> 00:22:26,336
+[ditando código]
+vamos permitir que vá
+
+466
+00:22:26,336 --> 00:22:28,736
+em qualquer direção
+e animated YES.
+
+467
+00:22:30,116 --> 00:22:32,946
+Ok? Então isso é
+a apresentação do popover.
+
+468
+00:22:33,226 --> 00:22:37,106
+E daí nós precisamos nos certificar
+que nós setamos o delegate do popover
+
+469
+00:22:37,136 --> 00:22:38,336
+para ser self também.
+
+470
+00:22:38,766 --> 00:22:43,646
+Desse modo, se... sabe,
+o popover... u... é... u...
+
+471
+00:22:43,646 --> 00:22:46,986
+bom, na verdade, agora
+que eu pensei melhor,
+
+472
+00:22:46,986 --> 00:22:49,026
+nós provavelmentes nem
+vamos precisar desse delegate
+
+473
+00:22:49,556 --> 00:22:51,736
+mas normalmente você
+iria setar o delegate.
+
+474
+00:22:51,736 --> 00:22:53,346
+Eu vou prosseguir
+e colcoar ele aqui apenas
+
+475
+00:22:53,346 --> 00:22:57,646
+para que vocês vejam
+como fazer... nós fazemos assim.
+
+476
+00:22:57,646 --> 00:23:00,316
+Então se nós quiséssemos responder
+algum dos delegates do popover,
+
+477
+00:23:00,316 --> 00:23:02,766
+tipo descobrir se ele está sendo
+apresentado, coisas assim,
+
+478
+00:23:03,516 --> 00:23:06,316
+daó nós setaríamos nós mesmos
+como delegate aqui.
+
+479
+00:23:06,486 --> 00:23:08,106
+Mas agora que eu pensei
+nessa demo,
+
+480
+00:23:08,106 --> 00:23:10,806
+nós provavelmente não vamos precisar.
+
+481
+00:23:10,806 --> 00:23:11,676
+Agora, temos ele pronto.
+
+482
+00:23:11,676 --> 00:23:14,146
+Uma coisa que queremos fazer é:
+nós não queremos ter aquela coisa
+
+483
+00:23:14,146 --> 00:23:16,436
+onde nós tínhamos popovers
+infinitos, lembram-se desse problema?
+
+484
+00:23:16,436 --> 00:23:17,926
+Você continua apertando o botão,
+você continua recebendo
+
+485
+00:23:17,926 --> 00:23:18,916
+mais e mais e mais popovers.
+
+486
+00:23:19,226 --> 00:23:20,866
+Então isso é facilmente consertado,
+nós apenas dizemos
+
+487
+00:23:20,866 --> 00:23:25,106
+[ditando código]
+ok? Bem aqui no topo.
+
+488
+00:23:25,106 --> 00:23:27,026
+Então enquanto tivermos 
+popover do image picker
+
+489
+00:23:27,086 --> 00:23:30,296
+na tela, nós não vamos
+permitir nenhum acesso
+
+490
+00:23:30,296 --> 00:23:31,626
+à camera ou biblioteca de fotos
+
+491
+00:23:32,036 --> 00:23:33,846
+até que esse popover
+seja dismissed.
+
+492
+00:23:35,056 --> 00:23:36,346
+Ok, então isso foi a apresentação.
+
+493
+00:23:36,856 --> 00:23:38,906
+Agora vamos falar sobre cancelar.
+
+494
+00:23:38,976 --> 00:23:40,356
+Se o usuário quiser cancelar,
+
+495
+00:23:40,696 --> 00:23:43,126
+existem na verdade
+dois cancels que podem acontecer aqui.
+
+496
+00:23:43,126 --> 00:23:46,106
+Na verdade eu vou usar o
+delegate do popover bem aqui...
+
+497
+00:23:46,106 --> 00:23:49,156
+se estivermos
+no caso do popover,
+
+498
+00:23:49,156 --> 00:23:51,496
+daí nós queremos
+os métodos de delegate do popover
+
+499
+00:23:51,496 --> 00:23:53,686
+que dá dismiss nele
+e nesse caso nós vamos
+
+500
+00:23:53,686 --> 00:23:56,216
+setar nosso imagePopover
+para nil. Ok?
+
+501
+00:23:56,366 --> 00:24:00,326
+Para permitir que dá próxima vez
+ele possa aparecer.
+
+502
+00:24:00,556 --> 00:24:02,996
+Se nós não fizermos isso,
+daí nós não vamos passar por aqui
+
+503
+00:24:03,816 --> 00:24:04,766
+nunca mais, no caso do cancel.
+
+504
+00:24:05,136 --> 00:24:08,976
+E daí no caso de ser full modal,
+o cancel acontece pelo
+
+505
+00:24:08,976 --> 00:24:10,766
+UIImagePickerController.
+
+506
+00:24:11,086 --> 00:24:17,066
+Então nesse caso nós queremos apenas
+ImagePickerControllerDidCancel 
+
+507
+00:24:17,216 --> 00:24:18,256
+que é esse bem aqui.
+
+508
+00:24:18,826 --> 00:24:22,786
+E tudo que precisamos nessa caso
+é dar um dismiss nele.
+
+509
+00:24:23,466 --> 00:24:26,346
+Então vamos dar dismiss
+no modal view controller atual,
+
+510
+00:24:26,596 --> 00:24:29,166
+que vai ser o picker, ok?
+
+511
+00:24:30,696 --> 00:24:33,106
+E finalmente, o que acontece
+se alguém escolher alguma coisa?
+
+512
+00:24:33,586 --> 00:24:37,776
+Essa é outra coisa do
+ImagePickerController aqui,
+
+513
+00:24:37,776 --> 00:24:38,426
+que é essa aqui,
+
+
+514
+00:24:38,426 --> 00:24:43,496
+didFinishPickingWithInfo
+
+
+515
+00:24:44,576 --> 00:24:46,736
+E o que nós vamos fazer
+nesse caso?
+
+516
+00:24:46,736 --> 00:24:49,726
+Bom, primeiro, vamos pegar
+a imagem. E eu vou fazer
+
+517
+00:24:49,726 --> 00:24:53,586
+duas coisas para pegar a imagem.
+Primeiro eu vou tentar pegar
+
+518
+00:24:53,586 --> 00:24:55,596
+a imagem editada.
+
+519
+00:24:55,846 --> 00:24:58,556
+Então vou dizer
+ControllerEditedImage. 
+
+520
+00:24:59,186 --> 00:25:01,276
+Mas se não houver uma
+imagem editada,
+
+521
+00:25:01,276 --> 00:25:03,576
+talvez porque eu
+desliguei a edição,
+
+522
+00:25:03,576 --> 00:25:05,826
+se eu dissesse allowsEditing = NO
+bem aqui,
+
+523
+00:25:06,266 --> 00:25:09,516
+então não há imagem editada,
+daí eu vou tentar
+
+524
+00:25:09,516 --> 00:25:14,946
+pegar a imagem original
+como backup, ok?
+
+525
+00:25:15,166 --> 00:25:19,346
+Agora eu tenho a imagem
+e o que eu vou fazer com ela?
+
+526
+00:25:19,346 --> 00:25:23,316
+Eu quero apenas jogá-la
+na minha pia da cozinha, essencialmente.
+
+527
+00:25:23,316 --> 00:25:25,556
+Então eu vou criar uma
+IImageView para fazer isso.
+
+528
+00:25:26,906 --> 00:25:31,156
+E eu vou fazer isso usando
+[ditando código]
+
+529
+00:25:31,696 --> 00:25:31,796
+Ok?
+
+
+530
+00:25:32,576 --> 00:25:34,546
+Agora nós temos uma image view.
+
+531
+00:25:34,936 --> 00:25:36,556
+Uma coisa sobre essa image view,
+
+532
+00:25:36,556 --> 00:25:38,366
+a câmera tem uma
+resolução bem alta,
+
+533
+00:25:38,366 --> 00:25:40,576
+então essa imagem
+vai ser grande, ok?
+
+534
+00:25:40,786 --> 00:25:42,536
+E eu não quero que ela
+preencha minha pia inteira,
+
+535
+00:25:42,916 --> 00:25:44,406
+então eu vou escalá-la para baixo.
+
+536
+00:25:44,856 --> 00:25:48,296
+Eu tenho um pequeno snippet
+de código aqui para isso.
+
+537
+00:25:48,716 --> 00:25:51,116
+E o que eu vou fazer, basicamente,
+é apenas fazer com que
+
+538
+00:25:51,116 --> 00:25:57,066
+a imagem não possa ter mais
+de 200 pontos de largura, ok?
+
+539
+00:25:57,326 --> 00:26:00,636
+Isso é tudo que eu estou fazendo
+aqui, apenas resetando o frame
+
+540
+00:26:00,636 --> 00:26:04,296
+da image view para não ter mais
+do que 200 pixels de largura.
+
+541
+00:26:04,296 --> 00:26:09,006
+E daí eu também vou colocá-la
+em um lugar aleatório, ok?
+
+542
+00:26:09,006 --> 00:26:12,346
+Colocar essa image view
+em um lugar aleatório.
+
+543
+00:26:12,706 --> 00:26:16,036
+Agora, nós temos esse método
+mas na verdade ele tem um problema.
+
+544
+00:26:16,036 --> 00:26:17,666
+Então vamos dar uma olhada nele
+bem rápido.
+
+545
+00:26:18,356 --> 00:26:19,596
+Olhem o que isso faz.
+
+546
+00:26:19,666 --> 00:26:22,516
+A primeira coisa que ele faz
+é sizeToFit.
+
+547
+00:26:22,946 --> 00:26:25,956
+Agora, o que vai acontecer
+quando fizermos [imageView sizeToFit]?
+
+548
+00:26:26,306 --> 00:26:28,776
+Bom, ele vai fazer com que ele
+se ajuste à imagem.
+
+549
+00:26:29,226 --> 00:26:31,136
+E seu eu tiver essa imagem
+enorme da câmera
+
+550
+00:26:31,136 --> 00:26:33,446
+e eu acabei de colocar 
+esse snippet de código ali
+
+551
+00:26:33,446 --> 00:26:35,586
+apenas para diminuí-la,
+a primeira coisa que isso vai fazer
+
+552
+00:26:35,586 --> 00:26:39,096
+é escalá-la de volta
+para caber a imagem inteira, certo?
+
+553
+00:26:39,096 --> 00:26:39,816
+Eu não quero isso. :(
+
+554
+00:26:39,816 --> 00:26:42,196
+Então eu vou ter que
+tirar o sizeToFit fora daqui
+
+555
+00:26:42,486 --> 00:26:46,266
+e ao invés eu vou colocá-lo
+aqui em cima onde nos fazemos 
+
+556
+00:26:47,336 --> 00:26:49,216
+nosso foodLabel, que é onde
+eu coloquei originalmente.
+
+557
+00:26:49,216 --> 00:26:50,956
+então isso é tipo...
+eu provavelmente deveria
+
+558
+00:26:50,956 --> 00:26:51,896
+ter colocado isso aqui
+da primeira vez.
+
+559
+00:26:51,896 --> 00:26:55,626
+Agora, o setRandomLocationView
+não faz sizeToFit, 
+
+560
+00:26:55,626 --> 00:26:58,476
+ele apenas coloca no lugar, ok?
+
+561
+00:26:59,456 --> 00:27:01,346
+Agora nós fizemos isso,
+
+562
+00:27:01,346 --> 00:27:04,436
+e por último nós obviamente
+precisamos do addSubview.
+
+563
+00:27:04,976 --> 00:27:06,716
+nessa view para o KitchenSink.
+
+564
+00:27:07,206 --> 00:27:09,306
+Certo, então é isso.
+
+565
+00:27:10,366 --> 00:27:12,756
+Mas tem outra coisa que nós
+precisamos fazer aqui
+
+566
+00:27:12,986 --> 00:27:15,566
+que é dismiss essa coisa.
+
+567
+00:27:15,986 --> 00:27:18,156
+Ok? Você é responsável por
+dar dismiss nessa coisa
+
+568
+00:27:18,426 --> 00:27:22,096
+quando o usuário escolher
+alguma coisa para usar, certo?
+
+569
+00:27:22,516 --> 00:27:24,666
+E então, existem dois casos
+diferentes aqui.
+
+570
+00:27:24,666 --> 00:27:28,586
+Um é temos em um popover,
+e nesse caso nós precisamos dizer
+
+571
+00:27:28,586 --> 00:27:32,016
+para o imagePopover,
+dismiss você mesmo animated
+
+572
+00:27:32,786 --> 00:27:34,886
+e daí nós podemos dizer que
+o imagePopover é nil.
+
+573
+00:27:35,686 --> 00:27:38,576
+E o outro caso
+é: nós somos modal.
+
+574
+00:27:38,576 --> 00:27:41,996
+Então nós podemos apenas dizzer
+self.dismissViewControllerAnimated:
+
+575
+00:27:42,866 --> 00:27:44,156
+completion:nil, ok?
+
+
+576
+00:27:45,916 --> 00:27:48,896
+Todo mundo entende isso aqui?
+
+577
+00:27:48,946 --> 00:27:51,636
+Nós temos que nos certificar
+que nós demos dismiss nesse picker que--
+
+578
+00:27:51,686 --> 00:27:53,646
+Nós apresentamos, 
+então nós temos que dar dismiss nele.
+
+579
+00:27:55,176 --> 00:27:57,586
+Ok? A não ser que eu
+tenha esquecido de alguma coisa...
+
+580
+00:27:57,786 --> 00:27:58,736
+isso deve funcionar.
+
+581
+00:27:58,736 --> 00:27:59,556
+Vamos ver o que nós temos.
+
+582
+00:28:00,146 --> 00:28:02,516
+>> [Estudante perguntando]
+
+583
+00:28:02,756 --> 00:28:03,966
+[estudante perguntando]
+
+584
+00:28:05,406 --> 00:28:08,476
+>> A pergunta é: qual é
+a diferença entre
+
+585
+00:28:08,476 --> 00:28:10,326
+dar dismiss e setá-lo para nil?
+
+586
+00:28:10,326 --> 00:28:12,076
+É isso que você está dizendo?
+Tipo essas duas linhas de código?
+
+587
+00:28:12,776 --> 00:28:13,686
+Qual a diferença entre elas?
+
+588
+00:28:14,066 --> 00:28:16,996
+Ok, bom dismiss significa
+tire essa coisa da tela,
+
+589
+00:28:17,516 --> 00:28:17,726
+certo?
+
+590
+00:28:17,726 --> 00:28:20,266
+É isso que o que significa dismiss,
+seja ela modal, full screen,
+
+591
+00:28:20,436 --> 00:28:21,666
+ou se estiver em um popover,
+
+592
+00:28:21,666 --> 00:28:23,306
+dismiss signfica
+tirá-la da tela.
+
+593
+00:28:24,086 --> 00:28:28,626
+Setar para nil, apenas
+seta sua property para nil, ok?
+
+594
+00:28:28,846 --> 00:28:30,556
+Então elas são duas
+coisas diferentes.
+
+595
+00:28:30,836 --> 00:28:33,536
+Nós estávamos mantendo um
+ponteiro strong para esse popover.
+
+596
+00:28:33,536 --> 00:28:35,606
+Por que nós mantemos um
+ponteiro strong para o popover?
+
+597
+00:28:36,006 --> 00:28:37,966
+Puramente para que quando
+nós ficarmos apertando e apertando
+
+598
+00:28:37,966 --> 00:28:39,166
+ele não faça mais e mais
+deles.
+
+599
+00:28:39,316 --> 00:28:40,356
+É o que nós fazemos naquele if.
+
+600
+00:28:40,486 --> 00:28:40,976
+É a única razão.
+
+601
+00:28:40,976 --> 00:28:44,726
+Estamos setando para nil porque
+sabemos que acabamos de dar dismiss nele.
+
+602
+00:28:45,806 --> 00:28:49,146
+Ok. Então aqui está nossa UI e--
+
+603
+00:28:49,146 --> 00:28:51,656
+então por exemplo, vamos
+tentar Add Food Photos.
+
+604
+00:28:51,656 --> 00:28:52,856
+Eu vou tocar no botão aqui
+
+605
+00:28:52,856 --> 00:28:54,646
+no topo que diz Add Food Photo.
+
+606
+00:28:55,416 --> 00:28:57,846
+E aqui, nós vemos
+o rolo da câmera, então temos--
+
+607
+00:28:57,846 --> 00:29:00,076
+eu coloquei umas comidas ali
+antes de começar a aula.
+
+608
+00:29:00,456 --> 00:29:03,736
+Umas comidas bem saudáveis,
+uma pizza ali, um cookie
+
+609
+00:29:03,736 --> 00:29:05,156
+e algumas batatinhas.
+
+610
+00:29:05,226 --> 00:29:08,066
+Então se eu quiser tipo
+colocar o cookir ali,
+
+611
+00:29:08,066 --> 00:29:10,096
+eu posso escolhê-lo
+e como eu liguei a edição,
+
+612
+00:29:10,096 --> 00:29:12,096
+eu posso dar zoom nele, certo?
+
+613
+00:29:12,766 --> 00:29:16,486
+E daí quando ficar do jeito
+que eu quero, eu posso clicar "Use".
+
+614
+00:29:16,576 --> 00:29:18,856
+Então vou clicar nesse botão
+quer diz "Use"
+
+615
+00:29:18,856 --> 00:29:21,006
+no canto superior direito, ok?
+
+616
+00:29:21,006 --> 00:29:22,036
+E daí, aí está meu cookie.
+
+
+617
+00:29:22,036 --> 00:29:24,476
+E ele vai ralo a baixo, ok?
+
+618
+00:29:25,676 --> 00:29:26,706
+Então é isso.
+
+619
+00:29:26,706 --> 00:29:28,536
+E daí a câmera...
+eu ia trazer comida,
+
+620
+00:29:28,536 --> 00:29:30,406
+mas eu esqueci de trazer comida,
+
+621
+00:29:30,406 --> 00:29:36,326
+mas vamos tirar uma foto
+de um roteador... não é muito
+
+622
+00:29:36,696 --> 00:29:39,236
+saudável de comer, mas...
+vou tirar uma foto mesmo assim.
+
+623
+00:29:39,646 --> 00:29:40,706
+Então aqui eu tirei uma foto.
+
+624
+00:29:40,706 --> 00:29:42,416
+Novamente, eu posso, sabe,
+dar zoom ou
+
+625
+00:29:42,416 --> 00:29:46,226
+cropá-lo se eu quiser,
+e daí eu clico "Use".
+
+626
+00:29:46,806 --> 00:29:51,466
+Ele aparece e ele também vai
+ralo a baixo.
+
+627
+00:29:51,536 --> 00:29:52,176
+Poso salvá-lo?
+
+628
+00:29:52,176 --> 00:29:53,016
+Sim, eu posso. Veja.
+
+629
+00:29:53,116 --> 00:29:54,866
+Vamos pegar uma pizza,
+e eu gosto de pizza,
+
+630
+00:29:54,866 --> 00:29:56,256
+então eu vou salvar a pizza.
+
+631
+00:29:56,986 --> 00:29:59,876
+Aqui vamos nós,
+eu clico nela e salvo.
+
+632
+00:29:59,876 --> 00:30:03,346
+Está sendo tratada exatamente
+como qualquer um dos UILabels aqui.
+
+633
+00:30:04,426 --> 00:30:04,736
+Pergunta.
+
+634
+00:30:05,516 --> 00:30:10,426
+>> [Estudante perguntando]
+
+635
+00:30:10,926 --> 00:30:13,896
+>> A pergunta é: quando eu
+tirei a foto do roteador,
+
+636
+00:30:13,896 --> 00:30:15,696
+eu poderia salvá-la
+na minhas fotos salvas?
+
+637
+00:30:15,696 --> 00:30:16,726
+E a resposta é: absolutamente.
+
+638
+00:30:16,726 --> 00:30:19,166
+É isso que aquele ALAssetsLibrry
+que eu mencionei
+
+639
+00:30:19,166 --> 00:30:19,966
+nos slides faz.
+
+640
+00:30:20,226 --> 00:30:21,016
+Então dê uma olhada lá.
+
+641
+00:30:21,016 --> 00:30:23,376
+Ele tem um método de classe
+que vai salvar
+
+642
+00:30:23,406 --> 00:30:25,856
+nas suas fotos salvas, ok?
+
+643
+00:30:26,246 --> 00:30:26,886
+Pergunta.
+
+644
+00:30:27,516 --> 00:30:30,886
+>> [Estudante perguntando]
+
+645
+00:30:31,386 --> 00:30:31,626
+[estudante perguntando]
+
+646
+00:30:31,626 --> 00:30:35,246
+[estudante perguntando]
+
+647
+00:30:35,416 --> 00:30:35,483
+[estudante perguntando]
+
+648
+00:30:35,483 --> 00:30:39,386
+[estudante perguntando]
+
+649
+00:30:39,386 --> 00:30:41,596
+[estudante perguntando]
+
+650
+00:30:41,596 --> 00:30:42,556
+>> Vamos voltar ao código aqui.
+
+651
+00:30:42,556 --> 00:30:46,516
+Você está falando sobre
+essa linha de código?
+
+652
+00:30:47,346 --> 00:30:47,786
+
+653
+00:30:49,766 --> 00:30:50,046
+
+654
+00:30:50,046 --> 00:30:50,126
+
+
+655
+00:30:50,126 --> 00:30:53,086
+
+
+656
+00:30:53,446 --> 00:30:55,736
+>> Ah, por que eu passei
+esse BarButtonItem bem aqui?
+
+657
+00:30:56,276 --> 00:30:59,746
+Isso é porque no popover,
+quando eu apresento um popover,
+
+658
+00:30:59,746 --> 00:31:01,786
+eu apresento ele
+a partir desse bar button item.
+
+659
+00:31:02,106 --> 00:31:05,096
+Então eu tive que passar o
+bar button item. Boa pergunta.
+
+660
+00:31:05,396 --> 00:31:06,156
+Outras perguntas?
+
+661
+00:31:07,486 --> 00:31:07,596
+Sim.
+
+662
+00:31:08,096 --> 00:31:10,366
+>> [Estudante perguntando]
+
+663
+00:31:10,366 --> 00:31:11,976
+[estudante perguntando]
+
+664
+00:31:12,406 --> 00:31:15,186
+>> A pergunta é:
+essa é a melhor forma de
+
+665
+00:31:15,186 --> 00:31:17,186
+checar se você está em um 
+iPad ou iPhone?
+
+666
+00:31:17,416 --> 00:31:20,496
+Bom, nós falamos sobre isso
+antes em uma aula diferente.
+
+667
+00:31:20,496 --> 00:31:21,766
+Então não vou falar
+tudo de novo.
+
+668
+00:31:22,156 --> 00:31:24,776
+Mas se verdadeiramente for isso
+que você quer checar, então sim.
+
+669
+00:31:24,886 --> 00:31:25,566
+Você pode fazer isso.
+
+670
+00:31:25,796 --> 00:31:29,786
+Existe também um método
+UIDevice que você pode chamar.
+
+671
+00:31:29,786 --> 00:31:32,516
+As vezes, porém, você
+não quer realmente checar
+
+672
+00:31:32,516 --> 00:31:33,856
+se você está em um iPad ou não.
+
+673
+00:31:33,856 --> 00:31:35,556
+Você pode querer checar
+se você tem uma
+
+674
+00:31:35,556 --> 00:31:37,956
+(???) ou algum outro tipo
+de checagem.
+
+675
+00:31:37,956 --> 00:31:40,076
+Se você está me uma split view
+ou alguma coisa assim.
+
+676
+00:31:40,286 --> 00:31:42,596
+Aqui, por conveniência,
+eu chequei por iPad.
+
+677
+00:31:42,856 --> 00:31:44,446
+Provavelmente algo razoável.
+
+678
+00:31:44,446 --> 00:31:46,046
+Mas sim, é assim que você checa.
+
+679
+00:31:46,866 --> 00:31:49,676
+Ok, é isso para image picker.
+
+680
+00:31:51,106 --> 00:31:54,626
+Então vamos voltar para nossos slides.
+
+681
+00:31:55,136 --> 00:31:59,046
+Ok, então a proxima coisa
+é Core Motion.
+
+682
+00:31:59,046 --> 00:32:03,126
+Então Core Motion é outro framework
+e Core Motion é sobre
+
+683
+00:32:03,126 --> 00:32:08,326
+descobrir como o seu device
+está se movendo no espaço, ok?
+
+684
+00:32:08,746 --> 00:32:11,236
+E as entradas primárias para isso,
+
+685
+00:32:11,446 --> 00:32:13,766
+e não são todos os devices que
+tem todas essas entradas, são
+
+686
+00:32:13,766 --> 00:32:16,986
+o acelerômetro, que está basicamente
+te dizendo a aceleração
+
+687
+00:32:16,986 --> 00:32:18,426
+do seu device em qualquer direção.
+
+688
+00:32:18,756 --> 00:32:21,086
+Isso inclui a aceleração
+causada pela gravidade.
+
+689
+00:32:21,486 --> 00:32:24,046
+Então se seu device está sendo
+segurado no nível da sua mão,
+
+690
+00:32:24,396 --> 00:32:29,296
+o eixo Z vai ter uma aceleração
+de 1g, ok?
+
+691
+00:32:29,796 --> 00:32:31,246
+E se você virá-lo, daí, sabe,
+
+692
+00:32:31,406 --> 00:32:34,146
+o eixo X vai ter um pouco
+de, sabe,
+
+693
+00:32:34,226 --> 00:32:38,716
+um vetor parcial ali e o
+eixo Z vai ter um vertor parcial.
+
+694
+00:32:39,706 --> 00:32:45,696
+Quanto mais entradas o device
+tiver, mais dessas coisas como
+
+695
+00:32:45,696 --> 00:32:47,816
+o acelerômetro, giroscópio,
+magnetômetro,
+
+696
+00:32:48,226 --> 00:32:50,446
+melhor ele vai poder
+descobrir e te dizer
+
+697
+00:32:50,446 --> 00:32:52,066
+aonde ele está no espaço, ok?
+
+698
+00:32:52,066 --> 00:32:56,486
+E nós vamos falar sobre a API
+para usar tudo isso em seguida.
+
+699
+00:32:56,596 --> 00:32:58,746
+A classe primária que vocês
+vão usar aqui
+
+700
+00:32:58,956 --> 00:33:01,836
+é CMMotionManager.
+
+
+701
+00:33:02,566 --> 00:33:04,466
+Você apenas alloc + init para usá-lo.
+
+702
+00:33:04,686 --> 00:33:08,116
+Esse é definitivamente um cara
+que você quer ter apenas uma instância
+
+703
+00:33:08,116 --> 00:33:09,216
+na sua aplicação inteira.
+
+704
+00:33:09,216 --> 00:33:12,466
+Eu meio qu ejá falei sobre,
+com o Location Manager,
+
+705
+00:33:12,466 --> 00:33:15,886
+você também talvez queira
+ter apenas um dele, mas naquele caso
+
+706
+00:33:15,886 --> 00:33:18,316
+era pelo menos permitido
+ter mais do que um,
+
+707
+00:33:18,316 --> 00:33:19,886
+mas nesse caso, não.
+
+708
+00:33:20,006 --> 00:33:22,906
+Nesse caso, uma instância.
+Então uma coisa que eu vou mostrar
+
+709
+00:33:22,906 --> 00:33:26,336
+na demo é como nós fazemos
+uma instância compartilhada.
+
+710
+00:33:26,336 --> 00:33:28,216
+Vocês tiveram que fazer isso
+para a última tarefa do homework.
+
+711
+00:33:28,216 --> 00:33:29,196
+Espero que vocês tenham feito.
+
+712
+00:33:29,196 --> 00:33:31,626
+Mas para aqueles que não fizeram
+
+713
+00:33:31,626 --> 00:33:32,676
+ou não entenderam muito bem,
+
+714
+00:33:32,756 --> 00:33:35,066
+eu vou fazer isso
+na demo também.
+
+715
+00:33:35,886 --> 00:33:38,366
+Então, como usamos
+o CMMotionManager?
+
+716
+00:33:38,366 --> 00:33:38,986
+Muito parecido com a
+
+717
+00:33:39,096 --> 00:33:41,236
+API do CLLocationManager
+que nós vimos.
+
+718
+00:33:41,486 --> 00:33:44,286
+Você checa para ver quais são
+os hardwares que estão disponíveis primeiro, ok?
+
+719
+00:33:44,676 --> 00:33:47,446
+Dependendo disso-- e de quanta
+informação você precisa
+
+720
+00:33:47,446 --> 00:33:48,766
+sobre o movimento do device.
+
+721
+00:33:49,206 --> 00:33:56,366
+Daí você o inicia e ele começa
+a te enviar informação. E quando você
+
+722
+00:33:56,366 --> 00:33:59,686
+faz isso, ele te fala sobre
+os movimentos
+
+723
+00:33:59,806 --> 00:34:02,996
+chamando um block
+que você provê, ok?
+
+724
+00:34:03,276 --> 00:34:05,706
+E você tem que especificar
+até em que queue você quer
+
+725
+00:34:05,706 --> 00:34:07,136
+que esse block seja executado.
+
+726
+00:34:07,786 --> 00:34:08,886
+Então, é um pouco diferente
+
+727
+00:34:08,886 --> 00:34:09,746
+do Location Manager
+
+728
+00:34:09,746 --> 00:34:12,036
+onde vocês usavam apenas
+delegation e callbacks.
+
+729
+00:34:12,036 --> 00:34:13,806
+Esse aqui na verdade, você passa
+um block e uma queue
+
+730
+00:34:13,806 --> 00:34:15,436
+e ele vai chamar aquele block
+naquela queue
+
+731
+00:34:15,916 --> 00:34:17,866
+em uma frequência periódica
+que você seta.
+
+732
+00:34:18,586 --> 00:34:22,706
+Você pode poll, simplesmente
+perguntando pro motion manager:
+
+733
+00:34:22,706 --> 00:34:24,326
+Ok, qual é o estado atual
+do acelerômetro?
+
+734
+00:34:24,516 --> 00:34:26,646
+Mas novamente,, nós não
+fazemos isso normalmente.
+
+735
+00:34:26,646 --> 00:34:29,636
+Geralmente nós setamos essa coisa
+para nos enviar os updates
+
+736
+00:34:29,636 --> 00:34:30,966
+baseado em alguma periodicidade.
+
+737
+00:34:31,756 --> 00:34:33,026
+Ok, então vamos ver
+qual a cara disso.
+
+738
+00:34:33,636 --> 00:34:35,396
+Agora, sabe, todos esses slides,
+
+739
+00:34:35,436 --> 00:34:38,226
+eles parecem que tem
+um monte de texto neles.
+
+740
+00:34:38,226 --> 00:34:43,166
+Mas ele está apenas te mostrando
+todas as versões diferentes
+
+741
+00:34:43,166 --> 00:34:44,776
+para os diferentes
+tipos de hardware.
+
+742
+00:34:44,776 --> 00:34:46,906
+Então eu vou apenas falar
+sobre as coisas que estão
+
+743
+00:34:46,906 --> 00:34:48,766
+no topo do slide, sobre--
+
+744
+00:34:48,766 --> 00:34:51,106
+talvez sobre a versão
+do acelerômetro e daí
+
+745
+00:34:51,106 --> 00:34:53,476
+essa API se aplica
+para o magnetômetro
+
+746
+00:34:53,476 --> 00:34:57,716
+e essa coisa chamada
+device motion que-- device motion,
+
+747
+00:34:57,716 --> 00:35:00,596
+o último ali, é meio que
+a combinação de
+
+748
+00:35:00,596 --> 00:35:02,246
+todos os sensores disponíveis.
+
+749
+00:35:02,816 --> 00:35:05,206
+Então temos acelerômetro,
+o giro (giroscópio).
+
+750
+00:35:05,256 --> 00:35:06,886
+Ok? O giro está tipo
+
+751
+00:35:07,126 --> 00:35:10,946
+te dizendo como o device está
+rodando no seu eixo central,
+
+752
+00:35:11,366 --> 00:35:15,146
+e tem o magnetômetro
+que sabe onde o norte está,
+
+753
+00:35:15,496 --> 00:35:19,176
+onde está o true north, e isso
+realmente te ajuda a saber
+
+754
+00:35:19,306 --> 00:35:21,246
+como o device está se movendo
+porque você tem essa
+
+755
+00:35:21,246 --> 00:35:22,746
+referência constante.
+
+756
+00:35:22,826 --> 00:35:25,576
+E então o device motion é
+a combinação de todos eles.
+
+757
+00:35:25,806 --> 00:35:26,906
+Todos eles que estiverem disponíveis.
+
+758
+00:35:27,276 --> 00:35:32,306
+Todos esses quatro tem praticamente
+a mesma API e--
+
+759
+00:35:32,576 --> 00:35:34,366
+então falando sobre uma delas,
+
+760
+00:35:34,406 --> 00:35:35,506
+eu estarei falando sobre todas elas.
+
+761
+00:35:35,506 --> 00:35:37,306
+Pergunta.
+>> A pergunta é: e se eu quiser
+
+762
+00:35:37,306 --> 00:35:38,586
+fazer um shake gesture,
+
+763
+00:35:38,586 --> 00:35:41,936
+que seria algum movimento
+com o acelerômetro ali? 
+
+764
+00:35:41,936 --> 00:35:43,996
+É, se você está fazendo
+um shake, na verdade existe
+
+765
+00:35:44,526 --> 00:35:46,366
+uma API para identificar um shake.
+
+766
+00:35:46,816 --> 00:35:50,086
+Ok? É meio similar
+
+767
+00:35:50,086 --> 00:35:53,916
+com o antigo
+"mouse motion" (?)
+
+768
+00:35:53,916 --> 00:35:55,636
+touchesBegin, e todas essas coisas.
+
+
+769
+00:35:55,636 --> 00:35:58,236
+Se você procurar por shake
+na documentação,
+
+770
+00:35:58,236 --> 00:36:00,846
+você vai ver que par aum shake
+você não precisa fazer isso.
+
+771
+00:36:00,896 --> 00:36:02,646
+Você não precisa usar isso.
+
+772
+00:36:02,796 --> 00:36:06,266
+Ok. A primeira coisa que
+nós vamos fazer é iniciar--
+
+773
+00:36:06,266 --> 00:36:08,466
+depois de checarmos para ver
+o que está disponivel aqui,
+
+774
+00:36:08,466 --> 00:36:10,836
+que é esse primeiro método,
+daí nós vamos
+
+775
+00:36:10,836 --> 00:36:13,476
+começar a coletar dados,
+
+776
+00:36:13,926 --> 00:36:17,596
+dizendo startAccelerometerUpdates,
+por exemplo, ok?
+
+777
+00:36:17,916 --> 00:36:23,446
+E uma vez que você inicia
+os updates, daí, sabe,
+
+778
+00:36:23,446 --> 00:36:29,626
+você vai receber-- você pode
+perguntar para o motion manager
+
+779
+00:36:29,626 --> 00:36:30,956
+qual é o estado atual
+do acelerômetro.
+
+780
+00:36:31,406 --> 00:36:32,636
+Agora, novamente,
+
+781
+00:36:32,636 --> 00:36:35,206
+você só vai fazer isso se você for
+fazer poll, 
+
+782
+00:36:35,276 --> 00:36:37,386
+o que provavelmente você
+não vai fazer.
+
+783
+00:36:37,756 --> 00:36:42,506
+Mas se ele está rodando,
+daí você pode descobrir
+
+784
+00:36:42,506 --> 00:36:45,056
+usando esse BOOL aqui
+que vai dizer, sim,
+
+785
+00:36:45,056 --> 00:36:47,006
+o acelerômetro está
+ativo no momento.
+
+786
+00:36:47,296 --> 00:36:48,986
+Se você não ativá-lo, ou chamando
+
+787
+00:36:48,986 --> 00:36:51,806
+o método
+startAccelerometerUpdates 
+
+788
+00:36:51,806 --> 00:36:55,456
+ou posicionando um block em uma queue
+que você quer que seja chamado,
+
+789
+00:36:55,456 --> 00:36:58,846
+e vamos falar sobre isso em um
+segundo, daí ele não vai estar ativo
+
+790
+00:36:58,846 --> 00:37:01,246
+e você não vai receber
+boa informação, ok?
+
+791
+00:37:01,466 --> 00:37:03,116
+Então você tem que
+ou iniciá-lo por polling
+
+792
+00:37:03,116 --> 00:37:04,486
+ou você tem que postar
+essa queue.
+
+793
+00:37:05,386 --> 00:37:07,406
+Uma coisa, super importante,
+
+794
+00:37:07,406 --> 00:37:10,166
+assim como o location manager,
+é desligá-lo quando
+
+795
+00:37:10,236 --> 00:37:13,266
+você não está usando,
+porque ele usa bateria, ok?
+
+796
+00:37:13,346 --> 00:37:17,066
+Então você definitivamente quer
+desligá-lo quando não estiver usando.
+
+797
+00:37:17,316 --> 00:37:22,616
+Certo. Quando você recebe dados, ok?
+Se você pede por dados
+
+798
+00:37:22,616 --> 00:37:24,266
+de uma maneira "polling",
+por exemplo.
+
+799
+00:37:24,266 --> 00:37:26,786
+Então, novamente, isso é tudo
+para a mesma coisa.
+
+800
+00:37:26,786 --> 00:37:28,706
+Vamos olhar apenas
+para o primeiro, o acelerômetro.
+
+801
+00:37:29,606 --> 00:37:32,266
+Você pode chamar um método no
+
+802
+00:37:32,266 --> 00:37:35,106
+core motion manager que é o
+accelerometerData e ele vai 
+
+803
+00:37:35,106 --> 00:37:38,956
+te dar um objeto chamado
+objeto CMAccelerometerData
+
+804
+00:37:39,176 --> 00:37:40,746
+e essa coisa tem
+algumas propriedades como
+
+805
+00:37:40,966 --> 00:37:43,236
+uma property chamada
+acceleration
+
+806
+00:37:43,236 --> 00:37:45,676
+e esse acceleration é um struct
+e dentro
+
+807
+00:37:45,676 --> 00:37:47,876
+desse struct existem
+três doubles para o x,
+
+808
+00:37:47,876 --> 00:37:51,416
+y e z da aceleração
+do device em g.
+
+809
+00:37:52,216 --> 00:37:55,896
+Então se o device está perfeitamente
+em nível, x e y vão ser zero
+
+810
+00:37:55,896 --> 00:37:57,906
+e o z vai ser 1, ok?
+
+811
+00:37:57,906 --> 00:38:01,426
+E daí, na medida que você
+o vira, ele vai mudar, certo?
+
+812
+00:38:01,426 --> 00:38:04,086
+Os dados do giro te dizem
+a taxa de rotação em x,
+
+813
+00:38:04,086 --> 00:38:08,886
+y e z. Os dados do magnetômetro
+te dizem as forças dos campos
+
+814
+00:38:08,886 --> 00:38:12,736
+magnéticos em x, y e z,
+certo?
+
+815
+00:38:13,366 --> 00:38:16,366
+E o CMDeviceMotion, nós vamos
+falar sobre ele em um segundo,
+
+816
+00:38:16,366 --> 00:38:17,866
+é meio que uma combinação desses
+
+817
+00:38:17,926 --> 00:38:18,986
+e vocês verão a API para ele.
+
+818
+00:38:19,106 --> 00:38:23,206
+>> [Estudante perguntando]
+
+819
+00:38:23,806 --> 00:38:27,616
+>> O x, y e z... Z é
+direto para baixo do centro
+
+820
+00:38:27,616 --> 00:38:30,476
+do device para, sabe, se você
+está segurando-o reto, ok?
+
+821
+00:38:30,476 --> 00:38:33,916
+Eu não quero... Se eu estou
+segurando ele reto, assim,
+
+822
+00:38:34,236 --> 00:38:42,076
+z é pra baixo, x é esquerda e
+direita e y é pra cima e pra baixo.
+
+823
+00:38:42,266 --> 00:38:44,236
+X, esquerda e direita.
+
+824
+00:38:44,346 --> 00:38:46,466
+X negativo para esquerda,
+x positivo para a direita.
+
+825
+00:38:47,536 --> 00:38:49,856
+Ok? Y negativo para cima,
+y positivo para baixo.
+
+826
+00:38:50,756 --> 00:38:56,036
+Ok? Eu acho que z positivo
+é para baixo e z negativo é pra cima, ok?
+
+827
+00:38:56,476 --> 00:39:02,016
+Ah sim, isso vai ser
+totalmente óbvio (?)
+
+828
+00:39:02,856 --> 00:39:06,876
+Você vai conseguir entender.
+
+829
+00:39:07,156 --> 00:39:11,016
+Ok, então vamos falar sobre
+esse CMDeviceMotion.
+
+830
+00:39:11,336 --> 00:39:14,766
+CMDeviceMotion, quando você pergunta
+por esse em particular,
+
+831
+00:39:15,166 --> 00:39:19,906
+você recebe versões melhoradas
+das coisas que você obtém
+
+832
+00:39:19,906 --> 00:39:21,176
+perguntando por cada uma
+das coisas individualmente.
+
+833
+00:39:21,256 --> 00:39:22,616
+Por exemplo, se você perguntar
+
+834
+00:39:22,616 --> 00:39:26,536
+pelos dados da aceleração
+usando o CMDeviceMotion,
+
+835
+00:39:26,896 --> 00:39:28,146
+você vai receber
+os dados de aceleração
+
+836
+00:39:28,496 --> 00:39:32,376
+e você pode receber os dados
+da aceleração sem gravidade, ok?
+
+837
+00:39:33,026 --> 00:39:34,236
+Como isso é possível?
+
+838
+00:39:34,556 --> 00:39:39,026
+Bom, como-- se você sabe
+coisas como o giro,
+
+839
+00:39:39,026 --> 00:39:41,936
+o que está acontecendo com o giro
+e você sabe
+
+840
+00:39:41,936 --> 00:39:43,346
+onde é o norte magnético,
+
+841
+00:39:43,346 --> 00:39:44,476
+você tem todos
+esses outros dados,
+
+842
+00:39:44,756 --> 00:39:47,026
+então você pode ter
+a aceleração
+
+843
+00:39:47,026 --> 00:39:49,276
+sem a gravidade, ok?
+
+844
+00:39:49,896 --> 00:39:52,136
+Então, na verdade,
+você pode perguntar pela gravidade
+
+845
+00:39:52,366 --> 00:39:53,476
+separadamente da aceleração do usuário.
+
+846
+00:39:53,716 --> 00:39:58,266
+E similarmente com os dados de
+rotação, sabe, quando você os obtém
+
+847
+00:39:58,266 --> 00:40:00,396
+apenas pelo giro,
+vai ser tipo esses dados crus.
+
+848
+00:40:00,396 --> 00:40:03,006
+Mas quando você os combina
+com essas coisas
+
+849
+00:40:03,006 --> 00:40:07,436
+do CMDeviceMotion, você pode ter
+basicamente "roll, pitch e yaw".
+
+850
+00:40:07,436 --> 00:40:10,706
+Roll é quando o negócio
+está movendo para os lados.
+
+851
+00:40:10,706 --> 00:40:11,836
+Ok? Se eu voltar aqui.
+
+852
+00:40:12,046 --> 00:40:15,456
+Então isso é roll, ok?
+E pitch, certo?
+
+853
+00:40:15,706 --> 00:40:17,606
+E daí yaw na direção z.
+
+854
+00:40:17,816 --> 00:40:18,946
+Qaundo eu estou "yawing".
+
+855
+00:40:19,266 --> 00:40:21,736
+Ok? É meio como
+um avião voando, sabe?
+
+856
+00:40:21,736 --> 00:40:24,696
+Você tem o roll, pitch
+e o yaw assim.
+
+857
+00:40:25,116 --> 00:40:28,736
+Então você pode obter
+essa informação do CMDeviceMotion
+
+858
+00:40:28,966 --> 00:40:32,176
+se você tiver outros dispositivos
+suficientes, tipo você precisa do
+
+859
+00:40:32,286 --> 00:40:35,886
+acelerômetro e do magnetômetro
+e coisas assim.
+
+860
+00:40:35,886 --> 00:40:38,146
+E novamente, similar para as
+informações de campo magnético,
+
+861
+00:40:38,146 --> 00:40:41,016
+você pode obter um campo
+magnético calibrado que tem
+
+862
+00:40:41,016 --> 00:40:41,736
+todas as informações.
+
+863
+00:40:41,736 --> 00:40:44,556
+Então CMDeviceMotion
+é a versão melhorada--
+
+864
+00:40:44,776 --> 00:40:48,216
+é uma ótima API 
+especialmente em devices mais novos
+
+865
+00:40:48,216 --> 00:40:49,206
+que tem todas essas coisas
+
+866
+00:40:49,206 --> 00:40:52,136
+porque você recebe informação
+muito melhor sobre qualquer uma
+
+867
+00:40:52,136 --> 00:40:53,476
+das três coisas que você quiser.
+
+868
+00:40:54,676 --> 00:40:56,586
+Certo, então isso foi tudo
+sobre essas coisas
+
+869
+00:40:56,586 --> 00:40:58,876
+de estruturas de dados
+e coisas assim.
+
+870
+00:40:59,146 --> 00:41:00,616
+Vamos falar sobre como
+você se subscreve
+
+871
+00:41:00,616 --> 00:41:03,346
+para obter notificações
+sobre se o acelerômetro
+
+872
+00:41:03,346 --> 00:41:06,176
+ou eventos do device motion
+que você quer, como você se subscreve.
+
+873
+00:41:06,486 --> 00:41:09,236
+E aqui está o exemplo do
+acelerômetro no topo, que
+
+874
+00:41:09,236 --> 00:41:11,746
+você diz para o CMMotionManager
+
+875
+00:41:11,916 --> 00:41:14,516
+StartAccelerometerUpdatesToQueue
+e você vai
+
+876
+00:41:14,516 --> 00:41:16,406
+prover uma queue e eu vou
+dizer como faz isso em um segundo,
+
+877
+00:41:16,406 --> 00:41:18,706
+withHandler, e daí você vai
+
+878
+00:41:18,706 --> 00:41:20,306
+passar um block, ok?
+
+879
+00:41:20,566 --> 00:41:22,996
+Agora, esse block recebe
+
+880
+00:41:23,316 --> 00:41:24,626
+dois argumentos.
+
+
+881
+00:41:24,626 --> 00:41:27,806
+Um são os dados do acelerômetro
+que ele está de dando, ok?
+
+882
+00:41:27,856 --> 00:41:29,696
+Porque ele está
+constantemente chamando esse block.
+
+883
+00:41:30,296 --> 00:41:34,676
+E o segundo é qualquer erro
+que ele tenha, ok?
+
+884
+00:41:35,456 --> 00:41:37,266
+Então isso é para aceleração.
+
+885
+00:41:37,266 --> 00:41:38,546
+E daí os outros são similares.
+
+886
+00:41:38,546 --> 00:41:39,736
+São apenas os argumentos que ao invés
+
+887
+00:41:39,736 --> 00:41:43,376
+de ser um objeto de dados
+de aceleração
+
+888
+00:41:43,376 --> 00:41:46,146
+ou um objeto de dados do acelerômetro,
+ele pode ser um device motion
+
+889
+00:41:46,146 --> 00:41:50,766
+ou um objeto de dados do giro, ok?
+
+890
+00:41:51,176 --> 00:41:54,706
+Então vamos falar sobre esse lance
+da queue, porque vocês vão usar
+
+891
+00:41:54,956 --> 00:41:58,616
+o GCD, onde as queues
+são coisas em C. Tipos em C.
+
+892
+00:41:59,636 --> 00:42:01,936
+Existe uma API orientada
+a objetos para queues.
+
+893
+00:42:01,936 --> 00:42:03,876
+É chamada NSOperationQueue.
+
+894
+00:42:04,316 --> 00:42:07,946
+É a mesma coisa,
+é apenas orientada a objetos.
+
+895
+00:42:08,546 --> 00:42:12,606
+Eu meio que questiono porque a Apple
+usa isso aqui, se você vai usar
+
+896
+00:42:12,606 --> 00:42:14,466
+a API em C em todos os outros lugares.
+
+897
+00:42:14,466 --> 00:42:18,326
+E agora vocês são forçados a também
+aprenderem esse orientado a objetos.
+
+898
+00:42:18,716 --> 00:42:20,846
+Mas eles são tão idênticos em conceito.
+
+899
+00:42:20,846 --> 00:42:22,766
+É só aprender a sintaxe dele.
+
+900
+00:42:23,116 --> 00:42:26,306
+Mas é suficiente dizermos que
+NSOperationQueue, 
+
+901
+00:42:26,426 --> 00:42:27,866
+você pode alloc + init um.
+
+902
+00:42:27,976 --> 00:42:30,186
+Isso é como dizer
+dispatch_queue_create,
+
+903
+00:42:30,596 --> 00:42:32,676
+Ou você pode pegar a main queue,
+
+904
+00:42:32,676 --> 00:42:37,786
+que é como dispatch_queue_get_
+main_queue ou algo assim.
+
+905
+00:42:37,786 --> 00:42:40,656
+E daí você recebe um objeto
+que é ou uma nova fila
+
+906
+00:42:40,656 --> 00:42:43,846
+ou a fila principal, ok?
+
+907
+00:42:44,276 --> 00:42:50,106
+Geralmente--
+Existem alguns argumentos
+
+908
+00:42:50,106 --> 00:42:53,446
+se você vai querer
+especificar a main queue
+
+909
+00:42:53,896 --> 00:42:56,196
+quando você começa a receber
+updates de acelerômetro
+
+910
+00:42:56,196 --> 00:42:59,336
+ou updates de device motion, 
+porque esses updates podem estar
+
+911
+00:42:59,336 --> 00:43:00,926
+vindo bem rápido e você não quer
+
+912
+00:43:00,926 --> 00:43:04,356
+ficar bloqueando a main queue
+o tempo todo com essas coisas aparecendo.
+
+913
+00:43:04,776 --> 00:43:08,286
+E eu acho que a respostá é:
+se o que você está fazendo
+
+914
+00:43:08,286 --> 00:43:11,196
+no handler foi apenas
+coisas de UI
+
+915
+00:43:11,446 --> 00:43:14,546
+e você não está atualizando
+com tanta frequência, como, sabe,
+
+916
+00:43:14,546 --> 00:43:16,786
+talgez 10 ou 20 vezes por segundo,
+daí eu acho que tudo bem
+
+917
+00:43:16,786 --> 00:43:17,946
+postar isso na main queue.
+
+918
+00:43:17,946 --> 00:43:21,186
+Mas se você vai atualizar
+em uma taxa maior, 30 ou mais
+
+919
+00:43:21,186 --> 00:43:23,326
+vezes por segundo, e se você
+vai estar fazendo coisas
+
+920
+00:43:23,746 --> 00:43:27,556
+no handler que não são puramente
+coisas de UI, daí você pode querer
+
+921
+00:43:27,556 --> 00:43:30,056
+colocar isso em outra thread
+e daí ter outra thread, essa
+
+922
+00:43:30,056 --> 00:43:32,706
+outra queue postar de volta
+para a main queue quando ela
+
+923
+00:43:32,706 --> 00:43:35,346
+quiser desenhar o estado
+atual das coisas, ok?
+
+924
+00:43:36,026 --> 00:43:38,616
+São coisas de design,
+depende do que você está fazendo.
+
+925
+00:43:39,346 --> 00:43:41,486
+Bom, é assim que você faz isso.
+
+926
+00:43:41,586 --> 00:43:44,266
+Usa o start, especifica 
+uma queue e um handler,
+
+927
+00:43:44,456 --> 00:43:47,846
+E assom que você fizer isso,
+ele vai começar em alguma frequência
+
+928
+00:43:47,846 --> 00:43:50,936
+que você especificou,
+que nós vamos falar ou talvez
+
+929
+00:43:50,936 --> 00:43:52,766
+já esteja até no slide,
+
+930
+00:43:53,046 --> 00:43:54,846
+ele vai começar a chamar
+esse block nessa queue.
+
+931
+00:43:55,266 --> 00:43:55,596
+Pergunta.
+
+932
+00:43:56,146 --> 00:44:01,106
+>> A pergunta é:
+qual é a frequência máxima
+
+933
+00:44:01,246 --> 00:44:03,476
+que você pode setar para
+essa coisa ficar chamando?
+
+934
+00:44:03,476 --> 00:44:07,236
+E a resposta é: sabe,
+isso não é estritamente definido,
+
+935
+00:44:07,236 --> 00:44:10,826
+mas realisticamente, qualquer coisa
+maior do que cerca de 60 hertz
+
+936
+00:44:10,826 --> 00:44:13,256
+vai passar do que você
+pode atualizar.
+
+937
+00:44:13,706 --> 00:44:16,506
+Então, mais rápido do que
+60 hertz vai provavelmente
+
+938
+00:44:16,506 --> 00:44:18,886
+começar a receber retornos
+decrescentes do valor obtido (?)
+
+939
+00:44:19,296 --> 00:44:21,766
+Eu não tenho certeza. Isso provavelmente
+depende do hardeare.
+
+940
+00:44:21,766 --> 00:44:24,826
+Cada hardware provavelmente
+tem capacidades diferentes mas,
+
+941
+00:44:24,826 --> 00:44:27,046
+você sabe, uma frequência
+de 60 hertz é tipo
+
+942
+00:44:27,046 --> 00:44:28,476
+a frequência de drawing,
+quero dizer,
+
+943
+00:44:28,476 --> 00:44:30,376
+é provavelmente mais rápido
+do que você
+
+944
+00:44:30,376 --> 00:44:32,396
+vai conseguir tratar
+para fazer algum sentido
+
+945
+00:44:32,566 --> 00:44:39,186
+Então esse é meio que o limite prático
+se você quiser pensar assim.
+
+946
+00:44:39,296 --> 00:44:41,216
+Ok, isso é apenas device motion...
+
+947
+00:44:41,616 --> 00:44:44,936
+Vou passar por isso...
+
+948
+00:44:45,316 --> 00:44:46,966
+Você tem esse block,
+
+949
+00:44:46,966 --> 00:44:49,906
+então a pergunta é: quão frequentemente
+esse block vai ser chamado?
+
+950
+00:44:49,906 --> 00:44:53,206
+E a resposta é: você seta
+esse TimeInterval usando uma
+
+951
+00:44:53,206 --> 00:44:56,166
+dessas quatro propriedades, certo?
+o accelerometerUpdateInterval,
+
+952
+00:44:56,166 --> 00:44:57,766
+ou o deviceMotionUpdateInterval...
+
+953
+00:44:58,106 --> 00:45:00,296
+Você seta isso, é um TimeInterval,
+então é um número
+
+954
+00:45:00,296 --> 00:45:03,226
+de segundos, então algo como
+1/60 de segundo seria rápido,
+
+955
+00:45:03,556 --> 00:45:06,416
+1/10 se segundo, sabe,
+uma frequencia razoável. Então você
+
+956
+00:45:06,416 --> 00:45:08,636
+seta isso e seu block vai ser
+chamado nessa frequencia.
+
+957
+00:45:09,456 --> 00:45:14,376
+Mesmo que só seja permitido
+uma instância de CMMotionManager,
+
+958
+00:45:14,376 --> 00:45:17,966
+tudo bem de iniciarmos
+múltiplos blocks
+
+959
+00:45:17,966 --> 00:45:19,076
+em queues diferentes, ok?
+
+960
+00:45:19,326 --> 00:45:22,546
+Então você pode começar aquele
+StartAccelerometerUpdatesToQueueWithHandler
+
+961
+00:45:22,546 --> 00:45:25,716
+múltiplas vezes com
+diferentes queues e handlers.
+
+962
+00:45:25,926 --> 00:45:27,076
+Isso é perfeitamente ok.
+
+963
+00:45:27,076 --> 00:45:30,166
+Entretanto, todas elas
+vão ser atualizadas nesse frequencia
+
+964
+00:45:30,566 --> 00:45:33,656
+das propriedades
+no slide, certo?
+
+965
+00:45:33,656 --> 00:45:35,096
+Porque só há um motion manager,
+
+966
+00:45:35,096 --> 00:45:37,786
+só existe uma property nele
+que diz em que frequencia fazer isso.
+
+967
+00:45:38,176 --> 00:45:39,466
+Então todos eles vão receber--
+
+968
+00:45:39,466 --> 00:45:44,156
+se você tiver duas queues
+tratando updates de acelerômetro,
+
+969
+00:45:44,156 --> 00:45:48,496
+todas elas vão recebê-los
+na mesma frequencia, ok?
+
+970
+00:45:48,726 --> 00:45:50,886
+Certo, então vamos ver
+isso em ação.
+
+971
+00:45:50,886 --> 00:45:54,186
+O que nós vamos fazer aqui é:
+eu vou fazer de modo que
+
+972
+00:45:54,186 --> 00:45:56,446
+nossa pia de cozinha,
+quando eu virá-la,
+
+973
+00:45:56,986 --> 00:45:59,786
+a comida começa a escorregar
+para as bordas, ok?
+
+974
+00:46:00,196 --> 00:46:02,796
+E daí nós podemos tipo
+virar pros lados e elas
+
+975
+00:46:02,796 --> 00:46:07,456
+vão tipo ficar escorregando
+e nós vamos continuar podendo salvá-las.
+
+976
+00:46:07,456 --> 00:46:11,016
+Isso torna o jogo de salvá-las
+bem mais desafiador
+
+977
+00:46:11,016 --> 00:46:14,886
+se você tem que manter o nível,
+mas nós vamos ver como isso vai ficar.
+
+978
+00:46:15,526 --> 00:46:17,426
+Nós precisamos
+apenas do acelerômetro aqui.
+
+979
+00:46:17,426 --> 00:46:19,486
+Então eu vou usar a API
+do acelerômetro
+
+980
+00:46:19,666 --> 00:46:21,856
+para ficar mais simples
+e nós vamos deixar
+
+981
+00:46:21,856 --> 00:46:23,456
+a acelerômetro tratar
+a gravidade.
+
+982
+00:46:23,456 --> 00:46:25,196
+Basicamente, se você qusier pensar
+sobre isso, todas as coisas
+
+983
+00:46:25,196 --> 00:46:28,146
+na pia vão estar escorregando
+na direção do centro
+
+984
+00:46:28,146 --> 00:46:30,656
+da Terra, o melhor que elas
+puderem, ok?
+
+985
+00:46:30,656 --> 00:46:32,536
+Então se eu virar totalmente
+pro lado, elas vão
+
+986
+00:46:32,536 --> 00:46:33,936
+cair direto na direção
+do centro da Terra.
+
+987
+00:46:33,936 --> 00:46:36,796
+Se eu virar só um pouquinho
+eles vão ir devagar
+
+988
+00:46:36,796 --> 00:46:37,936
+até a borda da pia para cair
+
+989
+00:46:37,936 --> 00:46:39,376
+pro centro da Terra.
+
+990
+00:46:39,876 --> 00:46:44,426
+Certo, então aqui estamos
+de volta no KitchenSink.
+
+991
+00:46:44,916 --> 00:46:46,576
+A primeira coisa que
+queremos fazer aqui
+
+992
+00:46:46,576 --> 00:46:52,226
+é ter essa instância compartilhada
+do CMMotionManager, ok?
+
+993
+00:46:52,226 --> 00:46:54,746
+E eu pensei que eu poderia
+aproveitar essa oportunidade para
+
+994
+00:46:54,746 --> 00:46:58,246
+passar sobre o conceito
+de ter uma shared instance.
+
+995
+00:46:58,576 --> 00:47:00,816
+Novamente, espero--
+quantas pessoas
+
+996
+00:47:00,816 --> 00:47:03,816
+no último homework usaram
+uma shared instance para alguma coisa?
+
+997
+00:47:04,416 --> 00:47:06,706
+Ok, mais ou menos metade de vocês,
+
+998
+00:47:06,706 --> 00:47:08,666
+então vale a pena vermos isso.
+
+999
+00:47:08,666 --> 00:47:13,316
+O que vocês poderiam ter
+compartilhado na última tarefa?
+
+1000
+00:47:13,396 --> 00:47:17,576
+Bom, bom exemplo, o documento,
+UIManagedDocument que vocês
+
+1001
+00:47:18,026 --> 00:47:20,986
+estavam usando tanto para
+os seus recentes
+
+1002
+00:47:21,296 --> 00:47:26,256
+quanto para os view controllers
+baseados em tags da Stanford.
+
+1003
+00:47:26,256 --> 00:47:27,286
+Eles eram os dois view controllers.
+
+1004
+00:47:27,576 --> 00:47:29,626
+Ambos queriam olhar
+para o database juntos.
+
+1005
+00:47:29,626 --> 00:47:33,036
+Nós sabemos que se nós tivermos
+dois UIManagedDocuments diferentes,
+
+1006
+00:47:33,036 --> 00:47:37,426
+daí nós atualizamos um, tipo setarmos
+algum "visualizado" ou alguma property
+
+1007
+00:47:37,426 --> 00:47:39,226
+assim, que ele não vai atualizar
+
+1008
+00:47:39,226 --> 00:47:42,166
+no outro managed document até ele
+ser salvo e refetched
+
+1009
+00:47:42,166 --> 00:47:43,676
+no outro documento.
+Mas nós queremos ambos
+
+1010
+00:47:43,926 --> 00:47:47,316
+para estar constantemente atualizando
+e vendo o mesmo database.
+
+1011
+00:47:47,656 --> 00:47:50,996
+Então nós poderíamos querer ter
+um documento compartilhado lá e
+
+1012
+00:47:50,996 --> 00:47:53,406
+provavelmente iríamos querer
+até um aPI 
+
+1013
+00:47:53,576 --> 00:47:57,126
+onde essa coisa compartilhada iria
+abrir o documento e criá-lo
+
+1014
+00:47:57,126 --> 00:48:01,746
+para nós e daí nós chamar de volta
+usando uma API assíncrona.
+
+1015
+00:48:02,006 --> 00:48:04,946
+Eu sei que alguns de vocês
+fizeram isso.
+
+1016
+00:48:04,946 --> 00:48:07,016
+Nós vimos algumas discussões
+no Piazza sobre isso.
+
+1017
+00:48:07,966 --> 00:48:10,196
+Eu sugiro que vocês voltem
+algumas aulas atrás
+
+1018
+00:48:10,196 --> 00:48:12,056
+e façam isso se vocês
+não fizeram antes
+
+1019
+00:48:12,056 --> 00:48:14,616
+porque projetar APIs assíncronas
+é uma coisa boa para saber.
+
+1020
+00:48:15,046 --> 00:48:19,076
+Mas no coração daquela coisa
+compartilhada, existe um
+
+1021
+00:48:19,076 --> 00:48:19,826
+shared UIManagedDocument, certo?
+
+
+1022
+00:48:20,266 --> 00:48:23,926
+E alguns de vocês estavam tipo:
+como eu faço um shared document
+
+1023
+00:48:23,926 --> 00:48:24,346
+desse jeito?
+
+1024
+00:48:24,776 --> 00:48:27,496
+E um bom modo de de fazer isso
+é apenas criar uma classe
+
+1025
+00:48:27,916 --> 00:48:31,596
+que o compartilha, ok?
+Ou às vezes,
+
+1026
+00:48:31,596 --> 00:48:35,376
+que é o que eu vou fazer,
+criar uma categoria da classe
+
+1027
+00:48:35,616 --> 00:48:39,526
+que você quer compartilhar
+e ter um método nessa classe
+
+1028
+00:48:40,126 --> 00:48:41,766
+que te fornece
+a versão compartilhada dela.
+
+1029
+00:48:41,766 --> 00:48:42,856
+Então é isso que eu vou fazer.
+
+1030
+00:48:43,266 --> 00:48:45,176
+Então eu vou criar
+uma nova categoria aqui
+
+1031
+00:48:45,276 --> 00:48:46,656
+de CMMotionManager.
+
+1032
+00:48:47,326 --> 00:48:48,886
+Então é uma categoria
+de Objective-C.
+
+1033
+00:48:49,386 --> 00:48:50,946
+Vou chamá-la de Shared.
+
+1034
+00:48:51,856 --> 00:48:53,896
+Ok? Esse é um bom nome
+para uma categoria que fornece
+
+1035
+00:48:53,896 --> 00:48:54,906
+uma versão shared.
+
+1036
+00:48:55,556 --> 00:48:56,506
+Eu crio aqui.
+
+1037
+00:48:57,276 --> 00:49:00,396
+Aqui está nosso arquivo header.
+
+1038
+00:49:01,246 --> 00:49:03,566
+Obviamente, isso é Core Motion
+então eu quero
+
+1039
+00:49:03,566 --> 00:49:07,076
+importar o arquivo header
+do Core Motion.
+
+1040
+00:49:08,466 --> 00:49:09,876
+E o método que eu vou adicionar
+
+1041
+00:49:09,876 --> 00:49:13,406
+é
+[ditando código]
+
+1042
+00:49:14,066 --> 00:49:16,526
+[ditando código]
+ok?
+
+1043
+00:49:16,616 --> 00:49:21,176
+Então isso vai retornar uma 
+shared instance de CMMotionManager
+
+1044
+00:49:21,176 --> 00:49:22,966
+que eu posso usar na
+aplicação inteira.
+
+1045
+00:49:24,286 --> 00:49:26,196
+Então como esse método seria?
+
+1046
+00:49:26,196 --> 00:49:28,636
+Bom, vamos fazer
+uma versão simples dele.
+
+1047
+00:49:28,636 --> 00:49:33,596
+Eu posso ter apenas
+[ditando código]
+
+1048
+00:49:33,596 --> 00:49:34,506
+[ditando código]
+
+1049
+00:49:36,036 --> 00:49:40,616
+E daí se ele não está setado,
+daí eu vou alloc + init um.
+
+1050
+00:49:40,796 --> 00:49:46,056
+Ok? E daí retorno ele.
+
+1051
+00:49:46,646 --> 00:49:49,286
+Ok? Então esse é um modo 
+simples para fazer o compartilhamento.
+
+1052
+00:49:49,286 --> 00:49:50,996
+todo mundo entende esse código?
+
+1053
+00:49:51,106 --> 00:49:52,846
+Ele está apenas retornando
+a variável estárica
+
+1054
+00:49:53,436 --> 00:49:54,376
+para que as pessoas
+possam compartilhá-la.
+
+1055
+00:49:54,576 --> 00:49:54,643
+Sim.
+
+1056
+00:49:54,946 --> 00:49:56,516
+>> [Estudante perguntando]
+
+1057
+00:49:57,406 --> 00:50:01,216
+[estudante perguntando]
+
+1058
+00:50:02,906 --> 00:50:03,706
+>> Que classe manager?
+
+1059
+00:50:04,656 --> 00:50:07,396
+[estudante perguntando]
+
+1060
+00:50:07,396 --> 00:50:09,676
+>> Por que eu não coloquei
+esse código no CMMotionManager?
+
+1061
+00:50:09,676 --> 00:50:11,456
+Porque isso está no
+Core Motion framework,
+
+1062
+00:50:11,456 --> 00:50:12,476
+Eu não tenho esse código.
+
+1063
+00:50:13,906 --> 00:50:16,106
+Não há como...
+não é minha classe.
+
+1064
+00:50:16,456 --> 00:50:18,196
+[estudante perguntando]
+
+1065
+00:50:18,946 --> 00:50:20,036
+Eu poderia criar uma subclasse?
+
+1066
+00:50:20,036 --> 00:50:20,746
+Absolutamente, eu poderia.
+
+1067
+00:50:21,096 --> 00:50:23,636
+Isso certamente seria
+um modo de fazer isso, mas
+
+1068
+00:50:23,706 --> 00:50:24,886
+não é realmente necessário aqui.
+
+1069
+00:50:24,886 --> 00:50:26,316
+Por que não apenas usar uma categoria?
+
+1070
+00:50:26,316 --> 00:50:28,656
+Isso é um modo clássico onde você
+quer usar uma categoria ao invés
+
+1071
+00:50:28,656 --> 00:50:31,346
+de subclassear, porque você
+não está de fato melhorando
+
+1072
+00:50:31,346 --> 00:50:32,806
+nenhum comportamento do motion manager.
+
+1073
+00:50:32,806 --> 00:50:34,406
+Você está apenas criando
+esse método,
+
+1074
+00:50:34,446 --> 00:50:36,196
+esse meio que método de
+conveniência que está fornecendo
+
+1075
+00:50:36,196 --> 00:50:36,936
+um shared.
+
+1076
+00:50:37,356 --> 00:50:39,906
+Então categoria é perfeitamente ok.
+
+1077
+00:50:40,506 --> 00:50:42,736
+Agora, na tarefa
+do seu homework,
+
+1078
+00:50:42,926 --> 00:50:46,546
+você estava compartilhando
+um UIManagedDocument, isso está
+
+1079
+00:50:46,966 --> 00:50:49,286
+no UIKit, só deveria ser
+usado na main thread.
+
+1080
+00:50:49,826 --> 00:50:51,366
+Então vocês não precisaram
+se importar com threading.
+
+1081
+00:50:52,106 --> 00:50:54,876
+Mas CMMotionManager,
+você poderia na verdade
+
+1082
+00:50:54,876 --> 00:50:57,116
+tê-lo em uma thread
+diferente, ok?
+
+1083
+00:50:57,116 --> 00:50:58,186
+Porque ele não está no UIKit.
+
+1084
+00:50:58,526 --> 00:51:00,096
+Ele é thread safe.
+
+1085
+00:51:00,096 --> 00:51:01,336
+Você poderia usá-lo em outra thread.
+
+1086
+00:51:01,876 --> 00:51:05,126
+O que você faria quando
+você faz alguma coisa compartilhada
+
+1087
+00:51:05,126 --> 00:51:07,786
+assim e você poderia ter duas threads
+pedindo pela mesma coisa shared
+
+1088
+00:51:07,786 --> 00:51:09,996
+ao mesmo tempo, ok?
+
+1089
+00:51:10,356 --> 00:51:12,456
+Uma das threads
+tem que ganhar, caso contrário
+
+1090
+00:51:12,636 --> 00:51:14,066
+você pode alloc + init dois deles.
+
+1091
+00:51:14,066 --> 00:51:16,746
+E fornecer a cada um
+um diferente.
+
+1092
+00:51:17,676 --> 00:51:22,806
+Então um modo simples de fazer isso
+é usar uma coisa chamada
+
+1093
+00:51:23,046 --> 00:51:24,386
+dispatch_once, ok?
+
+1094
+00:51:24,796 --> 00:51:26,956
+dispatch_once faz parte do GCD.
+
+1095
+00:51:28,186 --> 00:51:31,916
+E-- eu vou colocar isso aqui
+em cima, assim.
+
+1096
+00:51:32,246 --> 00:51:36,536
+E aqui dentro, eu vou
+fazer o dispatch_once, ok?
+
+1097
+00:51:37,826 --> 00:51:41,206
+E aqui é como
+o dispatch_once funciona.
+
+1098
+00:51:41,206 --> 00:51:43,126
+Vamos ver aqui...
+deixa eu colocar aqui...
+
+1099
+00:51:43,246 --> 00:51:47,336
+Então dispatch_once, você
+tem esse token, ok?
+
+1100
+00:51:47,556 --> 00:51:49,606
+Que você declara
+estaticamente.
+
+1101
+00:51:50,046 --> 00:51:53,226
+E daí você chama a função
+dispatch_once.
+
+1102
+00:51:53,226 --> 00:51:54,826
+Você provê um ponteiro
+para esse token
+
+1103
+00:51:54,826 --> 00:51:57,646
+e daí você provê algum código
+para executar, e eu vou
+
+1104
+00:51:57,646 --> 00:51:59,876
+colocar isso aqui, ok?
+
+1105
+00:52:00,506 --> 00:52:04,026
+E o que acontece aqui é:
+o dispatch_once vai ser executado
+
+1106
+00:52:04,026 --> 00:52:07,576
+apenas uma vez durante
+a execução inteira da aplicação,
+
+1107
+00:52:07,676 --> 00:52:09,736
+garantido. Não importa
+quantas threads chamem isso.
+
+1108
+00:52:10,126 --> 00:52:13,666
+E na verdade, todas as threads
+que chamam isso vão todas bloquear
+
+1109
+00:52:14,126 --> 00:52:16,926
+até que uma delas
+tenha sucesso aqui
+
+1110
+00:52:17,656 --> 00:52:19,036
+e daí elas vão todas desbloquear.
+
+1111
+00:52:19,266 --> 00:52:20,366
+Mas apenas uma--
+a única que
+
+1112
+00:52:20,366 --> 00:52:21,996
+teve sucesso é a única
+que vai executar isso.
+
+1113
+00:52:22,306 --> 00:52:25,126
+Mas isso é ok, já que elas todas
+estão bloqueadas aqui esperando
+
+1114
+00:52:25,126 --> 00:52:26,276
+por isso ser criado.
+
+1115
+00:52:26,516 --> 00:52:29,286
+Uma vez que isso desbloquear,
+você pode retorná-lo para todas elas
+
+1116
+00:52:29,286 --> 00:52:33,256
+e todas elas vão estar compartilhando
+isso em threads múltiplas, ok?
+
+1117
+00:52:34,156 --> 00:52:36,466
+Isso faz sentido?
+
+1118
+00:52:37,566 --> 00:52:38,906
+Então dispatch_once
+é apenas um modo
+
+1119
+00:52:38,906 --> 00:52:41,136
+de se certificar que uma coisa
+multithreaded, quando você fornece
+
+1120
+00:52:41,136 --> 00:52:44,186
+uma shared instance, que você
+vai apenas ter uma delas.
+
+1121
+00:52:44,376 --> 00:52:47,656
+Você não tem múltiplas threads...
+
+1122
+00:52:48,496 --> 00:52:49,546
+>> [Estudante perguntando]
+>> O resto delas?
+
+1123
+00:52:49,576 --> 00:52:52,536
+Bom, todas as threads vão
+estar bloqueadas aqui.
+
+1124
+00:52:53,056 --> 00:52:56,396
+Uma delas vai ser permitida
+para continuar, ela vai fazer isso.
+
+1125
+00:52:56,616 --> 00:52:59,106
+Quando ela acabar, todas elas
+vão desbloquear
+
+1126
+00:52:59,796 --> 00:53:02,136
+e daí todas elas vão ter
+essa estática local
+
+1127
+00:53:02,136 --> 00:53:04,826
+que todas elas podem retornar, ok?
+
+1128
+00:53:04,896 --> 00:53:10,216
+Certo? Eu queria apenas--
+estou apenas usando isso como um exemplo
+
+1129
+00:53:10,216 --> 00:53:12,806
+para mostrar isso. Vocês provavelmente
+não iriam usar o
+
+1130
+00:53:12,806 --> 00:53:15,376
+CMMotionManager em múltiplas threads,
+mas eu queria mostrar
+
+1131
+00:53:15,376 --> 00:53:17,976
+o dispatch_one para vocês.
+Essa foi a única
+
+1132
+00:53:18,336 --> 00:53:20,656
+oportunidade que eu tive
+no trimestre para fazer isso.
+
+1133
+00:53:21,556 --> 00:53:23,856
+Mas agora eu tenho esse
+CMMotionManager,
+
+1134
+00:53:23,856 --> 00:53:25,786
+esse método que eu adicionei.
+
+1135
+00:53:26,226 --> 00:53:29,796
+Vamos seguir e adicionar
+esse lance de
+
+1136
+00:53:29,796 --> 00:53:32,346
+movimento na nossa pia de cozinha.
+
+1137
+00:53:32,626 --> 00:53:35,666
+Eu vou fazer isso
+do seguinte modo.
+
+1138
+00:53:35,666 --> 00:53:38,656
+Ok, no viewDidApper, 
+eu vou começar esse drifting.
+
+1139
+00:53:38,656 --> 00:53:41,256
+Então eu vou ter esse método
+chamado startDrift.
+
+1140
+00:53:41,726 --> 00:53:43,746
+Então eu vou implementar
+o startDrift.
+
+1141
+00:53:44,096 --> 00:53:45,836
+E daí no viewWillDisappear,
+nós vamos pará-lo.
+
+1142
+00:53:45,836 --> 00:53:47,526
+Eu vou dizer [self stopDrift].
+
+1143
+00:53:48,316 --> 00:53:51,216
+E lembrem-se eu falei a vocês,
+é realmente importante ligarmos
+
+1144
+00:53:51,216 --> 00:53:55,456
+e desligarmos essa coisa.
+E ligá-lo no viewDidAppear e
+
+1145
+00:53:55,456 --> 00:53:57,546
+desligá-lo no viewWillDisappear
+é um modo bom de fazer isso.
+
+1146
+00:53:57,546 --> 00:53:59,636
+Muito similar ao timer
+e todas as outras coisas.
+
+1147
+00:54:00,066 --> 00:54:04,236
+Nós não queremos ele rodando
+e usando recursos de hardware,
+
+1148
+00:54:04,236 --> 00:54:07,706
+especialmente a bateria
+enquanto nós não estamos usando.
+
+1149
+00:54:08,316 --> 00:54:10,366
+Então aqui, eu vou colocar
+uma pequena seção aqui
+
+1150
+00:54:10,366 --> 00:54:12,356
+chamada drift.
+
+1151
+00:54:12,876 --> 00:54:15,296
+E eu vou ter esses dois métodos,
+startDrift
+
+1152
+00:54:16,406 --> 00:54:19,536
+e outro chamado stopDrift, ok?
+
+1153
+00:54:22,366 --> 00:54:25,596
+Então startDrift, como eu vou
+fazer esse drift começar?
+
+1154
+00:54:25,596 --> 00:54:29,116
+Bom, vamos começar pegando
+nosso sharedMotionManaged, ok?
+
+1155
+00:54:29,176 --> 00:54:30,146
+Preciso importá-lo.
+
+1156
+00:54:31,396 --> 00:54:33,436
+Vou ao topo e importar isso.
+
+1157
+00:54:33,946 --> 00:54:38,076
+Quando eu importo isso,
+eu vou importar a categoria
+
+1158
+00:54:38,296 --> 00:54:42,226
+para que eu possa usar aquele
+método da minha categoria, ok?
+
+1159
+00:54:42,656 --> 00:54:44,796
+Então vamos ir aqui embaixo.
+
+1160
+00:54:44,796 --> 00:54:47,486
+Agora eu posso dizer
+[ditando código]
+
+1161
+00:54:47,806 --> 00:54:52,866
+[ditando código]
+e agora ele
+
+1162
+00:54:52,866 --> 00:54:55,066
+implementa esse método
+sharedMotionManaged
+
+1163
+00:54:55,066 --> 00:54:57,646
+porque a categoria
+o adicionou, ok?
+
+1164
+00:54:58,716 --> 00:55:00,526
+Agora, eu disse que a primeira
+coisa que vocês querem
+
+1165
+00:55:00,526 --> 00:55:04,176
+fazer  é sempre ver se
+a coisa que vocês querem está disponível.
+
+1166
+00:55:04,476 --> 00:55:07,156
+Então eu vou ver se o
+acelerômetro está disponível
+
+1167
+00:55:07,156 --> 00:55:07,956
+nesse device.
+
+1168
+00:55:08,556 --> 00:55:11,646
+E se estiver, daí eu vou
+setar o rate
+
+1169
+00:55:11,646 --> 00:55:13,506
+para o que eu quero
+que ele faça update.
+
+1170
+00:55:13,506 --> 00:55:16,716
+Então vou dizer
+accelerometerUpdateInterval 
+
+1171
+00:55:17,036 --> 00:55:22,176
+E eu vou chamar isso, digamos
+1 dividido por DRIFT_HZ.
+
+1172
+00:55:22,686 --> 00:55:27,626
+E daí vamos #define DRIFT_HZ.
+
+1173
+00:55:27,786 --> 00:55:29,456
+Sabe, essa coisa de drifting,
+
+1174
+00:55:29,856 --> 00:55:32,146
+uma vez a cada décimo de segundo
+é provavelmente suficiente
+
+1175
+00:55:32,146 --> 00:55:33,226
+para fazê-lo bem suave.
+
+1176
+00:55:33,546 --> 00:55:36,356
+Então eu não vou forçar
+o sistema mais do que
+
+1177
+00:55:36,356 --> 00:55:37,116
+ele precisa.
+
+1178
+00:55:37,116 --> 00:55:39,936
+Eu acho que 10 hertz vai
+ser perfeitamente ok aqui.
+
+1179
+00:55:39,936 --> 00:55:41,626
+Se não for, eu posso
+acelerá-lo, sabe,
+
+1180
+00:55:41,626 --> 00:55:43,046
+meio que decidir o que é
+algo bom--
+
+1181
+00:55:43,396 --> 00:55:47,026
+qual um bom número é bom
+para o meu app, mas vou começar com 10.
+
+1182
+00:55:47,026 --> 00:55:47,476
+Daí eu vou fazer
+
+1183
+00:55:47,476 --> 00:55:50,956
+[ditando código]
+
+1184
+00:55:50,956 --> 00:55:51,206
+ok?
+
+1185
+00:55:51,576 --> 00:55:53,746
+Eu tenho que especificar uma queue.
+
+1186
+00:55:53,746 --> 00:55:58,396
+Então aqui eu vou usar
+a main queue, ok?
+
+1187
+00:55:58,396 --> 00:55:59,486
+Porque tudo que eu vou fazer
+
+1188
+00:55:59,486 --> 00:56:02,056
+com meu handler vai ser
+mover minhas views por aí.
+
+1189
+00:56:02,546 --> 00:56:04,266
+Isso é tudo que vou fazer.
+Tudo coisa de UI.
+
+1190
+00:56:04,356 --> 00:56:06,106
+Então eu posso muito bem
+fazer isso na main queue.
+
+1191
+00:56:06,586 --> 00:56:07,676
+E daí eu tenho que
+passar o handler,
+
+1192
+00:56:07,676 --> 00:56:09,676
+e como vocês podem ver
+o handler tem esses dois argumentos,
+
+1193
+00:56:09,676 --> 00:56:11,896
+accelerometerData
+e o error. 
+
+1194
+00:56:11,896 --> 00:56:13,396
+Então vamos colocar nosso block aqui.
+
+1195
+00:56:13,396 --> 00:56:20,236
+[ditando código]
+
+1196
+00:56:20,756 --> 00:56:25,196
+[ditando código]
+ok?
+
+1197
+00:56:25,296 --> 00:56:29,596
+Então aqui está nosso block.
+(...)
+
+1198
+00:56:29,596 --> 00:56:32,256
+(...)
+
+1199
+00:56:32,576 --> 00:56:32,976
+Está bom.
+
+1200
+00:56:32,976 --> 00:56:36,776
+(...)
+
+1201
+00:56:36,896 --> 00:56:39,576
+Agora, agora. Esse é o block
+que vai ser chamado
+
+1202
+00:56:39,576 --> 00:56:42,456
+cada vez que o update
+do acelerômetro acontecer,
+
+1203
+00:56:42,456 --> 00:56:44,956
+que vai ser a cada décido
+de segundo aqui, ok?
+
+1204
+00:56:45,146 --> 00:56:46,486
+Porque eu setei isso
+para ser 1/10.
+
+1205
+00:56:47,206 --> 00:56:48,096
+E o que eu vou fazer aqui?
+
+1206
+00:56:48,096 --> 00:56:48,966
+Bom, eu vou simplsmente passar
+
+1207
+00:56:48,966 --> 00:56:52,006
+por todas minhas views
+no KitchenSink.
+
+1208
+00:56:52,666 --> 00:56:55,836
+E cada uma delas eu vou apenas
+
+1209
+00:56:55,836 --> 00:56:57,576
+movê-las um pouco dependendo
+
+1210
+00:56:57,576 --> 00:57:00,726
+de quanta aceleração
+estiver acontecendo em x e y e z.
+
+1211
+00:57:00,726 --> 00:57:02,676
+Eu não vou na verdade
+prestar atenção em z.
+
+1212
+00:57:02,676 --> 00:57:04,436
+Então apenas x e y.
+Quando for inclinado,
+
+1213
+00:57:04,836 --> 00:57:05,596
+Eu vou movê-lo.
+
+
+1214
+00:57:05,856 --> 00:57:10,236
+Então vamos pegar o center point
+atual dessa view, ok?
+
+1215
+00:57:10,886 --> 00:57:12,366
+Isso é para cada view.
+
+1216
+00:57:12,726 --> 00:57:14,786
+E vamos fazê-la mover
+
+1217
+00:57:14,786 --> 00:57:19,026
+por quanto a aceleração existir,
+
+1218
+00:57:19,026 --> 00:57:22,476
+vezes algum tipo de taxa
+de drift, ok?
+
+1219
+00:57:22,476 --> 00:57:24,976
+Então esse DRIFT_RATE vai ser
+algum parâmetro
+
+1220
+00:57:24,976 --> 00:57:29,436
+que eu posso meio que modificar
+no decorrer do tempo para ficar bom.
+
+1221
+00:57:29,806 --> 00:57:32,806
+E nós vamos começar com 10.
+Então isso significaria
+
+1222
+00:57:32,806 --> 00:57:37,816
+que ele vai fazer 10 pixels
+ou 10 pontos por update
+
+1223
+00:57:37,926 --> 00:57:40,236
+se eu inclinar totalmente, certo?
+
+1224
+00:57:40,236 --> 00:57:42,686
+Então se o x estiver totalmente
+inclinado, ele começaria
+
+1225
+00:57:42,686 --> 00:57:47,146
+a cair 10 pontos...
+acho que 100 por segundo.
+
+1226
+00:57:47,606 --> 00:57:53,936
+E daí o y. Agora, lembrem-se,
+nossa origem está no topo,
+
+1227
+00:57:53,936 --> 00:57:56,316
+então eu vou na verdade
+fazer negativo para o y,
+
+1228
+00:57:57,206 --> 00:58:00,356
+e vezes o mesmo DRIFT_RATE.
+
+1229
+00:58:00,356 --> 00:58:02,246
+Nós driftamos ambas
+as direções na mesma taxa.
+
+1230
+00:58:02,246 --> 00:58:03,916
+E daí eu vou setá-lo,
+
+1231
+00:58:04,616 --> 00:58:06,056
+setar o centro da view para ser isso.
+
+1232
+00:58:06,466 --> 00:58:09,536
+O único truque-- então isso
+vai ser suficiente para fazer o drift.
+
+1233
+00:58:09,536 --> 00:58:12,766
+A única coisa é: uma vez que
+as coisas caírem completamente
+
+1234
+00:58:12,766 --> 00:58:16,376
+pra fora da minha pia, eu vou
+removê-las da minha superview,
+
+1235
+00:58:16,376 --> 00:58:17,826
+porque, sabe, uma vez que ela
+passa da borda,
+
+1236
+00:58:17,826 --> 00:58:19,016
+eu não posso mais pegá-la.
+
+1237
+00:58:19,016 --> 00:58:20,736
+Quero dizer, eu poderia,
+inclinando de volta e
+
+1238
+00:58:20,736 --> 00:58:25,376
+torcendo para ela voltar,
+mas eu vou apenas removê-la
+
+1239
+00:58:25,376 --> 00:58:26,846
+da superview nesse caso.
+
+1240
+00:58:27,166 --> 00:58:29,316
+E aqui é como eu 
+decidi fazer isso.
+
+1241
+00:58:29,666 --> 00:58:32,076
+Eu vou dizer
+CGRectContainsRect. 
+
+1242
+00:58:33,356 --> 00:58:39,016
+[ditando código]
+
+1243
+00:58:39,016 --> 00:58:42,936
+[ditando código]
+ok?
+
+1244
+00:58:43,446 --> 00:58:46,576
+E não estiver pendurado
+borda...
+
+1245
+00:58:47,416 --> 00:58:49,366
+[ditando código]
+
+1246
+00:58:50,656 --> 00:58:55,636
+[ditando código]
+
+1247
+00:58:55,956 --> 00:59:00,586
+Percebam que essas duas coisas,
+o kitchenSink.bounds e
+
+1248
+00:59:00,616 --> 00:59:02,746
+o view.frame estão no mesmo
+sistema de coordenadas.
+
+1249
+00:59:03,056 --> 00:59:04,196
+Sempre temos que
+comparar as coisas
+
+1250
+00:59:04,196 --> 00:59:05,256
+no mesmo sistema de coordenadas.
+
+1251
+00:59:05,256 --> 00:59:07,736
+Daí eu vou
+remover da superview.
+
+1252
+00:59:09,836 --> 00:59:12,046
+[ditando código]
+ok?
+
+1253
+00:59:12,586 --> 00:59:15,886
+Basicamente, se a sitchenSink
+não a conter completamente
+
+1254
+00:59:16,756 --> 00:59:20,156
+e e la não interctar
+a borda
+
+1255
+00:59:20,156 --> 00:59:23,636
+de algum modo, daí eu vou
+dispensá-la, ok?
+
+1256
+00:59:23,636 --> 00:59:26,486
+Tem que estar completamente
+fora da borda antes de
+
+1257
+00:59:26,486 --> 00:59:26,886
+eu dispensá-la.
+
+1258
+00:59:26,926 --> 00:59:29,986
+E daí parar o drift aqui embaixo,
+nós vamos apenas
+
+1259
+00:59:29,986 --> 00:59:33,286
+obter nosso sharedMotionManaged
+novamente e enviar
+
+1260
+00:59:33,476 --> 00:59:38,426
+a mensagem
+stopAccelerometerUpdates, ok?
+
+1261
+00:59:40,356 --> 00:59:41,516
+Perguntas sobre o código?
+
+1262
+00:59:42,356 --> 00:59:43,986
+Certo, então vamos tentar isso.
+
+1263
+00:59:44,346 --> 00:59:47,136
+Oops. Ok, Por que estamos
+recebendo esse erro aqui?
+
+1264
+00:59:47,676 --> 00:59:48,906
+Todo mundo sabe?
+
+1265
+00:59:50,926 --> 00:59:53,266
+Erro de link com o CMMotionManager,
+certo?
+
+1266
+00:59:53,466 --> 00:59:59,306
+Nós precisamos vir aqui,
+build phases, adicionar o CoreMotion.
+
+1267
+01:00:02,476 --> 01:00:04,866
+Ok, agora nós rodamos.
+
+1268
+01:00:07,936 --> 01:00:08,736
+>> [Estudante perguntando]
+
+1269
+01:00:08,736 --> 01:00:10,156
+>> Referências circulares
+com os frameworks?
+
+
+1270
+01:00:10,786 --> 01:00:10,996
+>> É.
+
+
+1271
+01:00:11,046 --> 01:00:12,526
+>> Não, porque os frameworks--
+
+1272
+01:00:12,886 --> 01:00:14,006
+o modo como os frameworks são importados
+evitam isso.
+
+1273
+01:00:15,346 --> 01:00:18,696
+Ok, então minha coisa está reta,
+então nada está acontecendo.
+
+1274
+01:00:18,696 --> 01:00:23,106
+Mas se eu pegá-la e agora
+vocês podem ver, conforme eu movo
+
+1275
+01:00:23,106 --> 01:00:25,806
+esse cara por aí, todas essas coisas
+ainda se movem.
+
+1276
+01:00:26,056 --> 01:00:28,486
+Agora, eu ainda posso salvar
+as coisas, ok?
+
+1277
+01:00:28,716 --> 01:00:34,216
+Oops, o que eu fiz? Oh, desculpem.
+Eu puxei o cabo de novo.
+
+1278
+01:00:35,556 --> 01:00:38,126
+(quem nunca...)
+
+1279
+01:00:38,126 --> 01:00:40,066
+Acho que vou segurar aqui
+enquanto eu faço isso.
+
+1280
+01:00:40,066 --> 01:00:41,726
+Bom, vocês podem ver
+isso acontecendo aqui
+
+1281
+01:00:41,726 --> 01:00:43,566
+e eu ainda posso salvar coisas.
+
+1282
+01:00:43,566 --> 01:00:44,176
+Ok? Está igual.
+
+1283
+01:00:44,346 --> 01:00:46,006
+E daí, tipo berinjela,
+uma vez que--
+
+1284
+01:00:46,006 --> 01:00:48,066
+bom, vamos ver,
+uma vez que a beterraba vai pra fora
+
+1285
+01:00:48,206 --> 01:00:49,646
+da borta, ela não volta, certo?
+
+1286
+01:00:50,566 --> 01:00:51,876
+Jello... ok?
+
+1287
+01:00:52,746 --> 01:00:55,016
+Vêem? Agora eu poderia estar
+ajustando a taxa aqui
+
+1288
+01:00:55,016 --> 01:01:00,376
+para fazer-- quanto mais eu inclino,
+mais rápido as coisas vão, ok?
+
+1289
+01:01:00,836 --> 01:01:02,496
+Porque nós estamos fazendo assim.
+
+1290
+01:01:02,496 --> 01:01:05,176
+E eu posso ajustar o quanto
+essa taxa faz ficar suave
+
+1291
+01:01:05,176 --> 01:01:07,086
+e se as coisas estão movendo
+rápido o suficiente, mas parece
+
+1292
+01:01:07,086 --> 01:01:08,716
+que essa é uma taxa boa.
+
+1293
+01:01:09,546 --> 01:01:10,056
+Faz sentido?
+
+1294
+01:01:10,536 --> 01:01:16,336
+Ok, é isso. E de volta
+aos slides.
+
+1295
+01:01:17,316 --> 01:01:21,426
+E vamos ter um tempo
+apertado aqui.
+
+1296
+01:01:21,736 --> 01:01:22,416
+Localização.
+
+
+1297
+01:01:22,416 --> 01:01:23,896
+Ok, eu vou correr
+por esses slides,
+
+1298
+01:01:23,896 --> 01:01:25,456
+para que vocês
+possam ver a demo.
+
+1299
+01:01:25,456 --> 01:01:26,766
+Pode ser que eu não consiga
+fazer a demo inteira,
+
+1300
+01:01:26,766 --> 01:01:28,786
+mas vou fazer o máximo possível.
+
+1301
+01:01:29,006 --> 01:01:31,466
+Ok, Localização.
+Algo muito importante se você quiser
+
+1302
+01:01:31,466 --> 01:01:35,686
+maximizar seu rendimento na
+App Store é distribuir
+
+1303
+01:01:35,686 --> 01:01:37,236
+no maior número de países possível.
+
+1304
+01:01:37,496 --> 01:01:39,296
+Ok? Agora, vai te custar
+dinheiro para distribuir
+
+1305
+01:01:39,296 --> 01:01:41,896
+nesses países, porque você vai ter
+que localizar o seu produto
+
+1306
+01:01:42,146 --> 01:01:46,076
+para estar na língua local
+usando... sabe,
+
+1307
+01:01:46,076 --> 01:01:49,586
+a moeda local e o modo
+local como eles escrevem dígitos,
+
+1308
+01:01:49,586 --> 01:01:50,936
+datas e números e coisas assim.
+
+1309
+01:01:51,426 --> 01:01:54,406
+Mas para fazer de um modo
+que seu app possa ser localizado
+
+1310
+01:01:54,486 --> 01:01:55,456
+para esses países, você tem
+
+1311
+01:01:55,506 --> 01:01:57,716
+que fazer um processo chamado
+internacionalização,
+
+1312
+01:01:58,356 --> 01:01:59,866
+abreviado em i18n.
+
+1313
+01:01:59,866 --> 01:02:02,656
+Então internacinalização é o 
+processo de tornar possível
+
+1314
+01:02:02,656 --> 01:02:04,136
+para sua aplicação
+ser localizada.
+
+1315
+01:02:04,386 --> 01:02:07,586
+Localização é o processo de
+na verdade fazê-la localizada
+
+1316
+01:02:07,586 --> 01:02:09,196
+para um certo lugar, ok?
+
+1317
+01:02:09,196 --> 01:02:12,786
+Então internationalização
+é seu trabalho como desenvolvedor.
+
+1318
+01:02:13,026 --> 01:02:15,656
+Localização, geralmente
+contrata alguém, ok?
+
+1319
+01:02:15,956 --> 01:02:19,616
+Alguém na... Irlanda tem um monte
+dessas empresas para fazer isso.
+
+1320
+01:02:20,106 --> 01:02:21,986
+Você os contrata e eles
+tem um time de pessoas
+
+1321
+01:02:21,986 --> 01:02:24,416
+que falam a língua nativa
+em todos esses vários países
+
+1322
+01:02:24,906 --> 01:02:26,646
+e você os contratas
+para localizarem.
+
+1323
+01:02:26,646 --> 01:02:28,136
+Mas se você não fizer
+internacionalizável,
+
+1324
+01:02:28,136 --> 01:02:28,746
+você não pode fazer.
+
+
+1325
+01:02:28,746 --> 01:02:32,526
+Agora, como você faz essa coisa
+de internacionalização?
+
+1326
+01:02:33,086 --> 01:02:35,756
+No iOS 6 existe
+uma nova maneira de fazer isso.
+
+1327
+01:02:36,016 --> 01:02:38,906
+Você vai nas propriedades
+da sua aplicação
+
+1328
+01:02:38,906 --> 01:02:41,576
+que vocês vão ver na demo
+aqui e embaixo da tab
+
+1329
+01:02:41,716 --> 01:02:46,616
+info ali temos essa coisa
+chamada localizations.
+
+1330
+01:02:46,836 --> 01:02:49,666
+E você apenas clica o pequeno
+botão de + que vocês vêem aí
+
+1331
+01:02:49,666 --> 01:02:51,446
+e adiciona quantas localizações
+você quiser.
+
+1332
+01:02:51,446 --> 01:02:53,126
+E você pode adicionar
+uma nova a qualquer momento.
+
+1333
+01:02:53,126 --> 01:02:54,706
+Qualquer momento que você quiser
+entrar em um novo mercado,
+
+1334
+01:02:54,706 --> 01:02:56,976
+você pode clicar no botão
+de +, adicionar uma nova língua.
+
+1335
+01:02:57,306 --> 01:02:58,916
+E vocês podem ver que
+esse pequeno switch aqui embaixo,
+
+1336
+01:02:58,916 --> 01:03:01,186
+Use Base Internationalization.
+
+1337
+01:03:01,686 --> 01:03:03,276
+Isso tem a ver com storyboards.
+
+1338
+01:03:03,576 --> 01:03:06,816
+No passado, o modo como você
+localizava um storyboard era
+
+1339
+01:03:06,816 --> 01:03:09,796
+você fazia uma cópia dele e
+o localizador vinha e clicava
+
+1340
+01:03:09,796 --> 01:03:12,926
+em cada botão e editava
+cada string, ok?
+
+1341
+01:03:13,446 --> 01:03:16,406
+E se você adicionasse um botão
+em um storyboard, você teria que
+
+1342
+01:03:16,406 --> 01:03:17,916
+adicioná-lo em todos os storyboards.
+
+1343
+01:03:18,386 --> 01:03:21,196
+Então basicamente você
+não localizava
+
+1344
+01:03:21,196 --> 01:03:23,416
+até ter certeza que sua UI
+estava do jeito que você queria.
+
+1345
+01:03:23,416 --> 01:03:25,556
+Ok? Bom, isso foi
+arrumado no iOS 6
+
+1346
+01:03:25,926 --> 01:03:30,116
+porque o que você faz agora é:
+você usa esse botão aqui,
+
+1347
+01:03:30,226 --> 01:03:31,716
+o Use Base Internationalization,
+
+1348
+01:03:31,956 --> 01:03:35,616
+ele só tem um storyboard e
+o sistema vai automaticamente,
+
+1349
+01:03:35,616 --> 01:03:39,566
+para cada localização que você pedir,
+criar um arquivo .strings,
+
+1350
+01:03:39,566 --> 01:03:42,416
+um pequeno arquivo que tem
+todas as strings tiradas
+
+1351
+01:03:42,416 --> 01:03:44,836
+do storyboard e colocadas
+e um formato que
+
+1352
+01:03:44,836 --> 01:03:47,926
+vocês verão em um segundos,
+e o localizer vai apenas
+
+1353
+01:03:47,926 --> 01:03:49,226
+mudar essas strings.
+
+1354
+01:03:49,576 --> 01:03:53,156
+E como acontece a atualização de layout
+para strings mais longas e mais curtas?
+
+1355
+01:03:54,046 --> 01:03:56,866
+Auto-layout. É por isso
+que nós podemos fazer isso agora,
+
+1356
+01:03:57,366 --> 01:03:59,596
+é porque nós temos
+auto-layout, certo?
+
+1357
+01:03:59,726 --> 01:04:02,356
+Então se você tiver alemão ali,
+essas strings vão ficar grandes,
+
+1358
+01:04:02,446 --> 01:04:05,386
+os botões vão ficar mais largos,
+está tudo bem, ok?
+
+1359
+01:04:05,996 --> 01:04:09,156
+Então auto layout mais essa
+nova funcionalidade faz a localizacão
+
+1360
+01:04:09,156 --> 01:04:10,106
+de storyboards bem melhor.
+
+1361
+01:04:10,106 --> 01:04:12,256
+Mas não são apenas os
+storyboards que tem
+
+1362
+01:04:12,256 --> 01:04:13,016
+strings nele.
+
+1363
+01:04:13,016 --> 01:04:14,196
+Seu código tem strings também.
+
+1364
+01:04:14,196 --> 01:04:16,426
+Como o KitchenSink tem
+um monte de strings nele,
+
+1365
+01:04:16,426 --> 01:04:18,636
+então você precisa conseguir
+localizar isso também.
+
+1366
+01:04:18,636 --> 01:04:21,056
+Então vamos falar
+um pouco sobre isso.
+
+1367
+01:04:21,376 --> 01:04:23,586
+O modo como você faz isso é:
+você passar pelo seu código
+
+1368
+01:04:23,586 --> 01:04:25,636
+e toda vez que você tiver
+uma string literal, sabe,
+
+1369
+01:04:25,636 --> 01:04:29,346
+@"alguma sintr", que vai
+aparecer na UI,
+
+1370
+01:04:29,346 --> 01:04:33,236
+você envolve essa string
+
+1371
+01:04:33,276 --> 01:04:35,016
+com uma dessas 4 macros.
+
+1372
+01:04:35,376 --> 01:04:37,276
+NSLocalizedStringWithDefaultValue, 
+
+1373
+01:04:37,276 --> 01:04:39,486
+NSLocalizedStringFromTableInBundle, 
+
+1374
+01:04:39,566 --> 01:04:41,746
+NSLocalizedStringFromTable
+ou NSLocalizedString. 
+
+1375
+01:04:42,136 --> 01:04:43,186
+Elas são basicamente
+a mesma coisa,
+
+1376
+01:04:43,186 --> 01:04:44,866
+apenas com diferentes argumentos.
+
+1377
+01:04:45,196 --> 01:04:47,816
+E o que essa coisa faz é:
+ela faz de um modo que
+
+1378
+01:04:47,816 --> 01:04:51,816
+você pode ter uma tabela
+externa de strings
+
+1379
+01:04:52,106 --> 01:04:56,176
+que serão carregadas e vão,
+sabe, essa macro,
+
+1380
+01:04:56,176 --> 01:04:57,776
+vocês podem ver que retorna
+uma NSString.
+
+1381
+01:04:58,156 --> 01:05:00,586
+Então essa NSString vai ser usada
+ao invés de, sabe,
+
+1382
+01:05:00,966 --> 01:05:02,066
+strings literais.
+
+1383
+01:05:02,126 --> 01:05:04,356
+Mas a string literal vai ser
+usada como chave
+
+1384
+01:05:04,686 --> 01:05:07,906
+para procurar dentro
+do arquivo de strings, ok?
+
+1385
+01:05:08,406 --> 01:05:12,176
+Daí-- o que eles fazem, a propósito,
+eles chamam um método em uma classe
+
+1386
+01:05:12,176 --> 01:05:14,896
+chamada NSBundle, que eu
+não tenho tempo para falar dela,
+
+1387
+01:05:14,896 --> 01:05:17,386
+chamado
+localizedStringForKey...
+
+1388
+01:05:17,386 --> 01:05:18,406
+value:table.
+
+1389
+01:05:18,666 --> 01:05:20,876
+Esse é apenas um método que
+sabe como procurar no seu
+
+1390
+01:05:20,876 --> 01:05:23,276
+main bundle da sua aplicação,
+
+1391
+01:05:23,346 --> 01:05:27,036
+achar o arquivo de strings,
+olhar dentro dele, procurar pela chave,
+
+1392
+01:05:27,036 --> 01:05:28,206
+pegar o valor e retorná-lo.
+
+1393
+01:05:28,206 --> 01:05:30,306
+Ok? Então é isso que eles estão
+fazendo por baixo dos panos.
+
+1394
+01:05:30,556 --> 01:05:33,226
+Mas você coloca essas macros
+e daí você vai rodar
+
+1395
+01:05:33,226 --> 01:05:34,886
+esse utilitário
+de linha de comando.
+
+1396
+01:05:34,886 --> 01:05:37,066
+Essa é a primeira vez que vocês
+rodam um utilitário de linha de
+
+1397
+01:05:37,066 --> 01:05:37,916
+comando nesse curso.
+
+1398
+01:05:38,176 --> 01:05:39,636
+Mas é chamado genstrings.
+
+1399
+01:05:39,856 --> 01:05:43,966
+Você passa os .m e ele vai
+gerar os arquivos de string.
+
+1400
+01:05:44,386 --> 01:05:47,526
+Ele procura por essas macros,
+NSLocalizedString,
+
+1401
+01:05:47,526 --> 01:05:50,176
+NSLocalizedStringFromTable,
+vai e procura por todos eles,
+
+1402
+01:05:50,286 --> 01:05:52,166
+parseia seus .m, 
+procura por eles,
+
+1403
+01:05:52,386 --> 01:05:54,356
+e gera os arquivos .strings.
+
+1404
+01:05:54,596 --> 01:05:57,346
+Onde ele simplesmente diz
+chave = chave, ok?
+
+1405
+01:05:57,346 --> 01:06:00,686
+E daí você localiza
+o arquivo strings
+
+1406
+01:06:01,206 --> 01:06:02,066
+para uma língua diferente.
+
+1407
+01:06:02,196 --> 01:06:04,456
+E é assim que você obtém
+todas essas strings localizadas.
+
+1408
+01:06:05,176 --> 01:06:08,826
+Então, por exemplo
+NSLocalizedString(@"hello",... 
+
+1409
+01:06:08,826 --> 01:06:12,256
+@"Greeting at start of
+application") seria localzado
+
+1410
+01:06:12,396 --> 01:06:16,346
+ou seria criada uma entrada
+no arquivo de strings que diria
+
+1411
+01:06:16,346 --> 01:06:18,136
+"Greeting at start of application"
+em um comentário
+
+1412
+01:06:18,516 --> 01:06:20,126
+E daí "hello" = "hello".
+
+1413
+01:06:20,396 --> 01:06:23,246
+E daí, esse comentário,
+"Greeting at start of application"
+
+1414
+01:06:23,446 --> 01:06:26,286
+isso é um comentário
+para o localizador, ok?
+
+1415
+01:06:26,286 --> 01:06:28,606
+A pessoa que vai fazer sua
+localização, eles precisam saber,
+
+1416
+01:06:28,606 --> 01:06:30,516
+bom, em que contexto
+esse "hello" aparece?
+
+1417
+01:06:30,956 --> 01:06:32,096
+E então, 
+"Greeting at start of application",
+
+
+1418
+01:06:32,096 --> 01:06:33,336
+eles saberiam: oh, ok.
+
+
+1419
+01:06:33,336 --> 01:06:34,766
+Então isso deveria ser,
+se eu estivesse na França,
+
+1420
+01:06:34,766 --> 01:06:37,836
+isso seria "bonjour", ok?
+Ou alguma coisa assim, ok?
+
+1421
+01:06:38,056 --> 01:06:40,846
+Então você tem que ter
+esses comentários para o localizador.
+
+1422
+01:06:40,846 --> 01:06:41,856
+E quanto melhor forem os comentários,
+
+1423
+01:06:41,856 --> 01:06:46,576
+melhor serão as localizações
+que você vai receber, certo?
+
+1424
+01:06:46,656 --> 01:06:49,886
+Daí você pega esses arquivos strings,
+os arquivos de strings gerados,
+
+1425
+01:06:49,886 --> 01:06:55,686
+e você apenas arrasta-os para o
+Xcode para serem-- as strings
+
+1426
+01:06:55,686 --> 01:06:57,036
+não-localizadas para começar,
+você apenas os arrasta.
+
+1427
+01:06:57,376 --> 01:07:00,726
+E daí você os inspeciona
+um por um no inspector.
+
+1428
+01:07:01,146 --> 01:07:02,846
+File Inspector.
+
+1429
+01:07:02,986 --> 01:07:05,566
+E você vai clicar em um botão
+que diz "Localize".
+
+1430
+01:07:05,676 --> 01:07:07,176
+E quando você clica
+bo botão para localizar,
+
+1431
+01:07:07,456 --> 01:07:10,196
+daí você pode clicar
+em quantas línguas diferentes
+
+1432
+01:07:10,196 --> 01:07:12,256
+você quiser que você configurou
+naquilo que eu falei no slide
+
+1433
+01:07:12,256 --> 01:07:13,966
+anterior, ok?
+
+1434
+01:07:14,506 --> 01:07:17,526
+E quanto mais você cria, ele vai
+fazer cópias dele em um arquivo
+
+1435
+01:07:17,526 --> 01:07:20,556
+de strings e daí cada localizador
+pode localizá-los separadamente, ok?
+
+1436
+01:07:21,096 --> 01:07:25,376
+Então os bundles, eu não vou
+falar sobre isso.
+
+1437
+01:07:25,376 --> 01:07:26,456
+Vocês podem olhar esse slide depois.
+
+1438
+01:07:26,456 --> 01:07:30,336
+Existem algumas coisas de debugging
+como NSShowNonLocalizedString.
+
+1439
+01:07:30,336 --> 01:07:32,086
+Se você setar esse user defaults
+para YES,
+
+1440
+01:07:32,396 --> 01:07:34,926
+daí ele vai logar
+cada vez que uma das
+
+1441
+01:07:34,926 --> 01:07:37,126
+NSLocalizedStrings não conseguir
+achar uma entrada
+
+1442
+01:07:37,126 --> 01:07:37,776
+no arquivo de strings.
+
+1443
+01:07:37,926 --> 01:07:38,276
+Pergunta.
+
+1444
+01:07:39,516 --> 01:07:42,486
+>> [Estudante perguntando]
+
+
+1445
+01:07:42,986 --> 01:07:45,936
+>> A pergunta foi: e se eu voltar
+e adicionar novas strings
+
+1446
+01:07:45,936 --> 01:07:48,626
+para o meu .m? Você pode
+regenerar seu genstrings
+
+1447
+01:07:48,886 --> 01:07:51,716
+e daí existem ferramentas que vão
+pegar uma localização existente,
+
+1448
+01:07:51,966 --> 01:07:55,786
+pegar suas chaves e valores
+e aplicá-las ao novo, ok?
+
+1449
+01:07:56,536 --> 01:07:58,376
+Eu de verdade deveria
+ter colocado isso nos slides.
+
+1450
+01:07:58,686 --> 01:08:01,336
+Existe uma ótima ferramenta
+chamada ibtool, ok?
+
+1451
+01:08:01,366 --> 01:08:05,316
+Que vai fazer merge
+de arquivos de strings para vocês.
+
+1452
+01:08:05,316 --> 01:08:05,386
+Sim.
+
+1453
+01:08:06,516 --> 01:08:10,166
+>> [Estudante perguntando]
+
+1454
+01:08:10,666 --> 01:08:15,106
+>> A pergunta: e se eu tiver
+uma string que eu estiver apenas
+
+1455
+01:08:15,106 --> 01:08:18,416
+colocando na UI que tem algo literal
+e daí algo que eu calculo,
+
+1456
+01:08:18,416 --> 01:08:19,866
+e daí outro literal acrescentado nela?
+
+1457
+01:08:19,866 --> 01:08:22,436
+Ok, essa aí... provavelmente
+o melhor jeito de fazer isso
+
+1458
+01:08:22,436 --> 01:08:25,826
+seria usando %@
+e stringWithFormat.
+
+1459
+01:08:26,046 --> 01:08:28,366
+E a razão para isso é:
+você realmente não quer quebrar
+
+1460
+01:08:28,366 --> 01:08:31,776
+strings mais do que
+em nível de frases.
+
+1461
+01:08:32,176 --> 01:08:34,906
+Porque em muitas línguas
+os verbos, sabe,
+
+1462
+01:08:34,906 --> 01:08:38,126
+existem feminino e masculino,
+e as coisas são em ordens diferentes.
+
+1463
+01:08:38,126 --> 01:08:40,596
+Então você quer tentar manter
+a frase inteira junta.
+
+1464
+01:08:40,876 --> 01:08:43,586
+Então se você vai fazer esse
+pedaço por pedaço, faça com
+
+1465
+01:08:43,586 --> 01:08:45,576
+%@ ali e daí no seu comentário
+
+1466
+01:08:45,576 --> 01:08:47,226
+diga o que são os %@.
+
+1467
+01:08:47,526 --> 01:08:50,566
+E tem um modo de ter
+múltiplos %@
+
+1468
+01:08:50,856 --> 01:08:53,106
+e especificar qual é qual, ok?
+
+1469
+01:08:53,196 --> 01:08:54,556
+Então eles podem ser trocados de lugar.
+(!!!)
+
+1470
+01:08:54,556 --> 01:08:57,636
+Acho que é %1@, significaria
+apenas o primeiro,
+
+1471
+01:08:57,636 --> 01:08:58,406
+ou algo assim.
+
+1472
+01:08:58,406 --> 01:09:00,226
+Essa é uma ótima pergunta.
+
+
+1473
+01:09:00,816 --> 01:09:04,416
+Uma coisa que eu vou dizer a vocês:
+
+1474
+01:09:04,646 --> 01:09:06,466
+quando vocês fazem esse processo
+
+1475
+01:09:06,466 --> 01:09:09,456
+de genstrings e vocês o tornam
+localizável, vocês provavelmente
+
+1476
+01:09:09,456 --> 01:09:12,446
+vão querer deletar seu app
+do device e reinstalá-lo.
+
+1477
+01:09:12,816 --> 01:09:14,846
+Porque se você tiver versões
+antigas de arquivos string,
+
+1478
+01:09:14,846 --> 01:09:17,136
+especialmente no top level,
+antes de você tê-los localizado,
+
+1479
+01:09:17,356 --> 01:09:19,136
+ele vai pegá-los
+e usá-los primeiro.
+
+1480
+01:09:19,526 --> 01:09:22,576
+Quando você faz uma manipulação
+de arquivos string, é uma boa idéia
+
+1481
+01:09:22,576 --> 01:09:24,606
+fazer um "clean" no seu projeto
+e também deletar
+
+1482
+01:09:24,606 --> 01:09:26,576
+o bagulho do seu device.
+
+1483
+01:09:27,716 --> 01:09:32,176
+Ok? Além de strings,
+existem outras coisas que você
+
+1484
+01:09:32,176 --> 01:09:35,046
+precisa localizar, ok? E elas
+são baseadas no locale,
+
+1485
+01:09:35,046 --> 01:09:36,316
+que é algo diferente
+da língua.
+
+1486
+01:09:36,316 --> 01:09:38,426
+Ok? Locale é tipo onde
+você está no mundo.
+
+1487
+01:09:38,746 --> 01:09:41,046
+Línguas diferentes são faladas
+ao redor do mundo
+
+1488
+01:09:41,046 --> 01:09:43,746
+e algumas línguas podem ser
+faladas em dois diferentes locales
+
+1489
+01:09:43,746 --> 01:09:47,906
+onde como você escreve o número
+1000.5 é diferente, ok?
+
+1490
+01:09:47,906 --> 01:09:49,546
+vírgula ao invés de ponto,
+etc.
+
+1491
+01:09:49,546 --> 01:09:52,866
+Você pode achar esses locales
+usando o objeto NSLocale.
+
+1492
+01:09:52,866 --> 01:09:55,616
+Mas geralmente o que você
+vai usar são esses formatters,
+
+1493
+01:09:56,236 --> 01:09:58,056
+como NumberFormatter, ok?
+
+1494
+01:09:58,056 --> 01:10:03,636
+Um NumberFormatter, ele tem
+um monte de coisas nele.
+
+1495
+01:10:03,636 --> 01:10:04,526
+Vocês podem olhar na API.
+
+1496
+01:10:04,666 --> 01:10:05,936
+Ele tem dúzias de métodos.
+
+1497
+01:10:06,256 --> 01:10:09,526
+Eu vou falar sobre duas
+coisas de NSNumberFormatter.
+
+1498
+01:10:09,526 --> 01:10:12,536
+Uma é criar uma string
+a partir de um número.
+
+1499
+01:10:12,536 --> 01:10:15,996
+Então vocÊ tem um número tip 27.5
+e você quer criar uma string
+
+1500
+01:10:15,996 --> 01:10:18,376
+par aaprensetar na user interface.
+Você provavelmente vai querer
+
+1501
+01:10:18,376 --> 01:10:19,566
+usar esse método de classe
+
+1502
+01:10:19,566 --> 01:10:22,216
+no NSNumberFormatter chamado
+localizedStringFromNumber...
+
+1503
+01:10:22,456 --> 01:10:23,016
+numberStyle.
+
+
+1504
+01:10:23,016 --> 01:10:25,726
+E o numberStyle vai ser
+tipo: isso é uma moeda ou
+
+1505
+01:10:25,726 --> 01:10:28,686
+iso é um número decimal
+ou algo assim.
+
+1506
+01:10:29,036 --> 01:10:31,486
+E similarmente, ao contrário,
+você não quer usar
+
+1507
+01:10:31,486 --> 01:10:35,566
+intValue ou floatValue
+em uma string para parsear
+
+1508
+01:10:35,566 --> 01:10:36,856
+o número que o usuário digitou.
+
+1509
+01:10:37,146 --> 01:10:40,366
+Ao invés, cria-se um
+numberFormatter, seta o numberStyle,
+
+1510
+01:10:40,506 --> 01:10:41,856
+tipo decima style ou algo assim,
+
+1511
+01:10:42,076 --> 01:10:45,156
+e daí chama o método
+numberFromString, ok?
+
+1512
+01:10:45,156 --> 01:10:48,126
+E ele vai retornar
+um número, um NSNumber.
+
+1513
+01:10:48,206 --> 01:10:51,026
+E ele vai retornar nil se
+aquilo não puder ser parseado como
+
+1514
+01:10:51,026 --> 01:10:52,736
+um número, que é diferente de
+floatValue ou intValue,
+
+1515
+01:10:52,736 --> 01:10:54,806
+eles vão apenas retornar 0
+se eles não puderem ser parseados.
+
+1516
+01:10:54,886 --> 01:10:56,316
+Então é bom
+saber a diferença.
+
+1517
+01:10:56,346 --> 01:10:57,486
+Então isso são números.
+
+1518
+01:10:57,746 --> 01:11:00,376
+Datas. Datas podem ser
+bem complicadas.
+
+1519
+01:11:00,936 --> 01:11:03,366
+Vocês não acreditariam quantos
+sistemas de calendário
+
+1520
+01:11:03,366 --> 01:11:04,556
+existem ao redor do mundo.
+
+1521
+01:11:04,916 --> 01:11:06,146
+Pessoas escrevem datas
+
+1522
+01:11:06,146 --> 01:11:07,906
+de todo jeito diferente
+ao redor do mundo.
+
+1523
+01:11:08,216 --> 01:11:10,616
+Eu não vou falar sobre todas elas,
+
+1524
+01:11:10,616 --> 01:11:12,796
+mas vocês precisam saber
+que se vocês vão usar datas,
+
+1525
+01:11:12,796 --> 01:11:15,356
+dêem uma olhada no
+NSDateFormatter
+
+1526
+01:11:15,356 --> 01:11:17,356
+e entendam o que está
+escrito ali, ok?
+
+1527
+01:11:17,726 --> 01:11:20,916
+Ou vocês não terão as datas
+localizáveis
+
+1528
+01:11:20,916 --> 01:11:23,466
+e as datas vão ficar
+erradas em outros países,
+
+1529
+01:11:23,466 --> 01:11:25,486
+seja a China ou mesmo a França.
+
+1530
+01:11:25,486 --> 01:11:27,796
+Sabe, na França, o mês vem depois
+do dia...
+
+1531
+01:11:27,796 --> 01:11:30,736
+é o oposto dos EUA.
+
+1532
+01:11:30,846 --> 01:11:32,886
+Coisas simples assim, isso faz
+
+1533
+01:11:32,886 --> 01:11:34,566
+tudo ficar certo.
+
+1534
+01:11:34,566 --> 01:11:36,056
+Existe um dateFormatter simples,
+
+1535
+01:11:36,056 --> 01:11:37,626
+que é
+localizedStringFromDate...
+
+1536
+01:11:37,626 --> 01:11:41,236
+dateStyle:timeStyle, esses styles
+são apenas estilos
+
+1537
+01:11:41,236 --> 01:11:42,566
+pequenos, médios ou longos.
+
+
+1538
+01:11:42,566 --> 01:11:45,856
+Então esse é um modo simples
+se você quer apenas fazer isso.
+
+1539
+01:11:45,856 --> 01:11:47,166
+Procurar em NSStrings.
+
+1540
+01:11:47,166 --> 01:11:49,106
+Seja cuidadoso sobre
+procurar em NSStrings.
+
+1541
+01:11:49,106 --> 01:11:51,096
+VocÊ não usa o método
+rangeOfString.
+
+1542
+01:11:51,156 --> 01:11:54,606
+Você quer usar o
+rangeOfString:options:range:locale, ok?
+
+1543
+01:11:54,936 --> 01:11:57,296
+E especialmente se você está
+fazendo uma busca case-insensitive.
+
+1544
+01:11:57,586 --> 01:12:00,736
+Case-insensitividade é muito
+específico de locale.
+
+1545
+01:12:01,066 --> 01:12:04,296
+Diacríticos e coisas assim
+que podem fazer uma diferença
+
+1546
+01:12:04,456 --> 01:12:05,836
+se feitos corretamente.
+
+1547
+01:12:05,986 --> 01:12:09,516
+Ordenando strings, nós usamos
+localizedCaseInsensitiveCompare, 
+
+1548
+01:12:09,516 --> 01:12:10,696
+lembram-se, no Code Data?
+
+1549
+01:12:11,066 --> 01:12:11,956
+Nós realmente não deveríamos
+usar isso.
+
+1550
+01:12:11,956 --> 01:12:14,426
+Nós provavelmente deveríamos
+ter usado localizedStandardCompare. 
+
+1551
+01:12:14,556 --> 01:12:16,446
+localizedStandardCompare é como
+
+
+1552
+01:12:16,446 --> 01:12:18,776
+localizeCaseInsensitiveCompare 
+
+1553
+01:12:18,776 --> 01:12:19,956
+e é case-insensitive.
+
+1554
+01:12:19,956 --> 01:12:22,156
+Exceto pelo fato de que o
+CaseInsensitiveCompare é
+
+1555
+01:12:22,156 --> 01:12:23,616
+completamente case-insensitive.
+
+
+1556
+01:12:23,826 --> 01:12:25,846
+Então ele nem olha
+para a capitalização.
+
+1557
+01:12:25,886 --> 01:12:27,826
+Então você pode ter coisas
+ordenadas onde
+
+1558
+01:12:27,826 --> 01:12:30,886
+as vezes o L maiúsculo
+vem antes do l minúsculo,
+
+1559
+01:12:30,886 --> 01:12:34,326
+e daí depois o Q minúsculo
+vem antes--
+
+1560
+01:12:34,326 --> 01:12:35,736
+é o contrário, ok?
+
+1561
+01:12:36,026 --> 01:12:39,136
+Esse aqui vai ordenar em uma
+ordem predizível que sabe
+
+1562
+01:12:39,136 --> 01:12:42,706
+sobre os vários diacríticos
+e coisas assim,
+
+1563
+01:12:42,706 --> 01:12:43,556
+e coloca as coisas
+na ordem certa.
+
+1564
+01:12:43,556 --> 01:12:45,206
+Então, realmente,
+deve-se usar esse.
+
+1565
+01:12:45,506 --> 01:12:47,436
+E esse é provavelmente
+o que vocês vão usar para
+
+1566
+01:12:47,436 --> 01:12:48,826
+qualquer lista
+que vocês vão apresentar.
+
+1567
+01:12:49,066 --> 01:12:51,166
+Ele é às vezes chamado
+de "Finder order".
+
+1568
+01:12:51,356 --> 01:12:53,516
+Essa é a ordem que essas coisas
+apareceriam se
+
+1569
+01:12:53,636 --> 01:12:56,206
+fossem arquivos no Finder, ok?
+
+1570
+01:12:56,676 --> 01:12:57,806
+Pergunta? Não? Ok.
+
+1571
+01:12:58,346 --> 01:13:01,816
+UIImage imageNamed:,
+
+1572
+01:13:02,276 --> 01:13:04,066
+ela faz a coisa certa, ok?
+
+1573
+01:13:04,456 --> 01:13:09,086
+Então se você colocar uma imagem
+em um bundle, ok? Vocês verão,
+
+1574
+01:13:09,086 --> 01:13:11,196
+a propósito, quando vocês criam
+essas localizações,
+
+1575
+01:13:11,196 --> 01:13:12,436
+que existem diferentes bundles
+
+1576
+01:13:12,716 --> 01:13:15,566
+en.lproj para inglês,
+fr.lproj para francês. 
+
+1577
+01:13:15,846 --> 01:13:17,396
+Você coloca imagens diferentes
+nesses bundles,
+
+1578
+01:13:17,646 --> 01:13:20,296
+imageNamed vai escolher
+dos bundles, ok?
+
+1579
+01:13:20,526 --> 01:13:21,596
+Mas se você as tiver
+no top level,
+
+1580
+01:13:21,596 --> 01:13:24,326
+ele vai usar
+a do top level primeiro, ok?
+
+1581
+01:13:25,466 --> 01:13:27,366
+Certo, a demo.
+
+1582
+01:13:27,366 --> 01:13:29,036
+Nós obviamente não temos tempo hoje.
+
+1583
+01:13:29,036 --> 01:13:30,846
+Eu vou fazer esas demo
+no começo no começo
+
+1584
+01:13:30,846 --> 01:13:32,826
+da aula da próxima quinta,
+
+1585
+01:13:32,826 --> 01:13:36,376
+porque terça é uma aula
+para a Stanford apenas.
+
+1586
+01:13:36,806 --> 01:13:39,266
+Tudo que eu vou fazer na demo,
+
+1587
+01:13:39,266 --> 01:13:43,066
+que é algo importante, é:
+eu vou mostrar como configurar
+
+1588
+01:13:43,066 --> 01:13:45,746
+as localizações, como gerar
+os arquivos string,
+
+1589
+01:13:45,866 --> 01:13:48,266
+como localizar um storyboard, ok?
+
+1590
+01:13:48,336 --> 01:13:49,866
+Então é isso que nós vamos
+fazer na próxima quinta.
+
+1591
+01:13:50,186 --> 01:13:53,836
+Eu realmente recomendo que vocês
+entendam isso, porque vocÊs vão
+
+1592
+01:13:53,836 --> 01:13:56,656
+querer construir seus códigos
+a partir do começo, o melhor que
+
+1593
+01:13:56,946 --> 01:13:59,476
+vocês conseguirem, para serem
+o mais internacionalizável possível,
+
+1594
+01:13:59,716 --> 01:14:02,416
+para que vocês pelo menos tenham a
+opção de distribuí-los.
+
+1595
+01:14:02,776 --> 01:14:05,206
+Não é tão caro para
+localizar algo,
+
+1596
+01:14:05,206 --> 01:14:07,466
+se ele for realmente
+internacionalizável
+
+1597
+01:14:08,876 --> 01:14:11,146
+e você pode ter ainda mais
+rendimentos mesmo que
+
+1598
+01:14:11,146 --> 01:14:13,876
+você esteja cobrando, sabe
+99 cents por cópia.
+
+1599
+01:14:14,126 --> 01:14:16,356
+Você pode vender bem mais
+se você vender em
+
+1600
+01:14:16,356 --> 01:14:17,476
+diferentes países.
+
+1601
+01:14:18,466 --> 01:14:20,776
+Ok, próximas aulas.
+Amanha, não haverá section.
+
+1602
+01:14:20,826 --> 01:14:23,136
+Terça é aula
+apenas para Stanford.
+
+1603
+01:14:23,426 --> 01:14:25,666
+Eu estarei aqui 
+no horário na próxima quinta.
+
+1604
+01:14:25,666 --> 01:14:27,516
+Vai ser uma aula normal
+na quinta.
+
+1605
+01:14:27,516 --> 01:14:31,096
+Eu vou cobrir esse
+e outros tópicos.
+
+1606
+01:14:31,446 --> 01:14:36,396
+E uma vez mais, se você não puder
+apresentar no período de exames finais,
+
+1607
+01:14:36,646 --> 01:14:38,926
+é necessário nesse curso
+que você faça
+
+1608
+01:14:38,926 --> 01:14:39,896
+uma apresentação final.
+
+1609
+01:14:39,896 --> 01:14:42,706
+Então você precisa conversar
+conosco para fazer na quinta que vem.
+
+1610
+01:14:43,126 --> 01:14:45,236
+Então envie-nos um e-mail ou algo assim.
+
+1611
+01:14:45,386 --> 01:14:47,436
+Eu só ouvi falar de duas pessoas
+que querem fazer isso.
+
+1612
+01:14:47,826 --> 01:14:51,096
+Eu posso acomodar mais de vocês
+que queiram fazer isso.
+
+1613
+01:14:51,326 --> 01:14:53,616
+Claro, vocês terão que estar
+prontos para fazer isso, sabe.
+
+1614
+01:14:53,856 --> 01:14:55,306
+seis dias antes de todo mundo.
+
+1615
+01:14:55,306 --> 01:14:57,506
+Então eu entendo porque
+a maioria de vocês não quer.
+
+1616
+01:14:57,796 --> 01:14:59,786
+Mas se vocês quiserem,
+se certifiquem de me avisar
+
+1617
+01:14:59,816 --> 01:15:01,516
+o quanto antes que vocês
+vão fazer isso, ok?
+
+1618
+01:15:02,406 --> 01:15:02,886
+Obrigado.
+
+
+1619
+01:15:03,116 --> 01:15:07,886
+Visite nosso site:
+www.centraldosapps.com

@@ -1,0 +1,6432 @@
+1
+00:00:00,210 --> 00:00:04,190
+Legendas em portugues por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:04,210 --> 00:00:08,190
+Com ajuda da Paulets!
+(Obrigado Paulets!)
+
+
+3
+00:00:08,210 --> 00:00:14,930
+Esta é a lição 6 de CS193p,
+Inverno de 2013. Hoje, vamos 
+
+4
+00:00:14,950 --> 00:00:22,160
+falar sobre a classe UIView. UIView é 
+
+5
+00:00:22,180 --> 00:00:25,660
+usado tanto para saída, na tela,
+quanto para entrada, Ok? 
+
+6
+00:00:25,680 --> 00:00:29,100
+Isto são Views e eu digo gestos
+aqui, mas gestos 
+
+7
+00:00:29,120 --> 00:00:35,590
+são apenas uma parte de View. Uma View
+como a maioria dos sister graphical 
+
+8
+00:00:35,610 --> 00:00:40,060
+systems representa uma área retangular
+na tela. Ok? 
+
+9
+00:00:40,080 --> 00:00:43,870
+Define um espaço coordenado.
+E dentro deste espaço,
+
+10
+00:00:43,890 --> 00:00:47,480
+dentro deste retângulo ele desenha,
+e manipula 
+
+11
+00:00:47,500 --> 00:00:51,460
+eventos, toca os eventos que
+aparecem, ok? Isto é 
+
+12
+00:00:51,480 --> 00:00:55,260
+hierárquico, então estas áreas
+retangulares podem ser incorporadas 
+
+13
+00:00:55,280 --> 00:00:58,080
+dentro uma das outras. Uma área
+rectangular de uma View pode 
+
+14
+00:00:58,100 --> 00:01:02,870
+ter subviews, e toda subview tem uma
+superview que é a 
+
+15
+00:01:02,890 --> 00:01:07,320
+área retangular dentro dela.
+Há algo chamado
+
+16
+00:01:07,340 --> 00:01:12,570
+UIWindow no IOS, mas deve ser ignorado.
+IOS é só sobre 
+
+17
+00:01:12,590 --> 00:01:16,940
+Views. Não as Views que você conhece, e MVC
+e suas Views e tudo mais. 
+
+18
+00:01:16,960 --> 00:01:20,150
+É apenas sobre Views. Não é sobre
+windows. Ok? Aplicativos 
+
+19
+00:01:20,170 --> 00:01:23,440
+de Desktops tem windows e outras coisas,
+mas não o IOS. Há só uma janela 
+
+20
+00:01:23,460 --> 00:01:25,900
+UI no topo do nível.
+Nunca realmente mexemos 
+
+21
+00:01:25,920 --> 00:01:30,310
+com isso. Então é só sobre Views.
+Esta hierarquia de 
+
+22
+00:01:30,330 --> 00:01:33,400
+Views, estas áreas retangulares com
+áreas retangulares, são 
+
+23
+00:01:33,420 --> 00:01:36,490
+na maioria das vezes feitas em Xcode direto,
+apenas arrastando 
+
+24
+00:01:36,510 --> 00:01:39,980
+as coisas da paleta. E se quiser
+colocar uma View 
+
+25
+00:01:40,000 --> 00:01:42,980
+dentro da outra, você ainda não
+fez em nenhuma das 
+
+26
+00:01:43,000 --> 00:01:46,010
+tarefas, pode ser feito. Apenas
+arraste para dentro
+
+27
+00:01:46,030 --> 00:01:49,620
+e é assim que se faz esta hierarquia.
+Mas a hierarquia 
+
+28
+00:01:49,640 --> 00:01:54,600
+pode ser feita e gerenciada em código.
+Há métodos chaves para 
+
+29
+00:01:54,620 --> 00:01:59,120
+isto numa UIView. Uma é chamada
+addSubview que adiciona uma View 
+
+30
+00:01:59,140 --> 00:02:02,290
+como uma subview. E também tem
+a removeFromSuperview 
+
+31
+00:02:02,310 --> 00:02:06,120
+que é enviada para a View que você
+quer remover e isto 
+
+32
+00:02:06,140 --> 00:02:09,630
+a remove. Ok? Então adicionar e
+remover é um pouco 
+
+33
+00:02:09,650 --> 00:02:12,300
+diferente. Quando está adicionando
+se fala com a superview e 
+
+34
+00:02:12,320 --> 00:02:16,010
+diz: adicione esta View para você,
+mas para remover se fala 
+
+35
+00:02:16,030 --> 00:02:18,940
+para a View que se quer remover
+da hierarquia, esta 
+
+36
+00:02:18,960 --> 00:02:24,860
+série aninhada de áreas retangulares,
+estas Views. No topo da 
+
+37
+00:02:24,880 --> 00:02:28,980
+hierarquia numa View MVC, é muito
+importante entender 
+
+38
+00:02:29,000 --> 00:02:33,510
+esta propriedade no controller,
+chamado View. Ok, esta 
+
+39
+00:02:33,530 --> 00:02:37,070
+propriedade do controller, UI controller
+chamado View, é uma 
+
+40
+00:02:37,090 --> 00:02:41,210
+UIView * apontado para uma view. Certo?
+Esta é a View topo do 
+
+41
+00:02:41,230 --> 00:02:45,650
+nível desta hierarquia neste
+MVC. Quando se está 
+
+42
+00:02:45,670 --> 00:02:48,400
+olhando a storyboard, é um grande
+retângulo branco. 
+
+43
+00:02:48,420 --> 00:02:52,020
+Certo? O nível mais alto.
+Se quiser adicionar 
+
+44
+00:02:52,040 --> 00:02:56,350
+Views usando Addsubview programaticamente,
+deveria se adicionar 
+
+45
+00:02:56,370 --> 00:03:00,960
+em algum lugar ao self.view no
+seu controller. Faz sentido? 
+
+46
+00:03:00,980 --> 00:03:03,820
+É uma propriedade simples que
+algumas vezes é mal interpretada 
+
+47
+00:03:03,840 --> 00:03:06,880
+por alguma razão. É apenas uma View
+que está no nível mais alto 
+
+48
+00:03:06,900 --> 00:03:12,400
+da sua hierarquia MVC, ok?
+Alguma pergunta? 
+
+49
+00:03:12,420 --> 00:03:13,400
+Sim? ...
+
+
+50
+00:03:13,420 --> 00:03:17,270
+>> É necessário fazer uma guia de controle
+de uma View
+
+51
+00:03:17,290 --> 00:03:19,430
+para o controller? ...
+
+
+52
+00:03:19,450 --> 00:03:22,270
+>> O self.view é automaticamente
+ajustado. Quando  
+
+53
+00:03:22,290 --> 00:03:25,600
+se arrasta uma view controller fora,
+self.view é 
+
+54
+00:03:25,620 --> 00:03:28,640
+automatically apontado.
+Com o botão direito você
+
+55
+00:03:28,660 --> 00:03:30,600
+no controller e você o verá
+lá. Será 
+
+56
+00:03:30,620 --> 00:03:32,230
+automaticamente ligado, não tem que
+apertar control e arrastar. 
+
+57
+00:03:32,250 --> 00:03:38,570
+Alguma outra pergunta sobre self.view?
+Ok, iniciando uma 
+
+58
+00:03:38,590 --> 00:03:41,980
+view. Muito similar ao que eu falei
+sobre UIViewController. 
+
+59
+00:03:42,000 --> 00:03:44,940
+Tem que fazer um awakeFromNib,
+porque os UIViews 
+
+60
+00:03:44,960 --> 00:03:47,520
+estão normalmente no seu storyboard,
+e eles saem de uma 
+
+61
+00:03:47,540 --> 00:03:51,130
+storyboard e então eles não usam
+alloc init. Eles usam 
+
+62
+00:03:51,150 --> 00:03:54,260
+awakeFromNibbed. Se usa o mesmo
+tipo de mecanismo que 
+
+63
+00:03:54,280 --> 00:03:57,340
+vimos na última lição de
+UIView controller. 
+
+64
+00:03:57,360 --> 00:04:00,020
+O iniciador disignado para UIview,
+no entanto é 
+
+65
+00:04:00,040 --> 00:04:03,810
+initWithFrame. Lembre que
+UIViewController tinha um initWith 
+
+66
+00:04:03,830 --> 00:04:07,230
+nib nome e bundle. Este é o
+initWitFrame, 
+
+67
+00:04:07,250 --> 00:04:09,980
+que faz muito mais sentido. Ok?
+Frame é uma
+
+68
+00:04:10,000 --> 00:04:12,730
+área retangular na tela onde
+esta view vai ficar 
+
+69
+00:04:12,750 --> 00:04:16,780
+Isto se inicia com uma
+frame, mas pode muito bem
+
+70
+00:04:16,800 --> 00:04:19,290
+mudar. Sua frame muda o tempo
+todo, na verdade. 
+
+71
+00:04:19,310 --> 00:04:21,840
+Durante a rotação do aparelho. Sua
+frame está sempre. 
+
+72
+00:04:21,860 --> 00:04:26,240
+sendo atualizada. Eu disse que uma view
+define um sistema 
+
+73
+00:04:26,260 --> 00:04:30,650
+de coordenadas. Falemos sobre alguns tipos
+que usamos quando 
+
+74
+00:04:30,670 --> 00:04:32,650
+descrevemos este sistema de coordenadas.
+A coisa mais 
+
+75
+00:04:32,670 --> 00:04:36,240
+importante é a type def to float ou
+double, chamado CG 
+
+76
+00:04:36,260 --> 00:04:40,450
+Float. Ok? Tudo que vamos
+fazer num 
+
+77
+00:04:40,470 --> 00:04:42,700
+sistema coordenado são todos
+floating.numbers. Sempre 
+
+78
+00:04:42,720 --> 00:04:46,680
+usamos CGFloat. Certamente será a
+a coisa errada a fazer, 
+
+79
+00:04:46,700 --> 00:04:49,680
+definir como uma variável local ou
+uma propriedade que é apenas um 
+
+80
+00:04:49,700 --> 00:04:52,910
+float. Se esta propriedade ou
+variável local tem 
+
+81
+00:04:52,930 --> 00:04:55,980
+algo a ver com desenho na tela
+ou localização 
+
+82
+00:04:56,000 --> 00:04:58,980
+na tela, se usa o CGFloat.
+Mesmo se for um 
+
+83
+00:04:59,000 --> 00:05:01,820
+typedef to float, você o usará.
+Ok? Código que 
+
+84
+00:05:01,840 --> 00:05:05,920
+não usa CGFloat faz as pessoas
+pensarem "porque isso usa
+
+85
+00:05:05,940 --> 00:05:08,170
+float? Tem algo estranho aqui"
+CGFloat, ok? CG, 
+
+86
+00:05:08,190 --> 00:05:12,040
+a propósito, gráficos core.
+Gráficos core é o nome da 
+
+87
+00:05:12,060 --> 00:05:15,040
+framework que desenhamos com o
+IOS. É daí que 
+
+88
+00:05:15,060 --> 00:05:17,790
+CG vem. Alí em cima está o
+C struct chamado CGPoint. 
+
+89
+00:05:17,810 --> 00:05:21,980
+É uma struct que tem dois elementos,
+dois CGFloats, "x" 
+
+90
+00:05:22,000 --> 00:05:26,930
+e "y", é apenas um ponto. CGSize,
+outro C struct, duas 
+
+91
+00:05:26,950 --> 00:05:30,550
+coisas nele, dois CGFloats, largura e
+altura, ok, é o 
+
+92
+00:05:30,570 --> 00:05:33,810
+tamanho. E também tem o rect, duas
+coisas nele, um 
+
+93
+00:05:33,830 --> 00:05:38,240
+CGPoint e um CGSize. Um rect é uma
+origem e um tamanho. 
+
+94
+00:05:38,260 --> 00:05:43,980
+Ok? Muito simples. Estes são os 4
+tipos de C structs que
+
+95
+00:05:44,000 --> 00:05:47,300
+usaremos quando falamos sobre
+as propriedades que 
+
+96
+00:05:47,320 --> 00:05:50,750
+tem a ver com uma view e seu
+sistema coordenado. Então vamos 
+
+97
+00:05:50,770 --> 00:05:53,000
+falar sobre sistema coordenado. Agora,
+o mais importante 
+
+98
+00:05:53,020 --> 00:05:57,910
+a saber é que o canto superior
+esquerdo é 0,0 e 
+
+99
+00:05:57,930 --> 00:06:02,760
+indo por "y" desce. Não é como uma
+coordenada Cartesiana, 
+
+100
+00:06:02,780 --> 00:06:05,730
+claro, onde sabendo que (0,0) está
+no meio, e 
+
+101
+00:06:05,750 --> 00:06:09,070
+indo por "y" sobe. Ok?
+"y" desce. 
+
+102
+00:06:09,090 --> 00:06:12,070
+A origem está no canto superior esquerdo
+e não no inferior esquerdo. 
+
+103
+00:06:12,090 --> 00:06:15,320
+Com o tempo vocês se acostumarão.
+Para os que apenas fizeram 
+
+104
+00:06:15,340 --> 00:06:17,730
+matemática, se não fizeram outro
+sistema de computação 
+
+105
+00:06:17,750 --> 00:06:21,350
+gráfica que usa isso, há muito o que fazer.
+Mas, mesmo um Mac 
+
+106
+00:06:21,370 --> 00:06:25,980
+tem o inferior esquerdo, certo?, mas o IOS
+tem superior esquerdo. Então a 
+
+107
+00:06:26,000 --> 00:06:32,100
+coordenada 400,35 seria 400
+adiante e 35 pra baixo. Ok? 
+
+108
+00:06:32,120 --> 00:06:36,130
+Do topo da tela para baixo, ou do
+topo da sua view. 
+
+109
+00:06:36,150 --> 00:06:38,870
+É assim que um sistema de coordenadas
+funciona. Cada unidade 
+
+110
+00:06:38,890 --> 00:06:43,930
+é um ponto, não um pixel, ok?
+Claro, nosso aparelho está 
+
+111
+00:06:43,950 --> 00:06:46,520
+repleto de pequenos pixels,
+mas não prestamos muita
+
+112
+00:06:46,540 --> 00:06:49,470
+atenção a eles. Prestamos atenção
+ao que chamamos de 
+
+113
+00:06:49,490 --> 00:06:52,360
+pontos. Por que usamos pontos no
+lugar de pixels? Bem, 
+
+114
+00:06:52,380 --> 00:06:55,480
+porque temos alguns aparelhos
+que tem muitos pixels, 
+
+115
+00:06:55,500 --> 00:06:59,620
+como os de tela retina. Certo?
+IOS, iPhone 4 
+
+116
+00:06:59,640 --> 00:07:03,390
+retina e o iPhone 5 e o
+novo iPad. Eles
+
+117
+00:07:03,410 --> 00:07:09,120
+tem muitos pixels num espaço
+muito pequeno.
+
+118
+00:07:09,140 --> 00:07:12,960
+Um iPhone, um iPhone 4 normal, 4GS,
+entretanto, eles tem 
+
+119
+00:07:12,980 --> 00:07:17,800
+menos. Mas não queremos que nosso desenho
+seja muito pequeno numa 
+
+120
+00:07:17,820 --> 00:07:20,240
+tela retina e depois muito grande
+porque tem poucos 
+
+121
+00:07:20,260 --> 00:07:23,820
+pixels numa outra tela. Então usamos
+pontos para desenhar e o 
+
+122
+00:07:23,840 --> 00:07:26,560
+IOS administra toda a
+suavização das curvas, 
+
+123
+00:07:26,580 --> 00:07:29,290
+fazendo as fontes parecerem
+muito bonitas quando há mais 
+
+124
+00:07:29,310 --> 00:07:34,810
+pixels. Podemos saber quantos pixels
+existem em um ponto. 
+
+125
+00:07:34,830 --> 00:07:38,230
+Com este método do UIView chamado
+"content scale factor", 
+
+126
+00:07:38,250 --> 00:07:41,990
+ok? Normalmente, ele apenas devolve um
+de dois valores. Numa 
+
+127
+00:07:42,010 --> 00:07:44,980
+tela retina ele devolve dois, e
+numa tela normal 
+
+128
+00:07:45,000 --> 00:07:47,800
+ele devolve um. Ok? Telas retina
+tem o dobro de 
+
+129
+00:07:47,820 --> 00:07:51,560
+pixels nos dois sentidos. Quatro
+vezes mais pixels 
+
+130
+00:07:51,580 --> 00:07:55,940
+que uma tela normal, ok?
+Normalmente não é preciso 
+
+131
+00:07:55,960 --> 00:07:58,380
+saber isso. Não há necessidade em
+saber isso para nada que 
+
+132
+00:07:58,400 --> 00:08:00,880
+fazemos nesta classe, talvez
+apenas no projeto final. 
+
+133
+00:08:00,900 --> 00:08:04,750
+Mas em nenhum trabalho daqui, ok?
+Agora que nós 
+
+134
+00:08:04,770 --> 00:08:07,870
+definimos "pontos" e sabemos
+sistemas de coordenadas, 
+
+135
+00:08:07,890 --> 00:08:10,290
+precisamos conhecer as propriedades e
+a view que nos ajuda 
+
+136
+00:08:10,310 --> 00:08:13,650
+entender isso. E há mesmo
+duas importantes 
+
+137
+00:08:13,670 --> 00:08:17,540
+propriedades: bounds e frame. Há
+também o center, mas 
+
+138
+00:08:17,560 --> 00:08:21,900
+center pode ser derivado de frame.
+Bounds é um 
+
+139
+00:08:21,920 --> 00:08:26,900
+retângulo que descreve este
+sistema de coordenadas no 
+
+140
+00:08:26,920 --> 00:08:30,170
+sistema de coordenadas da View.
+Em outras palavras, na forma que a View
+
+141
+00:08:30,190 --> 00:08:32,920
+vê as coisas, quando a View
+desenha, ela usa o 
+
+142
+00:08:32,940 --> 00:08:36,300
+bounds. Ok. Bounds imagine-o
+como uma tela 
+
+143
+00:08:36,320 --> 00:08:44,350
+onde se desenha. Sua frame é
+um retângulo no sistema de 
+
+144
+00:08:44,370 --> 00:08:48,150
+cordenadas da super view
+que contém completamente 
+
+145
+00:08:48,170 --> 00:08:52,610
+os bounds que estão no sistema
+de coordenadas. Agora, 
+
+146
+00:08:52,630 --> 00:08:55,200
+você deve pensar que o tamanho
+e a largura serão exatamente 
+
+147
+00:08:55,220 --> 00:08:59,950
+o mesmo, certo? Mas isso não é verdade,
+porque views podem ser 
+
+148
+00:08:59,970 --> 00:09:04,530
+rotacionadas, ok? E se tiver uma
+view rotacionada como esta 
+
+149
+00:09:04,550 --> 00:09:08,930
+poderá ver como os bounds, nesta imagem
+view Bs bounds, são 
+
+150
+00:09:08,950 --> 00:09:13,700
+(0,0) como origem, 200 por 250 como
+largura e altura. Mas 
+
+151
+00:09:13,720 --> 00:09:16,650
+pode-se ver que como é rotacionada,
+não se sabe que é 
+
+152
+00:09:16,670 --> 00:09:19,730
+rotacionada. Outra pessoa deve tê-la
+rotacionado. Está apenas 
+
+153
+00:09:19,750 --> 00:09:22,460
+desenhada como se tivesse esta pequena
+área retangular, 0,0 200, 
+
+154
+00:09:22,480 --> 00:09:26,910
+250. Mas o retângulo que o contém
+nesta super view,
+
+155
+00:09:26,930 --> 00:09:30,270
+em primeiro lugar, deve estar off-set.
+Assim. E em segundo lugar 
+
+156
+00:09:30,290 --> 00:09:33,480
+deve ser maior que 200 por 250
+porque tem que conter 
+
+157
+00:09:33,500 --> 00:09:38,730
+a rotação. Isso faz sentido?
+Não se deve imaginar
+
+158
+00:09:38,750 --> 00:09:42,990
+que a largura e altura de
+uma frame será a 
+
+159
+00:09:43,010 --> 00:09:46,390
+mesma que a largura e a altura
+de seu bounds. 
+
+160
+00:09:46,410 --> 00:09:50,390
+Ok. São coisas diferentes.
+Agora, quando usar bounds e 
+
+161
+00:09:50,410 --> 00:09:52,850
+quando usar frame? Ok, e eu tenho
+mais coisas
+
+162
+00:09:52,870 --> 00:09:56,850
+acontecendo. Mas você usa
+bounds quando está 
+
+163
+00:09:56,870 --> 00:09:59,760
+desenhando dentro da view. Use
+internamente na 
+
+164
+00:09:59,780 --> 00:10:02,710
+implementação da sua view. Use
+frame quando estiver 
+
+165
+00:10:02,730 --> 00:10:07,420
+tentando posicionar a view, tanto
+em tamanho quanto em localização 
+
+166
+00:10:07,440 --> 00:10:11,040
+nesta super view. Ok? 
+Todos entendem a
+
+167
+00:10:11,060 --> 00:10:15,080
+diferença entre bounds e frame?
+Pode ser confuso para 
+
+168
+00:10:15,100 --> 00:10:19,370
+novos programadores de IOS.
+Não os confunda. Use bounds quando 
+
+169
+00:10:19,390 --> 00:10:22,500
+estiver dentro da sua view, e estiver
+desenhando. Use frame apenas 
+
+170
+00:10:22,520 --> 00:10:25,710
+para posicionar a view na sua
+super view.
+
+171
+00:10:25,730 --> 00:10:28,430
+So initWithFrame, o inicializador
+designado, está 
+
+172
+00:10:28,450 --> 00:10:31,800
+usando uma frame, e não um bounds,
+uma frame. O bounds será 
+
+173
+00:10:31,820 --> 00:10:34,670
+automaticamente determinado a partir
+desta frame, dependendo de quão grande 
+
+174
+00:10:34,690 --> 00:10:40,600
+a frame é. Ok? Creating views.
+Na maioria das vezes 
+
+175
+00:10:40,620 --> 00:10:43,100
+se cria views as arrastando
+da paleta, ok? 
+
+176
+00:10:43,120 --> 00:10:45,600
+Já fizeram isso muito. Já
+criaram Buttons e 
+
+177
+00:10:45,620 --> 00:10:49,490
+labels, aquelas são apenas as views, ok,
+elas derivam da view, 
+
+178
+00:10:49,510 --> 00:10:53,170
+mesmo uma view customizada que
+se escreve, ok, não tem 
+
+179
+00:10:53,190 --> 00:10:56,030
+nada a ver com buttons e labels.
+É como se fosse sua própria view 
+
+180
+00:10:56,050 --> 00:10:58,780
+customizada desenhada. Arraste-a
+da paleta e é exatamente 
+
+181
+00:10:58,800 --> 00:11:01,780
+como arrastar um view
+controller, ele aparece 
+
+182
+00:11:01,800 --> 00:11:04,780
+e tem uma classe genérica e você tem
+que inspecionar. 
+
+183
+00:11:04,800 --> 00:11:07,390
+É o inspetor de identidade que diz
+que é uma classe, exatamente a mesma 
+
+184
+00:11:07,410 --> 00:11:11,150
+coisa, ok? Mesmo inspetor, mesma coisa,
+clique na view, 
+
+185
+00:11:11,170 --> 00:11:14,730
+você disse que é uma classe. Veremos
+isso ainda hoje num demo. 
+
+186
+00:11:14,750 --> 00:11:20,960
+É exatamente o mesmo conceito. 
+Nunca... Nesta classe 
+
+187
+00:11:20,980 --> 00:11:23,340
+especialmente, você nunca criará
+uma UIview 
+
+188
+00:11:23,360 --> 00:11:26,460
+controller em código. Ok, se criam UI
+view controllers 
+
+189
+00:11:26,480 --> 00:11:28,560
+de um storyboards, porque são
+complicados. Eles tem muitas 
+
+190
+00:11:28,580 --> 00:11:31,580
+views e outras coisas. É possível,
+algum dia, talvez até 
+
+191
+00:11:31,600 --> 00:11:35,520
+em seu projeto final que você queira
+criar uma UIview em código. 
+
+192
+00:11:35,540 --> 00:11:39,410
+Ok? E se faz isso com
+alloc initWithFrame, Ok? 
+
+193
+00:11:39,430 --> 00:11:42,670
+Isso, initWithFrame, é um
+inicializador designado, apenas 
+
+194
+00:11:42,690 --> 00:11:45,490
+diga, alloc initWithFrame. Por
+exemplo, UI label, é 
+
+195
+00:11:45,510 --> 00:11:50,900
+uma view, aqui está, farei allocInit
+WithFrame, uma UI label. 
+
+196
+00:11:50,920 --> 00:11:54,610
+Estão vendo? Aqui há uma frame que é
+20 para cima e 20 para baixo 
+
+197
+00:11:54,630 --> 00:11:57,830
+e depois 50 de largura e 30 de altura,
+lembrem que é da 
+
+198
+00:11:57,850 --> 00:12:02,120
+esquerda superior. Ok? Depois eu digo
+self.view, isto é 
+
+199
+00:12:02,140 --> 00:12:05,880
+código em um controller. Digamos
+self.view addSubview:label. 
+
+200
+00:12:05,900 --> 00:12:09,030
+E aparece na tela. Ok? É na
+verdade bem fácil 
+
+201
+00:12:09,050 --> 00:12:12,530
+fazer em código tmabém. Mas se faz
+as views normalmente 
+
+202
+00:12:12,550 --> 00:12:14,830
+pelos storyboards, Apenas porque
+são bons de usar. São 
+
+203
+00:12:14,850 --> 00:12:17,740
+como documentos, podemos ver onde
+todas as views estão. 
+
+204
+00:12:17,760 --> 00:12:22,040
+Algo assim. Tudo certo, então agora
+views customizadas. Quando 
+
+205
+00:12:22,060 --> 00:12:24,520
+você vai querer criar uma view
+customizada? Em outras palavras 
+
+206
+00:12:24,540 --> 00:12:27,770
+use uma view como um button ou label.
+A resposta é que quando 
+
+207
+00:12:27,790 --> 00:12:32,160
+se quer desenhar algo específico
+para seu app, ok? Ou se quiser 
+
+208
+00:12:32,180 --> 00:12:35,280
+colocar alguma entrada por toque.
+Alguns gestos que sejam 
+
+209
+00:12:35,300 --> 00:12:38,500
+específicos para como seu app
+funciona. Ok, como um botão 
+
+210
+00:12:38,520 --> 00:12:42,420
+lida com um gesto. Um toque. Este não
+é um gesto muito excitante. 
+
+211
+00:12:42,440 --> 00:12:44,860
+Você deveria ter um retângulo
+que liga com esses gestos
+
+212
+00:12:44,880 --> 00:12:49,660
+passar ou pinçar, ou rodar ou
+algo assim.
+
+213
+00:12:49,680 --> 00:12:53,800
+Desenhar é fácil. Se cria uma
+subclasse UIview, e
+
+214
+00:12:53,820 --> 00:12:58,100
+implementa apenas um método. DrawRect.
+Ok? O argumento DrawRect 
+
+215
+00:12:58,120 --> 00:13:01,110
+é um argumento apenas para performance,
+é apenas para performance. 
+
+216
+00:13:01,130 --> 00:13:04,750
+Se pode ignorar completamente este argumento
+e desenhar uma view inteira 
+
+217
+00:13:04,770 --> 00:13:08,160
+toda vez que quiser. O argumento está
+apenas dizendo: "Bem, 
+
+218
+00:13:08,180 --> 00:13:11,400
+por favor se desenhe Sra. View" e "Eu
+apenas preciso do que 
+
+219
+00:13:11,420 --> 00:13:14,620
+está dentro deste retângulo do seu interior."
+Ok? Este retângulo 
+
+220
+00:13:14,640 --> 00:13:17,100
+está em seu sistema de coordenadas.
+Em outras palavras, o mesmo 
+
+221
+00:13:17,120 --> 00:13:19,600
+sistema de coordenadas dos bounds.
+Você pode decidir se quer
+
+222
+00:13:19,620 --> 00:13:22,350
+apenas desenhar o que está dentro
+do retângulo ou se
+
+223
+00:13:22,370 --> 00:13:25,600
+quer desenhar tudo. Faça como
+achar melhor. Dá pra ver 
+
+224
+00:13:25,620 --> 00:13:28,350
+como será a optimização de performance
+talvez para desenhar menos. 
+
+225
+00:13:28,370 --> 00:13:31,510
+Mas este é o único método que temos
+para implementar para ter
+
+226
+00:13:31,530 --> 00:13:36,920
+uma view customizada. NUNCA… eu nunca coloco
+palavras em vermelho à toa nos meus slides
+
+227
+00:13:36,940 --> 00:13:42,360
+Nunca chame drawRect. Ok? drawRect é
+chamado pelo sistema, 
+
+228
+00:13:42,380 --> 00:13:46,560
+Ok? Quando for hora de desenhar.
+Você não sabe quando é a hora 
+
+229
+00:13:46,580 --> 00:13:50,850
+certa para desenhar. Só se sabe
+como desenhar. Ok? 
+
+230
+00:13:50,870 --> 00:13:53,880
+O sistema sabe quando é a hora
+certa para desenhar. Então, nunca 
+
+231
+00:13:53,900 --> 00:13:57,000
+chame drawRect. Se precisar que sua view
+seja redesenhada porque 
+
+232
+00:13:57,020 --> 00:14:00,750
+algo mudou, você chama este
+método em você mesmo: 
+
+233
+00:14:00,770 --> 00:14:03,940
+setNeedsDisplay. E outras pessoas podem
+chamar a sua view também.
+
+234
+00:14:03,960 --> 00:14:08,230
+setNeedsDisplay. Isso significa que
+preciso disso, view para ser 
+
+235
+00:14:08,250 --> 00:14:11,540
+redesenhada, e então o sistema, quando
+for a hora certa, chamará 
+
+236
+00:14:11,560 --> 00:14:15,770
+seu drawRect para você, ok? Nunca
+chame drawRect diretamente. 
+
+237
+00:14:15,790 --> 00:14:21,540
+Certo, Como implementar o
+drawRect, ok? 
+
+238
+00:14:21,560 --> 00:14:24,780
+Se usa o core graphics framework,
+ok? Core graphics é 
+
+239
+00:14:24,800 --> 00:14:28,880
+o que te deixa desenhar linhas e
+coisas assim. Ou você 
+
+240
+00:14:28,900 --> 00:14:31,560
+pode usar um object-oriented
+chamado UIBezierPath, 
+
+241
+00:14:31,580 --> 00:14:35,000
+e eu vou focar mais neste
+object-oriented. 
+
+242
+00:14:35,020 --> 00:14:37,820
+O core graphics framework pode fazer
+mais que o UIBezierPath.
+
+243
+00:14:37,840 --> 00:14:42,230
+Mas o UIBezierPath faz muita
+coisa também. Nos
+
+244
+00:14:42,250 --> 00:14:46,100
+dois casos, o conceito core do Core
+Graphics é que se ganha um 
+
+245
+00:14:46,120 --> 00:14:50,220
+contexto, este contexto magico é
+opaco, você não sabe 
+
+246
+00:14:50,240 --> 00:14:53,280
+exatamente o que está no contexto. Mas
+o que o contexto faz 
+
+247
+00:14:53,300 --> 00:14:56,570
+é determinar para onde seu
+desenho vai. Quando seu 
+
+248
+00:14:56,590 --> 00:15:00,050
+drawRect for chamado, seu contexto
+será configurado pra você. 
+
+249
+00:15:00,070 --> 00:15:02,970
+Normalmente, este contexto será
+mostrado na tela, claro. 
+
+250
+00:15:02,990 --> 00:15:06,060
+Mas, há outros contextos.
+Mostrarei no próximo 
+
+251
+00:15:06,080 --> 00:15:09,350
+slide. O que você poderia ter.
+Imprimindo contexto e PDF 
+
+252
+00:15:09,370 --> 00:15:12,720
+e outro contexto. Você tem este
+contexto depois você cria 
+
+253
+00:15:12,740 --> 00:15:17,670
+todos esses caminhos, e define as
+cores e fontes e 
+
+254
+00:15:17,690 --> 00:15:21,020
+espessuras de linhas que quer
+e depois você cursa os caminhos 
+
+255
+00:15:21,040 --> 00:15:25,060
+significa desenhar os caminhos, as linhas.
+Ou preencher os caminhos 
+
+256
+00:15:25,080 --> 00:15:28,150
+que significa colocar cor.
+O que o caminho contém. 
+
+257
+00:15:28,170 --> 00:15:31,600
+Um desenho bem básico. É
+extraordinário o quão 
+
+258
+00:15:31,620 --> 00:15:34,570
+sofisticado podem ficar as coisas
+por se poder preencher 
+
+259
+00:15:34,590 --> 00:15:37,760
+caminhos com padrões, gradientes, e
+tudo mais. É muita coisa. 
+
+260
+00:15:37,780 --> 00:15:41,850
+Mostrarei um exemplo que
+que é bem simples mas 
+
+261
+00:15:41,870 --> 00:15:44,850
+tem muita coisa que se pode
+fazer com esse conceito básico. 
+
+262
+00:15:44,870 --> 00:15:48,040
+Isso não é especial ao Core
+Graphics, e muitos sistemas
+
+263
+00:15:48,060 --> 00:15:52,340
+gráficos tem esse mesmo tipo de
+conceito de como desenhar. 
+
+264
+00:15:52,360 --> 00:15:57,220
+UIBezierPath te deixa fazer todos
+esses conceitos e 
+
+265
+00:15:57,240 --> 00:15:59,990
+capturá-los em um objeto. Daí se
+pode dizer para esse 
+
+266
+00:16:00,010 --> 00:16:04,080
+objeto: "ok, agora preencha. Desenhe."
+E ele irá cursar e preencher 
+
+267
+00:16:04,100 --> 00:16:06,890
+fazer as coisas. Então olhemos
+para este exemplo UIBezierPath 
+
+268
+00:16:06,910 --> 00:16:12,080
+Aqui está o contexto que se pode
+ter. Já disse isso. 
+
+269
+00:16:12,100 --> 00:16:16,490
+Ok! Antes de falar sobre
+UIBezierPath. Se você for 
+
+270
+00:16:16,510 --> 00:16:19,500
+chamar as coisas do core graphics
+diretamente, e lembre-se que 
+
+271
+00:16:19,520 --> 00:16:22,200
+a biblioteca core graphics não
+é orientada ao objeto, é um 
+
+272
+00:16:22,220 --> 00:16:26,080
+monte de funções C, ok, dezenas e
+dezenas de funções C, 
+
+273
+00:16:26,100 --> 00:16:28,440
+o primeiro argumeto para todas
+essas funções, é o 
+
+274
+00:16:28,460 --> 00:16:32,150
+contexto que se quer desenhar, então
+se tem que estar no contexto. 
+
+275
+00:16:32,170 --> 00:16:36,360
+E, para estar no contexto corrente,
+o que, como o drawRcect, 
+
+276
+00:16:36,380 --> 00:16:40,620
+está sendo pedido para se chamar.
+Você chama esta função C, UI graphics 
+
+277
+00:16:40,640 --> 00:16:43,280
+pega o contexto corrente. E isto te dá
+este pequeno cookie, 
+
+278
+00:16:43,300 --> 00:16:44,280
+contexto e usará
+
+
+279
+00:16:44,300 --> 00:16:49,560
+como o primeiro argumento para todos
+os seus chamados de CGContext. 
+
+280
+00:16:49,580 --> 00:16:52,940
+Na maior parte do tempo, espero,
+se pode usar o UIBezierPath 
+
+281
+00:16:52,960 --> 00:16:56,500
+que se parece com isso. Faça um
+alloc init ou há um método de 
+
+282
+00:16:56,520 --> 00:17:00,360
+classe chamado caminho Bezier
+que cria um para você. Você 
+
+283
+00:17:00,380 --> 00:17:03,420
+apenas move, então, vamos dizer que
+eu mova para este ponto 
+
+284
+00:17:03,440 --> 00:17:08,020
+(75, 10), que é 75 para cima,
+10 para baixo. Depois talvez adicione 
+
+285
+00:17:08,040 --> 00:17:13,570
+uma linha para baixo em (160, 150). Depois
+adiciono outra linha para cima em 10. 
+
+286
+00:17:13,590 --> 00:17:18,640
+150. Ok? Depois eu fecho este
+caminho chamando 
+
+287
+00:17:18,660 --> 00:17:20,890
+este método em BezierPath
+chamando path closePath. 
+
+288
+00:17:20,910 --> 00:17:24,220
+Whoop. Isso o fecha no ponto de
+partida. E agora eu tenho 
+
+289
+00:17:24,240 --> 00:17:26,720
+um triângulo. Ok, este é o
+mais simples formato que se possa 
+
+290
+00:17:26,740 --> 00:17:29,980
+desenhar. Mas na verdade, quando
+se faz isso, não se está 
+
+291
+00:17:30,000 --> 00:17:32,140
+desenhando nada. O que se está
+fazendo é apenas 
+
+292
+00:17:32,160 --> 00:17:35,980
+construir um caminho. Ok, se está
+descrvendo um caminho 
+
+293
+00:17:36,000 --> 00:17:39,940
+para o objeto UIBezierPath. Para
+desenhar de verdade 
+
+294
+00:17:39,960 --> 00:17:43,490
+você precisa definir as cores que quer,
+as cores que quer 
+
+295
+00:17:43,510 --> 00:17:46,130
+preencher o triângulo e
+as que quer na linha
+
+296
+00:17:46,150 --> 00:17:48,980
+cursada. Aqui vou preencher
+com verde e desenhar 
+
+297
+00:17:49,000 --> 00:17:52,090
+a linha em vermelho. Depois você
+manda a mensagem ao caminho 
+
+298
+00:17:52,110 --> 00:17:56,940
+fill ou a mensagem stroke.
+Aqui eu setei tanto fill e 
+
+299
+00:17:56,960 --> 00:17:59,630
+stroke. Tenho um triângulo que é
+verde no meio, 
+
+300
+00:17:59,650 --> 00:18:02,360
+vermelho por fora, ok? Aqui está
+o desenho real. 
+
+301
+00:18:02,380 --> 00:18:05,290
+Acontece quando se diz fill e stroke.
+E isso vai acontecer 
+
+302
+00:18:05,310 --> 00:18:07,540
+no atual contexto gráfico.
+Quando se usa 
+
+303
+00:18:07,560 --> 00:18:10,690
+BezierPath sempre se assume
+o contexto atual. Não tem 
+
+304
+00:18:10,710 --> 00:18:13,440
+que fazer aquelecontexto gráfico
+UIget que se faz 
+
+305
+00:18:13,460 --> 00:18:16,480
+quando se chamam as
+APIs do C diretamente. 
+
+306
+00:18:16,500 --> 00:18:20,140
+Há também outras coisas no
+BezierPath como poder setar
+
+307
+00:18:20,160 --> 00:18:23,140
+espessura de linha. Quero que as linhas
+vermelhas ao redor do triângulo 
+
+308
+00:18:23,160 --> 00:18:26,140
+sejam bem grossas. Eu poderia setar a
+espessura e esta espessura 
+
+309
+00:18:26,160 --> 00:18:28,890
+está em pontos. Certo, pontos de
+espessura? Como se sabe 
+
+310
+00:18:28,910 --> 00:18:34,110
+os mesmos pontos das distâncias
+e tudo mais. Também se podem
+
+311
+00:18:34,130 --> 00:18:38,390
+fazer coisas sofisticadas,
+formatos, com BezierPath 
+
+312
+00:18:38,410 --> 00:18:41,040
+como um balão arredontado,
+aquela linha em volta 
+
+313
+00:18:41,060 --> 00:18:43,620
+de botões, aquele retângulo com
+bordas arredondadas. 
+
+314
+00:18:43,640 --> 00:18:46,380
+Um retângulo arredontado. Dá pra
+fazer ovais, e dá pra fazer com isso 
+
+315
+00:18:46,400 --> 00:18:50,220
+um círculo se quiser
+colocá-lo num retângulo. 
+
+316
+00:18:50,240 --> 00:18:53,430
+E se faz isso com vários métodos
+de classes que criam isso, 
+
+317
+00:18:53,450 --> 00:18:57,340
+bastante direto. Também se
+usa o BezierPath para 
+
+318
+00:18:57,360 --> 00:19:00,770
+clipar. Todos sabem o que é
+clipar? Levantem as mãos se 
+
+319
+00:19:00,790 --> 00:19:04,100
+não sabem o que é clipar.
+Ok, clipar, no mundo 
+
+320
+00:19:04,120 --> 00:19:07,900
+gráfico significa que terei
+um molde como
+
+321
+00:19:07,920 --> 00:19:11,390
+um triângulo ou talvez um retângulo
+com bordas arredondadas ou uma 
+
+322
+00:19:11,410 --> 00:19:15,430
+circuferência e quando digo addClip,
+significa que todos os desenhos
+
+323
+00:19:15,450 --> 00:19:18,770
+estarão dentro deste triângulo, ou
+circuferência ou retângulo arredondado. 
+
+324
+00:19:18,790 --> 00:19:21,610
+Não importa o que eu desenhe
+nada estará fora dalí. Ok? 
+
+325
+00:19:21,630 --> 00:19:25,850
+Isso é clipar. Então se pode
+usar o BezierPath para 
+
+326
+00:19:25,870 --> 00:19:28,270
+criar um formato, modele e diga
+addClip e todos os desenhos que 
+
+327
+00:19:28,290 --> 00:19:30,890
+fizer depois disso no contexto
+atual estarão dentro, e se
+
+328
+00:19:30,910 --> 00:19:35,030
+desenhar fora do molde não existirá.
+Nada estará fora.
+
+329
+00:19:35,050 --> 00:19:38,030
+Como se nunca tivesse desenhado lá.
+Ok? Isso pode ser 
+
+330
+00:19:38,050 --> 00:19:41,250
+muito valioso. Certo, falemos
+sobre desenhar com transparência
+
+331
+00:19:41,270 --> 00:19:44,830
+em UIView. Vocês já sabem
+como desenhar 
+
+332
+00:19:44,850 --> 00:19:47,580
+com transparência e de fato
+terão que desenhar com
+
+333
+00:19:47,600 --> 00:19:49,750
+transparência na tarefa de casa
+atual usando
+
+334
+00:19:49,770 --> 00:19:52,700
+NSAttributedStringsFontAttribute e
+usando cores transparentes 
+
+335
+00:19:52,720 --> 00:19:56,600
+e essa é uma forma primária de
+desenhar com transparência
+
+336
+00:19:56,620 --> 00:19:59,940
+no drawRect, é apenas ter cores
+que são transparentes. 
+
+337
+00:19:59,960 --> 00:20:04,030
+Ok. Que tem alpha. Já explicamos
+o que é alpha. 
+
+338
+00:20:04,050 --> 00:20:06,870
+Entretanto há outros modos, sua view
+tem uma propriedade backgroundColor
+
+339
+00:20:06,890 --> 00:20:10,400
+que pode ser parcialmente
+transparente. Ou até totalmente 
+
+340
+00:20:10,420 --> 00:20:13,200
+transparente. Se quise sua
+view veja completamente
+
+341
+00:20:13,220 --> 00:20:17,740
+através das views de trás,
+incluso da superview 
+
+342
+00:20:17,760 --> 00:20:20,190
+sabe, exceto se desenhar para
+ser opaco, isto será 
+
+343
+00:20:20,210 --> 00:20:23,710
+certamente possível. E aí,
+você sabe que existe a 
+
+344
+00:20:23,730 --> 00:20:25,740
+propriedade alpha, que usamos no
+primeiro exercício, para 
+
+345
+00:20:25,760 --> 00:20:28,690
+fazer a view inteira, o pano de fundo
+e tudo que foi desenhado 
+
+346
+00:20:28,710 --> 00:20:32,430
+ser parcialmte transparente, certo?
+Lembre que fizemos isso 
+
+347
+00:20:32,450 --> 00:20:35,370
+para desabilitar os botões, fizemos
+com que eles sumissem 
+
+348
+00:20:35,390 --> 00:20:38,270
+um pouco. Uma coisa, caso vá desenhar
+com transparência, 
+
+349
+00:20:38,290 --> 00:20:41,140
+exceto pela propriedade alpha,
+mas os outros modos, você 
+
+350
+00:20:41,160 --> 00:20:46,180
+precisa setar essa propriedade "opaque"
+na view para "no". Precisa 
+
+351
+00:20:46,200 --> 00:20:49,920
+dizer ao sistema que esta view
+trabalha em transparência. se não 
+
+352
+00:20:49,940 --> 00:20:55,210
+fizer isso ele sempre colocará um
+retângulo preto atrás de tudo.
+
+353
+00:20:55,230 --> 00:20:58,850
+E isso é para a performance. Ok.
+Como se pode imaginar, desenhar 
+
+354
+00:20:58,870 --> 00:21:01,940
+views umas sobre as outras
+e todas se vendo através das 
+
+355
+00:21:01,960 --> 00:21:04,830
+outras, isso gasta muito do
+processador gráfico, 
+
+356
+00:21:04,850 --> 00:21:07,730
+processamento intensivo para saber
+o que acontece porque
+
+357
+00:21:07,750 --> 00:21:11,030
+se tem um verde parcial e um
+vermelho parcial e se sobrepõe tudo, 
+
+358
+00:21:11,050 --> 00:21:14,400
+e que cor está no meio,
+entendem o que eu digo, é muito 
+
+359
+00:21:14,420 --> 00:21:17,130
+complicado com a opacidade.
+"Bam" explodimos os bits 
+
+360
+00:21:17,150 --> 00:21:20,380
+uns sobre os outros e assim
+vai. Então, quando 
+
+361
+00:21:20,400 --> 00:21:23,130
+quiser desenhar uma transparência,
+exceto para o alpha,
+
+362
+00:21:23,150 --> 00:21:26,600
+precisa setar a opacidade, ok,
+"opaque" é igual a "no". 
+
+363
+00:21:26,620 --> 00:21:29,480
+O padrão é "yes". As view são opacas,
+isso é predefinido. 
+
+364
+00:21:29,500 --> 00:21:33,540
+Views são opacas. Ok, então se
+você não mudar para "no" e 
+
+365
+00:21:33,560 --> 00:21:36,200
+desenhar com transparência ele
+não vai funcionar. 
+
+366
+00:21:36,220 --> 00:21:40,740
+Certo. O que acontece quando as views
+se sobrepõe? Até agora, todas as views 
+
+367
+00:21:40,760 --> 00:21:43,210
+que criou se desenhou nos botões,
+arrastou seus botões e labels,
+
+368
+00:21:43,230 --> 00:21:47,070
+Você não os sobrepos.
+Todos couberam sem precisar 
+
+369
+00:21:47,090 --> 00:21:49,760
+sobrepô-los. Mas é perfeitamente
+aceitável que eles se
+
+370
+00:21:49,780 --> 00:21:52,650
+sobreponham e sua transparência
+mostrará se eles tem 
+
+371
+00:21:52,670 --> 00:21:56,850
+transparência e que sua opacidade
+está definida como "no". Uma coisa 
+
+372
+00:21:56,870 --> 00:22:02,270
+a se considerar é a ordem que
+é matriz subviews. UI 
+
+373
+00:22:02,290 --> 00:22:05,840
+view tem uma propriedade chamada
+subviews, que é apenas uma matriz 
+
+374
+00:22:05,860 --> 00:22:09,740
+de todas as subviews dela e a
+ordem importa, ok?
+
+375
+00:22:09,760 --> 00:22:14,460
+Assim, as que estão mais atrás,
+que são como o zero, 
+
+376
+00:22:14,480 --> 00:22:18,070
+Index zero na matriz podem se mostras
+através. Estão no fundo. 
+
+377
+00:22:18,090 --> 00:22:21,750
+Elas se mostram através das
+transparentes da frente. Ok? 
+
+378
+00:22:21,770 --> 00:22:25,290
+Então, basicamente de trás para frente
+é o começo da matriz 
+
+379
+00:22:25,310 --> 00:22:32,640
+até o final. Outra coisa interessante
+é esconder views.
+
+380
+00:22:32,660 --> 00:22:35,640
+Você tem uma view na hieranquia
+das views e pode 
+
+381
+00:22:35,660 --> 00:22:38,050
+escondê-la completamente. Ela continua
+na hierarquia das views, 
+
+382
+00:22:38,070 --> 00:22:41,030
+ainda tem uma superview, e ainda
+é uma subview de outra. 
+
+383
+00:22:41,050 --> 00:22:45,240
+Mas quando define a propriedade "hidden"
+para "yes", ela desaparece, e 
+
+384
+00:22:45,260 --> 00:22:49,230
+não obedece mais nenhum gesto. Ok,
+ela some. Mas se disser 
+
+385
+00:22:49,250 --> 00:22:53,570
+"hidden" "no", ooh, ela reaparece.
+É uma maneira de 
+
+386
+00:22:53,590 --> 00:22:56,570
+esconder completamente. É um jeito
+que se pode usar para tirar 
+
+387
+00:22:56,590 --> 00:23:00,070
+um botão da tela se não for válido
+no momento e depois colocar de volta 
+
+388
+00:23:00,090 --> 00:23:03,070
+mais tarde. E claro que tudo
+isso pode ter animação. 
+
+389
+00:23:03,090 --> 00:23:06,320
+Mostrarei apenas um pedaço
+disso hoje, mas você vai querer 
+
+390
+00:23:06,340 --> 00:23:09,070
+animar as coisas quando elas forem sumir
+e aparecer na tela para que o 
+
+391
+00:23:09,090 --> 00:23:12,820
+usuário veja: oh, algo acabou
+de sumir. 
+
+392
+00:23:12,840 --> 00:23:16,640
+Estado gráfico. O estado gráfico,
+como é global, o 
+
+393
+00:23:16,660 --> 00:23:20,000
+contexto atual, caso você modifique,
+como setar a espessura de linha 
+
+394
+00:23:20,020 --> 00:23:22,320
+ou outra coisa, estará
+permanentemente definida 
+
+395
+00:23:22,340 --> 00:23:25,320
+até que alguém mude essa
+definição. Então se 
+
+396
+00:23:25,340 --> 00:23:28,070
+chamar uma subroutine que defina a
+espessura da linha, quando 
+
+397
+00:23:28,090 --> 00:23:30,280
+a subroutine voltar a espessura
+terá sido mudada.
+
+398
+00:23:30,300 --> 00:23:34,230
+Não gostamos muito disso,
+então chamamos a subroutine.
+
+399
+00:23:34,250 --> 00:23:37,230
+Usamos o pushing e o
+popping. Passamos o contexto atual. 
+
+400
+00:23:37,250 --> 00:23:40,480
+Ele meio que faz uma cópia do
+contexto e podemos 
+
+401
+00:23:40,500 --> 00:23:44,230
+mexer do jeito que quisermos e
+aí apenas dizemos: 
+
+402
+00:23:44,250 --> 00:23:47,730
+popContext e volta ao jeito que
+era antes, ok? Dá pra ver 
+
+403
+00:23:47,750 --> 00:23:50,230
+que vamos querer forçar, chamar a
+subroutine, mexer, voltar 
+
+404
+00:23:50,250 --> 00:23:52,980
+a onde estávamos antes de
+chamar a subroutine.
+
+405
+00:23:53,000 --> 00:23:55,730
+Isso permite que a subroutine não
+tenha que se preocupar em voltar com 
+
+406
+00:23:55,750 --> 00:23:58,230
+o contexto, o que se desenhou,
+da maneira que era antes, 
+
+407
+00:23:58,250 --> 00:24:02,940
+antes de ser chamada. Ok, desenhar texto
+em imagens, muito 
+
+408
+00:24:02,960 --> 00:24:05,880
+importante no drawRect. Pode,
+claro, se desenhar um texto 
+
+409
+00:24:05,900 --> 00:24:10,150
+apenas se colocando uma UIlabel
+como uma subview da sua view mas 
+
+410
+00:24:10,170 --> 00:24:12,500
+algumas vezes, vai querer desenhar
+diretamente pelo drawRect. 
+
+411
+00:24:12,520 --> 00:24:15,460
+E se faz isso com NSattributedString, 
+
+412
+00:24:15,480 --> 00:24:18,410
+muito fácil. Você cria o
+attributedString, define todos 
+
+413
+00:24:18,430 --> 00:24:21,600
+os atributos que quiser, cores,
+tamanhos de fontes, entre outros. 
+
+414
+00:24:21,620 --> 00:24:24,780
+Se pergunta ao attributedString: quanto
+grande tem que ser um retângulo 
+
+415
+00:24:24,800 --> 00:24:28,160
+para poder desenhá-lo? E aí você
+pode enviar uma mensagem:
+
+416
+00:24:28,180 --> 00:24:32,500
+drawAtPoint, o que desenhará o
+texto naquele ponto. 
+
+417
+00:24:32,520 --> 00:24:35,600
+Você também pode fazer um drawInRect
+que irá desenhar e envolver 
+
+418
+00:24:35,620 --> 00:24:38,080
+porque NSattributedString
+envolve e tudo 
+
+419
+00:24:38,100 --> 00:24:41,910
+mais. É como um pequeno
+editor de texto ou um exibidor 
+
+420
+00:24:41,930 --> 00:24:45,230
+de texto. Fará tudo sem o
+rect. É muito 
+
+421
+00:24:45,250 --> 00:24:47,960
+fácil fazer um texto. Inacreditável.
+Apenas se cria um 
+
+422
+00:24:47,980 --> 00:24:52,230
+attributedString e drawAtPoint
+ou drawInRect. Super 
+
+423
+00:24:52,250 --> 00:24:56,520
+fácil. E com imagens é tão
+fácil quanto. Há uma UIImageView 
+
+424
+00:24:56,540 --> 00:24:58,950
+que é como a UILabel, você pode
+adicionar como uma subview 
+
+425
+00:24:58,970 --> 00:25:02,070
+se quiser para desenhar uma imagem.
+Ou, pode pegar uma imagem, 
+
+426
+00:25:02,090 --> 00:25:04,820
+e você já sabe fazer isso, como
+o verso da sua carta,
+
+427
+00:25:04,840 --> 00:25:07,800
+certo, UIImage nome da imagem.
+Há outras maneiras de ter 
+
+428
+00:25:07,820 --> 00:25:11,300
+uma imagem. Pode trazê-las de
+arquivos. Pode também 
+
+429
+00:25:11,320 --> 00:25:13,550
+desenhar em um off-screen buffer
+usando BeginImageContext 
+
+430
+00:25:13,570 --> 00:25:17,470
+Mas depois que já tiver a imagem
+apenas exploda os 
+
+431
+00:25:17,490 --> 00:25:22,390
+bits da imagem até um ponto,
+e a imagem estará em seu tamanho
+
+432
+00:25:22,410 --> 00:25:26,170
+natural ou, em um retângulo, ela
+será escalonada para caber nele.
+
+433
+00:25:26,190 --> 00:25:29,420
+Ou pode fazer com que se repitam,
+definir como padrão e ele irá
+
+434
+00:25:29,440 --> 00:25:33,290
+repetir a imagem para que preencha
+todo o retângulo. Ok? Todos 
+
+435
+00:25:33,310 --> 00:25:36,260
+esses chamados serão feitos
+pelo seu drawRect para desenhar 
+
+436
+00:25:36,280 --> 00:25:39,910
+em suas views. Dúvidas
+sobre isso? Sim? ... 
+
+437
+00:25:39,930 --> 00:25:42,840
+>> Se pode esconder algo na view
+mas continuar 
+
+438
+00:25:42,860 --> 00:25:43,840
+ocupando aquele espaço. ...
+
+
+439
+00:25:43,860 --> 00:25:48,490
+>> Se pode esconder algo na view
+mas continuar 
+
+440
+00:25:48,510 --> 00:25:50,120
+ocupando aquele espaço? ...
+
+
+441
+00:25:50,140 --> 00:25:52,370
+>> Naquela função de esconder
+que nos mostrou antes. ... 
+
+442
+00:25:52,390 --> 00:25:53,370
+>> Sim, hidden.
+
+
+443
+00:25:53,390 --> 00:25:56,370
+>> Você deleta aquilo, esconde,
+e eu imagino que 
+
+444
+00:25:56,390 --> 00:25:58,580
+aquele espaço onde estava inicialmente
+era onde ele deveria
+
+445
+00:25:58,600 --> 00:25:59,580
+estar? ...
+
+
+446
+00:25:59,600 --> 00:26:03,540
+>> Bem. Ok. Quando você seta o
+hidden para yes, é como se 
+
+447
+00:26:03,560 --> 00:26:07,120
+a view não estivesse lá.
+Então ela não estará
+
+448
+00:26:07,140 --> 00:26:08,970
+bloqueando nada, nada. É como
+se não estivesse
+
+449
+00:26:08,990 --> 00:26:09,970
+lá. ...
+
+
+450
+00:26:09,990 --> 00:26:12,350
+>> E se tentar esconder algum botão? ... 
+
+451
+00:26:12,370 --> 00:26:14,940
+>> Sim, se pode dizer hidden para
+esconder um botão, e ele 
+
+452
+00:26:14,960 --> 00:26:18,340
+não estará na tela e não se
+poderá apertá-lo. ... 
+
+453
+00:26:18,360 --> 00:26:22,700
+>> Então aquele espaço não
+pode ser mais usado por nada? ... 
+
+454
+00:26:22,720 --> 00:26:25,200
+>> Claro, o espaço, é como se o botão
+não estivesse lá. 
+
+455
+00:26:25,220 --> 00:26:27,700
+Coisas atrás dele deverão
+aparecer. Coisas na frente dele 
+
+456
+00:26:27,720 --> 00:26:30,700
+ainda estarão lá.
+Vê o que eu digo? 
+
+457
+00:26:30,720 --> 00:26:32,450
+Podemos conversar depois
+sobre isso. 
+
+458
+00:26:32,470 --> 00:26:33,450
+Pergunta. ...
+
+
+459
+00:26:33,470 --> 00:26:39,650
+>> A ideia por trás de usar código
+para fazer isso ao invés
+
+460
+00:26:39,670 --> 00:26:42,900
+de tentar desenhar é porque
+se tem mais controle sobre tudo? .. . 
+
+461
+00:26:42,920 --> 00:26:44,150
+>> Usar código para fazer o que? ...
+
+
+462
+00:26:44,170 --> 00:26:45,650
+>> Desenhar algo na tela.
+... 
+
+463
+00:26:45,670 --> 00:26:48,900
+>> O que fazemos. A pergunta foi,
+por que eu iria querer 
+
+464
+00:26:48,920 --> 00:26:52,150
+usar código para trazer uma imagem
+ao invéz de apenas arrastá-la 
+
+465
+00:26:52,170 --> 00:26:55,400
+e colocar no lugar certo? E a
+resposta é que nós arrastamos.
+
+466
+00:26:55,420 --> 00:26:58,150
+É por isso que eu disse que podemos
+usar o UIImageView, que é como 
+
+467
+00:26:58,170 --> 00:27:01,150
+o UILabel para imagens. Arraste
+e defina a imagem, tudo em 
+
+468
+00:27:01,170 --> 00:27:04,150
+Xcode, sem código. Perfeitamente
+bem, mas se quiser desenhar 
+
+469
+00:27:04,170 --> 00:27:07,400
+em código poderia fazer aqui
+e as razões para fazer
+
+470
+00:27:07,420 --> 00:27:10,150
+são como, você sabe,
+flexibilidade 
+
+471
+00:27:10,170 --> 00:27:12,900
+poder fazer ambos. Ok.
+Redesenhar num bounds 
+
+472
+00:27:12,920 --> 00:27:15,900
+mudou. Eu falei na última vez que
+quando os bounds das views
+
+473
+00:27:15,920 --> 00:27:21,050
+mudam, coisas podem acontecer. OK.
+Uma das coisas é: há que 
+
+474
+00:27:21,070 --> 00:27:24,470
+redesenhar? Você tem suas
+subviews, mas também há você, 
+
+475
+00:27:24,490 --> 00:27:27,740
+Você desenha. Você e a view,
+e a resposta é
+
+476
+00:27:27,760 --> 00:27:30,920
+que normalmente você não tem
+que redesenhar quando seus bounds 
+
+477
+00:27:30,940 --> 00:27:35,270
+mudam. Ao invés, incrível, os bits,
+que estavam na tela 
+
+478
+00:27:35,290 --> 00:27:40,110
+antes, se esticam ou espremem
+ao novo bounds, e isto 
+
+479
+00:27:40,130 --> 00:27:43,020
+normalmente acaba mal. Ok?
+Será uma curva, 
+
+480
+00:27:43,040 --> 00:27:47,360
+bloqueando bits e tal. Na maioria
+das vezes não queremos isso. 
+
+481
+00:27:47,380 --> 00:27:50,280
+Este é um caso padrão. É para
+uma ótima performance. A maioria 
+
+482
+00:27:50,300 --> 00:27:52,560
+das views que desenham algo
+querem se redesenhar 
+
+483
+00:27:52,580 --> 00:27:55,340
+quando seu bounds muda. E para
+fazer isso, há que setar 
+
+484
+00:27:55,360 --> 00:27:58,850
+esta propriedade UIViewContentMode.
+E você deverá 
+
+485
+00:27:58,870 --> 00:28:01,350
+setar isso para este ContentMode
+para UIViewContentModeRedraw
+
+486
+00:28:01,370 --> 00:28:04,350
+E isso faz com que, quando
+o bounds muda 
+
+487
+00:28:04,370 --> 00:28:07,290
+ele pede que possa se redesenhar.
+é como se estivesse 
+
+488
+00:28:07,310 --> 00:28:10,710
+programado um setNeedsDisplay
+quando o bouns muda, ok? 
+
+489
+00:28:10,730 --> 00:28:15,990
+Agora, há também o problema de
+quando o bounds muda em
+
+490
+00:28:16,010 --> 00:28:19,570
+todas as subviews. O que acontece
+então? Bem, todas se 
+
+491
+00:28:19,590 --> 00:28:23,130
+redefinem, se reposicionam
+e mudam de tamanho. E 
+
+492
+00:28:23,150 --> 00:28:26,890
+como isso funciona? A propósito, sabemos
+que quando self.view,
+
+493
+00:28:26,910 --> 00:28:30,700
+a view de nível mais alto no
+seu controller, quando esse 
+
+494
+00:28:30,720 --> 00:28:33,490
+bounds muda, o controller recebe
+esta mensagem: viewWillLayOutSubviews 
+
+495
+00:28:33,510 --> 00:28:35,990
+Lembrem como da outra vez,
+faz parte do
+
+496
+00:28:36,010 --> 00:28:39,160
+cicli de vida do view controller.
+Mas todas as views tem  
+
+497
+00:28:39,180 --> 00:28:42,470
+chance de redefinir suas subviews and
+tem a, no IOS 6 
+
+498
+00:28:42,490 --> 00:28:46,410
+há um novo ótimo e sofisticado
+sistema para redefinir onde se 
+
+499
+00:28:46,430 --> 00:28:49,610
+pode especificar o relacionamento
+entre views, como 
+
+500
+00:28:49,630 --> 00:28:52,410
+manter estas views distantes este tanto,
+manter esta view perto da
+
+501
+00:28:52,430 --> 00:28:55,930
+borda da sua superview. Esta view pode
+alargar quando for preciso
+
+502
+00:28:55,950 --> 00:28:58,310
+redefinir tamanho. Esta não pode.
+Esta pode ficar mais alta. 
+
+503
+00:28:58,330 --> 00:29:01,250
+Esta não pode. Você pode especificar
+todos essas restrições
+
+504
+00:29:01,270 --> 00:29:03,750
+no Xcode, e quando o equilíbrio
+mudar, todas essas 
+
+505
+00:29:03,770 --> 00:29:06,520
+restrições serão aplicadas,e
+todas as views mudam, 
+
+506
+00:29:06,540 --> 00:29:10,590
+Ok? Falaremos mais sobre isso.
+Só não sei quando exatamente 
+
+507
+00:29:10,610 --> 00:29:13,340
+poderei fazer caber nas
+aulas porque ainda há muito
+
+508
+00:29:13,360 --> 00:29:17,080
+sobre o que falar, não hoje, ok?
+Existe um sistema antigo,
+
+509
+00:29:17,100 --> 00:29:20,060
+antes do iOS 6, chamado
+Struts e Springs,
+
+510
+00:29:20,080 --> 00:29:22,830
+bem simples. Eu coloquei um slide aqui,
+vocês podem dar uma olhada
+
+511
+00:29:22,850 --> 00:29:25,510
+nesse slide depois. É quase...
+vocês podem entender
+
+512
+00:29:25,530 --> 00:29:28,570
+sozinhos. Isso que vocês
+estão vendo, esse inspector
+
+513
+00:29:28,590 --> 00:29:32,550
+é o Size Inspector. Percebam
+a pequena regua no topo.
+
+514
+00:29:32,570 --> 00:29:35,480
+Vocês podem brincar com isso,
+olhar o slide
+
+515
+00:29:35,500 --> 00:29:37,980
+"offline". Infelizmente eu não
+tenho tempo para passar por isso,
+
+516
+00:29:38,000 --> 00:29:42,060
+porque nós precisamos ir para
+gestures, ok? E, a propósito,
+
+517
+00:29:42,080 --> 00:29:44,840
+quando que o seu bounds muda?
+Novamente, seus bounds vão mudar
+
+518
+00:29:44,860 --> 00:29:49,100
+quando o seu device roda. Ok?
+Esse é um momento
+
+519
+00:29:49,120 --> 00:29:51,400
+clássico que eles mudam.
+Eles podem mudar em outros
+
+520
+00:29:51,420 --> 00:29:55,510
+momentos, na verdade. Mas...
+na verdade o seu bounds mudam
+
+521
+00:29:55,530 --> 00:29:58,260
+por exemplo, quando você se coloca
+em um TabBarController,
+
+522
+00:29:58,280 --> 00:30:01,010
+seus bounds mudam porque você
+fica um pouco menor do que
+
+523
+00:30:01,030 --> 00:30:03,760
+você era antes. E então,
+todo esse negócio de autolayout é importante,
+
+524
+00:30:03,780 --> 00:30:06,820
+não apenas para rotação, mas porque
+daí a view do seu view controller
+
+525
+00:30:06,840 --> 00:30:10,580
+cabe em qualquer lugar. Ele pode
+caber em um tabbar, ele pode
+
+526
+00:30:10,600 --> 00:30:11,580
+caber em um iPhone 5.
+
+
+527
+00:30:11,600 --> 00:30:14,830
+Ele poderia caber em um iPad,
+em algo maior. Sabe, vocês querem
+
+528
+00:30:14,850 --> 00:30:17,830
+desenhar a view de vocês de um modo
+que elas possam ser
+
+529
+00:30:17,850 --> 00:30:21,600
+de tamanhos deferentes, ok? Nós
+vamos falar sobre isso depois. Gestures, ok.
+
+530
+00:30:21,620 --> 00:30:24,360
+Isso é o oposto. Nós falamos de
+como desenhar na view.
+
+531
+00:30:24,380 --> 00:30:28,470
+Agora, como eu recebo gestures?
+Gestures... ok. Vocês podem
+
+532
+00:30:28,490 --> 00:30:32,370
+receber os eventos "crus" como
+um Touch aqui, se mover e observar
+
+533
+00:30:32,390 --> 00:30:36,460
+os dedos se moverem. Mas nós
+não precisamos fazer isso. Nós usamos
+
+534
+00:30:36,480 --> 00:30:41,120
+gestures. O iOS vai observar
+esses fingers e decidir:
+
+535
+00:30:41,140 --> 00:30:44,730
+"isso foi um swipe? Isso foi um tap?
+Isso foi um pinch?" Ok? Ele vai
+
+536
+00:30:44,750 --> 00:30:49,120
+descobrir o que está acontecendo
+e você basicamente se cadastra
+
+537
+00:30:49,140 --> 00:30:52,290
+para certos recognizers e recebe
+uma notificação quando essas coisas
+
+538
+00:30:52,310 --> 00:30:55,950
+acontecerem. É um sistema incrível,
+muito muito simples.
+
+539
+00:30:55,970 --> 00:31:00,200
+Existem dois lados para usar
+essas coisas. Uma é, você tem
+
+540
+00:31:00,220 --> 00:31:05,230
+que criar e adicioná-lo à view,
+ajustar o seu recognizer.
+
+541
+00:31:05,250 --> 00:31:08,460
+Esse objeto, o seu trabalho
+é reconhecer o jesture, ele não
+
+542
+00:31:08,480 --> 00:31:11,460
+manuseia o gesture quando ele acontece,
+ele apenas o reconhece:
+
+543
+00:31:11,480 --> 00:31:14,850
+"oh, isso foi um swipe, eu reconheço isso",
+e quando ele o reconhecer,
+
+544
+00:31:14,870 --> 00:31:17,920
+ele vai perguntar para quem
+irá tratar para tratá-lo.
+
+545
+00:31:17,940 --> 00:31:20,900
+Então a primeira parte é
+adicionar esses gesture recognizers na view.
+
+546
+00:31:20,920 --> 00:31:23,960
+E vocês podem escrever seus próprios
+gesture recognizers, mas
+
+547
+00:31:23,980 --> 00:31:28,830
+99.99% das vezes vocês vão usar
+os que tem no iOS, como swipe e pan,
+
+548
+00:31:28,850 --> 00:31:31,390
+e todos esses. A segunda coisa
+é que você precisa escrever
+
+549
+00:31:31,410 --> 00:31:36,250
+um "handler" que trata
+o gesture. Então, um swipe
+
+550
+00:31:36,270 --> 00:31:39,250
+aconteceu. O que você vai fazer
+a respeito? Ok? Um pinch
+
+551
+00:31:39,270 --> 00:31:42,000
+está acontecendo bem agora.
+O que estamos fazendo enquanto ele acontece? Ok?
+
+552
+00:31:42,020 --> 00:31:44,410
+Isso é chamado o "handler". Então,
+vocês tem o recognizer
+
+553
+00:31:44,430 --> 00:31:49,310
+e o handler. Geralmente o número um,
+adicionar o
+
+554
+00:31:49,330 --> 00:31:53,500
+gesture recognizer, é feito pelo controller.
+Ok? O controller tem
+
+555
+00:31:53,520 --> 00:31:57,830
+views no seu self.view ou no seu
+[self.view subviews] e ele vai
+
+556
+00:31:57,850 --> 00:32:02,240
+adicionar gesture recognizers em alguns
+para fazer certas coisas.
+
+557
+00:32:02,260 --> 00:32:05,480
+Mas as vezes a view adiciona
+gesture recognizer por si só.
+
+558
+00:32:05,500 --> 00:32:08,070
+Tipo, se reconhecer um gesture é
+fundamentar para o modo como uma view funciona,
+
+559
+00:32:08,090 --> 00:32:11,020
+como, digamos, se for uma scroll view,
+ok? Uma scroll view não é nada
+
+560
+00:32:11,040 --> 00:32:14,600
+sem um "pan" gesture
+e talvez um "pinch" gesture,
+
+561
+00:32:14,620 --> 00:32:17,100
+se for uma scroll view com zoom.
+Então ela vai adicionar esses gesture
+
+562
+00:32:17,120 --> 00:32:19,860
+recognizers nela mesma porque
+isso é simplesmente
+
+563
+00:32:19,880 --> 00:32:23,670
+fundamental. Mas outra vezes,
+sabe, um swipe passando pela
+
+564
+00:32:23,690 --> 00:32:26,840
+view pode ou não signficar algo.
+Fica a cargo do controller
+
+565
+00:32:26,860 --> 00:32:31,480
+decidir o que fazer.
+Número 2, o handler,
+
+566
+00:32:31,500 --> 00:32:34,230
+na maior parte do tempo é a view
+que vai tratá-lo, porque as coisas
+
+567
+00:32:34,250 --> 00:32:38,330
+como pinches e drags normalmente
+estão afetando coisas dentro
+
+568
+00:32:38,350 --> 00:32:41,170
+do sistema de coordenadas da view
+e é a view quem deve
+
+569
+00:32:41,190 --> 00:32:45,230
+gerenciar o que é desenhado ali
+e coisas assim. Mas é possível
+
+570
+00:32:45,250 --> 00:32:49,540
+para o controller tratar um swipe.
+Ok? E na demo de hoje
+
+571
+00:32:49,560 --> 00:32:52,830
+assumindo que teremos tempo,
+que por sinal está acabando,
+
+572
+00:32:52,850 --> 00:32:55,830
+eu vou tentar mostrar os dois exemplos
+de um gesture que é tratado
+
+573
+00:32:55,850 --> 00:32:58,580
+pelo controller e um gesture
+que é tratado pela view.
+
+574
+00:32:58,600 --> 00:33:01,210
+Ok? Em ambos os casos o controller
+vai adicionar o
+
+575
+00:33:01,230 --> 00:33:05,020
+gesture recognizer na view,
+mas quem vai tratá-lo serão
+
+576
+00:33:05,040 --> 00:33:09,820
+diferentes nos dois casos.
+Como você adiciona um gesture
+
+577
+00:33:09,840 --> 00:33:13,730
+recognizer em uma UIView
+a partir do controller? Primeiro,
+
+578
+00:33:13,750 --> 00:33:16,830
+você cria um gesture recognizer.
+Você faz isso com "+alloc, initWith...
+
+579
+00:33:16,850 --> 00:33:20,320
+target:action:".
+Esse é o designated
+
+580
+00:33:20,340 --> 00:33:24,220
+initializer do gesture recognizer.
+initWithTarget:
+
+581
+00:33:24,240 --> 00:33:29,880
+que é qualquer objeto,
+action: qualquer selector.
+
+582
+00:33:29,900 --> 00:33:34,270
+E quando esse gesture
+acontecer, tanto
+
+583
+00:33:34,290 --> 00:33:38,130
+discretamente, quando for um tap ou swupe,
+ou ele está acontecendo,
+
+584
+00:33:38,150 --> 00:33:43,230
+se for um pan ou pinch,
+então esse método, esse selector,
+
+585
+00:33:43,250 --> 00:33:47,380
+será enviado para o objeto
+enquanto o gesture estiver acontecendo, ok?
+
+586
+00:33:47,400 --> 00:33:50,400
+Muito simples. Esse é o handler, certo?
+Então nesse exemplo
+
+587
+00:33:50,420 --> 00:33:55,050
+que eu tenho bem aqui, o target
+é a própria view. Então
+
+588
+00:33:55,070 --> 00:33:58,410
+nesse caso, quando um pan
+acontecer, a view que está sendo
+
+589
+00:33:58,430 --> 00:34:01,140
+"pannada", o controller decidiu
+que a view é quem vai
+
+590
+00:34:01,160 --> 00:34:04,000
+tratá-lo. E a view tem que
+implementar esse método
+
+591
+00:34:04,020 --> 00:34:06,910
+"pan:" nesse caso, esse é
+um método público provavelmente.
+
+592
+00:34:06,930 --> 00:34:09,900
+Caso contrário, o controller
+não saberia sobre ele.
+
+593
+00:34:09,920 --> 00:34:12,730
+Mas o controller é quem diz:
+addGestureRecognizer:
+
+594
+00:34:12,750 --> 00:34:17,740
+para a view. Então,
+um processo de 2 partes aqui. Você cria
+
+595
+00:34:17,760 --> 00:34:20,980
+o gesture recongnizer,
+especificando o handler e
+
+596
+00:34:21,000 --> 00:34:24,290
+o método e então você adiciona
+o gesture recognizer na view.
+
+597
+00:34:24,310 --> 00:34:29,420
+Ok? É isso. Bem direto.
+Esse é apenas um resumo,
+
+598
+00:34:29,440 --> 00:34:33,780
+é o que eles dizem. Agora,
+como nós implementamos o target? Aquele
+
+599
+00:34:33,800 --> 00:34:37,320
+"pan:", quando ele é enviado para nós,
+quando o pan está acontecendo,
+
+600
+00:34:37,340 --> 00:34:42,300
+como nós tratamos isso? Bom,
+cada tipo de gesture tem alguns
+
+601
+00:34:42,320 --> 00:34:45,590
+métodos diferentes neles,
+para ajudar você a tratá-lo. Então,
+
+602
+00:34:45,610 --> 00:34:48,490
+para o pan gesture, por exemplo.
+Panning é, você coloca o dedo na tela
+
+603
+00:34:48,510 --> 00:34:52,150
+e move ele por aí. Você quer
+seguir o dedo. Isso é
+
+604
+00:34:52,170 --> 00:34:56,990
+chamado panning. Ele tem
+três métodos: "translationInView:",
+
+605
+00:34:57,010 --> 00:35:00,400
+que te diz onde o pan está
+no sistema de coordenadas
+
+606
+00:35:00,420 --> 00:35:05,030
+da view. "velocityInView:",
+esse é o quão rápido o dedo está
+
+607
+00:35:05,050 --> 00:35:08,990
+se movendo e o "setTranslation:inView"
+que na verdade seta a coisa
+
+608
+00:35:09,010 --> 00:35:11,860
+que o primeiro método retorna.
+Por que você iria querer
+
+609
+00:35:11,880 --> 00:35:15,810
+setar isso? Porque quando o pan começa,
+quando o dedo encosta na tela
+
+610
+00:35:15,830 --> 00:35:18,590
+e o pan começa, conforme ele se move,
+ele vai te mostrar
+
+611
+00:35:18,610 --> 00:35:23,610
+a translação acumulada. Ok?
+Acumulado é tipo
+
+612
+00:35:23,630 --> 00:35:27,000
+aonde ele está, em relação ao começo.
+E se o que você quer é
+
+613
+00:35:27,020 --> 00:35:29,940
+a translação incremental, tipo
+quão longe ele se moveu
+
+614
+00:35:29,960 --> 00:35:32,690
+desde a última vez que você me disse
+que esse pan estava se movendo? E então
+
+615
+00:35:32,710 --> 00:35:35,520
+você estaria constantemente setando ele
+de volta para zero, com o
+
+616
+00:35:35,540 --> 00:35:38,510
+setTranslation:inView: e então
+você sempre recebe o incremento, porque
+
+617
+00:35:38,530 --> 00:35:42,980
+ele vai estar sempre
+adicionando o incremento a ele.
+
+618
+00:35:43,000 --> 00:35:46,170
+O recognizer também passa
+por uma máquina de estado. Ele começa
+
+619
+00:35:46,190 --> 00:35:50,590
+no estado "Possible", então ele
+move ou para o estado
+
+620
+00:35:50,610 --> 00:35:54,030
+"Recognized", se ele for tipo
+um swipe ou um tap ele vai:
+
+621
+00:35:54,050 --> 00:35:57,440
+"oh, reconheci", ou ele vai para
+o estado "Began" (começou), se ele
+
+622
+00:35:57,460 --> 00:36:02,460
+for tipo um pinch ou pan. Daí
+ele passa pelo estado "change", change change
+
+623
+00:36:02,480 --> 00:36:05,150
+change change change change change change change,
+o handler seria chamado
+
+624
+00:36:05,170 --> 00:36:07,900
+várias vezes com esse estado
+e então ele iria para
+
+625
+00:36:07,920 --> 00:36:10,650
+o estado "Ended". É quando
+você tira o dedo, ok?
+
+626
+00:36:10,670 --> 00:36:14,150
+Esse é o fim do pinch ou
+o fim do pan. E
+
+627
+00:36:14,170 --> 00:36:17,150
+você também pode ter esses estados
+"Canceled" e "Failed" que tem a ver,
+
+628
+00:36:17,170 --> 00:36:20,240
+sabe, tio se você estiver
+no meio de um pinch
+
+629
+00:36:20,260 --> 00:36:25,310
+e o telefone toca, BAM, ele
+vai ser cancelado,
+
+630
+00:36:25,330 --> 00:36:28,060
+obviamente. Ok? E então,
+você também pode ter
+
+631
+00:36:28,080 --> 00:36:31,020
+um problema quando dos gestures
+começarem a ser reconhecidos ao mesmo tempo,
+
+632
+00:36:31,040 --> 00:36:34,270
+mas então acontece que
+na verdade é um gesture ou o outro,
+
+633
+00:36:34,290 --> 00:36:37,290
+e o outro falha. Então
+essa é a máquina de estados.
+
+634
+00:36:37,310 --> 00:36:40,130
+Na máquina de estados,
+tudo que você realmente quer prestar atenção
+
+635
+00:36:40,150 --> 00:36:44,130
+é reconhecê-lo, se for
+um gesture discreto. E "began", "changed",
+
+636
+00:36:44,150 --> 00:36:47,990
+e "end" ou até mesmo apenas
+"changed" e "ended", se ele for
+
+637
+00:36:48,010 --> 00:36:51,990
+um gesture contínuo, como um pinch
+ou um pan, ok? E quando você
+
+638
+00:36:52,010 --> 00:36:54,270
+receber esses estados, você apenas
+vai querer fazer o update necessário
+
+639
+00:36:54,290 --> 00:36:58,580
+na sua view ou o que fizer sentido.
+Então é assim que um pan
+
+640
+00:36:58,600 --> 00:37:03,190
+pode ser. Numa view meio que genérica,
+ele fica observando cada vez
+
+641
+00:37:03,210 --> 00:37:07,860
+que ele muda ou que ele termina.
+E ele está procurando pela
+
+642
+00:37:07,880 --> 00:37:12,610
+translação para ver onde o pan
+está na view, então eu
+
+643
+00:37:12,630 --> 00:37:15,150
+provavelmente faria alguma coisa
+na minha view, acho que eu poderia
+
+644
+00:37:15,170 --> 00:37:19,070
+resetar minha origem ou algo assim,
+então eu seto minha translação de volta
+
+645
+00:37:19,090 --> 00:37:21,810
+para CGPointZero.
+CGPointZero é uma coisa
+
+646
+00:37:21,830 --> 00:37:25,000
+especial que é apenas o ponto
+(0,0). Eu vou resetá-lo
+
+647
+00:37:25,020 --> 00:37:28,250
+de volta para isso para que
+da próxima vez que isso for chamado,
+
+648
+00:37:28,270 --> 00:37:32,020
+eu vou receber a mudança incremental
+ao invés da soma total das mudanças
+
+649
+00:37:32,040 --> 00:37:36,860
+do pan, ok? E nós vamos ver isso
+na demo. Nós vamos fazer
+
+650
+00:37:36,880 --> 00:37:39,920
+pinch na demo, mas eles são
+similares. Que tipos de gestures
+
+651
+00:37:39,940 --> 00:37:42,400
+existem? Existe o
+PinchGesture que vai ter
+
+652
+00:37:42,420 --> 00:37:45,360
+um "scale". Então o pinch começa aqui,
+e se eu movo meus dedos para longe,
+
+653
+00:37:45,380 --> 00:37:48,230
+eu começo a ter
+um scale maior que um.
+
+654
+00:37:48,250 --> 00:37:51,550
+E se eu mover meus dedos
+para perto, eu tenho um scale menor que um,
+
+655
+00:37:51,570 --> 00:37:54,190
+certo? Eu estou basicamente
+escalando a coisa que eu estou pinçando.
+
+656
+00:37:54,210 --> 00:37:58,860
+É isso que isso é.
+Tem o Rotation, dois dedos na tela,
+
+657
+00:37:58,880 --> 00:38:02,760
+rotaciona e ele vai dizer
+a você em radianos
+
+658
+00:38:02,780 --> 00:38:05,880
+quantos graus de rotação aconteceram.
+Tem o Swipe e
+
+659
+00:38:05,900 --> 00:38:09,300
+você tem o Swipe pra esquerda,
+swipe pra direita, swipe pra cima e pra baixo.
+
+660
+00:38:09,320 --> 00:38:14,170
+O modo como o swipe funciona é:
+você seta no gesture recognizer se
+
+661
+00:38:14,190 --> 00:38:19,110
+você quer reconhecer swipes pra cima,
+ou pra direita ou swipe com
+
+662
+00:38:19,130 --> 00:38:22,020
+dois dedos. Você seta isso
+quando você cria o
+
+663
+00:38:22,040 --> 00:38:25,650
+gesture recognizer e então
+quando você adiciona o recognizer,
+
+664
+00:38:25,670 --> 00:38:28,520
+ele vai apenas reconhecer aquele tipo
+de swipe e a mesma coisa com o tap.
+
+665
+00:38:28,540 --> 00:38:32,170
+Você quer um double tap? Tap com
+dois dedos? Você seta isso
+
+666
+00:38:32,190 --> 00:38:35,040
+quando você cria o recognizer
+e daí ele vai reconhecer apenas
+
+667
+00:38:35,060 --> 00:38:42,650
+esses tipos de taps. Faz sentido?
+Ok. Então, hora da demo. Posso dizer
+
+668
+00:38:42,670 --> 00:38:46,230
+que essa demo vai vai demorar um pouco,
+entretando, novamente,
+
+669
+00:38:46,250 --> 00:38:49,110
+se vocês tiverem que ir eu entendo,
+nós não vamos perder muito.
+
+670
+00:38:49,130 --> 00:38:52,320
+O que eu vou fazer aqui é:
+eu vou fazer um app chamado
+
+671
+00:38:52,340 --> 00:38:55,320
+SuperCard e ele vai ser
+bem parecido com a primeira demo 
+
+672
+00:38:55,340 --> 00:38:58,460
+que eu fiz aqui, mas um jogo de cartas
+com uma cara bem melhor, ok?
+
+673
+00:38:58,480 --> 00:39:00,940
+Melhor do que aquele botão
+que nós tínhamos antes e isso porque
+
+674
+00:39:00,960 --> 00:39:04,190
+eu vou usar uma view customizada
+para desenhá-la. E eu vou
+
+675
+00:39:04,210 --> 00:39:06,750
+tratar alguns gestures,
+todo tipo de coisa acontecendo
+
+676
+00:39:06,770 --> 00:39:10,990
+aqui. Tudo que vocês vão perder,
+se eu passar do tempo no final,
+
+677
+00:39:11,010 --> 00:39:14,610
+é que eu vou escolher uma carta
+para fazer essa demo
+
+678
+00:39:14,630 --> 00:39:18,920
+e no final eu vou adicionar o
+nosso model, o model da tarefa
+
+679
+00:39:18,940 --> 00:39:21,460
+atual de vocês e então vamos fazer
+de um modo que
+
+680
+00:39:21,480 --> 00:39:24,710
+cada vez que nós virarmos a carta,
+nós teremos uma carta diferente.
+
+681
+00:39:24,730 --> 00:39:27,460
+Isso é tudo que vocês vão perder.
+Vocês não vão perder muita
+
+682
+00:39:27,480 --> 00:39:30,480
+coisa. Certo, então vamos começar.
+Alguma pergunta sobre
+
+683
+00:39:30,500 --> 00:39:34,130
+todas essas coisas? É um pouco
+bagunçado... eu acho que
+
+684
+00:39:34,150 --> 00:39:36,130
+a demo vai fazer com que...
+
+
+685
+00:39:36,150 --> 00:39:39,380
+tudo faça mais sentido. Como de costume,
+a demo pode ser
+
+686
+00:39:39,400 --> 00:39:40,630
+esclarecedora nesse sentido.
+
+
+687
+00:39:40,650 --> 00:39:43,380
+>> [Estudante querendo
+moleza no homework]
+
+688
+00:39:43,400 --> 00:39:46,130
+>> A pergunta é: nós vamos
+usar isso no
+
+689
+00:39:46,150 --> 00:39:48,880
+homework? E eu disse isso duas vezes
+e eu vou dizer de novo
+
+690
+00:39:48,900 --> 00:39:51,130
+porque é muito importante
+de se entender. Quando eu passo
+
+691
+00:39:51,150 --> 00:39:53,630
+um homework para vocês, vocês
+já sabem tudo que vocês precisam
+
+692
+00:39:53,650 --> 00:39:57,310
+para fazê-lo. Eu nunca vou ensinar
+algo a vocês na Quinta
+
+693
+00:39:57,330 --> 00:40:01,960
+que vocês tem que saber na Terça
+ou na Segunda, por causa
+
+694
+00:40:01,980 --> 00:40:04,690
+de uma tarefa. Vêem o que estou dizendo?
+Então, no fim
+
+695
+00:40:04,710 --> 00:40:07,250
+da Terça, quando eu passei
+o Assignment 2, vocês sabiam
+
+696
+00:40:07,270 --> 00:40:10,440
+tudo que vocês precisavam saber.
+Então, não usem uma custom view para
+
+697
+00:40:10,460 --> 00:40:13,260
+o Assignment número 2, ok?
+Assignment número 2 é apenas sobre
+
+698
+00:40:13,280 --> 00:40:16,460
+AttributedStrings e todas
+as coisas que nós aprendemos nas
+
+699
+00:40:16,480 --> 00:40:18,830
+últimas duas aulas, ok? É por isso
+que a tarefa diz para
+
+700
+00:40:18,850 --> 00:40:22,010
+usar AttributedString.
+Não usem o que eu vou
+
+701
+00:40:22,030 --> 00:40:25,070
+mostrar para vocês hoje
+na tarefa 2. Não é para isso.
+
+702
+00:40:25,090 --> 00:40:27,570
+Faz sentido? E isso será sempre
+verdade durante todo o curso.
+
+703
+00:40:27,590 --> 00:40:32,060
+Certo, então vamos começar.
+Eu vou rodar o
+
+704
+00:40:32,080 --> 00:40:35,690
+Xcode e criar um novo projeto
+do zero aqui. E eu vou
+
+705
+00:40:35,710 --> 00:40:41,150
+chamá-lo de SuperCard. É um
+Single MVC app, SuperCard,
+
+706
+00:40:41,170 --> 00:40:48,270
+vou adicionar o prefixo de classe
+SuperCard aqui. Colocá-lo no home directory
+
+707
+00:40:48,290 --> 00:40:52,650
+do developer. Aqui está. Eu vou começar
+logo de cara aqui.
+
+708
+00:40:52,670 --> 00:40:59,650
+E criar minha nova view, ok?
+Então eu vou em File,
+
+709
+00:40:59,670 --> 00:41:03,730
+New File. Assim como
+um novo controller, novo model,
+
+710
+00:41:03,750 --> 00:41:06,670
+classe, qualquer coisa. New File
+é como nós vamos criar novas classes.
+
+711
+00:41:06,690 --> 00:41:09,920
+Estou criando um novo arquivo aqui.
+Vou chamá-lo de...
+
+712
+00:41:09,940 --> 00:41:16,490
+Vamos ver, vou chamar de PlayingCardView.
+Então esse vai ser um UIView.
+
+713
+00:41:16,510 --> 00:41:20,150
+Certifique-se que você colocou
+a superclasse certa aqui, UIView.
+
+714
+00:41:20,170 --> 00:41:23,510
+Ela vai ser uma UIView e o que
+ela vai fazer é desenhar
+
+715
+00:41:23,530 --> 00:41:26,630
+PlayingCards, ok? Bem direto.
+Então colocamos aqui
+
+716
+00:41:26,650 --> 00:41:29,830
+onde estão minhas outras
+classes. Eu também vou colocar
+
+717
+00:41:29,850 --> 00:41:34,050
+em um grupo, ok?
+Mesmo grupo que
+
+718
+00:41:34,070 --> 00:41:39,830
+todas essas coisas. Então aqui
+está minha view, ok? Vocês vêem
+
+719
+00:41:39,850 --> 00:41:42,900
+que ela tem "initWithFrame" bem aqui.
+Eu não sei porque os templates geram
+
+720
+00:41:42,920 --> 00:41:46,130
+isso assim porque, novamente,
+você tem que fazer o "awakeFromNib:".
+
+721
+00:41:46,150 --> 00:41:52,630
+Então você vai querer
+algo assim, ok? Isso é o que
+
+722
+00:41:52,650 --> 00:41:56,380
+eu digitem bem rápido.
+Tem o setup, o awakeFromNib
+
+723
+00:41:56,400 --> 00:41:59,980
+e o initWithFrame. E vocês podem
+ver, é a mesma coisa
+
+724
+00:42:00,000 --> 00:42:04,520
+que o que nós vimos
+no UIViewController,
+
+725
+00:42:04,540 --> 00:42:10,530
+certo? A próxima coisa que eu
+vou fazer é: vamos olhar para a nossa
+
+726
+00:42:10,550 --> 00:42:13,650
+API para o PlayingCardView. Ok?
+A sua API pública.
+
+727
+00:42:13,670 --> 00:42:16,610
+E, é assim que vai ficar
+a cara dela e isso pode
+
+728
+00:42:16,630 --> 00:42:19,480
+surpreender alguns de vocês.
+Então eu vou ter um... [ditando código]
+
+729
+00:42:19,500 --> 00:42:28,360
+[ditando código]
+
+
+730
+00:42:28,380 --> 00:42:31,840
+E eu vou até ter uma property...
+[ditando código]
+
+731
+00:42:31,860 --> 00:42:41,900
+Ok, agora,
+isso parece
+
+732
+00:42:41,920 --> 00:42:45,820
+muito com a API do PlayingCard,
+muito similar,
+
+733
+00:42:45,840 --> 00:42:49,240
+com o que tínhamos no nosso model, certo?
+Então porque, por exemplo,
+
+734
+00:42:49,260 --> 00:42:54,300
+eu passo um Card aqui? Ok?
+Uma PlayingCard. Ela tem
+
+735
+00:42:54,320 --> 00:42:57,510
+toda a informação nela. E
+a resposta é: você tem que
+
+736
+00:42:57,530 --> 00:43:01,110
+se lembrar que a sua view quer
+tentar ser objetos
+
+737
+00:43:01,130 --> 00:43:05,710
+de visualização genéricos. Eu estou
+tentando construir uma PlayingCardView
+
+738
+00:43:05,730 --> 00:43:09,330
+que eu poderia usar, sim com, sabe
+o app que vocês estão
+
+739
+00:43:09,350 --> 00:43:12,190
+trabalhando atualmente com aquele model,
+ou, eu poderia usá-la
+
+740
+00:43:12,210 --> 00:43:15,190
+com um app de Poker que eu
+vou escrever em três semanas,
+
+741
+00:43:15,210 --> 00:43:17,630
+que usa um model completamente diferente
+para cartas. Vocês vêem o que
+
+742
+00:43:17,650 --> 00:43:22,570
+estou dizendo? Button, label,
+coisas assim. Percebam
+
+743
+00:43:22,590 --> 00:43:25,740
+quão genéricos eles são. Eles não
+sabem nada sobre cartas ou
+
+744
+00:43:25,760 --> 00:43:28,740
+coisas assim. A mesma coisa aqui.
+Eu quero que minha PlayingCardView
+
+745
+00:43:28,760 --> 00:43:31,490
+seja o mais genérica possível.
+É por isso que eu não estou
+
+746
+00:43:31,510 --> 00:43:34,240
+arrastando meu model para cá,
+e amarrando com PlayingCard. Meso que eu
+
+747
+00:43:34,260 --> 00:43:37,240
+vá ter um pouco do que vocês
+podem pensar como "código
+
+748
+00:43:37,260 --> 00:43:39,740
+duplicado", não é tão duplicado e é
+primarialmente para fazer
+
+749
+00:43:39,760 --> 00:43:44,480
+com que isso seja uma PlayingCardView
+genérica, ok? Então mantenham
+
+750
+00:43:44,500 --> 00:43:48,520
+isso na cabeça enquanto fazemos isso.
+É isso para o meu PlayingCardView.
+
+751
+00:43:48,540 --> 00:43:50,800
+Ela tem apenas rank e suit e
+se a carta está virada
+
+752
+00:43:50,820 --> 00:43:55,240
+para cima. Eu vou aqui,
+eu quero fazer algo
+
+753
+00:43:55,260 --> 00:44:01,570
+interessante com hm...
+[...]
+
+754
+00:44:01,590 --> 00:44:05,230
+com meus setters, para todas
+essas três propriedades, que é:
+
+755
+00:44:05,250 --> 00:44:08,600
+percebam que eu vou chamar
+setNeedsDisplay em mim mesmo para
+
+756
+00:44:08,620 --> 00:44:12,920
+todas elas, ok? Porque eu quero
+que eu seja redesenhado se qualquer uma
+
+757
+00:44:12,940 --> 00:44:18,060
+dessas coisas mudar. Isso faz sentido?
+Vêem porque estou fazendo isso?
+
+758
+00:44:18,080 --> 00:44:21,550
+E isso é bem comum, em um setter,
+que vai afetar
+
+759
+00:44:21,570 --> 00:44:25,150
+como você é mostrado, uma view.
+Você vai querer chamar
+
+760
+00:44:25,170 --> 00:44:27,900
+[self setNeedsDisplay]. Porque
+você mudou e você quer ser
+
+761
+00:44:27,920 --> 00:44:30,900
+redesenhado. E é esse o modo
+que você é redesenhado. Você quer
+
+762
+00:44:30,920 --> 00:44:34,650
+que o seu drawRect seja chamado.
+Certo, próximo, vamos direto
+
+763
+00:44:34,670 --> 00:44:37,670
+para o nosso drawRect:, começar
+a trabalhar nele. Vocês podem ver
+
+764
+00:44:37,690 --> 00:44:40,670
+nosso drawRect está aqui embaixo.
+Eu vou movê-lo para cima
+
+765
+00:44:40,690 --> 00:44:43,670
+para o topo, novamente,
+por causa do modo que o scroll funciona aqui.
+
+766
+00:44:43,690 --> 00:44:46,960
+Eu também vou abrir mais espaço,
+bastante espaco.
+
+767
+00:44:46,980 --> 00:44:50,750
+Aqui está o nosso drawRect,
+ele está comentado. E ele está
+
+768
+00:44:50,770 --> 00:44:53,590
+comentado com esse comentário aqui
+que diz: não descomente isso
+
+769
+00:44:53,610 --> 00:44:57,050
+a não ser que você vá realmente
+fazer algo aqui. E isso
+
+770
+00:44:57,070 --> 00:45:01,710
+é porque o iOS usa
+introspecção para descobrir
+
+771
+00:45:01,730 --> 00:45:04,920
+se você realmente implementa isso
+na sua view. E se o fizer,
+
+772
+00:45:04,940 --> 00:45:08,000
+ele tem que fazer muito mais coisas,
+então a performance é maior
+
+773
+00:45:08,020 --> 00:45:11,900
+se você não o fizer. Mas nesse caso,
+nós vamos implementar
+
+774
+00:45:11,920 --> 00:45:16,040
+o nosso drawRect, então nós vamos
+descomentar isso aqui. Mas não deixe
+
+775
+00:45:16,060 --> 00:45:22,290
+um drawRect em branco descomentado,
+ok? Não é bom,
+
+776
+00:45:22,310 --> 00:45:26,750
+não é performance-wise, ok?
+É isso que aquele comentário
+
+777
+00:45:26,770 --> 00:45:30,900
+estava dizendo. Certo. O que
+o nosso drawRect vai fazer? Ele vai
+
+778
+00:45:30,920 --> 00:45:34,110
+desenhar uma carta. Vamos começar
+escrevendo o código para
+
+779
+00:45:34,130 --> 00:45:37,580
+desenhar o background da carta.
+Entõa minha carta vai parecer
+
+780
+00:45:37,600 --> 00:45:40,830
+com uma carta.
+Ela vai ter
+
+781
+00:45:40,850 --> 00:45:43,580
+bordas arredondadas,
+vai ter um background branco.
+
+782
+00:45:43,600 --> 00:45:45,830
+Ok? Então eu tenho bordas arredondadas,
+background branco.
+
+783
+00:45:45,850 --> 00:45:48,830
+E então uma pequena
+borda preta. Então é isso
+
+784
+00:45:48,850 --> 00:45:52,330
+que eu vou fazer. A maior parte
+disso são bordas arredondadas.
+
+785
+00:45:52,350 --> 00:45:55,080
+Então deixe-me criar um "rounded rect".
+Eu vou fazer isso com
+
+786
+00:45:55,100 --> 00:46:03,380
+UIBezierPath, chamado roundedRect.
+E apenas dizemos BezierPath...
+
+787
+00:46:03,400 --> 00:46:08,040
+"pathWithRoundedRect", e temos
+duas versões dele aqui.
+
+788
+00:46:08,060 --> 00:46:10,790
+Eu vou usar a mais simples, onde eu
+posso especificar apenas
+
+789
+00:46:10,810 --> 00:46:13,670
+o raio do canto. Então eu vou ter
+minha carta preenchendo completamente
+
+790
+00:46:13,690 --> 00:46:16,540
+meus bounds. O retângulo no qual
+eu quero construir esse
+
+791
+00:46:16,560 --> 00:46:21,290
+roundedRect é self.bounds, ok?
+Então estou desenhando,
+
+792
+00:46:21,310 --> 00:46:25,130
+estou usando o self.bounds,
+não self.frame. Self.bounds.
+
+793
+00:46:25,150 --> 00:46:30,150
+CornerRadius é quantos pontos,
+quão longo o raio da curva
+
+794
+00:46:30,170 --> 00:46:35,460
+será, em pontos. E eu, sabe,
+isso pode ser
+
+795
+00:46:35,480 --> 00:46:38,900
+algo de certa forma relacionado
+com quão grande a carta é,
+
+796
+00:46:38,920 --> 00:46:42,490
+mas não precisa. Eu basicamente quero
+a mesma curva e
+
+797
+00:46:42,510 --> 00:46:46,380
+eu deveria ter um #define aqui.
+Porque eu não gosto de ter
+
+798
+00:46:46,400 --> 00:46:49,750
+números mágicos no meio
+do meu código, eu faria
+
+799
+00:46:49,770 --> 00:46:53,250
+um #define, mas eu não vou
+fazer isso nessa demo,
+
+800
+00:46:53,270 --> 00:46:56,000
+por causa do tempo curto. Eu não posso
+me dar ao luxo de gastar vinte,
+
+801
+00:46:56,020 --> 00:46:59,500
+dez segundos para fazer isso.
+Mas no seu código, ouçam o que
+
+802
+00:46:59,520 --> 00:47:02,500
+eu estou dizendo: não tenha
+números como esse espalhados
+
+803
+00:47:02,520 --> 00:47:05,500
+no seu código. Faça um #define
+para definir, ok? Assim as pessoas
+
+804
+00:47:05,520 --> 00:47:08,500
+podem saber que eles estão ali
+e saber o que está acontecendo, ok?
+
+805
+00:47:08,520 --> 00:47:11,500
+Então eu tenho esse roundedRect.
+A primeira coisa que farei com esse
+
+806
+00:47:11,520 --> 00:47:14,740
+roundedRect é: eu vou "clipar"
+nele, ok? Eu vou fazê-lo
+
+807
+00:47:14,760 --> 00:47:18,150
+de um modo que minha view
+possa ser transparente. E ela vai
+
+808
+00:47:18,170 --> 00:47:20,880
+ser desenhada apenas dentro
+desse roundedRect. Então os cantos,
+
+809
+00:47:20,900 --> 00:47:23,880
+os pequenos cantos,
+vão poder ser vistos através.
+
+810
+00:47:23,900 --> 00:47:27,960
+É por isso qu minha carta
+é transparente. Eu queria apenas mostrar
+
+811
+00:47:27,980 --> 00:47:30,460
+a vocês como que a transparência funciona.
+Colocando esse "addClip" aqui,
+
+812
+00:47:30,480 --> 00:47:34,460
+significa que eu poderia fazer
+algo assim. UIColor whiteColor...
+
+813
+00:47:34,480 --> 00:47:40,170
+setFill e então usar a função
+em C, UIRectFill
+
+814
+00:47:40,190 --> 00:47:45,270
+self.bounds, ok?
+Então eu vou apenas fazer um grande retângulo
+
+815
+00:47:45,290 --> 00:47:49,630
+preenchendo meu bounds inteiro com branco.
+Mas como nós estamos clipando
+
+816
+00:47:49,650 --> 00:47:53,400
+nessa roundedRect, ele não vai
+colocar branco nos cantos.
+
+817
+00:47:53,420 --> 00:47:58,580
+Vêem sobre o que eu estou falando?
+É isso que é o clipping.
+
+818
+00:47:58,600 --> 00:48:03,020
+Eu também vou colocar uma
+linha preta ao redor do perímetro,
+
+819
+00:48:03,040 --> 00:48:04,440
+então eu vou dizer blackColor...
+
+
+820
+00:48:04,460 --> 00:48:08,980
+serStroke... e então vou fizer...
+roundRect...
+
+821
+00:48:09,000 --> 00:48:17,710
+stroke, ok? Então... pergunta.
+
+
+822
+00:48:17,730 --> 00:48:19,550
+>> [Estudante perguntando]
+
+
+823
+00:48:19,570 --> 00:48:21,550
+>> A pergunta: qual é o
+background default? Geralmente,
+
+824
+00:48:21,570 --> 00:48:24,550
+o seu background pode ser setado
+no Xcode. Então não importa muito
+
+825
+00:48:24,570 --> 00:48:27,550
+qual é o default, mas eu acredito
+que o default seja preto.
+
+826
+00:48:27,570 --> 00:48:30,550
+Se você tiver uma view opaca
+e você não desenhar nela,
+
+827
+00:48:30,570 --> 00:48:33,050
+provavelmente preta, ok?
+Bom, não, desculpa,
+
+828
+00:48:33,070 --> 00:48:35,050
+o background color default
+é a propriedade backgroundColor
+
+829
+00:48:35,070 --> 00:48:38,500
+da view. E eu acho que
+o default pra isso é preto.
+
+830
+00:48:38,520 --> 00:48:41,750
+Ou é preto ou é clear.
+Eu acho que pode ser clear,
+
+831
+00:48:41,770 --> 00:48:44,500
+na verdade. E se o "opaque" for YES,
+ela vai parecer preta,
+
+832
+00:48:44,520 --> 00:48:47,800
+algo assim. No Storyboard
+é setado para branco.
+
+833
+00:48:47,820 --> 00:48:51,060
+Absolutamente. O backgroundColor
+é setado para branco
+
+834
+00:48:51,080 --> 00:48:54,190
+no Storyboard. É apenas
+o que queremos normalmente. Certo,
+
+835
+00:48:54,210 --> 00:48:57,210
+agora eu tenho minha view. Ela
+deve desenhar uma carta, uma em branco.
+
+836
+00:48:57,230 --> 00:49:02,520
+Vamos para o nosso Storyboard e
+configurá-la. Então,
+
+837
+00:49:02,540 --> 00:49:09,330
+aqui está meu Storyboard. Vou
+ficar um pouco menor. Vamos setar
+
+838
+00:49:09,350 --> 00:49:12,300
+a cor do background, apenas para mostrar
+como é feito. Eu vou setar
+
+839
+00:49:12,320 --> 00:49:14,550
+a backgroundColor do self.view, ok?
+Aqui está meu controller.
+
+840
+00:49:14,570 --> 00:49:18,500
+Vocês podem ver que
+as conexões do meu controller tem
+
+841
+00:49:18,520 --> 00:49:21,060
+essa self.view pré-construida,
+vêem como eu estou
+
+842
+00:49:21,080 --> 00:49:24,820
+selecionando ela, apenas passando
+o mouse por cima? Esse é o background.
+
+843
+00:49:24,840 --> 00:49:29,020
+Eu vou setar o backgroundColor
+do self.view
+
+844
+00:49:29,040 --> 00:49:31,940
+vindo aqui. Aqui está o background.
+No momento é branco.
+
+845
+00:49:31,960 --> 00:49:36,110
+Eu tenho esse belo verde,
+assim vocês podem ver o que está
+
+846
+00:49:36,130 --> 00:49:38,860
+acontecendo. Eu estou setando
+o backgroundColor do self.view para verde.
+
+847
+00:49:38,880 --> 00:49:43,150
+Vamos colocar uma PlayingCard aqui.
+Você faz isso indo aqui embaixo
+
+848
+00:49:43,170 --> 00:49:46,670
+e achando a "View", que fica
+bem lá embaixo,
+
+849
+00:49:46,690 --> 00:49:49,630
+quase no final. Aqui está.
+Ok, então essa é
+
+850
+00:49:49,650 --> 00:49:52,880
+uma view genérica. Eu vou arrastá-la
+para cá. Deixá-la um pouco
+
+851
+00:49:52,900 --> 00:49:56,530
+menor. Uma coisa que vocês
+provavelmente sabem que podem fazer,
+
+852
+00:49:56,550 --> 00:50:01,230
+vocês podem setar o tamanho das coisas
+diretamente nesse
+
+853
+00:50:01,250 --> 00:50:05,780
+Size Inspector. Então eu vou
+deixar ela com 180x280. Esse é
+
+854
+00:50:05,800 --> 00:50:10,840
+um bom tamanho. E nós vamos
+centralizá-la. Deixe-me fazer
+
+855
+00:50:10,860 --> 00:50:13,880
+algumas outras coisa nela. Be importante,
+eu vou setar a classe
+
+856
+00:50:13,900 --> 00:50:18,080
+dessa view. Para nõa ser uma
+UIView. Ela vai ser
+
+857
+00:50:18,100 --> 00:50:21,710
+uma PlayingCardView, ok?
+Se você esquecer esse passo,
+
+858
+00:50:21,730 --> 00:50:24,330
+nada funcionará. Você terá
+views em branco. Você vai ficar tipo WHAT?
+
+859
+00:50:24,350 --> 00:50:27,580
+"por que não está aparecendo minha carta?"
+Ok? Esse é um passo fácil
+
+860
+00:50:27,600 --> 00:50:30,100
+de se esquecer, tanto para
+os controllers como para as views. Mas bem
+
+861
+00:50:30,120 --> 00:50:33,600
+fácil de fazer também. Basta ir
+no inspector bem aqui e
+
+862
+00:50:33,620 --> 00:50:38,360
+setar a classe. Ok? Fizemos isso,
+vamos setar nossa view. Vejam,
+
+863
+00:50:38,380 --> 00:50:41,730
+essa view que veio, ela também
+tem branco como a cor do
+
+864
+00:50:41,750 --> 00:50:44,740
+background. Vêem isso? Eu não
+quero isso. Eu vou mudar
+
+865
+00:50:44,760 --> 00:50:50,960
+para ser "clear", ok?
+Em outras palavras, eu quero apenas--
+
+866
+00:50:50,980 --> 00:50:54,570
+eu quero que minha view tenha
+um background "clear". Eu quero que ela
+
+867
+00:50:54,590 --> 00:50:57,070
+mostre algo apenas quando eu estiver
+desenhando nela. Novamente,
+
+868
+00:50:57,090 --> 00:51:00,600
+com esses rounded rects,
+a parte de fora delas não vai aparecer.
+
+869
+00:51:00,620 --> 00:51:04,130
+Muito imporantemente eu preciso
+desligar iss aqui. "Opaque", porque
+
+870
+00:51:04,150 --> 00:51:07,960
+eu vou desenhar nessa coisa e eu quero
+que ela seja transparente onde
+
+871
+00:51:07,980 --> 00:51:11,210
+eu não desenhar. Se eu não
+desligar esse daqui,
+
+872
+00:51:11,230 --> 00:51:13,710
+eu vou ter pequenos cantos pretos
+fora do meu rounded rect.
+
+873
+00:51:13,730 --> 00:51:16,460
+Mesmo que eu não esteja
+desenhando lá, eu estou "clipping", então
+
+874
+00:51:16,480 --> 00:51:20,770
+eu não quero desenhar lá mesmo.
+Vamos, enquanto estamos aqui, seguir em frente
+
+875
+00:51:20,790 --> 00:51:25,480
+e setar um outlet para essa coisa.
+Aqui está o meu controller.
+
+876
+00:51:25,500 --> 00:51:29,210
+Eu não vou usar nenhum
+desses métodos de lifecycle
+
+877
+00:51:29,230 --> 00:51:32,400
+nesse cara. Então vou apenas CTRL + arrastar.
+Percebam que quando eu
+
+878
+00:51:32,420 --> 00:51:35,920
+CTRL + arrastei aqui e criei um
+outlet - vou chamá-lo de
+
+879
+00:51:35,940 --> 00:51:40,070
+PlayingCardView - o tipo foi setado
+corretamente. PlayingCardView.
+
+880
+00:51:40,090 --> 00:51:43,190
+Essa view não é uma UIView,
+é uma PlayingCardView. Claro que
+
+881
+00:51:43,210 --> 00:51:46,030
+ele tem um warning aqui, um erro
+porque eu não importei isso.
+
+882
+00:51:46,050 --> 00:51:51,780
+Por que o Xcode não faz isso por mim,
+eu não sei, mas
+
+883
+00:51:51,800 --> 00:51:55,670
+aqui vamos nós. Arrumei esse warning.
+Então eu tenho essa carta,
+
+884
+00:51:55,690 --> 00:52:00,310
+eu também vou ter um setter
+para essa coisa. Vamos seguir
+
+885
+00:52:00,330 --> 00:52:04,460
+e setar para alguma coisa.
+Vamos setar essa playingCardView.rank
+
+886
+00:52:04,480 --> 00:52:11,330
+para 13, esse é um rei.
+E vamos setar o
+
+887
+00:52:11,350 --> 00:52:17,330
+playingCardView.suit para copas.
+Eu gosto de copas. Então vamos
+
+888
+00:52:17,350 --> 00:52:23,260
+aos caracteres especiais,
+setá-lo para copas. Está pré-selecionado
+
+889
+00:52:23,280 --> 00:52:26,510
+aqui, ok? Agora minha carta
+sempre vai mostrar
+
+890
+00:52:26,530 --> 00:52:29,260
+o rei de copas, ok?
+Estamos apenas configurando.
+
+891
+00:52:29,280 --> 00:52:31,510
+Obviamente não vai mostrar nada agora
+porque está
+
+892
+00:52:31,530 --> 00:52:34,260
+em branco. Vamos rodar.
+Nós devemos ter
+
+893
+00:52:34,280 --> 00:52:39,730
+uma carta em branco. Aqui está.
+Carta em branco. Tem os
+
+894
+00:52:39,750 --> 00:52:43,440
+cantos arredondados, ok? Vêem
+meu cantos aqui? Conseguimos ver
+
+895
+00:52:43,460 --> 00:52:50,000
+o verde atrás. Parece bom. Ok,
+então o que temos em uma carta?
+
+896
+00:52:50,020 --> 00:52:53,500
+Cantos, certo? Tem o rei
+e o copas no canto.
+
+897
+00:52:53,520 --> 00:52:56,080
+E no meio pode ter tanto
+uma imagem do rei
+
+898
+00:52:56,100 --> 00:53:00,750
+ou tem coisinhas como,
+4... temos
+
+899
+00:53:00,770 --> 00:53:03,170
+4 partes nele, algo assim.
+Vamos começar com o
+
+900
+00:53:03,190 --> 00:53:06,100
+lance do cantos, ok? Nós vamos
+fazer esses cantinhos. Nós vamos
+
+901
+00:53:06,120 --> 00:53:09,300
+voltar para nossa
+PlayingCardView. Aqui está
+
+902
+00:53:09,320 --> 00:53:13,090
+nossa PlayingCardView,
+arrumar mais espaço, e nós estamos
+
+903
+00:53:13,110 --> 00:53:20,170
+no nosso drawRect. Eu vou apenas
+chamar outro método para fazer isso.
+
+904
+00:53:20,190 --> 00:53:24,310
+"drawCorners". Então posso colocar
+isso em outro lugar, apenas
+
+905
+00:53:24,330 --> 00:53:29,040
+um bom coding style. Então,
+como que o "drawCorners" poderia ser?
+
+906
+00:53:29,060 --> 00:53:31,790
+Como que eu vou desenhar esses cantos?
+Bom, eu vou usar NSAttributedString.
+
+907
+00:53:31,810 --> 00:53:35,940
+Eu vou criar uma string que
+é, para o rei de copas
+
+908
+00:53:35,960 --> 00:53:39,170
+que é o meu exemplo. Rei,
+quebra de linha,
+
+909
+00:53:39,190 --> 00:53:43,240
+copas, ok? Essa é a string
+que eu vou usar e eu
+
+910
+00:53:43,260 --> 00:53:46,600
+vou setar o paragraphStyle disso
+para ser centralizado.
+
+911
+00:53:46,620 --> 00:53:50,940
+Agora, nós não
+fizemos isso com NSAttributedString antes,
+
+912
+00:53:50,960 --> 00:53:53,380
+mas você pode-- na verdade ele pode
+fazer texto multilinha,
+
+913
+00:53:53,400 --> 00:53:57,080
+ele tem estilos de parágrafos, ok?
+Tipo, se é centralizado, alinhado
+
+914
+00:53:57,100 --> 00:54:00,400
+à esquerda, alinhado à direita.
+Então eu vou centralizá-lo. E eu vou apenas
+
+915
+00:54:00,420 --> 00:54:04,670
+perguntar para essa caixa
+quão grande ela é, certo? E então
+
+916
+00:54:04,690 --> 00:54:07,530
+eu vou colocá-la no canto
+superior esquerdo e desenhá-la.
+
+917
+00:54:07,550 --> 00:54:10,530
+Ok? E isso vai colocá-la
+no canto superior esquerdo. Isso é
+
+918
+00:54:10,550 --> 00:54:13,530
+tudo que eu vou fazer. A maior parte
+disso é configurar a
+
+919
+00:54:13,550 --> 00:54:19,500
+Attributed String, então vamos
+fazer isso. [ditando código]
+
+920
+00:54:19,520 --> 00:54:25,530
+[ditando código]
+O ParagraphStyle é
+
+921
+00:54:25,550 --> 00:54:31,130
+uma classe no UIKit que
+permite que você configure esses vários
+
+922
+00:54:31,150 --> 00:54:36,290
+alinhamentos e coisas assim, então aqui
+nós vamos dizer paragraphStyle.alignment = ...
+
+923
+00:54:36,310 --> 00:54:40,790
+NSTextAlignmentCentered, ok?
+Então eu vou criá-lo
+
+924
+00:54:40,810 --> 00:54:43,540
+centralizado. Eu quero que
+o rei de copas fique
+
+925
+00:54:43,560 --> 00:54:48,710
+centralizado horizontalmente.
+E entõa a fonte que eu vou usar...
+
+926
+00:54:48,730 --> 00:54:56,000
+vamos usar... a SystemFont.
+"systemFontOfZie:". E qual
+
+927
+00:54:56,020 --> 00:54:59,570
+tamanho usar? Bom, quanto maior a carta,
+maior eu quero que a fonte seja.
+
+928
+00:54:59,590 --> 00:55:03,310
+Então eu vou usar a largura da carta
+como um guia. Eu vou fazer
+
+929
+00:55:03,330 --> 00:55:09,280
+algo como
+"self.bounds.size.width * 0.20"...
+
+930
+00:55:09,300 --> 00:55:13,460
+Novamente, isso deveria ser um
+#define e não estou fazendo isso.
+
+931
+00:55:13,480 --> 00:55:17,170
+Então, basicamente, se a carta tiver
+100 pontos de largura, eu vou usar
+
+932
+00:55:17,190 --> 00:55:20,850
+uma fonte de 20 pontos. Isso parece
+estar bom, ok? E eu posso ajeitar
+
+933
+00:55:20,870 --> 00:55:24,100
+isso, #define enquanto eu estiver
+projetando, para ter certeza
+
+934
+00:55:24,120 --> 00:55:26,850
+que está bom. Mas eu acho que
+provavelmente vai estar bom.
+
+935
+00:55:26,870 --> 00:55:31,090
+Então, vamos criar esse
+AttributedString, ok? Essa vai ser
+
+936
+00:55:31,110 --> 00:55:35,420
+uma grande linha de código,
+então preste atenção.
+
+937
+00:55:35,440 --> 00:55:40,210
+[ditando código]
+Nós vamos fazer esse aqui embaixo,
+
+938
+00:55:40,230 --> 00:55:44,280
+initWithStringAttributes, ok?
+A string que vamos usar
+
+939
+00:55:44,300 --> 00:55:48,530
+é [NSString stringWithFormat].
+Oops, não é o
+
+940
+00:55:48,550 --> 00:55:54,210
+stringWithCharacters.
+E nós vamos fazer
+
+941
+00:55:54,230 --> 00:56:03,850
+%@, enter, %@,
+que é o rei e o Copas.
+
+942
+00:56:03,870 --> 00:56:07,060
+Então precisamos do rank,
+que é o rei, mas eu preciso dele
+
+943
+00:56:07,080 --> 00:56:10,850
+como uma string, então tenho
+um novo método aqui, [king rankAsString],
+
+944
+00:56:10,870 --> 00:56:15,610
+e então precisamos do naipe,
+ok? Isso aqui ficou
+
+945
+00:56:15,630 --> 00:56:20,960
+do meu erro de digitação antes.
+Ok? Então essa é a nossa
+
+946
+00:56:20,980 --> 00:56:25,760
+string. Essa é a perte do init
+da string e
+
+947
+00:56:25,780 --> 00:56:28,730
+então nós precisamos dos atributos,
+que eu vou fazer agora
+
+948
+00:56:28,750 --> 00:56:33,290
+aqui, NSParahgraphStyleAttributeName,
+esse é o estilo
+
+949
+00:56:33,310 --> 00:56:37,690
+do nosso parágrafo. E
+NSFontAttributeName, essa é
+
+950
+00:56:37,710 --> 00:56:44,060
+a nossa fonte do canto, ok?
+Todo mundo entendeu essa linha de código?
+
+951
+00:56:44,080 --> 00:56:47,360
+Vários truncamentos e esse
+tipo de coisa, mas eu quis
+
+952
+00:56:47,380 --> 00:56:52,480
+digitar e mostrar ele completando,
+para que vocês pudessem ver. Agora,
+
+953
+00:56:52,500 --> 00:56:57,670
+eu vou descobrir quão grande
+ela é, ok? Primeiro
+
+954
+00:56:57,690 --> 00:57:00,230
+vamos criar uma pequena variável aqui,
+textBounds, esse é
+
+955
+00:57:00,250 --> 00:57:04,440
+o retângulo que eu vou desenhar dentro.
+Então, a origem desse
+
+956
+00:57:04,460 --> 00:57:07,260
+retângulo-- esse é o
+canto superior esquerdo, então eu vou
+
+957
+00:57:07,280 --> 00:57:10,240
+colocá-lo no canto superior esquerdo.
+Eu vou setar isso para...
+
+958
+00:57:10,260 --> 00:57:12,740
+eu poderia setar isso para
+quase (0,0).
+
+959
+00:57:12,760 --> 00:57:16,170
+Tipo, colar o rei de copas
+no canto superior esquerdo, mas
+
+960
+00:57:16,190 --> 00:57:19,670
+eu tenho aquele roundedRect,
+então eu quero movê-lo um pouquinho.
+
+961
+00:57:19,690 --> 00:57:22,420
+Então, novamente, isso deveria
+ser um #define, mas eu
+
+962
+00:57:22,440 --> 00:57:25,670
+vou movê-lo apenas alguns
+pontos. Apenas para, vocês sabem,
+
+963
+00:57:25,690 --> 00:57:28,420
+apenas um pouquinho do
+canto superior esquerdo.
+
+964
+00:57:28,440 --> 00:57:32,860
+E então o tamanho, e vou perguntar
+para o cornerText qual o tamanho
+
+965
+00:57:32,880 --> 00:57:36,960
+que ele quer ter. Estou apenas
+perguntando para a AttributedString,
+
+966
+00:57:36,980 --> 00:57:40,010
+qual o tamanho que ela naturalmente usaria
+e eu vou apenas usar
+
+967
+00:57:40,030 --> 00:57:43,360
+isso, ok? Essa é a AttributedString,
+certo? Eu estou apenas
+
+968
+00:57:43,380 --> 00:57:46,260
+perguntando o seu tamanho.
+E agora, eu vou apenas dizer
+
+969
+00:57:46,280 --> 00:57:52,520
+para a AttributedString: "ok, chapas,
+se desenhe!". "drawInRect"
+
+970
+00:57:52,540 --> 00:57:57,640
+esse textBounds, ok? Todo mundo
+vê o que eu vou fazer? Vamos ver
+
+971
+00:57:57,660 --> 00:58:02,530
+se isso funciona. Oops,
+oh! Esqueci o
+
+972
+00:58:02,550 --> 00:58:08,350
+rankAsString. Eu sou
+um bom digitador, huh? Ok.
+
+973
+00:58:08,370 --> 00:58:12,340
+Ok, isso funcionou. Isso foi
+bom, ok? E está com
+
+974
+00:58:12,360 --> 00:58:15,280
+uma cara boa até. Então
+o AttributedString fez
+
+975
+00:58:15,300 --> 00:58:18,780
+um bom trabalho aí. Agora,
+eu preciso fazer a mesma coisa
+
+976
+00:58:18,800 --> 00:58:23,490
+nesse outro canto. De ponta-cabeça, ok?
+Agora, como eu vou fazer isso?
+
+977
+00:58:23,510 --> 00:58:25,860
+Ok? Para fazer isso,
+eu vou usar uns métodos
+
+978
+00:58:25,880 --> 00:58:31,210
+do CoreGraphics que me permite
+modificar meu "drawing context" atual
+
+979
+00:58:31,230 --> 00:58:35,510
+para ser rotacionado ou translacionado.
+Na verdade, eu vou fazer ambos.
+
+980
+00:58:35,530 --> 00:58:38,260
+Eu vou transladar minha origem
+do canto superior esquerdo,
+
+981
+00:58:38,280 --> 00:58:41,770
+para o canto inferior direito da carta.
+E então eu vou
+
+982
+00:58:41,790 --> 00:58:45,650
+rotacioná-lo 180 graus.
+E então eu vou apenas desenhá-lo de novo.
+
+983
+00:58:45,670 --> 00:58:49,080
+Ok? Quando eu faço essa
+translação e rotação, eu vou
+
+984
+00:58:49,100 --> 00:58:52,330
+estar bagunçando meu contexto atual.
+Então eu preciso fazer esse negócio
+
+985
+00:58:52,350 --> 00:58:55,330
+de push e pop que eu estava
+falando para vocês, ok? Então eu vou
+
+986
+00:58:55,350 --> 00:58:58,780
+adicionar alguns métodos aqui.
+Um vai chamar... eu vou
+
+987
+00:58:58,800 --> 00:59:05,590
+chamá-lo de pushContextAndRotateUpsideDown,
+ok? e ele vai
+
+988
+00:59:05,610 --> 00:59:10,850
+ser algo assim... UI...
+deixa eu pegar o nome certinho...
+
+989
+00:59:10,870 --> 00:59:17,060
+[ditando o código errado]
+
+
+990
+00:59:17,080 --> 00:59:20,300
+E eu preciso do contexto atual.
+Eu disse que todos essas
+
+991
+00:59:20,320 --> 00:59:24,840
+funções em C do CoreGraphics
+recebem o contexto e vocês pegam ele
+
+992
+00:59:24,860 --> 00:59:28,980
+chamando UIGraphicsGetCurrentContext.
+Ok? Então agora
+
+993
+00:59:29,000 --> 00:59:32,800
+eu empurrei o contexto. Agora,
+eu posso mexer com o contexto o quanto
+
+994
+00:59:32,820 --> 00:59:39,520
+eu quiser. E eu vou fazer isso
+usando esse CGContext...
+
+995
+00:59:39,540 --> 00:59:44,690
+TranslatesCTM, que translada
+a matriz de transformação
+
+996
+00:59:44,710 --> 00:59:48,490
+atual. E, na verdade,
+eu preciso do contexto novamente, então eu vou
+
+997
+00:59:48,510 --> 00:59:51,690
+fazer uma variável local.
+Dou uma chance para vocês adivinharem
+
+998
+00:59:51,710 --> 00:59:56,480
+qual é o tipo dessa variável.
+É ContextRef, que é apenas
+
+999
+00:59:56,500 --> 01:00:01,540
+um tipo opaco. é "void *"
+basicamente.
+
+1000
+01:00:01,560 --> 01:00:04,900
+Então isso translada para
+o canto inferior direito.
+
+1001
+01:00:04,920 --> 01:00:08,490
+[ditando código]
+
+1002
+01:00:08,510 --> 01:00:14,080
+[ditando código]
+Ok? Então eu movi minha origem
+
+1003
+01:00:14,100 --> 01:00:17,500
+para aquele canto inferior. E agora
+eu vou rotacionar meu
+
+1004
+01:00:17,520 --> 01:00:19,920
+sistema de coordenadas inteiro
+em 180 graus, dizendo:
+
+1005
+01:00:19,940 --> 01:00:26,000
+ContextRotateCTM. E esse ângulo
+em radianos. Quem não sabe
+
+1006
+01:00:26,020 --> 01:00:28,730
+o que são radianos? Levante
+a sua mão se você não sabe
+
+1007
+01:00:28,750 --> 01:00:31,480
+o que são radianos. Ok,
+todo mundo sabe. Então eu vou
+
+1008
+01:00:31,500 --> 01:00:34,980
+rotacionar Pi radianos, ok?
+0 até 2pi é uma volta inteira
+
+1009
+01:00:35,000 --> 01:00:38,540
+ao redor do círculo, então Pi é
+meia volta. Aí está.
+
+1010
+01:00:38,560 --> 01:00:43,690
+E eu vou ter
+"- (void)popContext" que será
+
+1011
+01:00:43,710 --> 01:00:48,590
+[ditando código] (errado)
+
+
+1012
+01:00:48,610 --> 01:00:58,610
+Então eu vou chamar esse método
+e então eu vou fazer isso novamente.
+
+1013
+01:00:58,630 --> 01:01:05,190
+E então eu vou "pop", ok?
+Vamos ver se isso funciona.
+
+1014
+01:01:05,210 --> 01:01:08,480
+Essas coisas são bem fáceis.
+Tem algumas primitivas bem poderosas aí
+
+1015
+01:01:08,500 --> 01:01:11,830
+para fazer isso, ok? Então isso é bom!
+E eu não baguncei o
+
+1016
+01:01:11,850 --> 01:01:14,290
+meu contexto, porque eu
+pushei e poppei, então tudo tá bom.
+
+1017
+01:01:14,310 --> 01:01:17,710
+sanduiche-iche
+
+
+1018
+01:01:17,730 --> 01:01:21,150
+Não são todos os meus desenhos que vão
+ficar de cabeça para baixo. Isso é bom!
+
+1019
+01:01:21,170 --> 01:01:24,480
+Entõa precisamos desenhar o centro
+da carta, que é uma imagem ou
+
+1020
+01:01:24,500 --> 01:01:28,870
+o os "pips", certo? Tipo,
+o negocinho com o número. Então vamos
+
+1021
+01:01:28,890 --> 01:01:32,170
+fazer a imagem primeiro. Ver como
+que isso vai ficar. Vamos voltar
+
+1022
+01:01:32,190 --> 01:01:37,080
+para cá. E... o que eu vou
+fazer para a imagem é,
+
+1023
+01:01:37,100 --> 01:01:42,340
+eu vou olhar para uma imagem
+cujo nome é o rank
+
+1024
+01:01:42,360 --> 01:01:47,880
+e o naipe .jpeg, tipo "jhearts.jpeg".
+E se tiver um, eu vou usá-lo.
+
+1025
+01:01:47,900 --> 01:01:51,130
+E não tiver, eu vou assumir
+que eu tenho que fazer
+
+1026
+01:01:51,150 --> 01:01:54,130
+os pips, ok? Vou assumir que não é
+uma carta com rosto.
+
+1027
+01:01:54,150 --> 01:01:59,740
+Então eu vou apenas dizer
+[ditando código]
+
+1028
+01:01:59,760 --> 01:02:03,310
+Vocês sabem tudo sobre isso.
+E o nome que eu vou usar é
+
+1029
+01:02:03,330 --> 01:02:06,940
+stringWithFormat:,
+na verdade a mesma coisa que
+
+1030
+01:02:06,960 --> 01:02:09,690
+eu tenho aqui embaixo. Provavelmente
+poderia fazer um método disso.
+
+1031
+01:02:09,710 --> 01:02:12,570
+Na verdade não tem o "enter"
+no meio, então não é
+
+1032
+01:02:12,590 --> 01:02:17,460
+exatamente o mesmo.
+E [self rankAsString] novamente,
+
+1033
+01:02:17,480 --> 01:02:25,030
+e self.suit. E é isso, ok?
+Então eu estou criando o jhearts.jpeg,
+
+1034
+01:02:25,050 --> 01:02:29,490
+e se ele existir eu vou criar
+essa imagem. Se não existir,
+
+1035
+01:02:29,510 --> 01:02:32,490
+então isso vai retornar nil.
+Então agora eu vou dizer
+
+1036
+01:02:32,510 --> 01:02:40,280
+se tem uma imagem de rosto,
+eu vou desenhá-la. Senão,
+
+1037
+01:02:40,300 --> 01:02:46,560
+[self drawPips], logo aqui embaixo.
+DrawPips. Obviamente eu nõa tenho
+
+1038
+01:02:46,580 --> 01:02:49,310
+tempo para fazer o drawPips,
+embora seja algo
+
+1039
+01:02:49,330 --> 01:02:51,810
+bem direto. Na verdade eu tenho
+tempo sim. Observem.
+
+1040
+01:02:51,830 --> 01:02:57,240
+Aqui está, ok? Aqui está o Pips.
+Daqui, tudo isso,
+
+1041
+01:02:57,260 --> 01:03:02,230
+até aqui, ok? E eu preciso
+desse carinha aqui. É um código
+
+1042
+01:03:02,250 --> 01:03:05,820
+bem simples, sério. Vocês podem
+ver esse código offline.
+
+1043
+01:03:05,840 --> 01:03:10,730
+Eu preciso fazer isso, assim.
+Ok, são apenas
+
+1044
+01:03:10,750 --> 01:03:14,980
+esses métodos. Esse, esse
+e esse. Isso foi o
+
+1045
+01:03:15,000 --> 01:03:18,710
+drawPips. Isso foi fácil. Ok,
+agora vamos fazer a imagem.
+
+1046
+01:03:18,730 --> 01:03:22,260
+A imagem, eu vou pegar qualquer imagem
+e eu preciso redimensioná-la
+
+1047
+01:03:22,280 --> 01:03:25,150
+para meio que caber na carta,
+porque minha carta pode ser
+
+1048
+01:03:25,170 --> 01:03:29,560
+de qualquer tamanho Certo? Então eu
+tenho que tipo caber na carta.
+
+1049
+01:03:29,580 --> 01:03:32,810
+Então eu vou criar um rect para isso.
+Eu vou chamá-lo de imageRect.
+
+1050
+01:03:32,830 --> 01:03:38,740
+E eu vou fazê-lo pegando o meu
+bounds atual, self.bounds
+
+1051
+01:03:38,760 --> 01:03:43,500
+e eu vou "inset" ele,
+em alguma quantidade, ok?
+
+1052
+01:03:43,520 --> 01:03:49,150
+E o amount que eu vou fazer o inset
+é, er, ar, ar, er, ar, a.
+
+1053
+01:03:49,170 --> 01:03:58,480
+Ok, Eu vou fazer
+self.bounds.size.width * (1.0...
+
+1054
+01:03:58,500 --> 01:04:02,730
+menos uma property que eu vou chamar
+de faceCardScaleFactor.
+
+1055
+01:04:02,750 --> 01:04:06,880
+Então faceCardScaleFactor
+é fácil. É apenas uma porcentagem.
+
+1056
+01:04:06,900 --> 01:04:11,740
+Então se o faceCardScaleFactor
+for 90%, então isso
+
+1057
+01:04:11,760 --> 01:04:15,230
+significa que a face da carta
+vai usar 90% da carta.
+
+1058
+01:04:15,250 --> 01:04:18,230
+Se fosse 10% seria menor.
+100% iria
+
+1059
+01:04:18,250 --> 01:04:21,890
+usar a carta inteira. 200% e ela
+estaria fora da carta, ok?
+
+1060
+01:04:21,910 --> 01:04:26,210
+Eu preciso disso, que eu vou
+definir em um segundo aqui.
+
+1061
+01:04:26,230 --> 01:04:29,370
+E a altura vai ser exatamente
+a mesma, mas baseada na altura.
+
+1062
+01:04:29,390 --> 01:04:32,640
+Então eu vou "inset" disso.
+Agora, eu vou criar
+
+1063
+01:04:32,660 --> 01:04:36,290
+um rect que "inset" por essa
+quantidade e eu vou apenas dizer:
+
+1064
+01:04:36,310 --> 01:04:41,190
+[faceImage drawInRect:imageRect].
+E lembrem-se, do drawInRect
+
+1065
+01:04:41,210 --> 01:04:44,590
+dos slides, isso vai
+escalar a imagem para caber
+
+1066
+01:04:44,610 --> 01:04:48,300
+nesse retângulo. Então eu preciso disso.
+Porque eu estou fazendo disso
+
+1067
+01:04:48,320 --> 01:04:53,600
+um método? Porque eu vou ter
+um gesture que nos permite
+
+1068
+01:04:53,620 --> 01:04:57,130
+mudar o tamanho dessa coisa
+com um pitching, ok?
+
+1069
+01:04:57,150 --> 01:05:00,070
+É por isso que estou fazendo isso.
+Então vamos em frente e fazer isso
+
+1070
+01:05:00,090 --> 01:05:04,290
+bem rápido. Aqui vamos nós.
+Isso foi realmente rápido. Vocês adoram
+
+1071
+01:05:04,310 --> 01:05:07,520
+quando eu uso os snippets, eu sei.
+Foi isso o que eu fiz.
+
+1072
+01:05:07,540 --> 01:05:10,520
+Eu sempre seleciono o que eu faço,
+para que vocês possam ver
+
+1073
+01:05:10,540 --> 01:05:13,020
+o que foi adicionado. Aqui está o que
+foi adicionado. Apenas adicionamos
+
+1074
+01:05:13,040 --> 01:05:15,520
+essa property float. Nós não precisamos
+usar o synthesize, porque estou
+
+1075
+01:05:15,540 --> 01:05:18,270
+fazendo tanto o getter quanto o setter.
+No getter estou apenas
+
+1076
+01:05:18,290 --> 01:05:21,730
+devolvendo o default, que é 90%, ok?
+É por isso que estou fazendo
+
+1077
+01:05:21,750 --> 01:05:24,480
+o getter, me certificando
+que existe um default. E
+
+1078
+01:05:24,500 --> 01:05:26,740
+no setter, eu estou apenas
+chamando o setNeedsDisplay, certo?
+
+1079
+01:05:26,760 --> 01:05:30,320
+Sempre que vocês setarem esse
+scale factor, eu preciso redesenhar. Ok? Certo.
+
+1080
+01:05:30,340 --> 01:05:38,350
+Vamos ver como isso funciona.
+Espero que... OLHEM PRA ISSO O.O
+
+1081
+01:05:38,370 --> 01:05:41,490
+Ok, então... isso tá da hora.
+Isso funcionou. Eu estou meio que
+
+1082
+01:05:41,510 --> 01:05:44,660
+surpreso que isso funcionou, porque
+eu esqueci de mostrar a vocês uma outra coisa,
+
+1083
+01:05:44,680 --> 01:05:48,390
+que é da onde essas imagens vieram, ok?
+Agora, eu já tinha arrastado
+
+1084
+01:05:48,410 --> 01:05:51,140
+elas antes, é por isso que
+elas aparecerem. Mas aqui
+
+1085
+01:05:51,160 --> 01:05:54,860
+estão elas, bem aqui.
+Onde está meu Desktop? Face Card Images.
+
+1086
+01:05:54,880 --> 01:05:58,920
+Então aqui estão elas, ok? Eu fiz isso.
+Então aqui está o valete
+
+1087
+01:05:58,940 --> 01:06:01,880
+de espadas, por exemplo. Uma coisa
+que eu queria mostrar é
+
+1088
+01:06:01,900 --> 01:06:05,480
+sobre isso. Vocês vêem esse valete
+de espadas? É 240x420, ok?
+
+1089
+01:06:05,500 --> 01:06:08,690
+Essa é a resolução natural.
+Olhem para esse outro,
+
+1090
+01:06:08,710 --> 01:06:14,610
+valete de espadas @2x. Ele é
+duas vezes a resolução, 480x840.
+
+1091
+01:06:14,630 --> 01:06:18,990
+Por que eu tenho duas versões disso?
+Retina, exatamente!
+
+1092
+01:06:19,010 --> 01:06:22,070
+Ok? O sistema vai olhar
+automaticamente para o mesmo nome
+
+1093
+01:06:22,090 --> 01:06:26,480
+com o @2x no final, quando estiver
+no retina. Se ele não achar,
+
+1094
+01:06:26,500 --> 01:06:29,460
+ele vai usar esse não-retina,
+mas eu vou arrastar
+
+1095
+01:06:29,480 --> 01:06:36,520
+todos eles pra dentro, ok?
+Pra minha coisa aqui.
+
+1096
+01:06:36,540 --> 01:06:40,690
+Na verdade eu vou arrastar esse
+folder inteiro. Se eu conseguir deixá-los
+
+1097
+01:06:40,710 --> 01:06:43,690
+na tela ao mesmo tempo. Vamos arrastar
+esse folder inteiro e
+
+1098
+01:06:43,710 --> 01:06:46,330
+colocá-lo no Supporting Files aqui.
+Vocês querem esses dois aqui
+
+1099
+01:06:46,350 --> 01:06:49,730
+checados. Eu vi um lance no Piazza (site do curso)
+sobre isso. Você quer os dois
+
+1100
+01:06:49,750 --> 01:06:52,980
+checados para que ele adicione.
+Aqui elas estão agora.
+
+1101
+01:06:53,000 --> 01:06:55,980
+Estão no meu projeto. Novamente,
+por que isso funcionou antes de eu
+
+1102
+01:06:56,000 --> 01:06:58,730
+fazer isso? Porque eu já tinha
+buildado esse projeto como um teste,
+
+1103
+01:06:58,750 --> 01:07:01,480
+então ele já estava no simulador.
+Desculpa por isso.
+
+1104
+01:07:01,500 --> 01:07:04,190
+Mas de qualquer forma,
+vocês podem ver que essas imagens
+
+1105
+01:07:04,210 --> 01:07:08,670
+estão todas aqui e eu não preciso
+fazer nada em especial
+
+1106
+01:07:08,690 --> 01:07:11,740
+para o Retina, exceto ter certeza
+que essas daqui existem ok?
+
+1107
+01:07:11,760 --> 01:07:17,140
+Essas imagens de maior resolução. Ok?
+Certo, voltando para o que tínhamos
+
+1108
+01:07:17,160 --> 01:07:21,490
+aqui. Isso está com uma cara boa.
+E sobre o verso das cartas?
+
+1109
+01:07:21,510 --> 01:07:25,060
+Ok? Nós precisamos conseguir
+ver o verso da carta.
+
+1110
+01:07:25,080 --> 01:07:28,710
+Então vamos fazer isso. Isso
+vai ser fácil. Tudo que
+
+1111
+01:07:28,730 --> 01:07:34,600
+eu vou fazer é no meu drawInRect
+é dizer: se eu estiver virado pra cima,
+
+1112
+01:07:34,620 --> 01:07:40,900
+então eu faço tudo que eu estava
+fazendo. Mas eu não estiver,
+
+1113
+01:07:40,920 --> 01:07:44,540
+então eu vou desenhar o verso
+da carta e eu vou fazer meio que
+
+1114
+01:07:44,560 --> 01:07:47,790
+do mesmo jeito com a UIImage.
+Então eu vou dizer apenas
+
+1115
+01:07:47,810 --> 01:07:51,980
+"[UIImage imageNamed..."
+e eu tenho uma imagem chamada cardback.png,
+
+1116
+01:07:52,000 --> 01:07:57,010
+e eu vou desenhá-la num rect:
+self.bounds. Agora
+
+1117
+01:07:57,030 --> 01:07:59,760
+uma ciosa que é um pouco diferente aqui
+é que eu sempre vou ter o verso
+
+1118
+01:07:59,780 --> 01:08:04,140
+da minha carta desenhado
+na carta inteira. Então vocês tem
+
+1119
+01:08:04,160 --> 01:08:07,140
+que ter um verso da carta que tenha
+uma borda ao redor, ou como 
+
+1120
+01:08:07,160 --> 01:08:10,390
+você quiser que fique. Permitir
+que o designer do verso da carta
+
+1121
+01:08:10,410 --> 01:08:13,640
+faça o que eles quiserem fazer.
+Isso vai preencher
+
+1122
+01:08:13,660 --> 01:08:16,400
+o bounds inteiro mas vai
+ser "clipado" no roundedRect.
+
+1123
+01:08:16,420 --> 01:08:19,400
+Porque, lembre-se, eu tinha esse
+addClip aqui em cima. Ele se aplica
+
+1124
+01:08:19,420 --> 01:08:22,150
+para tudo aqui. Então ela
+vai ser clipada. Então
+
+1125
+01:08:22,170 --> 01:08:25,400
+vamos arrastar o verso da carta novamente.
+Aqui está. Colocaremos
+
+1126
+01:08:25,420 --> 01:08:27,650
+aqui no Supporting Files também.
+De novo, as duas coisas
+
+1127
+01:08:27,670 --> 01:08:31,510
+checadas. Ok. É assim que
+o verso da carta vai ficar.
+
+1128
+01:08:31,530 --> 01:08:34,460
+Um verso de carta meio genérico.
+Agora, vamos rodar novamente.
+
+1129
+01:08:34,480 --> 01:08:37,940
+Claro, por default, a carta está
+virada pra baixo, certo? Porque
+
+1130
+01:08:37,960 --> 01:08:41,490
+o faceUp vai ser zero quando ela inicia.
+Então aqui está. Claro,
+
+1131
+01:08:41,510 --> 01:08:44,870
+eu não consigo virar a carta, ok?
+Eu não consigo ver nada.
+
+1132
+01:08:44,890 --> 01:08:48,650
+Isso não é legal. Como nós vamos
+virar a carta?
+
+1133
+01:08:48,670 --> 01:08:51,650
+Bom, nós precisamos de um gesture.
+Ok? Nós temos que ter um gesture
+
+1134
+01:08:51,670 --> 01:08:54,900
+para fazer isso e eu vou usar
+o gesture swipe. Parece um
+
+1135
+01:08:54,920 --> 01:08:57,900
+gesture decente para virar
+essa coisa ao contrário.
+
+1136
+01:08:57,920 --> 01:09:00,900
+Eu poderia usar o tap também, mas
+eu vou usar o swipe. Então, como que
+
+1137
+01:09:00,920 --> 01:09:03,650
+isso funciona? Muito fácil.
+Eu vou fazer o swipe gesture
+
+1138
+01:09:03,670 --> 01:09:06,130
+no Storyboard, ok? Então eu vou
+diretamente no Storyboard.
+
+1139
+01:09:06,150 --> 01:09:09,070
+Eu vou fazer o pinch gesture
+no código e eu vou
+
+1140
+01:09:09,090 --> 01:09:11,820
+fazer o swipe gesture no Storyboard,
+apenas para vocês verem os
+
+1141
+01:09:11,840 --> 01:09:15,870
+dois modos. Aqui está meu storyboard.
+Eu vou aqui embaixo, e
+
+1142
+01:09:15,890 --> 01:09:19,650
+na verdade, aqui embaixo
+temos os gesture
+
+1143
+01:09:19,670 --> 01:09:23,660
+recognizers. Vêem? Tap, pinch,
+rotation. Então eu vou
+
+1144
+01:09:23,680 --> 01:09:27,160
+apenas pegar o swipe. Arrastá-lo
+e jogá-lo na view
+
+1145
+01:09:27,180 --> 01:09:30,760
+que eu quero que reconheça
+esse gesture particular.
+
+1146
+01:09:30,780 --> 01:09:33,320
+Nesse caso, minha PlayingCard e aqui
+está ela.
+
+1147
+01:09:33,340 --> 01:09:37,110
+Vêem que ela apareec aqui embaixo? E de fato,
+se eu clicar com o botão direito nele
+
+1148
+01:09:37,130 --> 01:09:41,650
+e olhar, eu posso desocbrir que view
+que ele está relacionado. E então,
+
+1149
+01:09:41,670 --> 01:09:44,610
+tudo que eu preciso para fazer
+esse gesture fazer alguma coisa é
+
+1150
+01:09:44,630 --> 01:09:49,620
+CTRL + arrastar para qualquer target, ok?
+E eu vou fazer com que meu controller
+
+1151
+01:09:49,640 --> 01:09:52,360
+trate esse aqui. Então vamos
+selecionar o controller aqui em cima.
+
+1152
+01:09:52,380 --> 01:09:56,980
+Voltamos pro automático. Ok? Eu vou apenas
+
+1153
+01:09:57,000 --> 01:10:00,630
+aqui, nesse pequeno
+gesture swipe, eu vou
+
+1154
+01:10:00,650 --> 01:10:04,420
+CTRL + arrastar para o meu
+controller. Assim como um
+
+1155
+01:10:04,440 --> 01:10:07,480
+target-action. Eu vou chamar
+de swupe. Vamos fazer o argumento
+
+1156
+01:10:07,500 --> 01:10:10,900
+ser um SwipeGestureRecognizer,
+ao invés de apenas "id".
+
+1157
+01:10:10,920 --> 01:10:15,150
+Similar quando fazemos uma action.
+Vamos seguir e deixar
+
+1158
+01:10:15,170 --> 01:10:18,860
+isso maior, para que possamos ver
+o que está acontecendo. Então aqui está
+
+1159
+01:10:18,880 --> 01:10:22,290
+o swipe. Tudo que eu preciso fazer
+no swipe-- espero que todos estejam
+
+1160
+01:10:22,310 --> 01:10:28,230
+familiarizados com esse paradigma, é:
+[ditando código]
+
+1161
+01:10:28,250 --> 01:10:32,190
+[ditando código]
+Ok? Eu vou
+
+1162
+01:10:32,210 --> 01:10:35,190
+apenas virar a carta ao contrário, ok?
+Quando você fizer o swipe.
+
+1163
+01:10:35,210 --> 01:10:38,690
+Isso é tudo que vocês precisam fazer.
+Vamos rodar novamente. Agora quando
+
+1164
+01:10:38,710 --> 01:10:42,340
+eu fizer o swipe, ele está
+virando a carta. Ok?
+
+1165
+01:10:42,360 --> 01:10:45,650
+Eu estou fazendo o swipe pra direita.
+Se eu fizer o swipe pra esquerda,
+
+1166
+01:10:45,670 --> 01:10:49,340
+ele não funciona. Só faz o swipe
+para a direita. Ok? E onde isso
+
+1167
+01:10:49,360 --> 01:10:52,620
+foi configurado? Se nós voltarmos
+para o nosso Storyboard, nós podemos
+
+1168
+01:10:52,640 --> 01:10:57,160
+na verdade clicar nesse SwipeGesture
+e inspecioná-lo. E
+
+1169
+01:10:57,180 --> 01:11:00,320
+vocês verão que ele é um
+swipe para a direita. Vocês podem configurá-lo
+
+1170
+01:11:00,340 --> 01:11:03,530
+para outra coisa, mas ele vai pra direita.
+Ok? Então é assim
+
+1171
+01:11:03,550 --> 01:11:06,760
+que configuramos um gesture no Storyboard.
+Apenas arrastamos em uma view
+
+1172
+01:11:06,780 --> 01:11:10,010
+que queremos que reconheça e nós
+CTRL + arrastamos para onde queremos
+
+1173
+01:11:10,030 --> 01:11:12,760
+que trate ele. Agora, vamos fazer
+outro gesture, que é o pinching.
+
+1174
+01:11:12,780 --> 01:11:16,010
+E eu vou fazer esse em código. Ok?
+Então é algo assim.
+
+1175
+01:11:16,030 --> 01:11:19,260
+Eu vou fazer no setter
+do PlayingCardView
+
+1176
+01:11:19,280 --> 01:11:22,260
+porque eu preciso adicionar
+o gesture recognizer na
+
+1177
+01:11:22,280 --> 01:11:25,010
+PlayingCardView, é assim
+que funciona. Eu vou apenas dizer
+
+1178
+01:11:25,030 --> 01:11:29,730
+aqui... deixa-me certificar
+que esse é o modo correto que
+
+1179
+01:11:29,750 --> 01:11:32,480
+eu quero fazer isso. Na verdade,
+eu vou fazer algo bem rápido primeiro.
+
+1180
+01:11:32,500 --> 01:11:36,500
+Vamos para o PlayingCardView
+e adicionar um gesture handler
+
+1181
+01:11:36,520 --> 01:11:41,500
+chamado pinch. UIPinchGestureRecognizer
+*gesture. Então esse
+
+1182
+01:11:41,520 --> 01:11:45,570
+é um método público que a
+PlayingCard diz que ela vai
+
+1183
+01:11:45,590 --> 01:11:49,440
+prover e então eu tenho
+que provê-lo. Vamos fazer
+
+1184
+01:11:49,460 --> 01:11:53,880
+bem aqui. Ok? É bem fácil
+de implementar. Vamos apenas
+
+1185
+01:11:53,900 --> 01:11:59,790
+dizer: se o estado do gesture
+for "changed",
+
+1186
+01:11:59,810 --> 01:12:06,800
+ou se o estado
+for "ended",
+
+1187
+01:12:06,820 --> 01:12:14,800
+então nós vamos setar
+nossa faceCardScaleFactor
+
+1188
+01:12:14,820 --> 01:12:19,950
+par aser ajustado para qualquer
+que seja a escala
+
+1189
+01:12:19,970 --> 01:12:22,530
+do pinch. Então, o quanto nós
+"pincharmos", é o uanto
+
+1190
+01:12:22,550 --> 01:12:25,870
+nós vamos ajustar essa porcentagem.
+Aqueles 90% vão ficar maior
+
+1191
+01:12:25,890 --> 01:12:29,700
+ou menor. E então eu também vou
+setar o gesture.scale
+
+1192
+01:12:29,720 --> 01:12:33,400
+de volta para 1, para que
+ele sempre redimensione incrementalmente,
+
+1193
+01:12:33,420 --> 01:12:36,080
+não acumulativamente,
+mas apenas cada um pouquinho
+
+1194
+01:12:36,100 --> 01:12:38,830
+que o pinch mover, vai mudar
+um pouquinho o scaleFactor.
+
+1195
+01:12:38,850 --> 01:12:42,650
+Agora esse método existe
+na minha view e voltando ao meu
+
+1196
+01:12:42,670 --> 01:12:46,280
+controller, eu vou adicionar
+um gestureRecognizer que usa ele.
+
+1197
+01:12:46,300 --> 01:12:50,200
+Fazendo isso:
+[ditando código]
+
+1198
+01:12:50,220 --> 01:12:54,780
+[ditando código]
+
+1199
+01:12:54,800 --> 01:12:58,050
+Preciso escolher o tipo certo...
+
+1200
+01:12:58,070 --> 01:13:01,540
+[ditando código]
+Lembrem-se, foi isso que eu falei,
+
+1201
+01:13:01,560 --> 01:13:04,540
+o target vai ser
+a PlayingCardView. Ela quem vai
+
+1202
+01:13:04,560 --> 01:13:08,110
+tratar o pinch e ela vai
+usar o selector "pinch",
+
+1203
+01:13:08,130 --> 01:13:15,940
+ok? Isso tudo é necessário,
+então vamos tentar rodar isso.
+
+1204
+01:13:15,960 --> 01:13:20,120
+Ok,, então nós temos
+nossa carta virada pra cima aqui. Agora,
+
+1205
+01:13:20,140 --> 01:13:25,130
+como eu vou fazer o pinch nessa coisa, ok?
+Eu não consigo pinchar. A resposta
+
+1206
+01:13:25,150 --> 01:13:27,950
+é: no simulador, você faz o pinch
+segurando a tecla Option.
+
+1207
+01:13:27,970 --> 01:13:31,400
+Quando eu seguro a tecla option,
+vocês vêem esses dois círculos? É como
+
+1208
+01:13:31,420 --> 01:13:35,570
+se eu tivesse fazendo o pinch, ok?
+E quando eu clico e seguro,
+
+1209
+01:13:35,590 --> 01:13:44,590
+eu estou pinchando, vêem? Ok?
+Certo? Esse é o pinch.
+
+1210
+01:13:44,610 --> 01:13:47,840
+Uma outra coisa que eu vou mostrar
+bem rápido é que isso não ficou
+
+1211
+01:13:47,860 --> 01:13:50,840
+muito bonito porque quando eu
+faço o swipe, ele apenas "salta".
+
+1212
+01:13:50,860 --> 01:13:54,620
+Eu quero que ele faça um flip.
+Eu quero um flip animado. Agora,
+
+1213
+01:13:54,640 --> 01:13:57,620
+nós não vamos falar sobre
+view animation. Eu não mostrei isso
+
+1214
+01:13:57,640 --> 01:14:00,870
+no slide. Então isso é apenas tipo
+um crédito extra na minha demo.
+
+1215
+01:14:00,890 --> 01:14:03,870
+Porque é uma linha de código,
+para fazer essa coisa
+
+1216
+01:14:03,890 --> 01:14:07,120
+fazer o flip. Então vamos colocar
+essa uma linha de código aqui.
+
+1217
+01:14:07,140 --> 01:14:10,050
+Nós usamos esse método chamado--
+é um método de classe de UIView, ok?
+
+1218
+01:14:10,070 --> 01:14:14,940
+chamado transitionWithView.
+Então transitionWithView recebe
+
+1219
+01:14:14,960 --> 01:14:18,740
+uma view e ela vai desenhá-la
+no seu estado atual. Então
+
+1220
+01:14:18,760 --> 01:14:21,150
+vocês dizem para fazer algumas coisas,
+então ele desenha ela no novo estado,
+
+1221
+01:14:21,170 --> 01:14:25,210
+e então ela vai flipar,
+ou dissolver, ou fazer alguma outra
+
+1222
+01:14:25,230 --> 01:14:28,830
+animação para fazer a transição entre
+esses dois estados. Então aqui
+
+1223
+01:14:28,850 --> 01:14:31,580
+nós vamos obviamente fazer isso
+com a PlayingCardView.
+
+1224
+01:14:31,600 --> 01:14:34,790
+A duração, nós vamos fazer meio segundo,
+isso é quanto vai demorar
+
+1225
+01:14:34,810 --> 01:14:38,280
+para fazer o flip, meio segundo.
+As options é como nós
+
+1226
+01:14:38,300 --> 01:14:42,780
+queremos fazer e eu quero fazer
+a TransitionFlipFromLeft.
+
+1227
+01:14:42,800 --> 01:14:46,510
+Ok? Vocês podem ver
+que tem outras opções aqui
+
+1228
+01:14:46,530 --> 01:14:49,650
+como CrossDissolve
+e Curling e coisas assim.
+
+1229
+01:14:49,670 --> 01:14:53,550
+Mas eu vou fazer o FlipFromLeft.
+A proóxima parte aqui
+
+1230
+01:14:53,570 --> 01:14:57,170
+vocês precisam segurar a respiração.
+...
+
+1231
+01:14:57,190 --> 01:15:00,420
+
+
+
+1232
+01:15:00,440 --> 01:15:04,990
+Vocês não precisam se preocupar muito.
+O que está acontecendo aqui é,
+
+1233
+01:15:05,010 --> 01:15:09,150
+nós estamos na verdade
+incorporando código em um outro método.
+
+1234
+01:15:09,170 --> 01:15:12,620
+E isso é chamado "blocks".
+E nós vamos aprender tudo sobre isso
+
+1235
+01:15:12,640 --> 01:15:15,370
+nesse curso. Uma parte bastante
+importante de Objective-C, que eu
+
+1236
+01:15:15,390 --> 01:15:18,370
+ainda não tive a chance de ensiná-los ainda.
+Então, apenas acreditem em mim
+
+1237
+01:15:18,390 --> 01:15:21,620
+quando eu digo que é assim que funciona, ok?
+Nós coocmos o código
+
+1238
+01:15:21,640 --> 01:15:24,620
+que queremos que aconteça entre
+os dois estados
+
+1239
+01:15:24,640 --> 01:15:27,620
+do flip, o antes e o depois aqui.
+E eu vou apenas
+
+1240
+01:15:27,640 --> 01:15:30,620
+colocar esse mesmo código
+que eu tinha antes, vamos até
+
+1241
+01:15:30,640 --> 01:15:33,780
+dar uma limpada aqui, isso é bom.
+Então é isso. É tudo que
+
+1242
+01:15:33,800 --> 01:15:37,030
+precisamos fazer. Essa uma
+linha de código. Vamos aqui.
+
+1243
+01:15:37,050 --> 01:15:44,860
+Agora, quando fazemos o swipe,
+ela flipa. UUUUU! A última coisa
+
+1244
+01:15:44,880 --> 01:15:48,110
+que eu vou fazer...
+e alguns de vocês
+
+1245
+01:15:48,130 --> 01:15:51,110
+precisam sair, porque eu
+já estrapolei meu tempo,
+
+1246
+01:15:51,130 --> 01:15:54,110
+eu vou fazer com que cada vez que
+nós flipamos, ele mostra
+
+1247
+01:15:54,130 --> 01:15:56,860
+uma carta diferente. Porque eu
+quero mostrar como o "pips"
+
+1248
+01:15:56,880 --> 01:16:00,110
+está e coisas assim. Para fazer isso
+eu preciso do model da carta.
+
+1249
+01:16:00,130 --> 01:16:02,860
+Uma coisa importante de perceber aqui,
+eu desenhei esse app
+
+1250
+01:16:02,880 --> 01:16:05,610
+inteiro. Eu nunca importei
+nosso card model antigo.
+
+1251
+01:16:05,630 --> 01:16:08,110
+Essa view é completamente
+independente do nosso card model.
+
+1252
+01:16:08,130 --> 01:16:11,110
+Agora, isso não significa
+que eu não posos usar com o nosso
+
+1253
+01:16:11,130 --> 01:16:14,360
+antigo card model. Se eu arrastar
+esse model pra cá, se certifiquem
+
+1254
+01:16:14,380 --> 01:16:17,110
+que tenho essas duas coisas selecionadas.
+Agora eu tenho Deck e PlayingCard
+
+1255
+01:16:17,130 --> 01:16:21,360
+e todas essas coisas que fizemos
+antes. Então agora
+
+1256
+01:16:21,380 --> 01:16:24,880
+eu posso usá-los. Vamos fazer isso.
+Vamos importar PlayingCardDeck
+
+1257
+01:16:24,900 --> 01:16:33,120
+e vamos importar PlayingCard.
+E ao invés de fazer isso,
+
+1258
+01:16:33,140 --> 01:16:37,820
+bem aqui. Setar o rank
+e o naipe desse jeito, eu vou
+
+1259
+01:16:37,840 --> 01:16:41,070
+desenhar uma carta aleatória,
+então eu posso digitar esse código
+
+1260
+01:16:41,090 --> 01:16:44,070
+bem rápido. Aqui está, ok?
+Foi isso que
+
+1261
+01:16:44,090 --> 01:16:47,800
+eu digitei. Isso desenha
+uma carta alatória do deck. Temos que
+
+1262
+01:16:47,820 --> 01:16:51,540
+fazer isso: deck. Checa se é
+uma PlayingCard e se for,
+
+1263
+01:16:51,560 --> 01:16:54,820
+então ela seta o rank e o naipe.
+Todo mundo entende
+
+1264
+01:16:54,840 --> 01:16:57,400
+a introspecção que está acontecendo aqui?
+Esse tipo de classe, espero
+
+1265
+01:16:57,420 --> 01:17:01,070
+que isso faça sentido pra vocês.
+Então precisamos do deck,
+
+1266
+01:17:01,090 --> 01:17:05,110
+Eu posso também digitar be rápido, ok?
+EU vou apenas
+
+1267
+01:17:05,130 --> 01:17:09,320
+adicionar uma property "deck".
+Tudo que eu fiz foi adicionar essa property "deck"
+
+1268
+01:17:09,340 --> 01:17:12,730
+e o lazy instantiation, que vai
+criar um PlayingCardDeck.
+
+1269
+01:17:12,750 --> 01:17:16,210
+E aqui ao invés de setar
+para sempre ser
+
+1270
+01:17:16,230 --> 01:17:19,360
+o rei de copas, eu vou dizer:
+[self draw...
+
+1271
+01:17:19,380 --> 01:17:22,820
+randomPlayingCard]. Eu também vou
+fazer isso cada vez que nós virarmos.
+
+1272
+01:17:22,840 --> 01:17:30,830
+[ditando código]
+
+1273
+01:17:30,850 --> 01:17:36,260
+[ditando código]
+
+
+1274
+01:17:36,280 --> 01:17:39,510
+Ok? Cada vez que eu flipar,
+novamente vocês devem
+
+1275
+01:17:39,530 --> 01:17:43,330
+estar acostumados com isso.
+Nós vamos mudar a carta. Aqui vamos nós.
+
+1276
+01:17:43,350 --> 01:17:47,330
+Uh, temos o valete de paus,
+temos o valete de ouros,
+
+1277
+01:17:47,350 --> 01:17:49,870
+Oh! Temos algo que não tem
+uma face.
+
+1278
+01:17:49,890 --> 01:17:59,840
+Uh, doises. Cincos. E, claro
+se nós tivermos outra carta
+
+1279
+01:17:59,860 --> 01:18:05,620
+com face aqui, espero...
+Hello Face Card... Essas são cartas baixas,
+
+1280
+01:18:05,640 --> 01:18:10,440
+sorte no azar aqui, espero que
+eu esteja em boa forma.
+
+1281
+01:18:10,460 --> 01:18:13,530
+Olha isso. Se isso fosse
+um Blackjack nós... Ok,
+
+1282
+01:18:13,550 --> 01:18:17,050
+aqui está uma carta com face. Certo,
+se nós a deixarmos maior,
+
+1283
+01:18:17,070 --> 01:18:20,960
+certo, então isso vai se aplicar
+a todas as cartas. Então se nós
+
+1284
+01:18:20,980 --> 01:18:23,710
+encontrarmos outra carta com face,
+estará grande também. Como essa aqui.
+
+1285
+01:18:23,730 --> 01:18:26,710
+E a mesma coisa se a deixarmos menor.
+Porque essa é a mesma carta,
+
+1286
+01:18:26,730 --> 01:18:30,840
+nós estamos apenas mudando a face.
+Ok, eu vou postar
+
+1287
+01:18:30,860 --> 01:18:35,740
+todo esse código. Se vocês tiverem
+alguma pergunta, estou aqui.
+
+1288
+01:18:35,760 --> 01:18:40,040
+Visite nosso site
+www.centraldosapps.com

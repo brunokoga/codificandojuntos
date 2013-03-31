@@ -1,0 +1,5473 @@
+1
+00:00:00,012 --> 00:00:10,373
+Legendas em português por
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:10,373 --> 00:00:14,668
+Bem-vindos à aula 14 de CS193P
+Inverno de 2013.
+
+3
+00:00:14,668 --> 00:00:16,116
+Hoje sem slides.
+Só demo.
+
+4
+00:00:16,116 --> 00:00:20,489
+E a demo é chamada Photomania.
+Vai ser uma aplicação que construí
+
+5
+00:00:20,489 --> 00:00:23,662
+do zero.
+Vai usar os mesmos dados que eu usei
+
+6
+00:00:23,662 --> 00:00:26,627
+no Shutterbug.
+Mas nós vamos, ao invés de olhar
+
+7
+00:00:26,627 --> 00:00:31,047
+naqueles dicionários diretamente, nós vamos
+carregar todas os dados em um Core Data
+
+8
+00:00:31,047 --> 00:00:34,738
+database e então nós vamos construir
+um app um pouco diferente.
+
+9
+00:00:34,739 --> 00:00:38,621
+Ao invés de apenas mostrar uma lista de fotos,
+que é o que o Shutterbug fazia, vamos
+
+10
+00:00:38,621 --> 00:00:42,497
+mostrar uma lista de fotógrafos
+que tiraram essas fotos e quando você clicar
+
+11
+00:00:42,497 --> 00:00:46,316
+em um fotógrafo, ele vai mostrar
+as fotos que o fotógrafo tirou e então
+
+12
+00:00:46,316 --> 00:00:49,718
+clica em uma foto e ele vai mostrar a foto
+em um pequeno image viewer.
+
+13
+00:00:49,719 --> 00:00:52,830
+Se nós chegarmos tão longe, eu acho que nós
+temos tempo para fazer tudo isso.
+
+14
+00:00:52,830 --> 00:00:57,183
+A maior parte do que vocês irão assistir hoje
+são os lances do Core Data que nós
+
+15
+00:00:57,183 --> 00:00:59,977
+vamos fazer.
+Serão table views no Core Data.
+
+16
+00:00:59,977 --> 00:01:03,574
+Então vamos usar
+NSFetchedResultsController que é esse
+
+17
+00:01:03,574 --> 00:01:07,732
+mecanismo de colar, que cola um fetch,
+um fetchRequest em um Cora Data database
+
+18
+00:01:07,732 --> 00:01:11,008
+em uma table view.
+Esse é coisa principal para observar
+
+19
+00:01:11,008 --> 00:01:14,196
+aqui
+Também assistam as coisas que vamos fazer
+
+20
+00:01:14,196 --> 00:01:19,542
+com UIManagedDocument, porque nós vamos
+armazenar todos os dados do Flickr que nós
+
+21
+00:01:19,542 --> 00:01:24,888
+baixamos em um Core Data Database, isso vai
+estar em uma demo de Document que
+
+22
+00:01:24,888 --> 00:01:28,094
+eu vou criar.
+Eu vou ter uma classe que cria um
+
+23
+00:01:28,094 --> 00:01:31,443
+DemoDocument que baixa essas coisas,
+ok?
+
+24
+00:01:31,443 --> 00:01:36,276
+Então vamos começar.
+Certo, vamos... ok eu vou
+
+25
+00:01:36,276 --> 00:01:42,146
+criar um novo projeto aqui do zero
+e Single View Application.
+
+26
+00:01:42,147 --> 00:01:48,945
+Novamente, alguns desses outros templates,
+como esse Master Detail podem ter Core Data
+
+27
+00:01:48,945 --> 00:01:53,144
+no AppDelegate.
+Mas nós vamos fazer Core Data via
+
+28
+00:01:53,144 --> 00:01:57,022
+UIManagedDocument.
+Então nós não precisamos dessas coisas
+
+29
+00:01:57,022 --> 00:02:00,662
+nesses templates.
+Eu vou continuar com o template que
+
+30
+00:02:00,662 --> 00:02:05,021
+nós estamos acostumados aqui.
+E eu vou chamar de Photomania.
+
+31
+00:02:05,021 --> 00:02:09,784
+E eu vou deletar o ViewController
+default que ele nos dá e vamos fazer
+
+32
+00:02:09,784 --> 00:02:13,427
+iPhone only para que eu possa rodar
+no simulador aqui.
+
+33
+00:02:13,427 --> 00:02:15,823
+Para que não precisemos ficar
+trocando de tela.
+
+34
+00:02:15,823 --> 00:02:19,924
+E eu vou colocá-lo no meu Home Directory
+Developer e aqui vamos nós. E eu vou
+
+35
+00:02:19,924 --> 00:02:23,025
+fazer uma limpeza aqui.
+Vamos mover esse AppDelegate.
+
+36
+00:02:23,025 --> 00:02:27,826
+Esse AppDelegate, a propósito, essa é a classe
+onde haveria algum código para obter
+
+37
+00:02:27,826 --> 00:02:32,166
+um managedObjectContext para um
+Core Data database se você não estivesse
+
+38
+00:02:32,166 --> 00:02:36,528
+usando UIManagedDocument, ok?
+Se você usou um desses outros templates,
+
+39
+00:02:36,529 --> 00:02:40,401
+estaria aqui.
+Nós não falamos sobre AppDelegate, ele foi
+
+40
+00:02:40,401 --> 00:02:45,369
+bem desenfatizado no iOS 5 e iOS 6 e nós
+talvez precisemos mexer um pouco nele,
+
+41
+00:02:45,369 --> 00:02:50,409
+mas basicamente o que é interessante aqui
+são as coisas como multitasking.
+
+42
+00:02:50,409 --> 00:02:54,538
+Se o seu app estiver rodando
+com outros apps no sistema.
+
+43
+00:02:54,538 --> 00:02:58,702
+E quando o seu app vier para o
+foreground ou background, ele tipo descobre
+
+44
+00:02:58,702 --> 00:03:03,249
+dentro do app, através desse AppDelegate.
+AppDelegate é na verdade um delegate.
+
+45
+00:03:03,249 --> 00:03:06,301
+É um delegate pra o seu
+objeto UIApplication.
+
+46
+00:03:06,301 --> 00:03:11,366
+Eu também vou deletar esse ViewController
+padrão que ele criou para mim.
+
+47
+00:03:11,366 --> 00:03:15,010
+E eu vou deletá-lo do Storyboard
+também.
+
+48
+00:03:15,010 --> 00:03:17,591
+Um pouco menor.
+Ok.
+
+49
+00:03:17,591 --> 00:03:21,892
+Então, eu tenho um app em branco novamente.
+Eu vou começar o meu app dessa vez,
+
+50
+00:03:21,892 --> 00:03:27,678
+ao invés de começar-- geralmente eu
+começaria em um storyboard e começaria arrastando
+
+51
+00:03:27,678 --> 00:03:31,356
+coisas pra dentro.
+Mas aqui, eu vou começar com meu
+
+52
+00:03:31,356 --> 00:03:35,987
+database schema, okay?
+Lembram que eu falei que você vai no
+
+53
+00:03:35,987 --> 00:03:39,527
+File, New File aqui para criar
+um novo Database Schema.
+
+54
+00:03:39,527 --> 00:03:44,535
+E ao invés de vir aqui em cima onde temos
+classes Objective-C, você vai aqui embaixo
+
+55
+00:03:44,535 --> 00:03:49,188
+para o Core Data aqui na esquerda.
+E você vai escolher essa coisa
+
+56
+00:03:49,188 --> 00:03:50,766
+Data Model.
+Não se confunda.
+
+57
+00:03:50,766 --> 00:03:54,216
+Não é o Mapping Model.
+É o Data Model que você quer, ok?
+
+58
+00:03:54,216 --> 00:03:58,845
+E quando você clica em Data Model, ele vai
+perguntar o nome e onde você quer
+
+59
+00:03:58,845 --> 00:04:01,195
+colocá-lo.
+Se você tiver apenas um data model,
+
+60
+00:04:01,195 --> 00:04:05,887
+e uma aplicação relativamente simples
+vai ter apenas um geralmente, nós podemos
+
+61
+00:04:05,887 --> 00:04:10,360
+chamá-lo pelo nome do app, ok?
+Mas você pode ter na verdade múltiplos...
+
+62
+00:04:10,360 --> 00:04:13,709
+é um uso avançado, nós não vamos
+cobrir isso nesse curso,
+
+63
+00:04:13,709 --> 00:04:17,930
+mas é possível termos múltiplos schemas,
+ok? Múltiplos database praticamente,
+
+64
+00:04:17,930 --> 00:04:21,962
+na sua aplicação, mas nós vamos ter
+apenas esse aqui e vamos chamá-lo
+
+65
+00:04:21,962 --> 00:04:24,921
+Photomania.
+E quando fazemos isso, nós obtemos essa
+
+66
+00:04:24,921 --> 00:04:29,958
+UI que vocês viram nos slides aqui.
+Nesse arquivo chamado
+
+67
+00:04:29,958 --> 00:04:35,851
+photomania.xcdatamodeld, ok?
+Esse é nosso arquivo de schema.
+
+68
+00:04:35,851 --> 00:04:42,691
+E aqui é onde nós vamos criar
+nossas entidades e nossos atributos, etc.
+
+69
+00:04:42,691 --> 00:04:45,202
+Então vamos prosseguir e começar
+a fazer isso.
+
+70
+00:04:45,202 --> 00:04:49,498
+Eu vou começar adicionando uma entidade,
+nesse grande botão aqui embaixo,
+
+71
+00:04:49,498 --> 00:04:53,722
+Add Entity, ele adiciona uma e a chama de Entity
+por padrão, mas eu vou renomeá-la
+
+72
+00:04:53,722 --> 00:04:56,205
+para Photo.
+Então, as duas entidades que eu vou ter
+
+73
+00:04:56,205 --> 00:05:00,359
+são Photo e Photographer, porque eu vou
+mostrar uma lista de fotógrafos e quando
+
+74
+00:05:00,359 --> 00:05:04,451
+você clicar neles, ele vai mostrar
+as fotos, então essas são as duas entidades
+
+75
+00:05:04,451 --> 00:05:06,877
+que eu quero.
+E lembrem-se, entidades são tipo
+
+76
+00:05:06,877 --> 00:05:10,718
+objetos no database, certo?
+Então, uma foto tem alguns atributos,
+
+77
+00:05:10,718 --> 00:05:14,612
+então aqui está a área de atributos bem aqui
+e vocês podem ver esse pequeno + e - para
+
+78
+00:05:14,612 --> 00:05:17,912
+adicioná-los e removê-los.
+Vou adicionar um chamado "title" que é
+
+79
+00:05:17,912 --> 00:05:22,136
+o título da foto. E daí ela talvez tenha
+um subtitle e provavelmente
+
+80
+00:05:22,136 --> 00:05:25,294
+uma imageURL.
+E nós vamos precisar que ele tenha
+
+81
+00:05:25,294 --> 00:05:30,122
+algum tipo de identificador único, porque quando
+nós baixarmos do Flickr, nós não queremos
+
+82
+00:05:30,122 --> 00:05:34,746
+ficar gravando a mesma foto, porque a mesma foto
+pode vir do Flickr duas vezes,
+
+83
+00:05:34,746 --> 00:05:38,183
+certo? Em um segundo fetch ou algo assim.
+Nós queremos mantê-las únicas.
+
+84
+00:05:38,183 --> 00:05:42,310
+Então nós vamos precisar disso.
+Você pode ver que nós temos alguns erros aqui,
+
+85
+00:05:42,310 --> 00:05:45,818
+esses quatro erros.
+Isso é porque esses são tipos indefinidos.
+
+86
+00:05:45,818 --> 00:05:49,032
+Então nós temos que fazer com que todos
+nossos atributos tenham tipos definidos.
+
+87
+00:05:49,032 --> 00:05:52,861
+Aqui estão todas as opções que temos.
+Poderíamos ter números aqui.
+
+88
+00:05:52,862 --> 00:05:55,524
+Poderia ser NSData,
+um NSDate.
+
+89
+00:05:55,525 --> 00:05:58,122
+Eu vou fazer todos serem
+strings, ok?
+
+90
+00:05:58,122 --> 00:06:04,656
+Por sorte, para a URL aqui, não existe
+URL, então eu vou ter que armazená-la
+
+91
+00:06:04,656 --> 00:06:08,434
+como uma string.
+E então eu vou convertê-la para uma URL
+
+92
+00:06:08,434 --> 00:06:13,918
+quando eu quiser usá-la como URL, ok?
+Então, todo mundo entende o que está
+
+93
+00:06:13,918 --> 00:06:16,758
+acontecendo aqui?
+E iisso é tipo uma maneira boa de olhar
+
+94
+00:06:16,758 --> 00:06:20,926
+para suas entidades e seus atributos,
+mas também existe o modo gráfico.
+
+95
+00:06:20,926 --> 00:06:24,652
+Se você olhar aqui em baixo no canto,
+existe esse pequeno editor style e se
+
+96
+00:06:24,652 --> 00:06:28,672
+você clicar aqui você pode ver, você
+recebe esse negócio gráfico, que não é
+
+97
+00:06:28,672 --> 00:06:32,812
+tão interessante quando você tem apenas
+uma. Então vamos adicionar outra entidade e ver
+
+98
+00:06:32,812 --> 00:06:35,743
+como que fica aqui.
+Então eu vou no mesmo botão, eu vou dizer
+
+99
+00:06:35,743 --> 00:06:39,168
+Add Entity, nós temos outra aqui.
+Eu vou chamá-la de Photographer, ok?
+
+100
+00:06:39,169 --> 00:06:43,756
+Então agora, eu tenho 2 e conforme eu as movo aqui,
+ele tipo que as mantém no mesmo
+
+101
+00:06:43,756 --> 00:06:48,726
+espaçamento ao redor do centro, que é legal.
+E eu posso também adicionar atributos
+
+102
+00:06:48,726 --> 00:06:53,554
+nessa view particular também, com esse
+botão Add Attribute bem aqui. Então eu
+
+103
+00:06:53,554 --> 00:06:58,524
+adicionei esse atributo que ele chamou de
+attribute. Eu posso double-click nele para mudar
+
+104
+00:06:58,524 --> 00:07:01,351
+o nome.
+Então, um fotógrafo... meu fotógrafo só vai ter
+
+105
+00:07:01,351 --> 00:07:06,111
+um atributo, fora o seu relacionamento
+com as fotos, que é o
+
+106
+00:07:06,111 --> 00:07:10,104
+nome do fotógrafo.
+E eu não tenho a tabela para setar o tipo,
+
+107
+00:07:10,104 --> 00:07:13,836
+então eu quero setar o tipo
+aqui no Inspector, ok?
+
+108
+00:07:13,836 --> 00:07:17,601
+Então, isso está selecionado aqui,
+eu posso clicar nesses outros também.
+
+109
+00:07:17,601 --> 00:07:21,336
+Quando eu clico de volta aqui, vocês podem
+ver o tipo está bem aqui.
+
+110
+00:07:21,336 --> 00:07:23,467
+Vou setar o tipo para ser String.
+Certo.
+
+111
+00:07:23,467 --> 00:07:27,743
+Então eu tenho os atributos da minha Photo
+e do meu Photographer configurados
+
+112
+00:07:27,743 --> 00:07:29,871
+do modo que eu quero.
+A última coisa que eu quero fazer é criar
+
+113
+00:07:29,871 --> 00:07:32,675
+um relacionamento entre
+Photo e Photographer.
+
+114
+00:07:32,675 --> 00:07:37,683
+E eu faço isso com CTRL + arrastando,
+isso que vocês estão acostumados, eu apenas
+
+115
+00:07:37,683 --> 00:07:43,177
+seguro o CTRL e arrasto da Photo
+para o Photographer e vocês podem ver
+
+116
+00:07:43,177 --> 00:07:48,425
+que é adicionada esse novo relacionamento
+em ambos os lados, certo? A pequena setinha
+
+117
+00:07:48,425 --> 00:07:52,362
+que aponta aqui.
+Esse relacionamento entre a Photo
+
+118
+00:07:52,362 --> 00:07:57,455
+e o Photographer é, para a foto, é
+o fotógrafo que tirou a foto.
+
+119
+00:07:57,455 --> 00:08:00,511
+É por isso que eu vou chamar
+isso de whoTook, ok?
+
+120
+00:08:00,511 --> 00:08:04,939
+E para o fotógrafo, são todas
+as fotos que eles tiraram, então é
+
+121
+00:08:04,939 --> 00:08:09,400
+por isso que estou chamando esse de photos.
+Agora, claro, um fotógrafo pode tirar
+
+122
+00:08:09,400 --> 00:08:12,792
+mais do que uma foto.
+Um fotógrafo pode tirar qualquer número
+
+123
+00:08:12,792 --> 00:08:15,296
+de fotos.
+É isso que é chamado de
+
+124
+00:08:15,296 --> 00:08:17,836
+relacionamento to-many.
+Bom, eu tenho isso selecionado.
+
+125
+00:08:17,836 --> 00:08:21,602
+Esse relacionamento está selecionado.
+E vocês podem ver que uma das coisas que
+
+126
+00:08:21,602 --> 00:08:25,743
+eu posso setar aqui é o relacionamento to-many.
+E quando eu faço isso, você tem essa
+
+127
+00:08:25,743 --> 00:08:28,892
+seta dupla aqui, ok?
+E isso está dizendo que podem haver
+
+128
+00:08:28,892 --> 00:08:32,459
+muitas fotos por fotógrafo.
+E como nós falamos em aula, isso significa
+
+129
+00:08:32,459 --> 00:08:36,638
+que esse relacionamento bem aqui,
+photos, vai ser um NSSet.
+
+130
+00:08:36,639 --> 00:08:41,141
+E nesse NSSet vão haver fotos,
+ok?
+
+131
+00:08:41,141 --> 00:08:47,892
+Percebam que ele já reconheceu que
+o inverso desse relacionamento é whoTook,
+
+132
+00:08:47,892 --> 00:08:51,491
+vêem isso?
+Se eu selecionar whoTook, ele percebe que
+
+133
+00:08:51,491 --> 00:08:56,312
+o inverso é photos.
+Agora, existem várias outras coisas
+
+134
+00:08:56,312 --> 00:08:59,756
+que nós podemos setar aqui.
+Valores mínimos e máximos, e valores
+
+135
+00:08:59,756 --> 00:09:03,042
+padrão e coisas assim.
+O que acontece quando eu deleto.
+
+136
+00:09:03,042 --> 00:09:05,196
+Nós não vamos conseguir cobrir
+tudo isso.
+
+137
+00:09:05,196 --> 00:09:09,554
+Mas novamente, é uma dessas coisas que nós
+simplesmente sabemos que está aqui.
+
+138
+00:09:09,554 --> 00:09:14,600
+E é algo que se você prosseguir com a sua
+carreira em iOS, você vai aprender mais sobre
+
+139
+00:09:14,600 --> 00:09:18,330
+databases e particularmente
+sobre databases orientadas a objetos.
+
+140
+00:09:18,330 --> 00:09:22,235
+E aqui é onde você vai setar as coisas
+que você vai querer configurar.
+
+141
+00:09:22,235 --> 00:09:25,101
+Sim.
+>> [Estudante perguntando]
+
+142
+00:09:25,101 --> 00:09:28,632
+>> A pergunta é: uma entidade pode
+
+143
+00:09:28,632 --> 00:09:31,860
+criar um relacionamento para ela mesma
+e a resposta é: sim, ela pode.
+
+144
+00:09:31,860 --> 00:09:36,422
+Ela poderia ter um relacionamento que seria,
+como você falou, talvez seja um objeto
+
+145
+00:09:36,422 --> 00:09:41,250
+de colaborador e ele poderia ter um
+relacionamento que é o subordinado desse colaborador,
+
+146
+00:09:41,250 --> 00:09:45,515
+porque ele é um gerente, algo assim.
+Então sim, você poderia ter isso, absolutamente.
+
+147
+00:09:45,515 --> 00:09:50,832
+Ok, então, é basicamente isso
+para nosso schema. O schema é simples assim para configurar.
+
+148
+00:09:50,832 --> 00:09:54,494
+Nós configuramos nossos atributos
+e nossos relacionamentos.
+
+149
+00:09:54,494 --> 00:10:00,512
+E agora, nos vamos falar um pouco sobre
+como nós vamos usar esses objetos
+
+150
+00:10:00,512 --> 00:10:05,443
+nesse database no nosso código.
+E como nós já falamos, essas coisas vão
+
+151
+00:10:05,443 --> 00:10:09,948
+aparecer no nosso código como
+NSManagedObject *, ok? Elas serão
+
+152
+00:10:09,948 --> 00:10:15,829
+objetos da classe NSManagedObject.
+Mas nós geralmente não gostamos de usá-las
+
+153
+00:10:15,829 --> 00:10:20,949
+dessa forma porque isso é um objeto genérico
+e nós teríamos que fazer um setValue:ForKey:
+
+154
+00:10:20,949 --> 00:10:26,495
+e valueForKey: para setar esses atributos.
+E, ao invés, o que nós queremos são
+
+155
+00:10:26,495 --> 00:10:30,995
+subclasses de NSManagedObject,
+uma para cada entidade, que adiciona propriedades
+
+156
+00:10:30,995 --> 00:10:35,945
+para todos os atributos e todos os
+relacionamentos. Então nós podemos usar o dot notation
+
+157
+00:10:35,945 --> 00:10:38,867
+para acessá-los.
+Então é isso que vamos fazer a seguir, ok?
+
+158
+00:10:38,867 --> 00:10:41,507
+O Xcode vai gerar essas
+subclasses para você.
+
+159
+00:10:41,507 --> 00:10:45,935
+Vocês apenas selecionam as entidades que vocês
+querem gerar, então eu selecionem ambas
+
+160
+00:10:45,935 --> 00:10:48,843
+aqui.
+Eu apenas usei SHIFT + click, selecionei uma
+
+161
+00:10:48,843 --> 00:10:53,068
+e então SHIFT + click para escolher a outra.
+Daí você vai aqui em cima em Editor,
+
+162
+00:10:53,068 --> 00:10:56,786
+o menu Editor e diz 
+Create NSManagedObject Subclass, ok?
+
+163
+00:10:56,786 --> 00:11:00,416
+Agora, quando eu faço isso ele pergunta
+onde eu quero colocá-los.
+
+164
+00:11:00,416 --> 00:11:04,863
+Vamos colocá-los no top level aqui.
+Aqui tem aquela opção que eu falei
+
+165
+00:11:04,863 --> 00:11:09,419
+onde ele converte as coisas como
+NSNumbers em ints ou BOOLs, dependendo
+
+166
+00:11:09,419 --> 00:11:13,159
+de qual for o tipo, ok?
+Mas ele cria, importa tudo que precisa
+
+167
+00:11:13,159 --> 00:11:18,199
+paa essa classe que estamos gerando aqui.
+Nós não vamos fazer isso,
+
+168
+00:11:18,199 --> 00:11:22,609
+nós não temos nenhum Number mesmo.
+Todas nossas coisas são NSStrings.
+
+169
+00:11:22,609 --> 00:11:27,214
+Então, clico em Create e vocês podem ver aqui
+que ele criou o Photo.m e .h e
+
+170
+00:11:27,214 --> 00:11:29,483
+Photographer.m e .h, ok?
+Pergunta.
+
+171
+00:11:29,483 --> 00:11:32,497
+>> [Estudante perguntando]
+
+172
+00:11:32,497 --> 00:11:37,221
+>> A pergunta é: na maior parte do tempo
+nós nunca clicamos naquela coisa sobre
+
+173
+00:11:37,221 --> 00:11:39,718
+propriedades escalares?
+Eu não diria na maior parte do tempo.
+
+174
+00:11:39,718 --> 00:11:42,993
+Depende muito de que tipo de API
+você quer para os seus objetos.
+
+175
+00:11:42,993 --> 00:11:47,496
+Você quer que os seus atributos inteiros sejam
+ints ou você quer que sejam NSNumbers?
+
+176
+00:11:47,496 --> 00:11:50,311
+A escolha é sua.
+Como você vai fazer.
+
+177
+00:11:50,311 --> 00:11:54,884
+A única restrição, como eu disse, é que
+todos eles serão convertidos para isso.
+
+178
+00:11:54,884 --> 00:11:58,970
+Não tem como dizer: eu quero que
+esse atributo seja um int e esse outro
+
+179
+00:11:58,970 --> 00:12:01,282
+seja um NSNumber.
+Vê o que estou dizendo?
+
+180
+00:12:01,282 --> 00:12:04,657
+Ele vai fazer todas as suas propriedades
+serem escalares, se possível.
+
+181
+00:12:04,657 --> 00:12:07,301
+Certo.
+Vamos olhar para o Photo.h e
+
+182
+00:12:07,301 --> 00:12:12,845
+Photographer.h. Você pode ver que, na verdade,
+ele fez propriedades para todos os
+
+183
+00:12:12,845 --> 00:12:17,817
+atributos de Photo aqui.
+O title, subtitle, imageURL e unique
+
+184
+00:12:17,817 --> 00:12:21,203
+são todos NSStrings, então ele fez
+propriedades NSStrings.
+
+185
+00:12:21,203 --> 00:12:26,513
+E até para o whoTook, ele fez sendo
+um Photographer, ok? O que está correto
+
+186
+00:12:26,513 --> 00:12:29,581
+nesse caso.
+E se não fosse verdade, então como os slides dizem,
+
+187
+00:12:29,581 --> 00:12:33,673
+tente regenerá-los novamente.
+Nesse caso, ele os gerou em uma ordem
+
+188
+00:12:33,673 --> 00:12:37,437
+que funcionou.
+Se nós olharmos para o Photographer, nós vemos
+
+189
+00:12:37,437 --> 00:12:40,714
+suas duas coisas aqui. Seus atributos
+e seus relacionamentos.
+
+190
+00:12:40,714 --> 00:12:44,212
+E o relacionamento para Photos,
+como prometido, é um NSSet.
+
+191
+00:12:44,212 --> 00:12:49,389
+Se se você quer setar esse relacionamento,
+você pode criar um mutable set, colocar
+
+192
+00:12:49,389 --> 00:12:53,842
+um monte de photos lá e dizer
+esse objeto.photos = aquele set,
+
+193
+00:12:53,842 --> 00:12:58,593
+e ele vai setá-lo e ele ainda vai setar
+os whoTooks no outro, ou vice-versa.
+
+194
+00:12:58,593 --> 00:13:03,359
+Se você whoTook em uma Photo para apontar
+para esse Photographer, ele vai automaticamente
+
+195
+00:13:03,359 --> 00:13:06,587
+ser adicionado nesse NSSet.
+Todo mundo entendeu isso?
+
+196
+00:13:06,587 --> 00:13:10,608
+É bem da hora, ok?
+Ele sempre os mantém em sync.
+
+197
+00:13:10,608 --> 00:13:16,507
+E então, existe alguns tipos de métodos
+convenientes aqui embaixo para adiconar
+
+198
+00:13:16,507 --> 00:13:21,058
+e remover objetos desse set se você quiser
+fazer desta forma.
+
+199
+00:13:21,058 --> 00:13:25,329
+Ok? Então é massa.
+Nós temos essas classes legais que nós podemos
+
+200
+00:13:25,329 --> 00:13:28,718
+usar, mas eu quero adicionar alguns
+métodos para essas classes.
+
+201
+00:13:28,718 --> 00:13:33,086
+Especificamente, eu quero adicionar um método
+para criar uma nova Photo para a classe Photo.
+
+202
+00:13:33,086 --> 00:13:37,313
+E eu quero adicionar um método para criar
+um novo fotógrafro na classe
+
+203
+00:13:37,313 --> 00:13:39,427
+Photographer.
+Desculpe, não vi daqui.
+
+204
+00:13:39,427 --> 00:13:43,234
+Prossiga.
+>> [Estudante perguntando]
+
+
+205
+00:13:43,234 --> 00:13:46,629
+[estudante perguntando]
+
+
+206
+00:13:46,629 --> 00:13:50,493
+>> Essa é uma boa pergunta.
+Ela está dizendo que isso diz
+
+207
+00:13:50,493 --> 00:13:54,982
+NSManagedObject aqui, vamos regerar
+novamente e ver se isso vai mudar para
+
+208
+00:13:54,982 --> 00:13:57,819
+ser Photo.
+Foi uma boa observação aqui, ok?
+
+209
+00:13:57,819 --> 00:14:02,314
+E quando você gera novamente, ele vai
+perguntar se você quer substituí-los,
+
+210
+00:14:02,314 --> 00:14:05,343
+e nós queremos. Vamos ver aqui.
+É, de fato ele corrigu, ok?
+
+211
+00:14:05,343 --> 00:14:07,365
+Boa observação.
+
+212
+00:14:07,365 --> 00:14:10,176
+Ele só consegue acertar
+uma das gerações.
+
+213
+00:14:10,176 --> 00:14:14,150
+Então um dos dois vai estar errado se
+eles se referirem um ao outro porque
+
+214
+00:14:14,150 --> 00:14:17,994
+eles não vão ter sido gerados no momento.
+Boa observação.
+
+215
+00:14:17,994 --> 00:14:21,560
+Geralmente, eu faço isso do outro modo,
+então esse aqui é que fica errado.
+
+216
+00:14:21,560 --> 00:14:26,190
+Mas de qualquer forma, eu quero adicionar métodos
+para Photo e Photographer, métodos de classe
+
+217
+00:14:26,190 --> 00:14:29,292
+para criá-los, ok?
+O da Photo vai ser criado passando
+
+218
+00:14:29,292 --> 00:14:32,100
+um dicionário do Flickr.
+E ele vai setar todos os atributos
+
+219
+00:14:32,100 --> 00:14:35,871
+baseado no que existir naquele dicionário.
+E o do Photographer vai apenas ser
+
+220
+00:14:35,871 --> 00:14:38,457
+criado passando o nome
+do fotógrafo.
+
+221
+00:14:38,457 --> 00:14:42,576
+Porque essa é a única propriedade, além
+do relacionamento, que é interessante.
+
+222
+00:14:42,576 --> 00:14:45,549
+Mas eu não quero vir aqui
+e editar aqui.
+
+223
+00:14:45,549 --> 00:14:50,419
+Eu não quero dizer, digamos,
++ (Photographer *)..., eu não quero
+
+224
+00:14:50,419 --> 00:14:55,131
+digitar aqui porque se eu voltar aqui
+e gerar novamente, então
+
+225
+00:14:55,131 --> 00:15:00,071
+tudo que digitei aqui vai ser perdido, ok?
+Porque ele vai regerar esse arquivo
+
+226
+00:15:00,071 --> 00:15:03,521
+inteiro, XIP, assim e vai ser tipo:
+oh, perdi.
+
+227
+00:15:03,521 --> 00:15:08,552
+Então é por isso que precisamos de categorias, ok?
+Lembrem-se, categorias é como nós adicionamos
+
+228
+00:15:08,552 --> 00:15:11,603
+um método a uma classe sem
+subclassearmos, ok?
+
+229
+00:15:11,603 --> 00:15:16,986
+E é mais simples aqui fazermos isso.
+Não fazer subclasse de Photo ou Photographer.
+
+230
+00:15:16,986 --> 00:15:22,704
+Então é isso que vamos fazer.
+E nós adicionamos uma categoria apenas vindo em
+
+231
+00:15:22,704 --> 00:15:27,528
+New File e vindo em Cocoa Touch aqui em cima,
+Cocoa Touch em iOS
+
+232
+00:15:27,528 --> 00:15:30,452
+E ao invés de escolher uma classe,
+nós vamos
+
+233
+00:15:30,452 --> 00:15:34,204
+criar uma nova categoria,
+Objective-C Category.
+
+234
+00:15:34,204 --> 00:15:40,039
+Clico Next, eu vou fazer uma categoria
+de Photo. E eu vou chamá-la
+
+235
+00:15:40,039 --> 00:15:42,935
+de Flickr.
+Esse é o nome da categoria.
+
+236
+00:15:42,935 --> 00:15:47,231
+E isso porque esse método que eu vou
+adicionar em Photo vai ser um método
+
+237
+00:15:47,231 --> 00:15:51,521
+de classe que recebe uma informação do Flickr
+e faz uma Photo a partir dela.
+
+238
+00:15:51,521 --> 00:15:54,811
+Cria uma Photo no database se já não
+tiver uma igual.
+
+239
+00:15:54,811 --> 00:15:58,485
+Então é por isso que vou chamar a categoria
+de Flickr. Categoria Flickr porque é
+
+240
+00:15:58,485 --> 00:16:01,806
+muito dependente do Flickr.
+O do Photographer não vai ser
+
+241
+00:16:01,806 --> 00:16:05,414
+dependente do Flickr, então eu não vou chamá-lo
+de Flickr, como vocês verão.
+
+242
+00:16:05,414 --> 00:16:10,112
+Aqui está perguntando onde eu quero colocar
+essa categoria, porque uma categoria
+
+243
+00:16:10,112 --> 00:16:14,642
+tem um .h e um .m, ok? Eu vou colocar
+aqui em cima, igual uma classe tem o .h e .m.
+
+244
+00:16:14,642 --> 00:16:19,124
+Aqui está, Photo+Flickr.h
+e Photo+Flickr.m, ok?
+
+245
+00:16:19,124 --> 00:16:25,898
+E atualmente não há métodos aqui,
+então vamos colocar no nosso arquivo
+
+246
+00:16:25,898 --> 00:16:32,102
+header, o método que queremos. Que é--
+eu quero [ditando código]
+
+247
+00:16:32,102 --> 00:16:37,753
+E a outra coisa é se eu quero criar
+
+248
+00:16:37,753 --> 00:16:44,484
+uma Photo no database, qual é o
+handle que eu preciso do database?
+
+249
+00:16:44,484 --> 00:16:49,239
+Lembram-se da aula?
+O context, certo.
+
+250
+00:16:49,239 --> 00:16:55,276
+O ManagedObjectContext.
+Então eu vou ter que ter um argumento
+
+251
+00:16:55,276 --> 00:17:02,028
+aqui que é inManagedObjectContext
+NSManagedObjectContext, ok?
+
+252
+00:17:02,028 --> 00:17:06,844
+Com esses dois argumentos, esse método
+que eu vou escrever vai ser capaz
+
+253
+00:17:06,844 --> 00:17:11,062
+de criar um objeto Photo no database
+e inicializá-lo com
+
+254
+00:17:11,062 --> 00:17:15,132
+a informação do Flickr, do
+flickrPhotoDictionary, os mesmos
+
+255
+00:17:15,132 --> 00:17:19,821
+FlickrphotoDictionaries que vocês
+vêm usando no seu homework, ok?
+
+256
+00:17:19,821 --> 00:17:22,826
+Agora, vamos olhar para
+a implementação disso.
+
+257
+00:17:22,826 --> 00:17:28,904
+É um photoWithFlickr aqui e eu vou
+apenas começar dizendo 
+
+258
+00:17:28,904 --> 00:17:33,315
+[ditando código]
+Então aqui no meio eu tenho que criar
+
+259
+00:17:33,315 --> 00:17:38,146
+esse objeto Photo no database
+e então vou retorná-lo, ok?
+
+260
+00:17:38,146 --> 00:17:42,988
+Vamos começar dizendo... e se eu
+criá-lo toda vez?
+
+261
+00:17:42,988 --> 00:17:47,470
+Então, para criar uma photo no database,
+(vamos arrumar mais espaço)
+
+262
+00:17:47,470 --> 00:17:52,724
+Eu posso simplesmente dizer, usando esse método
+que nós falamos em aula que é
+
+263
+00:17:52,724 --> 00:17:57,326
+[ditando código]
+ok?
+
+264
+00:17:57,326 --> 00:18:02,678
+E então, esse é o nome da entidate,
+então nesse caso, Photo, porque nós vamos
+
+265
+00:18:02,678 --> 00:18:07,943
+criar uma Photo aqui. E ele tem que ter
+um context, porque ele precisa de um handle
+
+266
+00:18:07,943 --> 00:18:11,251
+no database e então nós vamos
+usar o context, ok?
+
+267
+00:18:11,251 --> 00:18:16,392
+BOOM! Nós criamos uma Photo aqui.
+E se isso é tudo que digitamos,
+
+268
+00:18:16,392 --> 00:18:21,527
+ele iria retornar uma Photo, claro,
+nenhum dos atributos da photo seria setado,
+
+269
+00:18:21,527 --> 00:18:24,889
+ok? E a razão que nós
+estamos passando esse
+
+270
+00:18:24,889 --> 00:18:30,005
+photoDictionary é porque nós queremos
+setar esses atributos, então vamos fazer isso.
+
+271
+00:18:30,005 --> 00:18:33,986
+Então, nós temos um title que nós podemos
+setar, por exemplo, que seria
+
+272
+00:18:33,986 --> 00:18:38,493
+o photoDictionary... e nós precisamos
+do Flickr agora. Então nós precisamos importar
+
+273
+00:18:38,493 --> 00:18:44,037
+FlickrFetcher.h, então eu preciso arrastar
+as coisas do Flickr pra cá e eu tenho
+
+274
+00:18:44,037 --> 00:18:47,510
+tudo aqui. Na verdade,
+todas as coisas que eu preciso,
+
+275
+00:18:47,510 --> 00:18:51,341
+eu vou arrastar de uma vez só.
+Vamos fazer isso.
+
+276
+00:18:51,341 --> 00:18:55,536
+E nós vamos arrastar isso aqui,
+colocar aqui.
+
+277
+00:18:55,536 --> 00:18:59,609
+Certificar que selecionamos
+ambos, ok?
+
+278
+00:18:59,609 --> 00:19:02,323
+Certo, aqui está o FlickrFetcher
+que eu adiconei.
+
+279
+00:19:02,323 --> 00:19:06,599
+Eu também trouxe o ImageViewController
+porque nós vamos querer olhar
+
+280
+00:19:06,599 --> 00:19:08,393
+essas coisas.
+E eu também trouxe esse
+
+281
+00:19:08,393 --> 00:19:11,841
+CoreDataTableViewController que
+nós vamos olhar já já.
+
+282
+00:19:11,841 --> 00:19:16,539
+Esse é o código que eu disse a vocês
+que vai fazer as coisas do NSFetchedResultsController
+
+283
+00:19:16,539 --> 00:19:18,969
+para você que eu falei
+na última aula.
+
+284
+00:19:18,969 --> 00:19:22,029
+Nos já vamos olhar isso.
+E então, esse
+
+285
+00:19:22,029 --> 00:19:27,881
+NSAttributedStringViewController vai
+com o ImageViewController. Essas coisas
+
+286
+00:19:27,881 --> 00:19:30,715
+ficam juntas.
+Ok, então de volta ao nosso código aqui.
+
+287
+00:19:30,715 --> 00:19:34,644
+Agora nós temos o Flickr.
+Então o título é o FLICKR_PHOTO_TITLE.
+
+288
+00:19:34,645 --> 00:19:39,926
+E nós vamos em frente e fazer nosso truque (gambiarra)
+usando description no caso de
+
+289
+00:19:39,926 --> 00:19:43,320
+ser null.
+E então, o subtitle nós vamos fazer
+
+290
+00:19:43,320 --> 00:19:49,907
+[ditando código]
+Aqui vou usar a description.
+
+291
+00:19:49,907 --> 00:19:54,037
+Mas como sabemos, essa description
+é um lance com dot, certo?
+
+292
+00:19:54,037 --> 00:20:00,679
+É description._contents.
+Então, ao invés de usar esse colchete normal
+
+293
+00:20:00,679 --> 00:20:06,356
+para acessá-lo, eu vou usar
+valueForKeyPath, ok?
+
+294
+00:20:06,356 --> 00:20:11,202
+Então ele vai usar valueForKeyPath,
+que eu disse a vocês,
+
+295
+00:20:11,202 --> 00:20:17,626
+todos esses NSManagedObject usam valueForKey
+e setValueForKey e valueForKeyPath
+
+296
+00:20:17,626 --> 00:20:22,358
+e setValueForKeyPath.
+O dictionary usa também, ok?
+
+297
+00:20:22,358 --> 00:20:27,041
+Então o NSDictionary aqui faz isso também.
+E vamos fazer a mesma coisa aqui,
+
+298
+00:20:27,041 --> 00:20:30,096
+uma description, certo?
+Então esse é o subtitle.
+
+299
+00:20:30,096 --> 00:20:33,752
+E então nós temos a imageURL
+e nós obtemos isso usando esse
+
+300
+00:20:33,752 --> 00:20:37,163
+método de classe do FlicktFetcher
+chamado urlForPhoto.
+
+301
+00:20:37,163 --> 00:20:42,699
+Nós passamos o photoDictionary
+e aqui nós dizemos FlickrPhotoFormatLarge
+
+302
+00:20:42,699 --> 00:20:47,688
+nesse caso. E o que mais? Oh.
+é uma URL, então eu preciso
+
+303
+00:20:47,688 --> 00:20:55,126
+transformá-lo em uma string, então
+eu vou usar o absoluteString, ok?
+
+304
+00:20:55,126 --> 00:20:59,664
+Da hora.
+Eu criei uma Photo e eu setei
+
+305
+00:20:59,664 --> 00:21:05,525
+essas várias propriedades, massa.
+Mas existe um probleminha aqui
+
+306
+00:21:05,525 --> 00:21:08,256
+que é, novamente, e se eu carregar
+esses dados do Flickr duas vezes?
+
+307
+00:21:08,256 --> 00:21:12,487
+Eu vou obter dois de tudo, certo?
+Porque cada vez que eu chamar essa photo
+
+308
+00:21:12,487 --> 00:21:16,647
+do Flickr info para criar um Photo,
+ele vai criar uma nova, porque
+
+309
+00:21:16,647 --> 00:21:18,981
+é isso que fazmos aqui.
+Criamos uma nova.
+
+310
+00:21:18,981 --> 00:21:23,851
+Então o que nós precisamos fazer aqui é
+buscar no database e ver se essa photo
+
+311
+00:21:23,851 --> 00:21:27,403
+já não está lá, e se estiver,
+então apenas retorná-la.
+
+312
+00:21:27,403 --> 00:21:31,338
+Se não estiver, nós vamos fazer isso.
+Então, como fazemos uma query?
+
+313
+00:21:31,338 --> 00:21:35,634
+Bom, nós fazemos isso com esse
+NSFetchedRequest, ok? E nós dizemos
+
+314
+00:21:35,634 --> 00:21:40,392
+[ditando código]
+e estamos procurando
+
+315
+00:21:40,392 --> 00:21:44,164
+por Photos aqui, e então
+precisamos de uma ordenação, ok?
+
+316
+00:21:44,164 --> 00:21:47,737
+Isso vai nos dizer em que ordem
+essas coisas que fizeram match vão voltar.
+
+317
+00:21:47,737 --> 00:21:51,078
+Então eu vou dizer
+NSSortDescriptor sortDescriptorWithKey...
+
+318
+00:21:51,078 --> 00:21:54,950
+Vamos ordená-las pelo title.
+Não importa muito aqui, porque nós
+
+319
+00:21:54,950 --> 00:21:58,720
+deveríamos estar recebendo apenas uma, certo?
+Porque nós estamos tentando fazer
+
+320
+00:21:58,720 --> 00:22:02,782
+essas coisas únicas.
+E o ascending também não importa.
+
+321
+00:22:02,782 --> 00:22:08,990
+E o comparator não importa também.
+Então não se preocupem com nada disso e
+
+322
+00:22:08,990 --> 00:22:13,802
+oops, request.sortDescriptors.
+E então nós precisamos de um predicado.
+
+323
+00:22:13,802 --> 00:22:19,914
+O predicado que nós vamos usar aqui é,
+temos que buscar por algum tipo de
+
+324
+00:22:19,914 --> 00:22:23,805
+string única nas photos para que
+nós podemos indentificá-la.
+
+325
+00:22:23,806 --> 00:22:29,103
+E nós temos uma property no database,
+se vocês se lembram, quando nós
+
+326
+00:22:29,103 --> 00:22:33,848
+fizemos o schema, chamada unique.
+Então vou procurar pelo identificador
+
+327
+00:22:33,848 --> 00:22:40,580
+unique que também aparece no
+photoDictionary[Flickr...
+
+328
+00:22:40,580 --> 00:22:44,409
+(precisamos de mais espaço...)
+[ditando código]
+
+329
+00:22:44,409 --> 00:22:51,124
+Então FLICKR_PHOTO_ID é 
+um identificador único.
+
+330
+00:22:51,124 --> 00:22:55,740
+E eu vou ser ainda mais seguro aqui
+e pegar a description.
+
+331
+00:22:55,740 --> 00:23:01,336
+Então se ele voltar null, então a string
+vai ser <null>.
+
+332
+00:23:01,336 --> 00:23:05,465
+Isso não vai ser tão único,
+mas se ela não tem identificador, ela não
+
+333
+00:23:05,465 --> 00:23:08,582
+vai ser única de qualquer maneira.
+Então todas as não-únicas que tiverem null
+
+334
+00:23:08,582 --> 00:23:11,836
+como seus IDs, vão basicamente
+retornar umas as outras.
+
+335
+00:23:11,837 --> 00:23:16,164
+Sabe, a a última inserida--
+a primeira inserida vai ser
+
+336
+00:23:16,164 --> 00:23:18,871
+a que você vai obter.
+Bom, nós não nos preocupamos muito com isso.
+
+337
+00:23:18,871 --> 00:23:26,287
+Mas se eu vou ter esse unique, eu preciso
+garantir que eu setei o unique, certo,
+
+338
+00:23:26,287 --> 00:23:33,355
+nós precisamos setá-lo também, então preciso dizer
+[ditando código]
+
+339
+00:23:33,355 --> 00:23:38,425
+[ditando código]
+
+340
+00:23:38,425 --> 00:23:45,394
+Ok? Pergunta.
+
+341
+00:23:45,394 --> 00:23:55,846
+>> [Estudante perguntando]
+
+342
+00:23:55,846 --> 00:24:05,546
+[estudante perguntando]
+
+343
+00:24:05,546 --> 00:24:09,520
+[estudante perguntando]
+
+344
+00:24:09,520 --> 00:24:13,047
+[estudante perguntando]
+>> Eu não estou 100% certo do que
+
+345
+00:24:13,047 --> 00:24:15,782
+você está perguntando.
+Mas você está perguntando se nós podemos
+
+346
+00:24:15,782 --> 00:24:18,061
+usar um cast local como ID?
+
+347
+00:24:18,061 --> 00:24:22,652
+>> A resposta é não. Porque o cast local
+vai ser apenas um ponteiro local
+
+348
+00:24:22,652 --> 00:24:27,396
+para a heap para esse NSManagedObject.
+Nós precisamos de um identificador permanente
+
+349
+00:24:27,396 --> 00:24:30,726
+único para essa foto no Flickr.
+E apenas o Flickr pode prover isso.
+
+350
+00:24:30,726 --> 00:24:35,456
+Você pode perguntar depois
+se você quiser saber mais sobre isso.
+
+351
+00:24:35,457 --> 00:24:43,110
+Bom, agora eu tenho a habilidade
+de descobrir se uma foto é única e então
+
+352
+00:24:43,110 --> 00:24:47,400
+vamos fazer essa query, que fazemos
+assim:
+
+353
+00:24:47,400 --> 00:24:53,727
+[ditando código]
+
+354
+00:24:53,727 --> 00:25:00,246
+[ditando código]
+ok?
+
+355
+00:25:00,246 --> 00:25:03,111
+É assim que fazemos um fetch
+no database.
+
+356
+00:25:03,111 --> 00:25:07,062
+E aqui nós estamos fetching para
+achar essa foto única, certo?
+
+357
+00:25:07,062 --> 00:25:10,840
+Nós olhamos no photoDictionary
+para achar esse unique id.
+
+358
+00:25:10,840 --> 00:25:14,569
+E nós estamos procurando por ele aqui.
+Então, o que acontece aqui?
+
+359
+00:25:14,569 --> 00:25:17,540
+Se a busca for nil, então
+tivemos um erro.
+
+360
+00:25:17,540 --> 00:25:24,112
+Se o count da busca for maior que 1,
+também temos um erro, certo, porque isso
+
+361
+00:25:24,112 --> 00:25:29,420
+supostamente é único.
+Nesse caso, nós precisamos
+
+362
+00:25:29,420 --> 00:25:33,720
+tratar esses erros, ok?
+Eu não vou fazer isso nessa demo
+
+363
+00:25:33,720 --> 00:25:39,766
+mas você iria querer fazer isso.
+Caso contrário, se o [matches count]
+
+364
+00:25:39,766 --> 00:25:46,294
+digamos, é 0. Digamos if (![matches count]),
+então ele não achou essa foto
+
+365
+00:25:46,294 --> 00:25:50,512
+no database.
+Nesse caso, nós queremos fazer isso.
+
+366
+00:25:50,512 --> 00:25:55,712
+Então eu vou colocar isso aqui, certo?
+Se não conseguimos achar essa foto
+
+367
+00:25:55,712 --> 00:26:00,757
+no database, nós precisamos criar uma.
+Então é isso que vamos fazer aqui.
+
+368
+00:26:00,757 --> 00:26:06,357
+E finalmente, Se houver apenas 
+um match no database, nesse caso,
+
+369
+00:26:06,357 --> 00:26:11,637
+nós vamos apenas dizer que
+photo = [matches lastObject].
+
+370
+00:26:11,637 --> 00:26:16,757
+Existe apenas um objeto em matches, então nós
+podemos usar esse belo método conveniente,
+
+371
+00:26:16,757 --> 00:26:20,234
+lastObject.
+Nós poderíamos também ter dito matches[0],
+
+372
+00:26:20,234 --> 00:26:23,981
+seria ok também.
+Ok? Todo mundo entende esse método?
+
+373
+00:26:23,981 --> 00:26:28,844
+Esse é um método importante para entender
+porque nós estamos fazendo duas coisas aqui, ok?
+
+374
+00:26:28,844 --> 00:26:33,323
+Uma, nós estamos aprendendo como fazer
+query no database e dois, nós estamos aprendendo
+
+375
+00:26:33,323 --> 00:26:37,938
+como criar novos objetos. E estamos fazendo
+isso tudo em um método só aqui.
+
+376
+00:26:37,938 --> 00:26:39,800
+Então se você tiver perguntas...
+Sim.
+
+377
+00:26:39,800 --> 00:26:44,353
+>> [Estudante perguntando]
+>> Sim, matches é um array, certo?
+
+378
+00:26:44,353 --> 00:26:47,600
+Esse é o array que nós temos.
+E nós já checamos para ver se
+
+379
+00:26:47,600 --> 00:26:51,568
+matches é nil ou se matches tem mais
+que um objeto nele ou se matches não tem
+
+380
+00:26:51,568 --> 00:26:54,247
+objetos nele.
+Então, a única coisa que poderia acontecer
+
+381
+00:26:54,247 --> 00:26:58,102
+é que matches tem um objeto nele.
+Então eu estou usando lastObject que
+
+382
+00:26:58,102 --> 00:27:01,724
+retorna o último objeto no array,
+apenas para pegar esse único objeto.
+
+383
+00:27:01,724 --> 00:27:05,063
+Sim?
+>> [Estudante perguntando]
+
+384
+00:27:05,063 --> 00:27:08,827
+>> A pergunta é: nós temos que definir
+o sort descriptor?
+
+385
+00:27:08,828 --> 00:27:11,236
+Essa é uma boa pergunta.
+Eu não lembro.
+
+386
+00:27:11,236 --> 00:27:16,012
+Eu acho que pode ser opcional.
+mememmememmeeme,
+
+387
+00:27:16,012 --> 00:27:19,660
+Eu não lembro. Boa pergunta.
+>> [Estudante perguntando]
+
+388
+00:27:19,660 --> 00:27:24,093
+>> A pergunta é: eu posso explicar
+o que esse predicado está fazendo?
+
+389
+00:27:24,094 --> 00:27:29,264
+O que esse predicato está fazendo,
+quando eu vou fazer um fetch em um database, ok?
+
+390
+00:27:29,264 --> 00:27:33,711
+Eu estou fazendo o fetch na tabela de Photos, ok?
+Eu estou olhando para todas as photos?
+
+391
+00:27:33,711 --> 00:27:37,535
+É isso que é esse fetch.
+A primeira linha desse
+
+392
+00:27:37,535 --> 00:27:40,731
+request, ok?
+E então, eu não quero todas as fotos.
+
+393
+00:27:40,731 --> 00:27:45,678
+Eu quero apenas as fotos que fazem match
+com esse id único que eu obtive do
+
+394
+00:27:45,678 --> 00:27:50,369
+photoDictionary do Flickr, ok?
+Esse predicado está dizendo: retorne apenas
+
+395
+00:27:50,369 --> 00:27:55,598
+as fotos onde o campo unique, que
+eu vou voltar e mostrar pra vocês
+
+396
+00:27:55,598 --> 00:27:58,033
+no schema, certo?
+Aqui está nossa Photo.
+
+397
+00:27:58,033 --> 00:28:01,322
+Vamos voltar na visualização de tabela
+para que vocês possam ver.
+
+398
+00:28:01,322 --> 00:28:03,983
+Ela tem essa string unique
+bem aqui, ok?
+
+399
+00:28:03,983 --> 00:28:08,640
+Eu estou apenas checando para ver
+se essa string no database está matching
+
+400
+00:28:08,640 --> 00:28:13,555
+com essa coisa que veio do Flickr ok?
+É isso que o predicado está fazendo,
+
+401
+00:28:13,555 --> 00:28:16,454
+está restringindo os objetos
+que são retornados.
+
+402
+00:28:16,454 --> 00:28:20,614
+Então deve haver apenas um porque
+isso é supostamente uma string única,
+
+403
+00:28:20,614 --> 00:28:22,920
+o Flickr diz que isso é unico.
+Pergunta.
+
+404
+00:28:22,920 --> 00:28:26,512
+>> [Estudante perguntando]
+>> A pergunta é: se eu estou apenas
+
+405
+00:28:26,512 --> 00:28:29,172
+esperando um, porque eu tenho
+esse sortDescriptor?
+
+406
+00:28:29,172 --> 00:28:32,364
+E essa é quase a mesma pergunta
+que o Zé ali tava peguntando.
+
+407
+00:28:32,364 --> 00:28:34,693
+Eu não consigo lembrar se sortDescriptor
+é obrigatório.
+
+408
+00:28:34,693 --> 00:28:38,073
+Se for opcional, você poderia ter deixado
+ele de fora, porque nós teremos apenas um.
+
+409
+00:28:38,074 --> 00:28:40,956
+É uma boa pergunta.
+Eu coloquei aí porque eu tenho o hábito,
+
+410
+00:28:40,956 --> 00:28:43,965
+toda vez que faço uma fetchRequest
+eu coloco todas essas coisas
+
+411
+00:28:43,965 --> 00:28:46,193
+ali. Desse modo,
+eu não tenho coisas acidentalmente
+
+412
+00:28:46,193 --> 00:28:49,652
+retornando... coisas que eu não espero.
+É uma dessas coisas que não machucam
+
+413
+00:28:49,652 --> 00:28:52,003
+colocar o sort descriptor aqui.
+
+414
+00:28:52,003 --> 00:28:54,143
+Mas se for opcional,
+você poderia ter deixado de fora também.
+
+415
+00:28:54,143 --> 00:28:56,865
+Eu só não consigo lembrar
+se é opcional ou não.
+
+416
+00:28:56,866 --> 00:29:01,161
+Alguma outra pergunta?
+Essas foram boas perguntas.
+
+417
+00:29:01,161 --> 00:29:04,880
+Ok.
+Para martelar mais, vamos fazer
+
+418
+00:29:04,880 --> 00:29:09,210
+a mesma coisa para a classe
+Photographer, ok?
+
+419
+00:29:09,210 --> 00:29:15,796
+Então, eu vou criar uma nova categoria,
+certo, para Photographer.
+
+420
+00:29:15,796 --> 00:29:21,487
+Esse é o Photographer.
+E eu vou chamar esse aqui, Create.
+
+421
+00:29:21,487 --> 00:29:31,694
+Não Flickr, porque eu posso criar
+um Photographer sem nenhum dado do Flickr,
+
+422
+00:29:31,694 --> 00:29:41,964
+apenas especificando o nome do fotógrafo
+então eu decidi que vou chamar minha categoria
+
+423
+00:29:41,964 --> 00:29:44,231
+de Create.
+Ele cria esses arquivos aqui,
+
+424
+00:29:44,231 --> 00:29:46,203
+Photographer+Create.m e para salvar tempo aqui,
+eu vou usar o snippet aqui.
+
+425
+00:29:46,203 --> 00:29:47,914
+Mas o código para isso é basicamente
+o mesmo, certo?
+
+426
+00:29:47,914 --> 00:29:49,886
+O argumento aqui é apenas o nome,
+ao invés de um flickrDictionary e estamos
+
+427
+00:29:49,886 --> 00:29:53,116
+fazendo a mesma coisa aqui, estamos querying.
+Dessa vez a coisa única é o nome,
+
+428
+00:29:53,116 --> 00:29:57,211
+nós nunca vamos permitir que dois fotógrafos
+tenham o mesmo nome, então essa é
+
+429
+00:29:57,211 --> 00:30:00,897
+a coisa única.
+E então nós tratamos os erros aqui, nós fazemos
+
+430
+00:30:00,897 --> 00:30:06,445
+o InsertNewObjectForEntityForName, ok?
+se você precisa criar, caso contrário nós
+
+431
+00:30:06,445 --> 00:30:09,882
+apenas retornamos o lastObject.
+É bem similar, ok?
+
+432
+00:30:09,882 --> 00:30:15,540
+E nós vamos fazer isso público também,
+então vamos colocar isso aqui, certo?
+
+433
+00:30:15,540 --> 00:30:21,418
+Então é assim que vamos criar
+um photographer com um nome e um context.
+
+434
+00:30:21,419 --> 00:30:24,071
+Ok? Todo mundo entendeu
+esse negócio de Category?
+
+435
+00:30:24,071 --> 00:30:27,951
+Nós adicionamos esses 2 métodos
+para essas 2 classes. 2 métodos de classe.
+
+436
+00:30:27,951 --> 00:30:31,336
+Você pode adicionar métodos de instância
+também, não apenas métodos de classe.
+
+437
+00:30:31,336 --> 00:30:34,816
+A única coisa é que seus métodos de instância
+não pode ter nenhum armazenamento.
+
+438
+00:30:34,816 --> 00:30:38,683
+Eles não podem usar armazenamento
+para as propriedades ou coisas assim.
+
+439
+00:30:38,684 --> 00:30:42,210
+Pergunta?
+>> [Estudante perguntando]
+
+440
+00:30:42,210 --> 00:30:44,386
+>> Ok, agora, vamos falar sobre relacionamentos.
+
+441
+00:30:44,386 --> 00:30:46,997
+Porque nós temos um relacionamento
+entre a Photo
+
+442
+00:30:46,997 --> 00:30:49,133
+e o Photographer.
+Como nós setamos isso?
+
+443
+00:30:49,133 --> 00:30:52,052
+Nós temos que setar isso em algum lugar.
+E nós vamos fazer isso aqui também.
+
+444
+00:30:52,052 --> 00:30:56,145
+Da mesma forma que nós setamos qualquer um
+desses atributos, nós também vamos setar
+
+445
+00:30:56,145 --> 00:31:00,588
+o relacionamento entre o fotógrafo,
+(???) a photo e o whoTook.
+
+446
+00:31:00,588 --> 00:31:04,687
+Então, o que é isso?
+Vamos entender primeiro.
+
+447
+00:31:04,687 --> 00:31:11,948
+O nome do fotógrafo é
+[ditando código]
+
+448
+00:31:11,948 --> 00:31:16,405
+Ok? Esse é o nome da pessoa
+que tirou essa foto.
+
+449
+00:31:16,405 --> 00:31:20,830
+E sim, vou fazer o mesmo lance
+do description aqui.
+
+450
+00:31:20,830 --> 00:31:25,084
+Ok, agora eu tenho o nome do fotógrafo
+então vou criar
+
+451
+00:31:25,084 --> 00:31:28,768
+um fotógrafo, ok?
+Eu vou aqui e importar nossa categoria
+
+452
+00:31:28,768 --> 00:31:33,867
+Photographer+Create, ok?
+Você importa a categoria somente se você
+
+453
+00:31:33,867 --> 00:31:39,425
+for precisar dos métodos, mas aqui eu preciso.
+Então agora eu posso dizer
+
+454
+00:31:39,425 --> 00:31:43,162
+photographer = [Photographer...
+e agora eu posso usar aquele método
+
+455
+00:31:43,162 --> 00:31:47,641
+que eu acabei de adicionar e até o Xcode
+sabe sobre ele, naquela categoria, ok?
+
+456
+00:31:47,641 --> 00:31:53,227
+[ditando código]
+
+457
+00:31:53,227 --> 00:31:58,136
+o mesmo contexto que foi passado aqui
+como argumento para nosso método, ok?
+
+458
+00:31:58,136 --> 00:32:03,083
+Agora eu tneho um fotógrafo.
+E eu posso simplesmente dizer photo.whoTook
+
+459
+00:32:03,083 --> 00:32:07,197
+igual a photographer.
+E isso vai automaticament adicionar essa foto
+
+460
+00:32:07,197 --> 00:32:11,099
+para a ista de fotos desse fotógrafo.
+Todo mundo entendeu isso?
+
+461
+00:32:11,099 --> 00:32:14,614
+Pergunta.
+>> [Estudante perguntando]
+
+462
+00:32:14,614 --> 00:32:18,078
+[estudante perguntando]
+
+463
+00:32:18,078 --> 00:32:22,019
+[estudante perguntando]
+>> A pergunta é: quando nós vamos
+
+464
+00:32:22,019 --> 00:32:24,790
+chamar esse método.
+É essa a sua pergunta, certo?
+
+465
+00:32:24,790 --> 00:32:28,371
+Eu estou chegando lá, ok?
+
+466
+00:32:28,371 --> 00:32:32,946
+Nós vamos ter que chamá-lo de um de
+nossos view controllers ou coisa assim, certo?
+
+467
+00:32:32,946 --> 00:32:36,721
+Algum view controller vai ter que
+colocar essas coisas... fazer o fetch
+
+468
+00:32:36,721 --> 00:32:40,240
+e colocar lá. E é isso que vai acontecer.
+Certo, agora nós temos o lado
+
+469
+00:32:40,240 --> 00:32:44,510
+do nosso database linkado com isos, porque nós
+temos que ter um modo de criar fotos e criar
+
+470
+00:32:44,510 --> 00:32:48,780
+fotógrafos se quisermos, mas a criação da foto
+está na verdade criando um fotógrafo para nós
+
+471
+00:32:48,780 --> 00:32:53,111
+no database, que é da hora, porque
+eles tem um relacionamento entre eles.
+
+472
+00:32:53,111 --> 00:32:55,348
+Agora, nós queremos construir
+todo o nosso view controller
+
+473
+00:32:55,348 --> 00:32:59,821
+baseado em termos esse belo
+database orientado a objetos
+
+474
+00:32:59,821 --> 00:33:03,839
+e é isso que vamos fazer.
+Então eu vou começar aqui criando
+
+475
+00:33:03,839 --> 00:33:08,255
+um novo view contr-- bom, vamos...
+deixe-me fazer a UI primeiro para vocês verem
+
+476
+00:33:08,255 --> 00:33:11,926
+um pouco do que vamos fazer.
+Eu acho que vocês já tem uma idéia, mas
+
+477
+00:33:11,926 --> 00:33:15,903
+eu vou ter apenas duas
+TableViewControllers, certo?
+
+478
+00:33:15,903 --> 00:33:18,345
+Uma delas vai ter Photographers.
+
+479
+00:33:18,346 --> 00:33:22,265
+A outra vai ter as Photos
+que esse Photographer tem.
+
+480
+00:33:22,265 --> 00:33:26,618
+E então, eu vou ter um ImageViewController
+normal aqui que vai
+
+481
+00:33:26,618 --> 00:33:29,123
+mostrar as fotos quando eu clicar neles,
+ok?
+
+482
+00:33:29,123 --> 00:33:33,683
+E tudo isso vai estar dentro de um
+Navigation Controller e talvez nós
+
+483
+00:33:33,683 --> 00:33:37,119
+chamemos o top level aqui de
+Photogrpahers ou algo assim, ok?
+
+484
+00:33:37,119 --> 00:33:41,068
+Vai ficar mais ou menos assim.
+E nós vamos ter segues aqui.
+
+485
+00:33:41,068 --> 00:33:43,811
+Ok?
+Todo mundo entende o que vamos fazer?
+
+486
+00:33:43,811 --> 00:33:47,236
+Vamos começar por... nós precisamos
+de um ViewController para isso.
+
+487
+00:33:47,236 --> 00:33:50,731
+Então eu vou criar uma nova classe
+para ser o View Controller disso.
+
+488
+00:33:50,731 --> 00:33:54,961
+Eu vou chamar essa classe... é uma classe
+em Objective-C, New File, tudo que
+
+489
+00:33:54,961 --> 00:33:58,628
+vocês já estão habituados.
+Eu vou fazer uma subclasse de
+
+490
+00:33:58,628 --> 00:34:03,054
+CoreDataTableViewControllers.
+Então, CoreDataTableViewControllers é essa
+
+491
+00:34:03,054 --> 00:34:05,916
+classe que nós demos o código
+para vocês, ok?
+
+492
+00:34:05,916 --> 00:34:10,545
+E tudo que ela faz é adicionar essa property
+chamada FetchResultsController, isso é
+
+493
+00:34:10,545 --> 00:34:12,859
+tudo que ela faz.
+E você seta esse
+
+494
+00:34:12,859 --> 00:34:16,052
+FetchedResultsController para
+o que você quiser.
+
+495
+00:34:16,052 --> 00:34:20,762
+E então a TableView vai sempre mostrar
+o que o FetchRequest busca, ok?
+
+496
+00:34:20,762 --> 00:34:24,549
+É super simples de usar.
+E o código que está dentro desse
+
+497
+00:34:24,549 --> 00:34:28,707
+CoreDataTableViewController não é mágico,
+está na documentação do
+
+498
+00:34:28,707 --> 00:34:33,459
+NSFetchedResultsController. Ele te diz:
+coloque isso no seu View Controller.
+
+499
+00:34:33,459 --> 00:34:37,826
+Mas como você pode ter vários desses,
+nós vamos colocar isso em uma superclasse compartilhada.
+
+500
+00:34:37,826 --> 00:34:42,234
+Então o CoreDataTableViewController
+bem aqui, é uma subclasse de
+
+501
+00:34:42,234 --> 00:34:46,461
+UITableViewController, okay?
+Porque isso só faz sentido para TableViews,
+
+502
+00:34:46,461 --> 00:34:49,897
+todos esses são TableViewControllers.
+Eu vou chamar isso de
+
+503
+00:34:49,897 --> 00:34:52,916
+PhotographerCoreDataTableViewController,
+okay? 
+
+504
+00:34:52,916 --> 00:34:56,942
+Eu gosto de colocar CDTCV no fim
+das minhas TableViews que sao subclasses de
+
+505
+00:34:56,942 --> 00:35:00,948
+CoreDataTableViewController.
+Para que eu possa imediatamente ver que
+
+506
+00:35:00,948 --> 00:35:04,289
+ah sim, esses são os de Core Data, certo?
+Então vamos fazer isso
+
+507
+00:35:04,290 --> 00:35:07,056
+Colocar em algum lugar.
+E aqui está.
+
+508
+00:35:07,056 --> 00:35:11,856
+Nós não precisamos de nada disso.
+Agora, nós não precisamos disso também.
+
+509
+00:35:11,856 --> 00:35:15,811
+Então vamos pensar sobre o model
+desse ViewController.
+
+510
+00:35:15,811 --> 00:35:20,852
+O que esse ViewController precisa?
+Bom, isso vai ser um View Controller
+
+511
+00:35:20,852 --> 00:35:27,802
+genérico para mostrar fotógrafos.
+Ele vai mostrar todos os fotógrafos
+
+512
+00:35:27,802 --> 00:35:34,654
+em um database. Em um database com esse
+Schema, Photomania schema.
+
+513
+00:35:34,654 --> 00:35:40,651
+Então, o que ele precisa?
+Ele precisa apenas de uma property
+
+514
+00:35:40,651 --> 00:35:47,087
+nonatomic, strong, que é um NSManagedObjectContext.
+Porque sem um handle para o database,
+
+515
+00:35:47,087 --> 00:35:51,276
+ele não pode pegar nenhum
+desses objetos photographer
+
+516
+00:35:51,276 --> 00:35:54,596
+lá, certo? Todo mundo entende isso?
+Faz sentido?
+
+517
+00:35:54,596 --> 00:35:59,555
+Por que precisa disso? Poruqe é o seu model.
+Por que ele precisa disso? Por que ele
+
+518
+00:35:59,555 --> 00:36:05,267
+não opde ver o database sem isso, ok?
+Bom, o que nós vamos fazer na nossa
+
+519
+00:36:05,267 --> 00:36:09,504
+implementação?
+Bom, quando você seta esse ManagedObjectContext,
+
+520
+00:36:09,504 --> 00:36:13,599
+ok? Esse é o setter. Tudo que nós precisamos
+fazer aqui, quando nós--
+
+521
+00:36:13,599 --> 00:36:17,596
+enquanto tivermos um context, é setar
+esse FetchedResultsController.
+
+522
+00:36:17,596 --> 00:36:21,524
+Vamos olhar para esse
+CoreDataTableViewController
+
+523
+00:36:21,524 --> 00:36:26,081
+(deixar maior para que vocês possam ver)
+Esse é o CoreDataTableViewController.
+
+524
+00:36:26,081 --> 00:36:30,782
+Tem um monte de comentário aqui.
+Mas, tudo que vocês precisam saber
+
+525
+00:36:30,782 --> 00:36:35,432
+é esse cara aqui, essa property,
+FetchedResultsController é--
+
+526
+00:36:35,432 --> 00:36:40,346
+quando você setá-lo, ele vai fazer uma
+fetchRequest com sua tableView e deixar pareado.
+
+527
+00:36:40,346 --> 00:36:44,257
+E se nós quisermos olhar para a implementação
+dessa classe,
+
+528
+00:36:44,257 --> 00:36:45,805
+ela é assim.
+Aqui está o set.
+
+529
+00:36:45,805 --> 00:36:49,898
+Tudo que ela faz aqui quando você seta
+é basicamente chamar esse performFetch
+
+530
+00:36:49,898 --> 00:36:53,436
+que configura o fetchedResultsController
+e recarrega os dados
+
+531
+00:36:53,436 --> 00:36:56,338
+da TableView.
+E então, no final,
+
+532
+00:36:56,338 --> 00:36:58,228
+tem todos esses.
+Lembrem-se que eu falei que a classe
+
+533
+00:36:58,228 --> 00:37:02,940
+NSFetchedResultsController sabe como
+responder a todos esses métodos do
+
+534
+00:37:02,940 --> 00:37:05,514
+UITableViewDataSource.
+Vocês vêem como está respondendo todos eles?
+
+535
+00:37:05,515 --> 00:37:08,452
+Ok?
+E esse aqui embaixo é como ele sabe
+
+536
+00:37:08,452 --> 00:37:12,511
+o que está acontecendo quando ele está
+esperando por NSNotifications no context.
+
+537
+00:37:12,511 --> 00:37:16,241
+E quando as coisas mudam no context,
+ele faz update na table.
+
+538
+00:37:16,241 --> 00:37:21,560
+Mas vocês podem ver aqui, são todos one-liners,
+porque o NSFetchedResultsController
+
+539
+00:37:21,560 --> 00:37:25,966
+sabe com fazer tudo isso, ok?
+Então, se vocês olharem na documentação do
+
+540
+00:37:25,966 --> 00:37:31,295
+NSFetchedResultsController, vocês verão
+todos esses códigos lá na documentação,
+
+541
+00:37:31,295 --> 00:37:33,426
+vocês apenas copiam e colam.
+Ok?
+
+542
+00:37:33,426 --> 00:37:36,926
+Então, vamos voltar para o nosso
+PhotographerCoreDataTableViewController.
+
+543
+00:37:36,926 --> 00:37:40,646
+Então nós precisamos setar essa coisa.
+Nós precisamos criar um.
+
+544
+00:37:40,646 --> 00:37:45,377
+Antes de tudo, eu vou dizer
+if (managedObjectContext), porque se eu
+
+545
+00:37:45,377 --> 00:37:50,852
+não tenho um managedObjectContext, eu vou
+setar o meu FetchedResultsController para nil,
+
+546
+00:37:50,852 --> 00:37:52,772
+ok?
+Então se alguém setar meu
+
+547
+00:37:52,772 --> 00:37:58,212
+managedObjectContext para nil, eu vou
+limpar qualquer fotógrafo que eu tenha,
+
+548
+00:37:58,212 --> 00:38:01,005
+ok?
+E setar o seu fetchedResultsController
+
+549
+00:38:01,005 --> 00:38:04,616
+para nil vai fazer isso, ok?
+Mas se nós tivermos um managedObjectContext,
+
+550
+00:38:04,616 --> 00:38:07,996
+então nós queremos seguir e ter
+um fetchRequest que busca por todos
+
+551
+00:38:07,996 --> 00:38:11,654
+os photographers no database.
+E então, como seria a cara disso?
+
+552
+00:38:11,654 --> 00:38:15,787
+Seria algo assim.
+NSFetchRequest... sempre temos que ter
+
+553
+00:38:15,787 --> 00:38:20,662
+um request para nosso fetchedResultsController,
+é isso que ele faz. Ele faz match desse
+
+554
+00:38:20,662 --> 00:38:25,066
+fetchRequest que estamos criando,
+que e um request por Photographer.
+
+555
+00:38:25,066 --> 00:38:28,712
+nos queremos fotógrafos.
+E nesse caso nós definitivamente queremos
+
+556
+00:38:28,712 --> 00:38:33,262
+sortDescriptos aqui, porque nós queremos
+que esses fotógrafos estejam
+
+557
+00:38:33,262 --> 00:38:36,804
+em uma certa ordem.
+E a ordem que eu vou fazer é, claro,
+
+558
+00:38:36,804 --> 00:38:43,923
+pelo nome do fotógrafo.
+E YES, e o selector aqui, eu vou
+
+559
+00:38:43,923 --> 00:38:50,360
+usar o selector
+localizedCaseInsensitiveCompare, ok?
+
+560
+00:38:50,360 --> 00:38:55,891
+E lembrem-se, isso é um array porque
+você poderia ter last name, first name
+
+561
+00:38:55,891 --> 00:38:59,613
+ou algo assim.
+E então, nós precisamos de um predicado.
+
+562
+00:38:59,613 --> 00:39:04,590
+E eu vou setar meu predicado para nil,
+que significa todos os fotógrafos.
+
+563
+00:39:04,590 --> 00:39:10,057
+Obviamente eu não preciso setá-lo para nil,
+será nil por default.
+
+564
+00:39:10,057 --> 00:39:15,541
+Mas eu vou fazer isso para ficar claro
+para alguém lendo meu código que estou
+
+565
+00:39:15,541 --> 00:39:19,757
+fazendo o fetch por todos os fotógrafos,
+então não há predicados aqui.
+
+566
+00:39:19,758 --> 00:39:22,396
+Todo mundo entende isso?
+Ok.
+
+567
+00:39:22,396 --> 00:39:26,418
+Agora nós temos um fetchRequest.
+Nós precisamos apenas criar um
+
+568
+00:39:26,418 --> 00:39:32,581
+fetchedResultsController que linka esse
+fetchRequest com nossa TableView.
+
+569
+00:39:32,581 --> 00:39:37,547
+E nós fazemos isso com
+[ditando código]
+
+570
+00:39:37,547 --> 00:39:43,238
+Esse é nosso request.
+Context, nós obviamente temos que passar
+
+571
+00:39:43,238 --> 00:39:46,103
+um context.
+Nós temos um como argumento para o
+
+572
+00:39:46,103 --> 00:39:50,294
+nosso método bem aqui,
+managedObjectContext.
+
+573
+00:39:50,294 --> 00:39:54,764
+SectionName, isso é se você tivesse
+sections na sua TableView.
+
+574
+00:39:54,764 --> 00:39:59,506
+Se você tiver sections na sua TableView,
+os nomes das sections serão esse
+
+575
+00:39:59,506 --> 00:40:03,711
+atributo no database.
+Nós não vamos ter sections, então
+
+576
+00:40:03,711 --> 00:40:06,550
+dizemos nil.
+Se você especificar um atributo ali,
+
+577
+00:40:06,550 --> 00:40:09,568
+ele vai ordenar na mesma ordem
+que os itens, ok?
+
+578
+00:40:09,568 --> 00:40:14,059
+Caso contrário você estaria em
+uma situação ruim porque você teria
+
+579
+00:40:14,059 --> 00:40:18,682
+sections que poderiam ser a, b, c, d,
+e seus itens lá não estariam em ordem alfabética,
+
+580
+00:40:18,682 --> 00:40:23,571
+então as coisas iriam estar todas bagunçandas.
+É sua responsabilidade se certificar
+
+581
+00:40:23,571 --> 00:40:26,656
+que a section e os itens
+ordenam na mesma ordem.
+
+582
+00:40:26,657 --> 00:40:29,636
+E então cache. Nós falamos sobre isso.
+Você pode, para alta performance,
+
+583
+00:40:29,636 --> 00:40:34,186
+fazer cache, aqui nós não vamos,
+nós não precisamos, nós temos uma
+
+584
+00:40:34,186 --> 00:40:37,079
+pequena quantidade de dados.
+Mas vocês podem olhar na documentação
+
+585
+00:40:37,079 --> 00:40:39,335
+para isso.
+A única coisa para ser cuidadoso aqui é
+
+586
+00:40:39,335 --> 00:40:41,995
+que nós nunca podemos mudar nada
+em relação a esse fetchRequest.
+
+587
+00:40:41,995 --> 00:40:46,887
+Nós não podemos mudar a forma que
+ele ordena ou obviamente que entidade ou
+
+588
+00:40:46,887 --> 00:40:52,137
+qualquer coisa sobre o predicado que poderia
+invalidar esse cache. Provavelmente crasharia
+
+589
+00:40:52,137 --> 00:40:57,543
+seu app. Você tem que limpar o cache se
+você quiser mudar alguma coisa assim.
+
+590
+00:40:57,544 --> 00:41:01,021
+É isso.
+Exceto pelo Xcode que gentilmente colocou
+
+591
+00:41:01,021 --> 00:41:04,725
+uns colchetes onde eu não queria.
+É isso.
+
+592
+00:41:04,725 --> 00:41:07,889
+Isso é tudo que temos que fazer para
+carregar essa table, ok?
+
+593
+00:41:07,889 --> 00:41:13,007
+Mas tem outra coisa aqui que é:
+fetchedResultsController, tem um
+
+594
+00:41:13,007 --> 00:41:16,294
+método de UITableViewDataSource
+que ele não consegue responder.
+
+595
+00:41:16,294 --> 00:41:21,217
+Alguém consegue pensar qual é?
+Isso, cellForRowAtIndexPath, ok?
+
+596
+00:41:21,217 --> 00:41:26,263
+Porque cellForRowAtIndexPath carrega
+a cell com coisas do photographer,
+
+597
+00:41:26,263 --> 00:41:30,937
+nesse caso, e ele não sabe
+o que colocar aonde.
+
+598
+00:41:30,937 --> 00:41:35,930
+Então nós temos que implementar isso.
+[ditando código]
+
+599
+00:41:35,930 --> 00:41:42,390
+Vocês estão acostumados com isso.
+[ditando código]
+
+600
+00:41:42,390 --> 00:41:48,738
+Nós vamos chamar essas coisas photographers,
+porque é isso que tem nessas cells,
+
+601
+00:41:48,738 --> 00:41:52,373
+e antes que eu esqueça, deixe-me ir
+de volta ao meu storyboard.
+
+602
+00:41:52,373 --> 00:41:58,839
+Venho nesse aqui, inspeciono e o faço ser
+subtitled e nós vamos chamar de
+
+603
+00:41:58,839 --> 00:42:03,730
+photographer, ok?
+Para que seja o mesmo do nosso código.
+
+604
+00:42:03,730 --> 00:42:08,446
+Certo, agora nós temos nossa cell aqui.
+Nós precisamos carregar a cell com o
+
+605
+00:42:08,446 --> 00:42:13,377
+photographer que está nessa row.
+Como nós obtemos o fotógrafo que está
+
+606
+00:42:13,377 --> 00:42:16,335
+nessa row?
+Nós fazemos assim, ok? Nós precisamos
+
+607
+00:42:16,335 --> 00:42:21,173
+de Photographer. Import Photographer.
+Percebam que eu eu não vou importar
+
+608
+00:42:21,173 --> 00:42:26,519
+o Photographer+Create, porque eu não
+vou criar um novo Photographer, entõa não
+
+609
+00:42:26,519 --> 00:42:30,143
+preciso importar essa categoria
+se eu não quero esse método.
+
+610
+00:42:30,143 --> 00:42:33,180
+Então eu vou apenas usar a
+classe básica Photographer.
+
+611
+00:42:33,180 --> 00:42:37,357
+E como eu o obtenho?
+Eu peço para o fetchedResultsController para
+
+612
+00:42:37,357 --> 00:42:42,093
+me dar o objeto nesse indexPath, ok?
+Esse é um método muito importante,
+
+613
+00:42:42,093 --> 00:42:45,626
+objectAtIndexPath no
+FetchedResultsController. 
+
+614
+00:42:45,626 --> 00:42:50,752
+É a coisa que vai fazer o match dos
+Photographers com as rows da table.
+
+615
+00:42:50,752 --> 00:42:53,629
+Ok? Então esse é
+o IndexPath que o UITableViewDataSource
+
+616
+00:42:53,629 --> 00:42:58,855
+está nos perguntando pela cell para
+essa row, para a row desse
+
+617
+00:42:58,855 --> 00:43:02,207
+indexPath.
+E então, vai ser um one-liner. E vai ser
+
+618
+00:43:02,207 --> 00:43:07,342
+o mesmo one-liner em todo
+CoreDataTableViewController que você criar
+
+619
+00:43:07,342 --> 00:43:12,398
+vai sempre existir esse one-liner que diz
+"me dê o objeto que está
+
+620
+00:43:12,398 --> 00:43:15,483
+nessa row". Agora que eu o tenho,
+eu posso fazer coisas como
+
+621
+00:43:15,483 --> 00:43:21,223
+[ditando código]
+Talvez nós teremos o detail,
+
+622
+00:43:21,223 --> 00:43:25,897
+sabe, o subtitle, digamos
+quantas fotos 
+
+623
+00:43:25,897 --> 00:43:29,853
+o fotógrafo tirou.
+
+624
+00:43:29,853 --> 00:43:34,038
+Como podemos descobrir isso?
+Alguém consegue pensar como?
+
+625
+00:43:34,038 --> 00:43:41,606
+Fazer o que?
+É, do database, certo?
+
+626
+00:43:41,606 --> 00:43:45,864
+Nós sabemos disso no database.
+Nós podemos dizer simplesmente
+
+627
+00:43:45,864 --> 00:43:50,839
+[ditando código]
+E o modo que podemos obter é dizendo
+
+628
+00:43:50,839 --> 00:43:55,621
+[ditando código]
+Ok?
+
+629
+00:43:55,621 --> 00:43:58,866
+Isso é apenas um NSSet.
+E nós vamos enviar a mensagem "count"
+
+630
+00:43:58,866 --> 00:44:00,916
+para ele.
+E ele vai conseguir responder.
+
+631
+00:44:00,916 --> 00:44:04,522
+Na verdade existe maneiras mais
+eficientes para obter o count
+
+632
+00:44:04,522 --> 00:44:07,611
+de algo no database.
+Vocês podem olhar isso se quiserem.
+
+633
+00:44:07,611 --> 00:44:11,523
+Mas nesse pequeno dataset, seria
+absolutamente ok fazer
+
+634
+00:44:11,523 --> 00:44:13,687
+dessa maneira.
+Ele não vai "fault" todas essas
+
+635
+00:44:13,687 --> 00:44:16,263
+fotos fazendo isso.
+Mas existem métodos no
+
+636
+00:44:16,263 --> 00:44:21,300
+NSManagedObjectContext que dizem:
+"apenas me diga a contagem de quantas coisas
+
+637
+00:44:21,300 --> 00:44:25,575
+matcham esse fetchRequest", ok?
+Bom, daí nós precisamos
+
+638
+00:44:25,575 --> 00:44:27,373
+retornar a cell, ok?
+Isso é ótimo.
+
+639
+00:44:27,373 --> 00:44:31,915
+Isso é na verdade, acreditem ou não, tudo
+que precisamos fazer para carregar
+
+640
+00:44:31,915 --> 00:44:35,824
+essa table, exceto por uma coisa.
+Não há nada no nosso database, ok?
+
+641
+00:44:35,824 --> 00:44:41,812
+Isso volta para a questão que você
+perguntou o-o-oa-o-eo-,
+
+642
+00:44:41,812 --> 00:44:45,573
+onde nós colocamos as coisas no database?
+Então eu vou fazer uma subclasse desse
+
+643
+00:44:45,573 --> 00:44:50,062
+ViewController e tudo que ele vai fazer
+é carregar esse database, ok?
+
+644
+00:44:50,062 --> 00:44:55,636
+Vamos fazer isso. Eu vou chamá-lo,
+já que ele é basicamente um mostrador
+
+645
+00:44:55,636 --> 00:45:00,508
+de demo, vai ser uma subclasse de
+PhotographerCDTVC, eu vou chamá-lo de
+
+646
+00:45:00,508 --> 00:45:06,036
+DemoPhotographerCDTVC, ok?
+E tudo que ele vai fazer é carregar
+
+647
+00:45:06,036 --> 00:45:11,532
+aquelas coisas do Flickr, certo?
+Então aqui está nossa classe de Demo,
+
+648
+00:45:11,532 --> 00:45:15,309
+e nós não precisamos de nada disso,
+ok?
+
+649
+00:45:15,309 --> 00:45:25,188
+Então, o que ele vai fazer?
+Bom, no meu viewWillAppear aqui,
+
+650
+00:45:25,188 --> 00:45:33,728
+[super viewWillAppear], eu vou dizer...
+(...)
+
+651
+00:45:33,728 --> 00:45:39,391
+Eu vou dizer:
+userDemoDocument.
+
+652
+00:45:39,391 --> 00:45:44,424
+Mas eu vou na verdade apenas usar
+o demoDocument se eu não tiver
+
+653
+00:45:44,424 --> 00:45:49,372
+um managedObjectContext, ok?
+Porque eu estou chamando isso no viewWillAppear,
+
+654
+00:45:49,372 --> 00:45:53,335
+então está acontecendo a cada vez.
+Eu vou ter que escrever esse método
+
+655
+00:45:53,335 --> 00:45:56,388
+aqui para usar um demo document.
+useDemoDocument, ok?
+
+656
+00:45:56,388 --> 00:46:01,362
+E essa é a coisa que vai ter que
+criar o documento se não existir
+
+657
+00:46:01,362 --> 00:46:06,258
+ou abrí-lo se ele existir ou se ele
+já está aberto, apenas usar o managedObjectContext
+
+658
+00:46:06,258 --> 00:46:10,650
+no UIManagedDocument, ok? Porque,
+lembrem-se eu disse que é assim que nós
+
+659
+00:46:10,650 --> 00:46:14,550
+fazemos para ter um managedObjectContext.
+Uma das duas maneiras é criar um
+
+660
+00:46:14,550 --> 00:46:19,084
+UIManagedDocument.
+É isso que vamos fazer aqui.
+
+661
+00:46:19,084 --> 00:46:22,910
+Então eu preciso da URL para isso,
+então vamos começar
+
+662
+00:46:22,910 --> 00:46:30,210
+pegando o diretório de documents,
+que eu faço com [ditando codigo]
+
+663
+00:46:30,210 --> 00:46:34,485
+Eu vou colocar o meu no
+document directory.
+
+664
+00:46:34,485 --> 00:46:38,190
+Espero que vocês não coloquem
+seus caches no document directory,
+
+665
+00:46:38,190 --> 00:46:42,207
+porque seus caches
+não são documentos.
+
+666
+00:46:42,207 --> 00:46:47,244
+E user domain mask e então
+eu vou pegar o último objeto
+
+667
+00:46:47,244 --> 00:46:50,168
+daqui, ok?
+Essa é a URL para o diretório
+
+668
+00:46:50,168 --> 00:46:53,247
+de documentos e isso definitivamente
+é um documento, ok?
+
+669
+00:46:53,247 --> 00:46:57,963
+Esse negócio do Flickr que estou baixando,
+isso é um documento, ok?
+
+670
+00:46:57,963 --> 00:47:01,780
+Da perspectiva de um usuário,
+ele é um documento.
+
+671
+00:47:01,780 --> 00:47:06,605
+Agora, eu vou anexar,
+URLByAppendingPathComponent e eu vou chamar
+
+672
+00:47:06,605 --> 00:47:11,478
+meu documento de Demo Document, ok?
+Agora, eu tenho a URL para o Demo Document.
+
+673
+00:47:11,478 --> 00:47:14,312
+Então agora eu posso criar
+
+674
+00:47:14,312 --> 00:47:21,635
+um UIManagedDocument, dizendo
+[ditando código]
+
+675
+00:47:21,635 --> 00:47:26,238
+Ok? Agora eu tenho um UIManagedDocument
+para o meu Demo Document.
+
+676
+00:47:26,238 --> 00:47:29,250
+Excelente.
+O que eu preciso fazer agora?
+
+677
+00:47:29,251 --> 00:47:34,461
+Agora eu preciso ou criá-lo, se ele não existir,
+ou abrí-lo, se ele existir.
+
+678
+00:47:34,461 --> 00:47:40,043
+Ou, se ele já estiver aberto,
+apenas usar o managedObjectContext
+
+679
+00:47:40,043 --> 00:47:43,323
+dentro dele.
+Então vamos fazer isso, certo?
+
+680
+00:47:43,323 --> 00:47:50,211
+Então se ele não existir, que posso dizer
+perguntando para o File Manager,
+
+681
+00:47:50,211 --> 00:47:57,531
+se o fileExistsAtPath, a url do path, ok?
+Se ele não existir, então crie.
+
+682
+00:47:57,531 --> 00:48:06,295
+Caso contrário, se o documentState
+é closed, então abra-o.
+
+683
+00:48:06,295 --> 00:48:10,017
+Else, tente usá-lo.
+Ele poderia estar em algum estado ruim aqui,
+
+684
+00:48:10,017 --> 00:48:13,198
+então talvez eu devesse checar
+por outros estados também.
+
+685
+00:48:13,199 --> 00:48:16,339
+Mas eu poderia apenas tentar usá-lo
+e ver se funciona.
+
+686
+00:48:16,339 --> 00:48:19,879
+E se não funcionasse, então
+ele iria falhar em outro lugar.
+
+687
+00:48:19,880 --> 00:48:24,796
+Mas nós vamos focar aqui em criá-lo,
+abrí-lo e usá-lo.
+
+688
+00:48:24,797 --> 00:48:29,686
+Então, vamos fazer a criação.
+O que eu preciso para criar um document?
+
+689
+00:48:29,686 --> 00:48:35,886
+Muito, muito simples. Dizemos
+[ditando código]
+
+690
+00:48:35,886 --> 00:48:42,286
+[ditando código]
+
+691
+00:48:42,286 --> 00:48:49,741
+[ditando código]
+E dentro do completion handler, o que
+
+692
+00:48:49,741 --> 00:48:53,639
+queremos fazer?
+Lembrem-se que isso é assíncrono,
+
+693
+00:48:53,639 --> 00:48:58,413
+ele vai salvar em outra thread,
+ou melhor, criar em outra thread
+
+694
+00:48:58,413 --> 00:49:03,803
+e quando ele acabar, ele vai chamar
+esse completion handler de volta
+
+695
+00:49:03,803 --> 00:49:08,808
+nessa thread, e no caso é a
+main thread porque nós estamos chamando
+
+696
+00:49:08,808 --> 00:49:12,521
+isso do viewWillAppear, por exemplo.
+Então, o que vamos fazer aqui?
+
+697
+00:49:12,521 --> 00:49:16,187
+Bom, se ele criou o documento com sucesso,
+então eu quero setar meu managedObjectContext
+
+698
+00:49:16,187 --> 00:49:20,335
+que eu herdei da minha superclasse,
+lembrem-se que é o
+
+699
+00:49:20,335 --> 00:49:24,501
+PhotographerCDTVC, 
+para o managedObjectContext do documents, certo?
+
+700
+00:49:24,501 --> 00:49:27,971
+É isso.
+Isso é tudo que realmente preciso fazer.
+
+701
+00:49:27,971 --> 00:49:33,739
+Agora, a única outra coisa aqui é: eu gostaria
+de carregar isso, já que eu acabei de criar
+
+702
+00:49:33,739 --> 00:49:37,736
+do Flickr.
+Então eu vou ter que ter um método para
+
+703
+00:49:37,736 --> 00:49:41,182
+fazer isso.
+Nós vamos voltar nisso em um segundo,
+
+704
+00:49:41,182 --> 00:49:44,802
+certo?
+Isso vai dar refresh nos dados do Flickr
+
+705
+00:49:44,802 --> 00:49:48,726
+e eu sei que eu acabei de criar isso
+então refreshing faz sentido.
+
+706
+00:49:48,726 --> 00:49:52,955
+E sobre abrí-lo? E se o arquivo
+já existir e ele está em um
+
+707
+00:49:52,955 --> 00:49:55,924
+estado closed?
+Novamente, nós apenas dizemos
+
+708
+00:49:55,924 --> 00:50:01,309
+[ditando código]
+e nós fazemos isso novamente.
+
+709
+00:50:01,309 --> 00:50:05,768
+E novamente, se nós conseguimos abrí-lo com sucesso,
+então nós apenas vamos setar o
+
+710
+00:50:05,768 --> 00:50:09,819
+ManagedObjectContext.
+Mas nós não queremos re-fetch do Flickr,
+
+711
+00:50:09,819 --> 00:50:13,058
+nesse caso.
+Porque ele já existe em disco, nós não
+
+712
+00:50:13,058 --> 00:50:18,095
+queremos ficar constantemente buscando do Flickr,
+esse é o motivo de termos no disco,
+
+713
+00:50:18,095 --> 00:50:22,939
+nós podemos abrí-lo e usá-lo.
+E então se ele já estiver aberto, daí nós
+
+714
+00:50:22,939 --> 00:50:27,761
+queremos fazer o que está aqui
+que é esse managedObjectContext, ok?
+
+715
+00:50:27,761 --> 00:50:32,861
+Todo mundo bem com isso?
+Ok, isso é tudo que fazemos aqui.
+
+716
+00:50:32,861 --> 00:50:39,735
+Agora, vamos fazer esse refresh.
+O refresh, vou colocá-lo aqui porque é
+
+717
+00:50:39,735 --> 00:50:44,000
+mais fácil de ver.
+Por causa do tempo, vou usar o snippet.
+
+718
+00:50:44,000 --> 00:50:48,077
+É isso.
+Aqui no viewDidLoad eu vou apenas
+
+719
+00:50:48,077 --> 00:50:54,770
+setar o target do RefreshControl
+para que possamos ter essa coisa bem aqui,
+
+720
+00:50:54,770 --> 00:51:01,269
+essa TableView para ser uma refreshing TableView.
+Lembram-se disso? E então no refresh,
+
+721
+00:51:01,269 --> 00:51:06,388
+esse é o target-action
+do RefreshControl,
+
+722
+00:51:06,388 --> 00:51:11,407
+mas é também o que estamos chamando
+aqui embaixo quando criamos o documento.
+
+723
+00:51:11,408 --> 00:51:14,668
+Nesse refresh aqui,
+o que estamos fazendo?
+
+724
+00:51:14,668 --> 00:51:18,536
+Essa parte do código é a mesma
+que no Shutterbug, ok?
+
+725
+00:51:18,536 --> 00:51:21,638
+Nós começamos com o beginRefreshing,
+nós criamos uma queue.
+
+726
+00:51:21,639 --> 00:51:26,216
+Nos dispatchamos na queue, nós vamos
+para o FlickrRefreshRequest, ok?
+
+727
+00:51:26,216 --> 00:51:30,668
+Todo mundo entende isso?
+E então agora nós temos que colocar
+
+728
+00:51:30,668 --> 00:51:35,738
+as fotos no database, que é novo,
+e então nós vamos mandá-los de volta
+
+729
+00:51:35,738 --> 00:51:40,193
+para a main queue para finalizar o refreshing.
+Todo mundo bem com esse código?
+
+730
+00:51:40,193 --> 00:51:43,923
+Não é nada novo.
+É exatamente o mesmo do Shutterbug.
+
+731
+00:51:43,923 --> 00:51:48,834
+Então, essa parte bem aqui é onde nós
+temos que colocar as coisas no database, ok?
+
+732
+00:51:48,834 --> 00:51:54,100
+E como vamos fazer isso?
+Incrivelmente fácil. Nós vamos apenas dizer
+
+733
+00:51:54,100 --> 00:52:00,206
+[ditando código], ok?
+photos é essa coisa bem aqui que nós
+
+734
+00:52:00,206 --> 00:52:04,888
+pegamos do FlickrFetcher, certo?
+É um array de dicionários.
+
+735
+00:52:04,888 --> 00:52:10,790
+Cada um nós vamos dizer "Photo",
+e agora nós precisamos da nossa categoria
+
+736
+00:52:10,790 --> 00:52:16,334
+Photo+Flickr para usarmos esse método
+que acabamos de criar
+
+737
+00:52:16,334 --> 00:52:20,145
+[ditando código]
+Onde nós vamos obter isso?
+
+738
+00:52:20,145 --> 00:52:27,495
+self.managedObjectContext, nós pegamos isso
+da nossa superclasse que é a classe
+
+739
+00:52:27,495 --> 00:52:31,077
+que acabamos de escrever.
+Todo mundo entende isso?
+
+740
+00:52:31,077 --> 00:52:34,065
+Certo? Melhor voltar
+e mostrar isso.
+
+741
+00:52:34,065 --> 00:52:39,591
+Esse cara, a superclasse do
+DemoPhotographer é o PhotographerCDTVC e se
+
+742
+00:52:39,591 --> 00:52:43,597
+nós viermos aqui, ele tem esse método público,
+ok? Property pública.
+
+743
+00:52:43,597 --> 00:52:49,128
+E isso é setado bem aqui embaixo, quando nós
+abrimos o documents, certo? Abrimos
+
+744
+00:52:49,128 --> 00:52:53,698
+ou creiamos o documento, nós estamos
+setando aqui, ou aqui, ou aqui. Ok?
+
+745
+00:52:53,698 --> 00:52:57,214
+Pergunta.
+>> [Estudante perguntando]
+
+746
+00:52:57,214 --> 00:53:01,654
+[estudante perguntando]
+
+747
+00:53:01,654 --> 00:53:05,320
+[estudante perguntando]
+
+748
+00:53:05,320 --> 00:53:09,642
+>> A pergunta é: por que nós estamos fazendo
+esse useDemoDocument no viewWillApper e não
+
+749
+00:53:09,642 --> 00:53:12,651
+por exemplo, no viewDidLoad
+ou algo assim?
+
+750
+00:53:12,651 --> 00:53:16,622
+Bom, viewDidLoad é chamado quando
+um ViewController é criado e seus outlets
+
+751
+00:53:16,622 --> 00:53:20,289
+estão linkados, mas e se esse
+ViewController nunca aparecer na tela?
+
+752
+00:53:20,289 --> 00:53:23,721
+Então nós fomos até o FlickrFetcher
+para nada, ok?
+
+753
+00:53:23,721 --> 00:53:27,042
+Desse modo nós estamos esperando até
+termos certeza que vai aparecer na tela
+
+754
+00:53:27,042 --> 00:53:30,459
+porque esse FlickrFetch não é de graça e então
+estamos esperando até nós termos certeza
+
+755
+00:53:30,459 --> 00:53:33,773
+que vamos estar na tela antes de fazer
+esse fetch. Agora, se o documento já
+
+756
+00:53:33,773 --> 00:53:36,811
+está criado, então você não precisa
+fazer o fetch, isso seria ótimo, ele estará
+
+757
+00:53:36,811 --> 00:53:40,045
+no database, ele apareceria na tela
+rapidamente, não seria um problema que eu
+
+758
+00:53:40,045 --> 00:53:42,538
+não carreguei antes, ok?
+É por isso que esperamos até
+
+759
+00:53:42,538 --> 00:53:44,488
+o viewWillAppear.
+Essa é uma boa pergunta.
+
+760
+00:53:44,489 --> 00:53:48,196
+Ok, entõa é isso.
+Isso é tudo que temos que fazer para carregar
+
+761
+00:53:48,196 --> 00:53:51,886
+esse database.
+Eu nem preciso usar o return value
+
+762
+00:53:51,886 --> 00:53:55,792
+da Photo.
+Tudo que preciso fazer é fazê-lo
+
+763
+00:53:55,792 --> 00:53:59,739
+ser criado ali, ok?
+Mas existe um grande problema com isso, ok?
+
+764
+00:53:59,739 --> 00:54:05,746
+Qual o problema com esse código?
+O problema é que isso está acessando
+
+765
+00:54:05,746 --> 00:54:10,201
+o Core Data fora da thread
+do managedContext do Core Data.
+
+766
+00:54:10,201 --> 00:54:16,125
+Todos vêem isso? Ok?
+Esse código aqui está acontecendo
+
+767
+00:54:16,125 --> 00:54:23,582
+na thread dessa queue que não é a thread
+que esse contexto quer executar.
+
+768
+00:54:23,582 --> 00:54:27,994
+Como nós consertamos isso?
+Nós fazemos assim.
+
+769
+00:54:27,994 --> 00:54:33,700
+self.managedObjectContext performBock,
+okay? 
+
+770
+00:54:33,700 --> 00:54:40,466
+E nós temos que colocar todas essas coisas
+que vão acessar o database
+
+771
+00:54:40,466 --> 00:54:45,261
+nesse block, ok?
+Agora, esse managedObjectContext foi criado
+
+772
+00:54:45,261 --> 00:54:49,920
+de um UIManagedDocument.
+Sua thread vai ser a main thread,
+
+773
+00:54:49,920 --> 00:54:52,611
+ok?
+Algumas pessoas perguntam: eu não poderia
+
+774
+00:54:52,611 --> 00:54:55,221
+ter feito isso? dispatch_async
+para a main thread?
+
+775
+00:54:55,221 --> 00:54:59,851
+Você poderia, mas agora você está assumindo
+que a thead do UIManagedDocument é a
+
+776
+00:54:59,851 --> 00:55:03,130
+main thread.
+Não há razão para assumir que quando
+
+777
+00:55:03,130 --> 00:55:08,537
+você tem esse belo método performBlock, ok?
+Então performBlock simplesmente diz:
+
+778
+00:55:08,537 --> 00:55:11,461
+faça esse código na thread certa
+para esse contexto, ok?
+
+779
+00:55:11,461 --> 00:55:17,360
+Pergunta.
+>> [Estudante perguntando]
+
+780
+00:55:17,360 --> 00:55:21,672
+[estudante perguntando]
+>> Ele vai fazer na main thread
+
+781
+00:55:21,672 --> 00:55:24,351
+se for o lugar certo para fazer, ok?
+É isso que o performBlock faz.
+
+782
+00:55:24,351 --> 00:55:28,573
+PerformBlock sabe qual é a thread certa
+para executar o código que
+
+783
+00:55:28,573 --> 00:55:31,025
+mexe com o context.
+É isso que o performBlock faz.
+
+784
+00:55:31,025 --> 00:55:35,173
+É a única coisa que ele faz.
+>> [Estudante perguntando]
+
+785
+00:55:35,173 --> 00:55:40,049
+[estudante perguntando]
+
+786
+00:55:40,049 --> 00:55:42,540
+[estudante perguntando]
+
+787
+00:55:42,540 --> 00:55:47,581
+>> Oh, eu deveria estar fazendi isso
+em outra thread ao invés da main thread,
+
+788
+00:55:47,581 --> 00:55:49,563
+é ssa sua pergunta?
+>> [Estudante perguntando]
+
+789
+00:55:49,563 --> 00:55:50,910
+[estudante perguntando]
+
+790
+00:55:50,910 --> 00:55:55,054
+[estudante perguntando]
+>> Então você está falando sobre isso.
+
+791
+00:55:55,054 --> 00:55:57,661
+Aqui é onde nós criamos
+essas coisas no database.
+
+792
+00:55:57,661 --> 00:56:00,184
+E a resposta é: é muito rápido
+fazer isso, ok?
+
+793
+00:56:00,184 --> 00:56:03,212
+Super rápido. Não há problema
+fazer isso na main thread.
+
+794
+00:56:03,212 --> 00:56:07,248
+Se você estivesse fazendo 10k coisas,
+agora você quer pensar em não fazer isso
+
+795
+00:56:07,248 --> 00:56:10,476
+na main thread. Em outras palavras,
+não criando direto
+
+796
+00:56:10,476 --> 00:56:12,542
+no database.
+E tem um modo para fazer isso.
+
+797
+00:56:12,542 --> 00:56:16,940
+Você poderia criar um managedObjectContext
+que não foi criado pelo UIManagedDocument
+
+798
+00:56:16,940 --> 00:56:20,966
+que estão em outras threads, mas nós não
+vamos falar sobre isso, ok? Mas você
+
+799
+00:56:20,966 --> 00:56:23,459
+poderia fazer isso.
+Absolutamente possível. É só que
+
+800
+00:56:23,459 --> 00:56:27,668
+essas threads, esses contexts tem--
+Basicamente existe thread containment
+
+801
+00:56:27,668 --> 00:56:31,259
+para a maioria dos managedObjectContext.
+Se eles foram criados em uma certa thread
+
+802
+00:56:31,259 --> 00:56:35,647
+vocÊ só pode acessá-los nessa thread.
+É legal criar um context em outra thread,
+
+803
+00:56:35,647 --> 00:56:38,785
+mesmo um context que aponta 
+para o mesmo lugar.
+
+804
+00:56:38,785 --> 00:56:42,632
+É que você teria que fazer isso,
+mas nós não estamos fazendo isso aqui.
+
+805
+00:56:42,632 --> 00:56:47,054
+Nós usamos a propriedade do UIManagedDocument,
+managedObjectContext, e ela está
+
+806
+00:56:47,054 --> 00:56:51,470
+na main thread porque todos os
+UIManagedDocumentsContext estão na
+
+807
+00:56:51,470 --> 00:56:55,370
+main thread, ok? É a forma que o
+UIManagedDocument é desenhado.
+
+808
+00:56:55,370 --> 00:56:57,771
+No homework de vocês,
+não se preocupem com isso.
+
+809
+00:56:57,771 --> 00:57:00,853
+Usem a main thread.
+Vocês não tem milhares
+
+810
+00:57:00,853 --> 00:57:04,945
+e milhares de itens. Vocês estão tratando
+centenas de itens no máximo.
+
+811
+00:57:04,945 --> 00:57:07,681
+Isso é perfeitamente ok.
+Isso é super rápido, ok?
+
+812
+00:57:07,681 --> 00:57:13,625
+Core Data é hiper otimizado.
+Ele é absolutamente, maximamente otimizado.
+
+813
+00:57:13,625 --> 00:57:19,676
+E é esperado que várias coisas
+vão acontecer na main thread, obviamente,
+
+814
+00:57:19,676 --> 00:57:24,359
+porque UIManageDocumentsContext
+está na ain thread.
+
+815
+00:57:24,360 --> 00:57:28,854
+Ok, então é isso.
+E eu acho que isso é tudo que nós precisamos...
+
+816
+00:57:28,854 --> 00:57:31,960
+para fazer isso.
+É.
+
+817
+00:57:31,960 --> 00:57:37,409
+Então vamos voltar para o nosso
+storyboard aqui.
+
+818
+00:57:37,409 --> 00:57:43,349
+Vamos setar nossa classe aqui
+para ser nosso
+
+819
+00:57:43,349 --> 00:57:48,573
+DemoPhotographerCoreDataTableViewController.
+Setamos isso.
+
+820
+00:57:48,573 --> 00:57:54,583
+O reuseIdentifier dessas cells...
+nós devemos estar prontos, ok?
+
+821
+00:57:54,583 --> 00:57:57,326
+Vamos tentar.
+Oh, nós temos... oh, ótimo.
+
+822
+00:57:57,326 --> 00:57:59,760
+Nós temos erros.
+Que são eles?
+
+823
+00:57:59,760 --> 00:58:05,202
+Todos vocês sabem que podemos sempre clicar
+nesse negocinho vermelho para descobrir.
+
+824
+00:58:05,202 --> 00:58:09,956
+E aqui, o que ele está dizendo é:
+olhe para todos esses erros de linkagem, ok?
+
+825
+00:58:09,956 --> 00:58:13,210
+Todos essas coisas como
+NSFetchedResultsController, todas essas
+
+826
+00:58:13,210 --> 00:58:16,306
+coisas, ele não conseguiu linká-las.
+E isso é porque eles não estão
+
+827
+00:58:16,306 --> 00:58:18,744
+em um Framework que normalmente
+está linkado com o seu app.
+
+828
+00:58:18,744 --> 00:58:22,492
+Eles estão no CoreDataFramework.
+Então, na sua aplicação, preste atenção
+
+829
+00:58:22,492 --> 00:58:26,445
+aqui porque vocês vão precisar fazer isso
+para o seu homework, você tem que explicitamente
+
+830
+00:58:26,445 --> 00:58:30,213
+dizer que você quer usar o Core Data.
+E você faz isso vindo no seu projeto
+
+831
+00:58:30,213 --> 00:58:35,525
+aqui em cima, essa coisa no topo,
+e indo para essa configuração chamada
+
+832
+00:58:35,525 --> 00:58:38,861
+Build Phases. Ok?
+Então clico em Build Phases e aqui embaixo
+
+833
+00:58:38,861 --> 00:58:43,982
+existe um Link Binary With Libraries.
+E vocês verão esses outros frameworks
+
+834
+00:58:43,982 --> 00:58:47,557
+como UIKit e o Foundation e o CoreGraphics,
+e você vai apenas dizer + e
+
+835
+00:58:47,557 --> 00:58:50,400
+vocês vão ver que existe uma
+lista enorme de frameworks, ok?
+
+836
+00:58:50,400 --> 00:58:54,292
+E essa é uma boa lista para olhar se vocês
+estiverem procurando por uma feature
+
+837
+00:58:54,292 --> 00:58:57,741
+que não foi vista em aula, talvez.
+Vocês podem olhar alguns desses frameworks.
+
+838
+00:58:57,741 --> 00:59:02,355
+Mas você pode começar a digitar aqui
+como CoreData. Existe um monte de coisas
+
+839
+00:59:02,355 --> 00:59:07,035
+"Core", mas quando você digitar CoreD,
+aqui está CoreData. Daí eu dou double-click
+
+840
+00:59:07,035 --> 00:59:09,847
+e ele vai adicioná-lo, você pode ver
+ele adicionado aqui.
+
+841
+00:59:09,847 --> 00:59:14,959
+Eu gosto de colocá-los aqui embaixo
+nesse negócio de Frameworks com o resto
+
+842
+00:59:14,959 --> 00:59:18,282
+dos frameworks aqui em baixo.
+
+843
+00:59:18,282 --> 00:59:23,294
+>> A pergunta é: qual a diferença entre
+Framework e dynamic library?
+
+844
+00:59:23,295 --> 00:59:28,734
+Um framework é algo do iOS, onde ele
+coleciona todos os arquivos header
+
+845
+00:59:28,734 --> 00:59:33,618
+e coisas assim, que vão junto
+com o framework eum um pacote. Para que
+
+846
+00:59:33,618 --> 00:59:38,352
+o Xcode possa procurar dentro desses headers
+e linkar coisas e coisas assim.
+
+847
+00:59:38,352 --> 00:59:43,542
+Ok? Agora, está errado. Ainda temos
+alguns warnings mas isso é porque
+
+848
+00:59:43,542 --> 00:59:46,709
+nós temos algumas coisas ali
+e OP, funcionou.
+
+849
+00:59:46,709 --> 00:59:50,880
+Ok, aqui nós temos FlickrFetch,
+o resultado de FlickrFetch.
+
+850
+00:59:50,880 --> 00:59:54,565
+Percebam como ele fez um fade.
+Por que isso aconteceu? Por que ele
+
+851
+00:59:54,565 --> 00:59:57,063
+fez esse fade in?
+Ele veio em branco e então ele
+
+852
+00:59:57,063 --> 01:00:00,940
+fez um fade in, certo?
+Bom, o que aconteceu foi: quando nós
+
+853
+01:00:00,940 --> 01:00:08,068
+iniciamos a aplicação pela primeira vez,
+ele veio aqui e esse documento precisou
+
+854
+01:00:08,068 --> 01:00:14,404
+ser criado, ok? Porque obviamente
+nosso document não existia quando
+
+855
+01:00:14,404 --> 01:00:20,111
+rodamos pela primeira vez. Então ele teve que criar.
+Esse create foi assíncrono, ele demorou
+
+856
+01:00:20,111 --> 01:00:25,002
+um pouquinho na thread para fazer isso
+e não somente isso, quando ele terminou,
+
+857
+01:00:25,002 --> 01:00:29,893
+ele chamou essa outra coisa que foi
+para outra thread para baixar do Flickr,
+
+858
+01:00:29,893 --> 01:00:33,685
+o que demorou alguns segundos.
+E então, finalmente, ele colocou todas
+
+859
+01:00:33,685 --> 01:00:37,349
+as coisas no database.
+Assim que o database começou a ter
+
+860
+01:00:37,349 --> 01:00:41,811
+Photographers nele, o
+NSFetchedResultsController percebeu, ok?
+
+861
+01:00:41,811 --> 01:00:46,842
+E ele fez nosso fetchRequest, que eram
+apenas fotógrafos, fazer match com o que
+
+862
+01:00:46,842 --> 01:00:52,149
+tinha na TableView até a TableView se encher.
+Todo mundo entende isso?
+
+863
+01:00:52,149 --> 01:00:56,414
+Agora, o que acontece se eu voltar?
+Eu fiz isso pra que nós pudéssemos
+
+864
+01:00:56,414 --> 01:01:00,165
+fazer a demo disso e eu pudesse fazer um refresh, ok?
+Se eu fizer refresh ele vai fazer outro
+
+865
+01:01:00,165 --> 01:01:05,348
+FlickrFetch. Eu meio que arrumei isso aqui
+para que ele na verdade nós dê
+
+866
+01:01:05,348 --> 01:01:08,886
+novos dados.
+Porque normalmente o Flickr apenas faz update
+
+867
+01:01:08,886 --> 01:01:13,273
+das últimas coisas a cada 15 minutos
+e eu só tenho 10 minutos sobrando.
+
+868
+01:01:13,273 --> 01:01:17,232
+Então, vejam o que aconteceu aqui.
+Eu vou fazer isso e ele vai
+
+869
+01:01:17,232 --> 01:01:20,992
+carregar mais coisas e eles vão
+entrar aqui, ok?
+
+870
+01:01:20,992 --> 01:01:23,873
+Vejam.
+Enquanto ele está fazendo o refresh,
+
+871
+01:01:23,873 --> 01:01:26,886
+eu ainda posso scrollar, ok?
+Essa coisa ainda está scrollando, mas quando
+
+872
+01:01:26,886 --> 01:01:30,013
+os dados voltam, ele apenas
+os carrega aí, ok?
+
+873
+01:01:30,014 --> 01:01:33,662
+Eu vou fazer novamente aqui.
+Vejam isso. Vocês verão novas coisas
+
+874
+01:01:33,662 --> 01:01:37,794
+aparecendo aqui. Vêem? Ok?
+E porque elas estão aparecendo?
+
+875
+01:01:37,794 --> 01:01:42,675
+Porque eu estou fazendo esse fetch bem aqui,
+ok? E então eu estou colocando-as
+
+876
+01:01:42,675 --> 01:01:47,625
+no database e conforme elas aparecem
+no database, o fetchedResultsController está
+
+877
+01:01:47,625 --> 01:01:52,273
+updateando a table, ok?
+E se você você dissesse fotógrafo
+
+878
+01:01:52,273 --> 01:01:55,337
+com nome Joe, então o Joe apareceria
+na table.
+
+879
+01:01:55,337 --> 01:02:00,873
+Vcoê não teria que recarregar dados
+ou nada assim. Ele apenas aconteceria,
+
+880
+01:02:00,873 --> 01:02:03,381
+ok?
+Sempre que você mudar o database,
+
+881
+01:02:03,381 --> 01:02:06,503
+é isso que o fetchedResultsController faz,
+uma feature muito poderosa.
+
+882
+01:02:06,503 --> 01:02:12,936
+Ok, agora nós temos essa
+coisa no nosso app aqui.
+
+883
+01:02:12,936 --> 01:02:20,022
+E se nós quiséssemos poder clicar aqui
+e fazer com que ele fizesse segue para uma lista
+
+884
+01:02:20,022 --> 01:02:23,997
+com essas fotos, ok?
+Isso vai ser bem fácil de fazer
+
+885
+01:02:23,997 --> 01:02:29,226
+porque nós vamos apenas fazer um query
+no database e nosso predicado vai ser
+
+886
+01:02:29,226 --> 01:02:34,230
+whoTook = photographer, ok
+Essa é uma chance para vocês verem todas
+
+887
+01:02:34,230 --> 01:02:37,586
+as coisas que acabamos de fazer
+com fetchedResultsController novamente.
+
+888
+01:02:37,586 --> 01:02:41,586
+Mas agora, vamos fazer para
+Photos ao invés de Photographer.
+
+889
+01:02:41,586 --> 01:02:42,998
+Sim?
+>> [Estudante perguntando]
+
+890
+01:02:42,998 --> 01:02:45,032
+[estudante perguntando]
+
+891
+01:02:45,032 --> 01:02:50,653
+>> A pergunta é: eu poderia
+criar uma TableView que não fosse
+
+892
+01:02:50,653 --> 01:02:54,452
+uma Core Data TableView. Seria apenas
+uma TableView que mostra um Set, ok?
+
+893
+01:02:54,452 --> 01:02:57,624
+Um set de Phtoos. Você poderia
+fazer isso, absolutamente.
+
+894
+01:02:57,624 --> 01:03:01,036
+Você faria?
+Não. Provavelmente não. Duas razões.
+
+895
+01:03:01,036 --> 01:03:03,917
+Uma, esse set é não-ordenado, ok?
+
+896
+01:03:03,917 --> 01:03:06,545
+Você teria que pegar essas fotos
+e ordená-las de qualquer modo.
+
+897
+01:03:06,545 --> 01:03:08,985
+Então você pode simplemente deixar
+que o database o ordene por você.
+
+898
+01:03:08,985 --> 01:03:12,609
+E número dois é, só vou precisar escrever
+cinco linhas de código para escrever
+
+899
+01:03:12,609 --> 01:03:14,783
+essa outra opção.
+Enquanto você levaria... você teria que
+
+900
+01:03:14,783 --> 01:03:17,348
+fazer o TableViewDataSource
+se você fizer com um set.
+
+901
+01:03:17,348 --> 01:03:19,387
+Vê o que estou dizendo?
+É muito mais trabalho.
+
+902
+01:03:19,387 --> 01:03:22,895
+É só muito mais fácil usar
+o database, como você vai ver em um instante.
+
+903
+01:03:22,895 --> 01:03:25,588
+Vamos fazer isso.
+Eu vou criar uma nova classe aqui.
+
+904
+01:03:25,589 --> 01:03:30,766
+Uma nova TableView. Eu vou chamar
+essa TableView...
+
+905
+01:03:30,766 --> 01:03:36,820
+Vai ser uma CoreDataTableView
+e eu vou chamá-la
+
+906
+01:03:36,820 --> 01:03:45,231
+de PhotosByPhotographerCDTVC, ok?
+Essa vai ser uma TableView que tem
+
+907
+01:03:45,231 --> 01:03:52,023
+um model que é um Photographer.
+E ela vai mostrar as fotos tiradas
+
+908
+01:03:52,023 --> 01:03:56,757
+por esse fotógrafo, ok?
+Então vamos dar o model pra ela. Aqui está
+
+909
+01:03:56,757 --> 01:04:01,448
+sua interface pública,
+[ditando código]
+
+910
+01:04:01,448 --> 01:04:06,976
+Ok? Claro, nós precisamos importar Photographer,
+ok? Então esse é o seu model.
+
+911
+01:04:06,976 --> 01:04:11,615
+Todo mundo entende isso?
+Nós precisamos setar o model
+
+912
+01:04:11,615 --> 01:04:14,916
+e isso simplesmente funcionará.
+Como isso vai funcionar?
+
+913
+01:04:14,916 --> 01:04:18,997
+Nós não precisamos de nada disso.
+Eu não preciso disso, ok?
+
+914
+01:04:18,997 --> 01:04:27,503
+Sempre que você setar o model,
+esse é apenas o setter para o model.
+
+915
+01:04:27,503 --> 01:04:34,168
+Ele vai configurar o seu fetchedResultsController
+para mostrar as fotos escolhidas.
+
+916
+01:04:34,168 --> 01:04:40,777
+Vamos ver...
+setupFetchedResultsController, ok?
+
+917
+01:04:40,777 --> 01:04:45,564
+Então é quase idêntico
+ao que tínhamos antes.
+
+918
+01:04:45,564 --> 01:04:50,020
+Então, NSFetchRequest, você sempre
+precisa de um fetchRequest para o seu
+
+919
+01:04:50,020 --> 01:04:53,596
+FetchedResultsController.
+Então vamos fazer isso.
+
+920
+01:04:53,596 --> 01:05:01,792
+[ditando código]
+Dessa vez estamos buscando fotos, certo?
+
+921
+01:05:01,792 --> 01:05:10,008
+não fotógrafos, então é um pouco
+diferente da outra.
+
+922
+01:05:10,008 --> 01:05:10,773
+E request.sortDescriptos, nós vamos
+ordenar, obviamente, pelos
+
+923
+01:05:10,773 --> 01:05:12,521
+títulos das fotos. Então vamos
+fazer isso
+
+924
+01:05:12,521 --> 01:05:17,881
+[ditando código],
+title é o nome do atributo da Photo
+
+925
+01:05:17,881 --> 01:05:21,310
+no database, ascending YES,
+selector... esse é o selector
+
+926
+01:05:21,310 --> 01:05:31,955
+localizedCaseInsensitiveCompare.
+E então precisamos de um predicado, ok?
+
+927
+01:05:31,955 --> 01:05:42,380
+O predicado aqui é apenas
+whoTook = self.photographer, ok?
+
+928
+01:05:42,380 --> 01:05:46,185
+self.photographer é nosso model.
+Esse é o photographer.
+
+929
+01:05:46,185 --> 01:05:48,979
+E então, nós vamos apenas dizer
+whoTook (???)
+
+930
+01:05:48,979 --> 01:05:53,677
+Nós poderíamos dizer também whoTook.name
+= self.photographer.name, isso estaria
+
+931
+01:05:53,677 --> 01:05:57,099
+ok também.
+Mas nós vamos dizer
+
+932
+01:05:57,099 --> 01:06:00,137
+whoTook = self.photographer.
+E agora nós podemos criar o
+
+933
+01:06:00,137 --> 01:06:05,237
+fetchedResultsController.
+Alloc init aqui. FetchRequest isso...
+
+934
+01:06:05,237 --> 01:06:11,099
+(mais espaço)
+Daí o managedObjectContext.
+
+935
+01:06:11,099 --> 01:06:16,095
+Da onde nós obtemos o 
+managedObjectContext aqui?
+
+936
+01:06:16,095 --> 01:06:21,582
+A resposta é: nós vamos pegá-lo
+do Photographer.
+
+937
+01:06:21,582 --> 01:06:27,321
+Todo ManagedObject sabe qual o contexto
+em que ele foi criado, ok?
+
+938
+01:06:27,321 --> 01:06:33,104
+Então posso apenas dizer
+self.photographer.managedObjectContext, 
+
+939
+01:06:33,104 --> 01:06:36,246
+okay?
+Isso é algo chave para
+
+940
+01:06:36,246 --> 01:06:39,769
+entender.
+Sem sections, sem cache, ok?
+
+941
+01:06:39,769 --> 01:06:43,615
+Agora, eu provavelmente quero
+proteger isso dizendo
+
+942
+01:06:43,615 --> 01:06:50,719
+if (self.photographer.ManagedObjectContext),
+porque se o photographer for nil ou se
+
+943
+01:06:50,719 --> 01:06:57,727
+o managedObjectContext do photographer
+não estiver setado, então eu não quero nem tentar
+
+944
+01:06:57,727 --> 01:07:05,037
+fazer isso, ok?
+Eu posso até dizer
+
+945
+01:07:05,037 --> 01:07:09,618
+self.fetchedResultsController = nil.
+E então, nós precisamos
+
+946
+01:07:09,618 --> 01:07:15,382
+[ditando código]
+ok? Todas as tables precisam ter isso.
+
+947
+01:07:15,382 --> 01:07:21,829
+Vamos pegar uma TableViewCell aqui,
+tableView dequeue... é assim que fazer
+
+948
+01:07:21,829 --> 01:07:25,984
+o reuso.
+Nós sabemos que são photos, então vamos
+
+949
+01:07:25,984 --> 01:07:30,773
+chamar de photo.
+Eu sempre gosto de voltar imediatamente
+
+950
+01:07:30,773 --> 01:07:35,119
+para o meu Storyboard e setar isso aqui
+para que eu não esqueça.
+
+951
+01:07:35,119 --> 01:07:39,488
+Então eu uso o subtitle,
+Chamo esse de Photo.
+
+952
+01:07:39,488 --> 01:07:46,692
+Enquanto estamos aqui, vamos seguir
+e setar a classe dessa coisa para ser
+
+953
+01:07:46,692 --> 01:07:54,198
+PhotosByPhotographerCDTVC.
+Voltando aqui, nós temos nossa Cell.
+
+954
+01:07:54,198 --> 01:08:00,285
+E agora nós precisamos da Photo
+que está sendo mostrada nesse indexPath.
+
+955
+01:08:00,285 --> 01:08:04,896
+Espero que todo mundo entenda
+como fazer isso agora.
+
+956
+01:08:04,896 --> 01:08:10,935
+[ditando código]
+
+957
+01:08:10,935 --> 01:08:15,315
+Isso nos dá a Photo nesse
+indexPath, ok?
+
+958
+01:08:15,316 --> 01:08:23,447
+Agora podemos dizer
+[ditando código]
+
+959
+01:08:23,447 --> 01:08:30,894
+[ditando código]
+ok?
+
+960
+01:08:30,894 --> 01:08:35,626
+Para isso funcionar, precisamos
+importar Photo, ok?
+
+961
+01:08:35,626 --> 01:08:38,002
+return cell.
+Todo mundo entendeu isso?
+
+962
+01:08:38,002 --> 01:08:40,636
+Isso é tudo que precisamos fazer
+nessa classe inteira.
+
+963
+01:08:40,636 --> 01:08:43,715
+A única coisa que precisamos fazer agora
+é o prepareForSegue.
+
+964
+01:08:43,715 --> 01:08:47,937
+Vamos fazer o prepareForSegue.
+Vamos voltar no nosso
+
+965
+01:08:47,937 --> 01:08:51,747
+PhotographerCoreDataTableViewController.
+Vamos fazer apenas... aqui
+
+966
+01:08:51,747 --> 01:08:56,067
+vou fazer um prepareForSegue genérico.
+Aqui está um prepareForSegue genérico.
+
+967
+01:08:56,067 --> 01:09:00,425
+Ele apenas pega o indexPath
+olhando o sender e dizendo indexPathForCell,
+
+968
+01:09:00,425 --> 01:09:03,497
+ok? E se tiver indexPath,
+o que sempre deve acontecer,
+
+969
+01:09:03,497 --> 01:09:06,066
+então nós podemos fazer algo.
+
+970
+01:09:06,066 --> 01:09:10,428
+Aqui tem algo interessante.
+Eu vou mostrar algo interessante
+
+971
+01:09:10,428 --> 01:09:13,946
+que as pessoas fazem.
+Você pode decidir se vocês gostam ou não.
+
+972
+01:09:13,946 --> 01:09:18,508
+Eles fazem o segue identifier ter
+o mesmo nome do método que eles vão chamar
+
+973
+01:09:18,508 --> 01:09:22,747
+na coisa que eles estão segueando para, ok?
+Nesse caso, seria
+
+974
+01:09:22,747 --> 01:09:26,737
+setPhotographer.
+Você poderia... geralmente colocamos
+
+975
+01:09:26,737 --> 01:09:30,588
+o dois pontos ali.
+Então esse é o segue identifier
+
+976
+01:09:30,588 --> 01:09:35,611
+que usaremos para fazer isso.
+E então no header file, documentaríamos
+
+977
+01:09:35,611 --> 01:09:41,859
+"pode fazer o segue setPhotographer
+e chamará o mesmo método
+
+978
+01:09:41,859 --> 01:09:46,438
+no destinationVC", ok?
+Você pode documentar isso, daí
+
+979
+01:09:46,438 --> 01:09:50,760
+você pode sempre criar um segue
+para esse controller usando isso.
+
+980
+01:09:50,760 --> 01:09:56,181
+Vamos voltar aqui e fazer isso.
+Eu vou CTRL + arrastar da minha cell
+
+981
+01:09:56,181 --> 01:10:01,011
+no meu photographer aqui, para o meu
+PhotoByPhotographer.
+
+982
+01:10:01,011 --> 01:10:04,491
+Eu estou em um NavigationController,
+então eu pusho, ok?
+
+983
+01:10:04,491 --> 01:10:10,656
+Eu vou inspecionar esse segue e eu vou
+chamar esse de setPhotographer segue.
+
+984
+01:10:10,656 --> 01:10:15,174
+Todo mundo acompanhou?
+Espero que sim, vocês tem feito isso
+
+985
+01:10:15,174 --> 01:10:19,789
+no homework de vocês algumas vezes.
+Então, isso é tudo que fizemos aqui.
+
+986
+01:10:19,789 --> 01:10:25,166
+Vamos voltar aqui e agora nós
+vamos fazer esse segue aqui, esse
+
+987
+01:10:25,166 --> 01:10:27,642
+segue particular.
+E quando nós segueamos, nós precisamos
+
+988
+01:10:27,642 --> 01:10:31,178
+do Photographer.
+Como nós achamos fotógrafos?
+
+989
+01:10:31,179 --> 01:10:35,565
+Novamente,
+[ditando código]
+
+990
+01:10:35,565 --> 01:10:40,228
+[ditando código], ok?
+É sempre assim que nós obtemos
+
+991
+01:10:40,228 --> 01:10:44,772
+a foto ou o fotógrafo ou qualquer coisa
+em uma dara row na TableView. É usando
+
+992
+01:10:44,772 --> 01:10:49,383
+esse mesmo método.
+Então agora podemos dizer
+
+993
+01:10:49,383 --> 01:10:59,427
+[ditando código]
+
+994
+01:10:59,427 --> 01:11:05,276
+Obrigado, Xcode. Tudo na ordem errada.
+
+995
+01:11:05,276 --> 01:11:12,820
+(...)
+Pronto.
+
+996
+01:11:12,820 --> 01:11:18,557
+Se nós respondermos, então vamos
+fazê-lo executar isso.
+
+997
+01:11:18,557 --> 01:11:28,804
+Lembrem-se, nós podemos fazer isso
+[ditando código]
+
+998
+01:11:28,804 --> 01:11:31,848
+Ok?
+Pergunta.
+
+999
+01:11:31,848 --> 01:11:36,744
+>> [Estudante perguntando]
+
+1000
+01:11:36,744 --> 01:11:38,346
+>> Vai crashar.
+
+1001
+01:11:38,346 --> 01:11:42,481
+É a mesma coisa que você mandar uma mensagem
+para id e ele não respodner a isso.
+
+1002
+01:11:42,481 --> 01:11:46,765
+A pergunta é, desculpem,
+o que acontece se eu enviar
+
+1003
+01:11:46,765 --> 01:11:50,041
+um selector para um objeto
+que não responde a ele?
+
+1004
+01:11:50,041 --> 01:11:53,573
+Seu programa vai crashar.
+É isso que acontece em Objective-C
+
+1005
+01:11:53,573 --> 01:11:56,879
+quando você envia uma mensagem para um objeto
+que não responde pra ela.
+
+1006
+01:11:56,879 --> 01:11:59,904
+Ele vai crashar.
+>> [Estudante perguntando]
+
+1007
+01:11:59,904 --> 01:12:03,680
+>> Ele vai seguear, mas ele não vai prepare.
+
+1008
+01:12:03,680 --> 01:12:10,361
+[estudante perguntando]
+
+1009
+01:12:10,361 --> 01:12:11,083
+>> Vai apenas pular e quem sabe
+o que essa coisa vai fazer, porque ele
+
+1010
+01:12:11,083 --> 01:12:11,772
+não está preparado, mas ele vai aparecer,
+ele vai estar em branco, presumidamente.
+
+1011
+01:12:11,773 --> 01:12:13,869
+Entende o que eu digo?
+Certo?
+
+1012
+01:12:13,869 --> 01:12:17,260
+Essa linha de código não será executada
+então ele não vai estar bem preparado.
+
+1013
+01:12:17,260 --> 01:12:21,109
+Mas ele ainda vai seguear.
+>> [Estudante perguntando]
+
+1014
+01:12:21,109 --> 01:12:25,585
+>> Poderia ser. Existe um argumento
+
+1015
+01:12:25,585 --> 01:12:28,580
+para tirar essa linha de código
+e deixar essa coisa crashar.
+
+1016
+01:12:28,581 --> 01:12:31,675
+É isso. Existe definitivamente
+um argumento para isso.
+
+1017
+01:12:31,675 --> 01:12:36,255
+Porque você vai achar esse bug bem melhor
+do que uma coisa branca aparecer.
+
+1018
+01:12:36,255 --> 01:12:40,941
+Bom, você vai descobrir uma TableView em branco
+rapidamente também, mas crash é bom
+
+1019
+01:12:40,941 --> 01:12:44,596
+para achar bugs (!!!)
+Certo, a outra coisa que vou fazer,
+
+1020
+01:12:44,596 --> 01:12:50,140
+uma outra coisa rápida aqui no Photographer,
+PhotosByPhotographer, eu poderia também
+
+1021
+01:12:50,140 --> 01:12:55,643
+setar meu title para ser o nome do fotógrafo, ok?
+É algo legal para fazer quando eu seto
+
+1022
+01:12:55,643 --> 01:12:59,984
+meu fotógrafo eu também seto meu título.
+Então vou fazer isso.
+
+1023
+01:12:59,984 --> 01:13:03,354
+Ok, bom,
+se eu não esqueci nada aqui...
+
+1024
+01:13:03,354 --> 01:13:05,738
+Mas percebam como aparece
+rapidamente, vêem?
+
+1025
+01:13:05,738 --> 01:13:10,552
+Por que foi tão rápido?
+Porque estava no database.
+
+1026
+01:13:10,552 --> 01:13:16,066
+Não precisou ter que fazer aquele FlickrFetch.
+Então apareceu instantaneamente, certo?
+
+1027
+01:13:16,066 --> 01:13:22,120
+Então se clicarmos em algo como esse cara
+que tem 13 fotos, esse cara tem uma,
+
+1028
+01:13:22,120 --> 01:13:24,611
+aqui em baixo, 1, 2, ok?
+Super simples.
+
+1029
+01:13:24,611 --> 01:13:29,633
+Obviamente eu estourei o tempo 
+então não tenho tempo para fazer a próxima coisa
+
+1030
+01:13:29,633 --> 01:13:33,889
+mas é um bom exercício
+fazer isso seguear usando o seu
+
+1031
+01:13:33,889 --> 01:13:38,048
+ImageViewController, ok?
+E é exatamente como-- você só precisa
+
+1032
+01:13:38,048 --> 01:13:42,144
+ter um método para fazer isso funcionar aqui,
+além de de linkar as coisas no storyboard
+
+1033
+01:13:42,144 --> 01:13:45,953
+com seu scrollView e seu spinner
+e coisas assim.
+
+1034
+01:13:45,953 --> 01:13:48,888
+O único método que você tem que fazer
+é o prepareForSegue.
+
+1035
+01:13:48,888 --> 01:13:52,543
+E é fáci fazer o prepareForSegue
+porque você tem a foto.
+
+1036
+01:13:52,544 --> 01:13:57,894
+A photo sabe sua imageURL.
+Ela apenas prepara o ImageViewController
+
+1037
+01:13:57,894 --> 01:14:02,439
+com a imageURL e voilá! Ok?
+>> [Estudante perguntando]
+
+1038
+01:14:02,439 --> 01:14:07,833
+>> A Photo e o Photographer estão
+nessa database, naquele arquivo chamado
+
+1039
+01:14:07,833 --> 01:14:13,390
+DemoDocument, no diretório de documentos.
+Lembra, bem aqui? Quando nós criamos
+
+1040
+01:14:13,390 --> 01:14:18,143
+esse document bem aqui, ok? Nós criamos
+no document directory.
+
+1041
+01:14:18,143 --> 01:14:22,312
+É chamado Demo Document.
+É onde aquele Core Data database
+
+1042
+01:14:22,312 --> 01:14:25,267
+foi criado.
+Então é onde todas essas photos
+
+1043
+01:14:25,267 --> 01:14:27,791
+e photographers estão.
+Estão nesse arquivo.
+
+1044
+01:14:27,792 --> 01:14:30,840
+Num banco de dados SQL, na verdade,
+nesse arquivo, ok?
+
+1045
+01:14:30,840 --> 01:14:34,179
+Outras perguntas?
+>> [Estudante perguntando]
+
+1046
+01:14:34,179 --> 01:14:37,158
+>> A pergunta é: existe como vermos
+
+1047
+01:14:37,158 --> 01:14:40,296
+o conteúdo do arquivo e eu vou dizer
+que a resposta é não.
+
+1048
+01:14:40,296 --> 01:14:44,202
+Quero dizer, é um banco SQL, mas o formato,
+ou as tabelas e as rows ali,
+
+1049
+01:14:44,202 --> 01:14:47,225
+você... é totalmente não especificado.
+Você não sabe.
+
+1050
+01:14:47,225 --> 01:14:50,823
+São detalhes de implementação
+do Core Data, então você não sabe.
+
+1051
+01:14:50,823 --> 01:14:54,661
+Então você não pode olhar.
+Um modo que você poderia olhar seria fazer
+
+1052
+01:14:54,661 --> 01:14:57,050
+fetches e, sabe,
+olhá-los da sua UI.
+
+1053
+01:14:57,050 --> 01:15:00,716
+Ou você poderia escrever código que também
+faz os fetches, porque você sabe como executar
+
+1054
+01:15:00,716 --> 01:15:04,145
+um fetchRequest, certo?
+Você pode criar um fetchRequest e
+
+1055
+01:15:04,145 --> 01:15:09,220
+pede pro context executar o fetchRequest.
+Você pode ver o que tem lá.
+
+1056
+01:15:09,220 --> 01:15:11,119
+Outras perguntas?
+Sim.
+
+1057
+01:15:11,119 --> 01:15:16,696
+>> [Estudante perguntando]
+>> A pergunta é sobre o ImageView.
+
+1058
+01:15:16,696 --> 01:15:20,612
+A imagem, nós não estamos colocando
+isso no Core Data.
+
+1059
+01:15:20,612 --> 01:15:25,994
+A grande imagem, ok?
+Mas na tarefa do homework você precisa
+
+1060
+01:15:25,994 --> 01:15:30,502
+fazer thumbnail images na TableView.
+Basicamente, na TableView,
+
+1061
+01:15:30,502 --> 01:15:35,011
+tipo aqui, onde...
+vamos achar alguém aqui...
+
+1062
+01:15:35,011 --> 01:15:39,271
+Cada um desses você tem que ter
+um pequeno thumbnail da imagem, ok?
+
+1063
+01:15:39,271 --> 01:15:44,026
+Esses thumbnails, você os armazenaria
+no Core Data, porque eles são pequenos.
+
+1064
+01:15:44,026 --> 01:15:48,946
+Mas as imagens, quando você clica
+e uma imagem aparece, essa imagem você
+
+1065
+01:15:48,946 --> 01:15:52,337
+ainda armazenaria no File System,
+no homework, ok?
+
+1066
+01:15:52,337 --> 01:15:54,428
+Boa pergunta.
+Outras perguntas?
+
+1067
+01:15:54,428 --> 01:15:57,369
+>> [Estudante perguntando]
+
+1068
+01:15:57,369 --> 01:16:01,073
+>> A pergunta é: você não pode
+armazenar imagens no Core Data?
+
+1069
+01:16:01,073 --> 01:16:05,699
+Claro que você poderia, você já está
+fazendo cache delas belamente
+
+1070
+01:16:05,699 --> 01:16:09,708
+no File System e você não iria querer
+não fazer isso.
+
+1071
+01:16:09,709 --> 01:16:12,974
+você provavelmente não iria querer
+colocar milhares de imagens em um
+
+1072
+01:16:12,974 --> 01:16:15,265
+Core Data database.
+A razão que você tem esse Cache
+
+1073
+01:16:15,265 --> 01:16:18,737
+com (???) e tudo isso, é porque
+você só quer armazenar
+
+1074
+01:16:18,737 --> 01:16:21,355
+uma quantidade razoável.
+Depende o que é, mas eu acho que
+
+1075
+01:16:21,355 --> 01:16:24,540
+não seria uma boa estratégia armazenar
+tudo que você baixar no Core Data,
+
+1076
+01:16:24,540 --> 01:16:28,416
+seria gigantesco.
+Mas o Core Data pode armazenar imagens grandes,
+
+1077
+01:16:28,416 --> 01:16:32,907
+imagens como essas.
+Não é super eficiente nisso, mas é
+
+1078
+01:16:32,907 --> 01:16:34,344
+aceitável.
+Outras perguntas? Sim?
+
+1079
+01:16:34,344 --> 01:16:39,861
+>> [Estudante perguntando]
+
+
+1080
+01:16:39,862 --> 01:16:42,679
+(da onde esse CoreDataTableView veio?)
+(Você escreveu?)
+
+1081
+01:16:42,679 --> 01:16:46,462
+>> Sim, aqui. Eu vou te mostrar
+exatamente da onde ele veio.
+
+1082
+01:16:46,462 --> 01:16:49,043
+Veja isso.
+Eu vou no Organizer aqui.
+
+1083
+01:16:49,043 --> 01:16:52,760
+Na documentação, eu vou procurar por
+NSFetchedResultsController.
+
+1084
+01:16:52,761 --> 01:16:57,225
+Aqui está.
+Olhe essa classe. Vê isso aqui?
+
+1085
+01:16:57,225 --> 01:17:02,293
+Eu apenas copiei e colei
+no CoreDataTableView, ok?
+
+1086
+01:17:02,293 --> 01:17:08,104
+É daqui que veio.
+Vê como está fazendo numberOfSectionsInTableView,
+
+1087
+01:17:08,104 --> 01:17:12,922
+numberOfRowsInSection,
+cellForRowAtIndexPath?
+
+1088
+01:17:12,922 --> 01:17:17,264
+Eu apenas copiei essas coisas daqui.
+É daqui que veio, ok?
+
+1089
+01:17:17,264 --> 01:17:21,216
+Vamos olhar aqui.
+sectionIndexTitleForTableView.
+
+1090
+01:17:21,216 --> 01:17:26,776
+Ele diz..
+fetchedResultsController sectionIndexTitle, ok?
+
+1091
+01:17:26,776 --> 01:17:30,758
+Vamos olhar...
+CoreDataTableView... one está?
+
+1092
+01:17:30,758 --> 01:17:36,082
+Aqui, bem aqui. Vê?
+Isso é...
+
+1093
+01:17:36,082 --> 01:17:41,277
+é o que o CoreDataTableViewController é.
+E as coisas aqui embaixo
+
+1094
+01:17:41,277 --> 01:17:45,819
+que também vieram daqui,
+de algum lugar. Algum lugar aqui.
+
+1095
+01:17:45,819 --> 01:17:49,262
+É daqui que veio.
+É isso que o CoreDataTableView é.
+
+1096
+01:17:49,262 --> 01:17:52,696
+Você poderia dizer que eu escervi,
+mas eu não escrevi muito.
+
+1097
+01:17:52,696 --> 01:17:56,615
+Eu basicamente copiei e colei.
+E a única coisa que eu escrevi foram
+
+1098
+01:17:56,615 --> 01:17:59,439
+esses dois métodos. Mas eles estão
+basicamente fazendo uns loggings
+
+1099
+01:17:59,439 --> 01:18:01,822
+e, sabe, dizendo o que está acontecendo.
+
+1100
+01:18:01,822 --> 01:18:05,664
+Mas não é muito código, na verdade.
+
+1101
+01:18:05,664 --> 01:18:09,609
+Vocês podem olhar lá também.
+
+1102
+01:18:09,609 --> 01:18:13,996
+Outras perguntas?
+Ok. É isso. Vejo vocês semana que vem.
+
+1103
+01:18:13,996 --> 01:18:17,996
+Visite nosso site:
+www.centraldosapps.com

@@ -1,0 +1,7454 @@
+1
+00:00:00,169 --> 00:00:08,150
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:07,169 --> 00:00:08,169
+
+
+
+3
+00:00:08,169 --> 00:00:15,740
+>> Bem-vindos à aula 7
+do curso CS193P, inverno de 2013.
+
+4
+00:00:15,759 --> 00:00:18,809
+Hoje nós vamos falar sobre
+outra feature
+
+5
+00:00:18,829 --> 00:00:22,620
+de Objective-C, ok?
+Chamada "Protocols".
+
+6
+00:00:22,640 --> 00:00:26,989
+é também um conceito meio ligado
+a programação orientada a objetos que
+
+7
+00:00:27,009 --> 00:00:29,459
+eu aprendi no decorrer dos anos
+dando esse curso, que eles não
+
+8
+00:00:29,459 --> 00:00:34,309
+são ensinados necessariamente
+nos cursos CS106 A e B. 
+
+9
+00:00:34,329 --> 00:00:36,879
+Porém é um assunto bem direto
+e eu vou apenas mostrar para vocês
+
+10
+00:00:36,879 --> 00:00:39,629
+do tipo "é assim que nós usamos"
+e eu acredito que
+
+11
+00:00:39,629 --> 00:00:40,629
+vocês vão entender.
+
+
+12
+00:00:40,629 --> 00:00:43,379
+Então nós vamos falar
+sobre a view mais poderosa
+
+13
+00:00:43,379 --> 00:00:47,839
+até agora, que é a UICollectionView.
+E a razão pela qual
+
+14
+00:00:47,859 --> 00:00:50,239
+eu vou falar sobre UICollectionView
+nesse ponto, é que eu quero começar a falar
+
+15
+00:00:50,259 --> 00:00:53,039
+sobre "delegates"
+e "datasources".
+
+16
+00:00:53,059 --> 00:00:56,209
+Se você lembrar,
+voltando para a discussão de MVC que tivemos
+
+17
+00:00:56,229 --> 00:00:58,979
+na primeira aula, eu disse a vocês
+que existia um "target-action",
+
+18
+00:00:58,979 --> 00:01:01,479
+e eu falém também que
+existiam essas coisas: "delegates" e
+
+19
+00:01:01,479 --> 00:01:03,479
+"datasources" Algo como
+um mecanismo de comunicação às cegas
+
+20
+00:01:03,479 --> 00:01:06,780
+entre view e controller.
+Bom, UICollectionView é uma view,
+
+21
+00:01:06,799 --> 00:01:10,159
+uma view muito poderosa,
+que precisa que os seus dados venham
+
+22
+00:01:10,179 --> 00:01:14,030
+de algum outro lugar, porque uma view
+não pode possuir seus dados
+
+23
+00:01:14,049 --> 00:01:17,159
+então ela tem seu protocolo,
+que é o motivo pelo qual vamos falar sobre protocolos,
+
+24
+00:01:17,179 --> 00:01:19,429
+para poder fazer isso.
+Então é sobre isso que eu vou falar hoje.
+
+25
+00:01:19,429 --> 00:01:20,429
+E então, na demo,
+
+
+26
+00:01:20,429 --> 00:01:23,429
+eu vou mostrar como usar
+
+
+27
+00:01:23,429 --> 00:01:25,679
+UICollectionView, pegando a nossa
+PlayingCardView que criamos
+
+28
+00:01:25,679 --> 00:01:28,429
+na nossa última demo
+e integrá-la ao Matchismo,
+
+29
+00:01:28,429 --> 00:01:32,420
+ok? E então, a tarefa de casa
+vai ser pegar
+
+30
+00:01:32,439 --> 00:01:36,719
+a versão do "set"
+que vocês setaram no
+
+31
+00:01:36,739 --> 00:01:39,900
+PlayingCardMatchingGame que vocês
+fizeram, e agora usar
+
+32
+00:01:39,920 --> 00:01:42,980
+uma "custom view" para desenhar
+as "set cards" elegantemente,
+
+33
+00:01:43,000 --> 00:01:45,239
+ao invés de usar attributed string
+e usar apenas triângulos e círculos
+
+34
+00:01:45,239 --> 00:01:48,879
+e quadrados. E agora você pode
+fazer um rabisco e uma forma oval
+
+35
+00:01:48,899 --> 00:01:49,899
+e todas essas coisas
+
+
+36
+00:01:49,899 --> 00:01:53,530
+para fazê-lo ficar bem,
+bem bonito, ok?
+
+37
+00:01:53,549 --> 00:01:56,819
+É isso que vamos fazer hoje.
+Certo, então "protocol"
+
+38
+00:01:56,839 --> 00:02:00,899
+é uma feature de Objective-C.
+O problema com o "id",
+
+39
+00:02:00,919 --> 00:02:03,619
+todos vocês provavelmente entendem isso,
+é que é difícil de comunicar
+
+40
+00:02:03,619 --> 00:02:07,590
+sua intenção com a sua API,
+seus métodos públicos
+
+41
+00:02:07,609 --> 00:02:10,669
+e até com seus métodos privados.
+É difícil de comunicar
+
+42
+00:02:10,689 --> 00:02:14,189
+o que que você quer ou
+o que você quis dizer quando você usa "id"
+
+43
+00:02:14,189 --> 00:02:17,749
+porque "id" é um ponteiro para
+uma classe desconhecida. Então é quase como
+
+44
+00:02:17,769 --> 00:02:20,560
+se você não soubesse
+o que está acontecendo, ok? É verdade,
+
+45
+00:02:20,560 --> 00:02:23,889
+você poderia usar introspecção,
+mas na verdade, introspecção é mais
+
+46
+00:02:23,909 --> 00:02:27,979
+algo para se certificar em run-time.
+Para você não ficar usando algo
+
+47
+00:02:28,000 --> 00:02:30,599
+que é de uma classe diferente
+da que você acha, ok?
+
+48
+00:02:30,620 --> 00:02:32,889
+Ou, para ter certeza que algo
+é subclasse de alguma outra classe
+
+49
+00:02:32,889 --> 00:02:35,889
+porque vocÊ quer usar a subclasse
+como nós fizemos com PlayingCard.
+
+50
+00:02:35,889 --> 00:02:38,139
+Mas introspecção não é
+realmente como um paradigma
+
+51
+00:02:38,139 --> 00:02:40,919
+primário de programação, ok?
+Não é uma parte fundamental
+
+52
+00:02:40,939 --> 00:02:43,239
+de programação orientada a objetos,
+de maneira nenhuma, ok?
+
+53
+00:02:43,239 --> 00:02:44,239
+Então nós precisamos de
+
+
+54
+00:02:44,239 --> 00:02:48,139
+um modo de fazer "id", que
+é na verdade um mecanismo muito poderoso,
+
+55
+00:02:48,159 --> 00:02:55,579
+mais palatável, mais usável,
+mais programável. E nós vamos
+
+56
+00:02:55,599 --> 00:03:00,349
+fazer isso com protocols.
+Protocols são uma modificação sintática
+
+57
+00:03:00,370 --> 00:03:07,239
+muito simples em Objective-C
+para modificar um "id".
+
+58
+00:03:07,259 --> 00:03:09,949
+E o que ele faz, basicamente,
+é apenas ter esses sinas "< >"
+
+59
+00:03:09,949 --> 00:03:13,429
+e o nome do protocolo depois do "id".
+Na verdade, poderia ser depois
+
+60
+00:03:13,449 --> 00:03:17,569
+de um tipo estático também.
+Mas esses sinais "< >"
+
+61
+00:03:17,590 --> 00:03:20,839
+mais o nome do protocolo
+significam apenas: "ok, esse ponteiro
+
+62
+00:03:20,859 --> 00:03:24,059
+para um objeto, ele pode ser de uma
+classe desconhecida, mas ele implementa
+
+63
+00:03:24,079 --> 00:03:28,069
+esses métodos", ok? É apenas um modo
+de dizer que esse objeto implementa
+
+64
+00:03:28,090 --> 00:03:30,489
+esses métodos, independentemente
+da sua classe ou qualquer outra coisa,
+
+65
+00:03:30,489 --> 00:03:33,560
+mesmo que for um ponteiro para
+uma classe desconhecda, nós podemos
+
+66
+00:03:33,560 --> 00:03:36,419
+ter certeza que ele implementa
+esses métodos, ok? Pelo menos
+
+67
+00:03:36,439 --> 00:03:39,569
+aqueles que são "required" no protocol.
+Vamos dar uma olhada na sintaxe
+
+68
+00:03:39,590 --> 00:03:42,839
+para declarar um protocol, ok?
+Essa é a cara dela.
+
+69
+00:03:42,859 --> 00:03:46,149
+Ele parece muito com "@interface", ok?
+Quase exatamente a mesma coisa
+
+70
+00:03:46,169 --> 00:03:48,590
+que "@interface", mas não há
+
+
+71
+00:03:48,590 --> 00:03:51,689
+"@implementation" porque tudo
+que você está fazendo aqui é definindo
+
+72
+00:03:51,709 --> 00:03:55,189
+uma lista de métodos. Você não está
+definindo a implementação
+
+73
+00:03:55,209 --> 00:04:00,419
+de nenhum método,
+apenas uma lista deles, ok? Então aqui temos
+
+74
+00:04:00,439 --> 00:04:04,329
+6 métodos na verdade, porque
+uma das propriedades é
+
+75
+00:04:04,349 --> 00:04:06,979
+"readwrite", então ela tem
+um setter e um getter. Ok, nós
+
+76
+00:04:06,979 --> 00:04:09,479
+basicamente estamos declarando um setter
+e um getter aqui quando colocamos
+
+77
+00:04:09,479 --> 00:04:12,729
+uma property em um protocol.
+Mas vocês podem ver que ele se parece
+
+78
+00:04:12,729 --> 00:04:16,209
+com um "@interface", ok?
+Agora, vocês... todos esses métodos,
+
+79
+00:04:16,229 --> 00:04:20,410
+do modo como eu descrevi
+esse protocol aqui em cima, todas essas coisas
+
+80
+00:04:20,430 --> 00:04:23,550
+vão ser "required". Se você quiser
+ter um ponteiro para um objeto
+
+81
+00:04:23,569 --> 00:04:27,060
+de qualquer classe que implemente
+esse protocolo,
+
+82
+00:04:27,079 --> 00:04:30,329
+ele terá que implementar
+todos esses 6 métodos.
+
+83
+00:04:30,349 --> 00:04:33,350
+O setter e o getter para
+a property readwrite. Na verdade
+
+84
+00:04:33,370 --> 00:04:35,870
+a property readwrite precisaria
+de um tipo ali. Bom, tanto faz, é a mesma coisa.
+
+85
+00:04:35,870 --> 00:04:40,050
+Isso é meio que uma abstração aqui.
+Mas ele teria que implementar
+
+86
+00:04:40,069 --> 00:04:43,069
+todos esses 6 se ele
+quisesse dizer que
+
+87
+00:04:43,069 --> 00:04:44,069
+o objeto implementa esse protocol.
+
+88
+00:04:44,069 --> 00:04:48,319
+Ok? Mas vocês podem fazer
+alguns deles serem opcionais, certo?
+
+89
+00:04:48,339 --> 00:04:52,470
+Se você colocar aqui
+um pequeno "@optional" então
+
+90
+00:04:52,490 --> 00:04:53,490
+todos os métodos
+
+
+91
+00:04:53,490 --> 00:04:57,470
+depois disso até o fim, serão opcionais.
+Então, se eu fizer isso,
+
+92
+00:04:57,490 --> 00:05:01,550
+então "someMethod" é o único
+método obrigatório (required) e
+
+93
+00:05:01,569 --> 00:05:04,039
+então eu poderia colocar
+um "@required" aqui
+
+94
+00:05:04,039 --> 00:05:05,039
+e todos eles seriam obrigatórios
+
+
+95
+00:05:05,039 --> 00:05:08,199
+novamente. Então, se eu colocar um
+"@required", o único método opcional
+
+96
+00:05:08,219 --> 00:05:14,000
+seria o "methodWithArgument:".
+Todo o resto das coisas
+
+97
+00:05:14,019 --> 00:05:17,399
+seriam required, ok? Vocês vêem?
+Esse "@optional"
+
+98
+00:05:17,419 --> 00:05:18,419
+e "@required"
+
+99
+00:05:18,419 --> 00:05:21,639
+meio que ligam e desligam
+a "opcionalidade". Eles são
+
+100
+00:05:21,659 --> 00:05:24,750
+opostos e eles desligam
+a "opcionalidade" dos métodos.
+
+101
+00:05:24,769 --> 00:05:27,620
+Então, fazendo isso você pode
+basicamente definir uma lista de métodos
+
+102
+00:05:27,639 --> 00:05:30,500
+incluindo propriedades, setters
+e getters, alguns dos quais
+
+103
+00:05:30,519 --> 00:05:33,870
+são opctionais, alguns dos quais
+são obrigatórios, ok? Essa é
+
+104
+00:05:33,889 --> 00:05:37,250
+declaração desse negócio.
+Agora você pode também colocar
+
+105
+00:05:37,269 --> 00:05:41,209
+"< >" e o nome de outro protocol,
+
+
+106
+00:05:41,229 --> 00:05:42,229
+depois do "@protocol",
+
+
+107
+00:05:42,229 --> 00:05:46,310
+vocês estão vendo? "Xyzzy"?
+E isso significa que,
+
+108
+00:05:46,329 --> 00:05:48,979
+se você quiser dizer que implementa
+o protocol "foo", você não apenas
+
+109
+00:05:48,979 --> 00:05:51,469
+precisa implementar todos os métodos
+required abaixo, mas precisa também
+
+110
+00:05:51,469 --> 00:05:56,030
+implementar todos os
+métodos required de "Xyxxy", ok?
+
+111
+00:05:56,050 --> 00:05:58,470
+Então ele está tipo
+colocando requisitos adicionais
+
+112
+00:05:58,490 --> 00:06:02,230
+no protocol e você pode até ter
+múltiplos protocols que você
+
+113
+00:06:02,250 --> 00:06:06,040
+necessita. Então,
+se você implementa o protocol
+
+114
+00:06:06,060 --> 00:06:09,030
+"foo", você tem que implementar
+todos os métodos required ali
+
+115
+00:06:09,050 --> 00:06:11,349
+e você tem que implementar
+todos os métodos required
+
+116
+00:06:11,349 --> 00:06:14,350
+no "Xyzzy". E você tem que implementar
+todos os métodos required
+
+117
+00:06:14,370 --> 00:06:18,069
+em outro protocol,
+chamado NSObeject, ok? Agora, NSObject
+
+118
+00:06:18,089 --> 00:06:21,240
+é um protocol interessante,
+definido pelo iOS e eu vou falar
+
+119
+00:06:21,259 --> 00:06:24,720
+sobre isso. O protocol NSObject
+tem métodos nele tipo
+
+120
+00:06:24,740 --> 00:06:29,420
+"isEqual:", "isKindOfClass:",
+"description", todas essas
+
+121
+00:06:29,439 --> 00:06:32,699
+coisas maravilhosas que usamos
+na classe NSObject, eles colocam
+
+122
+00:06:32,719 --> 00:06:35,910
+nesse protocol e eles
+fizeram a classe NSObject
+
+123
+00:06:35,930 --> 00:06:39,589
+implementar esse protocol.
+Então sempre que você tiver um objeto
+
+124
+00:06:39,609 --> 00:06:42,769
+que herda de NSObject,
+que são 100% dos objetos
+
+125
+00:06:42,789 --> 00:06:46,699
+que nós vamos usar no iOS...
+sempre herdam de NSObject
+
+126
+00:06:46,719 --> 00:06:49,759
+em algum ponto das heranças.
+Então todos eles implementam
+
+127
+00:06:49,779 --> 00:06:52,720
+o protocol NSObject, então porque
+você iria querer definir um protocol
+
+128
+00:06:52,740 --> 00:06:57,209
+que exige um protocol NSObject?
+Bom, porque
+
+129
+00:06:57,229 --> 00:07:00,740
+você quer que esse protocol
+tenha certeza que ele está falando
+
+130
+00:07:00,759 --> 00:07:03,759
+com um NSObject. E então você pode
+fazer coisas como "isKindOfClass"
+
+131
+00:07:03,759 --> 00:07:07,009
+dentro dele, se você realmente quiser,
+embora isso seria meio estranho.
+
+132
+00:07:07,009 --> 00:07:09,259
+Mas você poderia certamente
+dizer "description"
+
+133
+00:07:09,259 --> 00:07:12,009
+e receber uma NSString de descrição dele,
+coisas assim, ok?
+
+134
+00:07:12,009 --> 00:07:14,879
+Então vocês vão ver que
+o NSObject é tipo um sub-protocol
+
+135
+00:07:14,879 --> 00:07:17,990
+exigido de várias declarações
+de protocol e que isso significa
+
+136
+00:07:18,009 --> 00:07:20,259
+apenas que embora o objeto
+
+
+137
+00:07:20,259 --> 00:07:21,259
+precise ser apenas
+
+
+138
+00:07:21,259 --> 00:07:23,319
+um ponteiro para uma classe desconhecida,
+ele pelo menos implementa esses
+
+139
+00:07:23,319 --> 00:07:24,319
+nove ou dez métodos
+
+
+140
+00:07:24,319 --> 00:07:26,969
+do NSObject,
+o que essencialmente
+
+141
+00:07:26,989 --> 00:07:27,989
+quer dizer que ele
+
+
+142
+00:07:27,989 --> 00:07:31,189
+é um NSObject, o que faz sentido,
+pois todos os objetos
+
+143
+00:07:31,209 --> 00:07:33,209
+são NSObjects, então
+tudo isso vem de graça, ok?
+
+144
+00:07:33,209 --> 00:07:37,829
+Certo, onde essas declarações
+"@protocol" vão?
+
+145
+00:07:37,849 --> 00:07:41,250
+Bom, elas vão em arquivos header,
+do mesmo modo que "@interface"...
+
+146
+00:07:41,269 --> 00:07:42,269
+que as @interfaces públicas
+
+
+147
+00:07:42,289 --> 00:07:46,000
+vão. Elas podem ir tanto
+no seu próprio arquivo header,
+
+148
+00:07:46,019 --> 00:07:49,819
+e você pode importá-los
+em diferentes lugares ou,
+
+149
+00:07:49,839 --> 00:07:53,639
+mais comumente, eles podem ir
+no arquivo header da classe
+
+150
+00:07:53,659 --> 00:07:56,439
+que usa esse protocol, ok?
+Ou essa classe quer que alguém mais
+
+151
+00:07:56,459 --> 00:08:00,560
+use esse protocol. Em outras palavras,
+várias vezes os protocols
+
+152
+00:08:00,579 --> 00:08:03,079
+estão amarrados fortemente a outra classe.
+Por exemplo, existe um protocol
+
+153
+00:08:03,079 --> 00:08:06,649
+no iOS chamado ScrollViewDelegate, ok?
+Esse é um protocol
+
+154
+00:08:06,669 --> 00:08:10,529
+que o objeto ScrollView
+usa para falar para outras pessoas
+
+155
+00:08:10,549 --> 00:08:12,879
+o que está acontecendo
+quando ocorre um scrolling,
+
+156
+00:08:12,879 --> 00:08:15,129
+esse tipo de coisa.
+É fortemente amarrado ao ScrollView.
+
+157
+00:08:15,129 --> 00:08:16,129
+Então
+
+
+158
+00:08:16,129 --> 00:08:18,750
+@protocol UIScrollViewDelegate
+é definido
+
+159
+00:08:18,769 --> 00:08:22,139
+no UIScrollView.h
+O no mesmo lugar onde está
+
+160
+00:08:22,159 --> 00:08:27,199
+a classe UIScrollView, certo?
+Faz total sentido. Certo,
+
+161
+00:08:27,219 --> 00:08:31,269
+então eu tenho um protocol declarado,
+agora o que eu faço com ele?
+
+162
+00:08:31,289 --> 00:08:32,289
+Eu tenho classes
+
+163
+00:08:32,289 --> 00:08:35,570
+que dizem que podem prometer
+que vão implementar
+
+164
+00:08:35,590 --> 00:08:41,580
+esse protocol e quando você
+faz essa promessa "@protocol",
+
+165
+00:08:41,600 --> 00:08:42,600
+ok? Quando você promete,
+
+
+166
+00:08:42,600 --> 00:08:44,459
+como uma classe,
+que vai fazer "@protocol",
+
+167
+00:08:44,459 --> 00:08:45,459
+você pode tanto fazer
+
+
+168
+00:08:45,459 --> 00:08:48,500
+uma promessa pública,
+colocando-o na sua @interface pública
+
+169
+00:08:48,519 --> 00:08:51,820
+ou você pode fazer
+uma promessa privada, colocando-o
+
+170
+00:08:51,840 --> 00:08:54,090
+no seu @interface privado.
+Então, qual é a cara disso?
+
+171
+00:08:54,090 --> 00:08:55,090
+Aqui eu tenho
+
+
+172
+00:08:55,090 --> 00:08:58,759
+uma classe, MyClass,
+e ela herda de NSObject,
+
+173
+00:08:58,779 --> 00:09:03,070
+mas ela está prometendo que
+implementa "Foo", ok? Vêem como
+
+174
+00:09:03,090 --> 00:09:06,429
+está na linha da interface? Basta
+colocar o "<Foo>" no final.
+
+175
+00:09:06,449 --> 00:09:09,649
+Então está apenas dizendo:
+ok, é, eu sou o MyClass, eu herdo de
+
+176
+00:09:09,649 --> 00:09:12,399
+NSObject e eu prometo implementar
+
+177
+00:09:12,399 --> 00:09:14,399
+todos os métodos required de Foo".
+Isso é tudo que
+
+178
+00:09:14,399 --> 00:09:15,399
+essa linha de código diz.
+
+
+179
+00:09:15,399 --> 00:09:18,659
+Ou, na sua @interface privada,
+aquela com os parentesis,
+
+180
+00:09:18,679 --> 00:09:20,679
+aquela que vai junto
+com o seu arquivo de implementação,
+
+181
+00:09:20,679 --> 00:09:23,679
+você poderia colocá-lo lá ao invés.
+Você não poderia colocar em ambos,
+
+182
+00:09:23,679 --> 00:09:27,069
+você pode colocar em um ou no outro.
+Em qualquer um dos casos,
+
+183
+00:09:27,069 --> 00:09:28,889
+é melhor que você implemente
+os métodos required
+
+184
+00:09:28,889 --> 00:09:29,889
+de "Foo" na sua
+
+
+185
+00:09:29,889 --> 00:09:33,960
+implementação ou o compilador
+vai reclamar, ok?
+
+186
+00:09:33,980 --> 00:09:39,080
+O compiler vai estar vigiando
+o que você diz, que você vai se comprometer
+
+187
+00:09:39,100 --> 00:09:41,699
+a implementar e é melhor que você o faça,
+ou ele vai te dar warnings.
+
+188
+00:09:41,699 --> 00:09:45,809
+E vocês verão isso na demo hoje.
+
+
+189
+00:09:45,829 --> 00:09:48,329
+Então a classe agora
+tem que implementar todos os métodos
+
+190
+00:09:48,329 --> 00:09:51,220
+não-opcionais. Vocês podem pensar
+nos métodos @optional como sendo
+
+191
+00:09:51,240 --> 00:09:53,639
+métodos que dizem: "ei!
+se você implementar esse método
+
+192
+00:09:53,639 --> 00:09:54,639
+eu vou usá-lo.
+
+
+193
+00:09:54,639 --> 00:09:57,839
+Mas se você não implementar,
+eu não vou fazer isso, o que quer que seja".
+
+194
+00:09:57,839 --> 00:10:01,740
+E o @required é: "ei,
+se você quer que isso funcione,
+
+195
+00:10:01,759 --> 00:10:04,509
+você tem que implementar isso,
+é por isso que fizeram isso
+
+196
+00:10:04,509 --> 00:10:09,169
+ser uma exigência", ok?
+Bem óbvio. E agora?
+
+197
+00:10:09,189 --> 00:10:11,689
+Vocês tem os protocols,
+vocês tem classes que prometem implementá-los.
+
+198
+00:10:11,689 --> 00:10:16,870
+Agora nós precisamos de variáveis para,
+que podem segurar objetos que
+
+199
+00:10:16,889 --> 00:10:19,879
+apontam para esses objetos,
+esses objetos que prometeram
+
+200
+00:10:19,899 --> 00:10:23,139
+implementar um protocol.
+Isso é mais ou menos assim.
+
+201
+00:10:23,159 --> 00:10:26,850
+Eu teria uma variável chamada "obj"
+que é do tipo "id <Foo>".
+
+202
+00:10:26,870 --> 00:10:31,809
+Esse é o tipo inteiro dela.
+"id <Foo>" e o que isso significa...
+
+203
+00:10:31,829 --> 00:10:34,879
+isso signfica que isso é um ponteir
+para um objeto de
+
+204
+00:10:34,879 --> 00:10:37,879
+qualquer classe, mas que implementa
+esses métodos "Foo". Então se eu disser
+
+205
+00:10:37,879 --> 00:10:40,769
+[ditando código]
+
+
+206
+00:10:40,789 --> 00:10:43,840
+isso é um vencedor, porque no
+slide anterior
+
+207
+00:10:43,860 --> 00:10:46,669
+eu defini que minha classe
+prometeu implentar "Foo".
+
+208
+00:10:46,689 --> 00:10:50,909
+O compilar não vai ter nenhuma reclamação.
+Mas se você disser "id <Foo> obj ...
+
+209
+00:10:50,929 --> 00:10:54,710
+= [NSArray array]", o compiler
+vai dizer: bom, NSArray 
+
+210
+00:10:54,730 --> 00:10:58,649
+não implementa "Foo". Ok?
+É exatamente o que vocês esperariam.
+
+211
+00:10:58,669 --> 00:11:02,340
+Agora, você pode não apenas declarar variáveis,
+variáveis locais
+
+212
+00:11:02,360 --> 00:11:06,569
+e propriedades para serem "id <Foo>".
+E, novamente,
+
+213
+00:11:06,589 --> 00:11:09,319
+você poderia ter
+um tipo estático aqui, ok?
+
+214
+00:11:09,319 --> 00:11:12,569
+Isso iria significar que ele precisa ser
+ambos daquele tipo estático,
+
+215
+00:11:12,569 --> 00:11:15,779
+como ter que implementar aqueles métodos.
+Nós não fazemos muito isso no iOS,
+
+216
+00:11:15,779 --> 00:11:20,759
+normalmente nós vamos com "id",
+mas você poderia.
+
+217
+00:11:20,779 --> 00:11:23,100
+Você pode usá-los como
+argumentos de métodos também.
+
+218
+00:11:23,100 --> 00:11:24,779
+Um tipo de retorno de métodos,
+
+219
+00:11:24,799 --> 00:11:27,259
+ok? Vêem o que aconteceu aqui?
+Eu tenho uma property, por exemplo,
+
+220
+00:11:27,259 --> 00:11:29,759
+"id <Foo> myFooProperty".
+Isso irá declarar um setter
+
+221
+00:11:29,759 --> 00:11:32,759
+e um getter.
+O setter irá receber
+
+222
+00:11:32,759 --> 00:11:35,509
+um "id <Foo>" como argumento
+e o getter vai retornar
+
+223
+00:11:35,509 --> 00:11:38,419
+um "id <Foo>" como
+valor de retorno.
+
+224
+00:11:38,419 --> 00:11:42,059
+Se você chamou "myFooProperty"
+e você tem esse "id <Foo>,
+
+225
+00:11:42,079 --> 00:11:45,730
+você poderia enviar uma mensagem "Foo".
+Qualquer um dos métodos required em "Foo".
+
+226
+00:11:45,750 --> 00:11:48,750
+Você poderia enviá-los para essa coisa
+e ele não iria crashar.
+
+227
+00:11:48,750 --> 00:11:52,220
+O compiler iria estar ok com isso.
+Porque você sabe que,
+
+228
+00:11:52,240 --> 00:11:54,909
+essa coisa precisa implementar "Foo"
+ou o compiler iria ter reclamado, ok?
+
+229
+00:11:54,929 --> 00:12:01,259
+Porém assim como a tipagem estática,
+"NSString *" ou qualquer
+
+230
+00:12:01,279 --> 00:12:04,330
+coisa assim, isso é apenas
+o compilador tentando te ajudar.
+
+231
+00:12:04,350 --> 00:12:08,049
+Nada disso importa no run-time.
+Então, se você fizer um cast
+
+232
+00:12:08,069 --> 00:12:13,699
+uo se você atribuir um "id"
+para um "id <Foo>" aqui, você ainda
+
+233
+00:12:13,719 --> 00:12:16,219
+poderia estar em uma situação
+que, em run-time, vai dar um crash
+
+234
+00:12:16,219 --> 00:12:18,469
+porque essa coisa na verdade não implementa
+os métodos "Foo", ok?
+
+235
+00:12:18,469 --> 00:12:22,870
+Então é apenas o compular, sabe,
+"syntatic sugar" (Wikipedia!)
+
+236
+00:12:22,889 --> 00:12:25,669
+Então, sempre que você fizer
+cast e coisas assim,
+
+237
+00:12:25,689 --> 00:12:28,689
+você burla o que o compilador
+está tentando fazer. Bom, agora em run-time,
+
+238
+00:12:28,689 --> 00:12:32,929
+isso pode crashar. Objective-C
+é realmente-- suas mensagens
+
+239
+00:12:32,949 --> 00:12:36,879
+são sempre baseadas em run-time,
+e ele faz todos as checagens de tipo
+
+240
+00:12:36,899 --> 00:12:40,539
+no compiler, ok? O compiler
+é a coisa que faz o parse
+
+241
+00:12:40,559 --> 00:12:43,309
+e o compiler é realmente o negócio
+que está checando os tipos para você.
+
+242
+00:12:43,309 --> 00:12:47,490
+Ok? E eu quero dizer... 
+pensem nesse negócio de
+
+243
+00:12:47,509 --> 00:12:50,439
+"if <Foo>" como uma
+poderosa documentação sempre que
+
+244
+00:12:50,459 --> 00:12:55,779
+você precisar usar "id", ok?
+Você pode usar "id" dizendo que ele vai receber
+
+245
+00:12:55,799 --> 00:12:57,949
+qualquer argumento ou qualquer classe,
+mas eu quero ter certeza que ele implementa
+
+246
+00:12:57,949 --> 00:13:00,199
+esses métodos. É como se fosse
+documentação. Até os opcionais
+
+247
+00:13:00,199 --> 00:13:02,449
+são como documentação que diz:
+eu, eu estou esperando por esse método,
+
+248
+00:13:02,449 --> 00:13:05,199
+mesmo que você não exija ele,
+eu estou esperando por ele.
+
+249
+00:13:05,199 --> 00:13:07,949
+Então se você implementá-lo,
+alguma coisa boa pode acontecer".
+
+250
+00:13:07,949 --> 00:13:10,519
+E você pode documentar
+o que ele faz. Ok,
+
+251
+00:13:10,519 --> 00:13:11,519
+o uso número 1 de protocols
+
+
+252
+00:13:11,519 --> 00:13:14,669
+no iOS são esses delegates
+e datasources, voltando ao MVC, ok?
+
+253
+00:13:14,689 --> 00:13:17,829
+O que é apenas outra maneira
+para as views e controllers
+
+254
+00:13:17,849 --> 00:13:21,529
+conversarem entre elas
+às cegas, porque eles são "id",
+
+255
+00:13:21,549 --> 00:13:24,919
+mas de uma forma estruturada.
+Que está documentada. Ou seja,
+
+256
+00:13:24,939 --> 00:13:28,659
+o protocol que eles vão usar, certo?
+Esses métodos que
+
+257
+00:13:28,679 --> 00:13:31,980
+a view vai enviar para o controller
+para receber a informação
+
+258
+00:13:32,000 --> 00:13:35,250
+que ela precisa,
+ou para dizer o que está acontecendo.
+
+259
+00:13:35,259 --> 00:13:37,480
+Ela não tem udéia de que classe
+é o controller, mas ela sabe que
+
+260
+00:13:37,480 --> 00:13:40,659
+o controller implementa os seus
+métodos de delegate. Então ela pode
+
+261
+00:13:40,679 --> 00:13:43,819
+enviar os métodos de delegates para ele.
+Agora, se existirem
+
+262
+00:13:43,839 --> 00:13:46,469
+métodos opcionais lá,
+então o que a view pode fazer é usar
+
+263
+00:13:46,469 --> 00:13:49,209
+introspecção e dizer: bom, deixe-me ver
+se ele implementa aquele método.
+
+264
+00:13:49,209 --> 00:13:52,379
+Oh, ele implementa, então vou enviar para ele.
+Oh, ele não implementa?...
+
+265
+00:13:52,379 --> 00:13:55,879
+ok, então eu não vou enviar".
+Vários métodos
+
+266
+00:13:55,879 --> 00:13:59,850
+nos delegtes e datasources no iOS
+são opcionais. Não todos,
+
+267
+00:13:59,870 --> 00:14:02,469
+mas alguns são e vocês verão novamente
+na demo hoje, vocês verão
+
+268
+00:14:02,469 --> 00:14:04,539
+um que nós vamos fazer
+que é optional
+
+269
+00:14:04,539 --> 00:14:05,539
+e outros tantos
+
+
+270
+00:14:05,539 --> 00:14:10,889
+que são required.
+Espero que isso tudo faça sentido.
+
+271
+00:14:10,909 --> 00:14:15,049
+E datasources e views, ok?
+Datasource é super importante
+
+272
+00:14:15,069 --> 00:14:18,990
+para as views, porque as views
+não podem possuir os dados, certo?
+
+273
+00:14:19,009 --> 00:14:21,269
+Isso é algo fundamental no MVC.
+Elas não podem possuir
+
+274
+00:14:21,269 --> 00:14:24,379
+seus próprios dados. Elas tem que
+confiar em outra pessoa para guardar
+
+275
+00:14:24,379 --> 00:14:27,629
+os dados e fornecê-los quando elas precisarem.
+E é isso que faz o
+
+276
+00:14:27,629 --> 00:14:30,129
+protocol datasource.
+E nós vamos ver o protocol
+
+277
+00:14:30,129 --> 00:14:33,110
+datasource para UICollectionView hoje.
+E isso é muito mais fácil de entender
+
+278
+00:14:33,129 --> 00:14:35,250
+por exemplos,
+quando vocês virem algo
+
+279
+00:14:35,250 --> 00:14:37,219
+que está usando um datasource,
+como um CollectionView.
+
+280
+00:14:37,219 --> 00:14:39,969
+Vocês vão ficar tipo: "oh, estou vendo!"
+É algo bem direto. 
+
+281
+00:14:39,969 --> 00:14:42,529
+Mas eu vou mostrar outro exemplo,
+para que vocês possam
+
+282
+00:14:42,529 --> 00:14:46,059
+comparar e fazer o contraste,
+que é o ScrollView, ok?
+
+283
+00:14:46,079 --> 00:14:49,350
+Então aqui está o delegate
+do UIScrollView, ou pelo menos uma parte
+
+284
+00:14:49,370 --> 00:14:50,370
+porque eu quero que isso
+
+
+285
+00:14:50,370 --> 00:14:53,120
+ocupe apenas um slide.
+Uma pequena parte
+
+286
+00:14:53,120 --> 00:14:54,899
+do protocol UIScrollViewDelegate.
+Existem cerca de 12 métodos
+
+287
+00:14:54,899 --> 00:14:57,559
+lá. Aqui estão alguns deles, certo?
+Percebam que todos eles
+
+288
+00:14:57,559 --> 00:15:00,350
+são opcionais. Ele diz
+"@optional" no começo,
+
+289
+00:15:00,370 --> 00:15:01,370
+Todos eles são opcionais.
+
+
+290
+00:15:01,370 --> 00:15:05,230
+E aqui está
+a interface de UIScrollView,
+
+291
+00:15:05,250 --> 00:15:09,220
+que é algo do iOS para
+scrollar por aí. E vocês podem ver
+
+292
+00:15:09,240 --> 00:15:11,879
+que ele tem uma property,
+entre outras coisas que não estou mostrando,
+
+293
+00:15:11,879 --> 00:15:16,409
+que é uma property
+
+
+294
+00:15:16,429 --> 00:15:17,909
+"id <UIScrollViewDelegate> delegate".
+
+
+295
+00:15:17,929 --> 00:15:20,929
+Então, se vocÊ é um controller,
+e na sua view você tem
+
+296
+00:15:20,929 --> 00:15:24,139
+uma ScrollView e você quer
+receber algum dos métodos
+
+297
+00:15:24,159 --> 00:15:27,709
+de delegate,
+você deve setar a você mesmo
+
+298
+00:15:27,729 --> 00:15:30,799
+como o delegate.
+E para isso acontecer sem que o
+
+299
+00:15:30,819 --> 00:15:33,090
+compilador reclame, você deve
+colocar o
+
+300
+00:15:33,110 --> 00:15:36,039
+<UIScrollViewDelegate>
+depois do seu @interface.
+
+301
+00:15:36,059 --> 00:15:37,209
+Todos vocês entenderam
+
+
+302
+00:15:37,229 --> 00:15:39,889
+essa frase inteira?
+Porque isso encapsula tudo.
+
+303
+00:15:39,909 --> 00:15:45,720
+Certo? Se eu tivesse
+MyViewController e ele tivesse
+
+304
+00:15:45,740 --> 00:15:48,490
+uma ScrollView na sua view,
+ele teria que colocar
+
+305
+00:15:48,490 --> 00:15:52,709
+UIScrollViewDelegate no final, vêem?
+Ok? E então ele iria
+
+306
+00:15:52,729 --> 00:15:55,789
+provavelmente ter uma property,
+que é um outlet para o ScrollView
+
+307
+00:15:55,809 --> 00:15:59,679
+e quando, 
+no setter dele,
+
+308
+00:15:59,699 --> 00:16:00,699
+ele poderia dizer
+
+
+309
+00:16:00,699 --> 00:16:04,069
+"self.scrollView.delegate = self",
+o que seria legal,
+
+310
+00:16:04,089 --> 00:16:06,659
+porque o "self" colocou
+"<UIScrollViewDelegate> 
+
+311
+00:16:06,679 --> 00:16:07,679
+na sua linha de interface.
+
+
+312
+00:16:07,679 --> 00:16:12,289
+Ok? E então eu poderia implementar
+qualquer um desses métodos
+
+313
+00:16:12,309 --> 00:16:15,009
+que eu quisesse em ScrollViewDelegate,
+como "viewForZooming...
+
+314
+00:16:15,029 --> 00:16:17,699
+inScrollView:", aqui embaixo,
+e a ScrollView iria me enviar
+
+315
+00:16:17,699 --> 00:16:20,579
+isso agora. Porque eu setei
+eu mesmo como o delegate
+
+316
+00:16:20,579 --> 00:16:24,379
+da ScrollView e implementei
+o seu protocol, então ela vai
+
+317
+00:16:24,399 --> 00:16:27,149
+me enviar. Todos eles são opcionais,
+mas os que eu implementar,
+
+318
+00:16:27,149 --> 00:16:30,559
+ela vai me enviar, ok?
+Antes de continuardmos, alguém tem
+
+319
+00:16:30,579 --> 00:16:31,579
+alguma pergunta sobre isso?
+Sim?
+
+320
+00:16:31,579 --> 00:16:32,579
+>> [Estudante perguntando]
+
+
+321
+00:16:32,579 --> 00:16:36,370
+>> A pergunta é se funcionaria
+se tudo fosse required?
+
+322
+00:16:36,389 --> 00:16:37,389
+Se o delegate
+
+
+323
+00:16:37,389 --> 00:16:40,079
+de UIScrollView fizesse esses métodos
+required, então eu teria
+
+324
+00:16:40,099 --> 00:16:42,849
+que implementar cada um deles
+no meu controller.
+
+325
+00:16:42,849 --> 00:16:45,849
+Então funcionaria, mas eu teria
+que implementar todos eles
+
+326
+00:16:45,849 --> 00:16:49,099
+mesmo se eu não quisesse,
+eu teria que implementá-los. Tipo,
+
+327
+00:16:49,099 --> 00:16:51,599
+eu posso não querer o zooming aqui,
+mas eu ainda teria que implementar
+
+328
+00:16:51,599 --> 00:16:53,849
+esse negócio de zoom, e é por isso
+que eles não são required, porque
+
+329
+00:16:53,849 --> 00:16:54,849
+nem todas as scrollviews tem zoom.
+
+
+330
+00:16:54,849 --> 00:16:56,849
+>> [Estudante perguntando]
+
+
+331
+00:16:56,849 --> 00:16:57,980
+[estudante perguntando]
+
+
+332
+00:16:58,000 --> 00:17:00,860
+>> Ok, a pergunta é:
+como isso se compara
+
+333
+00:17:00,879 --> 00:17:04,819
+a interfaces em Java?
+E é bem parecido, mas converse comigo depois
+
+334
+00:17:04,839 --> 00:17:07,710
+nós falaremos sobre isso
+e eu posso te explicar, porque nós teremos
+
+335
+00:17:07,710 --> 00:17:10,460
+um tempo limitado hoje.
+Mas é bastante similar.
+
+336
+00:17:10,460 --> 00:17:13,460
+É bastante similar a uma
+interface em Java. Quase a mesma coisa.
+
+337
+00:17:13,460 --> 00:17:16,210
+Me disseram que não é falado muito
+sobre interfaces no CS106,
+
+338
+00:17:16,210 --> 00:17:18,869
+por isso que eu não estou
+comparando e fazendo o contraste,
+
+339
+00:17:18,869 --> 00:17:24,069
+mas é similar.
+Ok. Então é isso para protocols.
+
+340
+00:17:24,089 --> 00:17:26,960
+Agora nós vamos falar
+sobre uma view que usa protocols, ok?
+
+341
+00:17:26,960 --> 00:17:29,950
+É fundamental que para
+ela obter seus dados,
+
+342
+00:17:29,970 --> 00:17:34,339
+ela use protocols.
+É chamada UICollectionView. Certo?
+
+343
+00:17:34,359 --> 00:17:37,019
+Ela é uma UIView,
+é uma subclasse de UIView,
+
+344
+00:17:37,019 --> 00:17:38,019
+na verdade é uma subclasse
+
+
+345
+00:17:38,019 --> 00:17:42,220
+de UIScrollView, eu acho,
+que desenha caixinhas
+
+346
+00:17:42,240 --> 00:17:47,500
+e dentro dessas caixinhas
+podem existir quaisquer
+
+347
+00:17:47,519 --> 00:17:50,170
+views que vocês quiserem.
+Botão, um slider, alguns textfield,
+
+348
+00:17:50,190 --> 00:17:51,190
+qualquer coisa.
+
+
+349
+00:17:51,190 --> 00:17:55,240
+Ok? Agora, a realidade é,
+geralmente você coloca uma view customizada
+
+350
+00:17:55,259 --> 00:17:59,809
+dentro dessas caixinhas, ok?
+Mas ela replica essa caixinha
+
+351
+00:17:59,829 --> 00:18:04,559
+quantas vezes o seu model quiser,
+para mostrar coisas
+
+352
+00:18:04,579 --> 00:18:07,629
+múltiplas vezes, ok?
+Então é uma forma de mostrar
+
+353
+00:18:07,649 --> 00:18:11,059
+algo múltiplas vezes, ok?
+Essas pequenas caixinhas são apenas
+
+354
+00:18:11,079 --> 00:18:13,549
+pequenas views que você contrói
+no Xcode, arrasta elas,
+
+355
+00:18:13,549 --> 00:18:18,019
+etc, e ela apenas as replica.
+E essas caixinhas,
+
+356
+00:18:18,039 --> 00:18:20,539
+você pode contruir várias diferentes,
+e elas podem ter
+
+357
+00:18:20,539 --> 00:18:22,599
+tamanhos diferentes e podem
+conter coisas diferentes nelas.
+
+358
+00:18:22,599 --> 00:18:26,500
+Então é uma view incrivelmente poderosa.
+Agora, no nosso uso dela, ok,
+
+359
+00:18:26,519 --> 00:18:27,519
+vocês estão apenas
+
+
+360
+00:18:27,519 --> 00:18:30,269
+aprendendo iOS, então eu vou
+mostrar um uso básico.
+
+361
+00:18:30,269 --> 00:18:33,269
+Nós vamos fazer com que todas
+as caixinhas tenham a mesma coisa nelas
+
+362
+00:18:33,269 --> 00:18:36,269
+que é, na nossa demo, uma PlayingCard.
+Ok? Então nós vamos
+
+363
+00:18:36,269 --> 00:18:38,750
+usar isso para refazer o Matchismo,
+fazendo com que todas as
+
+364
+00:18:38,750 --> 00:18:42,059
+PlayingCards estejam em uma view,
+uma CollectionView. E,
+
+365
+00:18:42,079 --> 00:18:44,899
+na caixinha que vai ser repetida
+várias vezes
+
+366
+00:18:44,899 --> 00:18:47,649
+na CollectionView,
+vai ter uma PlayingCard.
+
+367
+00:18:47,649 --> 00:18:50,649
+E vocês vão ver como nós usamos
+protocol para setar o que está
+
+368
+00:18:50,649 --> 00:18:56,750
+em cada carta, ok? Agora,
+como as caixinhas são colocadas na tela
+
+369
+00:18:56,769 --> 00:19:01,750
+é determinado pelo "layout object"
+do UICollectionView,
+
+370
+00:19:01,769 --> 00:19:05,730
+o iOS tem apenas 1 layout pronto,
+que é chamado "flow layout".
+
+371
+00:19:05,750 --> 00:19:09,109
+Então, "flow layout" é um
+mecanismo de layout que coloca
+
+372
+00:19:09,129 --> 00:19:12,740
+na tela como se fosse texto.
+Texto na lingua inglesa, na verdade. Ok?
+
+373
+00:19:12,759 --> 00:19:16,420
+Esquerda pra direita, e quebra linha.
+Então as caixinhas começam sendo colocadas
+
+374
+00:19:16,440 --> 00:19:20,000
+lá e quando acaba o espaço,
+ela vai para a próxima linha
+
+375
+00:19:20,019 --> 00:19:22,769
+e continua colocando mais caixinhas.
+Acaba o espaço...
+
+376
+00:19:22,769 --> 00:19:25,519
+maix caixas e continua fazendo isso
+e talvez começe a scrollar para baixo.
+
+377
+00:19:25,519 --> 00:19:28,519
+Você pode também fazer a coisa
+fluir de outro modo, onde
+
+378
+00:19:28,519 --> 00:19:31,519
+ela começa colocando caixinhas ebaixo
+e então quando acaba o espaço,
+
+379
+00:19:31,519 --> 00:19:34,519
+ele sobe para a próxima linha,
+coloca mais e sobe
+
+380
+00:19:34,519 --> 00:19:36,769
+para a próxima linha
+e então scrolla infinitamente
+
+381
+00:19:36,769 --> 00:19:38,769
+na horizontal. Então ela
+vai scrollar horizontalmente
+
+382
+00:19:38,769 --> 00:19:41,269
+ou verticalmente infinitamente,
+mas ela vai colocar na tela como se fosse texto,
+
+383
+00:19:41,269 --> 00:19:43,519
+como palavras, certo?
+Vocês entendem o que eu quero dizer com isso? Certo?
+
+384
+00:19:43,519 --> 00:19:44,519
+Palavra, palavra, palavra,
+
+
+385
+00:19:44,519 --> 00:19:47,269
+oops, acabou o espaço, próxima linha,
+palavra, palavra, palavra. E vai fazendi isso
+
+386
+00:19:47,269 --> 00:19:50,019
+com as caixinhas.
+"Fluindo" elas na tela.
+
+387
+00:19:50,019 --> 00:19:53,289
+Vocês podem na verdade,
+escrever seus próprios layouts. É um sistema
+
+388
+00:19:53,309 --> 00:19:56,589
+bem aberto, um mecanismo muito poderoso
+para fazer qualquer tipo de layout
+
+389
+00:19:56,609 --> 00:19:58,859
+que vocês quiserem,
+mas isso está bem longe do escopo desse curso.
+
+390
+00:19:58,859 --> 00:19:59,859
+Nós vamos usar
+
+391
+00:19:59,859 --> 00:20:02,609
+FlowLayout, que é o padrão,
+vocês não tem que
+
+392
+00:20:02,609 --> 00:20:06,109
+fazer nada para ligá-lo,
+ele é usado por padrão,
+
+393
+00:20:06,109 --> 00:20:09,109
+então FlowLayout é tudo
+que vamos falar nesse curso.
+
+394
+00:20:09,109 --> 00:20:11,359
+Certo, uma classe chave,
+além de UICollectionView,
+
+395
+00:20:11,359 --> 00:20:15,670
+é UICollectionViewCell.
+Ela é exxa caixinha. Agora,
+
+
+396
+00:20:15,690 --> 00:20:17,849
+vai parecer para vocês
+quase como se fosse um pequeno controller
+
+397
+00:20:17,849 --> 00:20:20,769
+porque ele tem outlets e actions
+e todas essas coisas,
+
+398
+00:20:20,789 --> 00:20:23,460
+certo, porque é tipo
+o seu próprio mundinho
+
+399
+00:20:23,460 --> 00:20:25,669
+que foi replicado várias vezes,
+mas não é um controller.
+
+400
+00:20:25,669 --> 00:20:29,190
+É uma view, na verdade, ok?
+É uma view e
+
+401
+00:20:29,210 --> 00:20:32,609
+ela tem uma property chamada
+"contentView" que é o que
+
+402
+00:20:32,629 --> 00:20:35,960
+está dentro dela e é, sabe,
+os botões e sliders,
+
+403
+00:20:35,980 --> 00:20:39,079
+ou no nosso caso a PlayingCardView
+é o que está dentro dela,
+
+404
+00:20:39,079 --> 00:20:42,899
+e a razão para que ela tenha
+outlets e actions e mais porque
+
+405
+00:20:42,919 --> 00:20:45,960
+você precisa falar
+com cada uma dessas caixinhas.
+
+406
+00:20:45,980 --> 00:20:48,319
+E as caixinhas precisam saber
+o que está dentro delas, então
+
+407
+00:20:48,319 --> 00:20:50,859
+elas tem outlet para o que está dentro delas.
+E as coisas dentro delas
+
+408
+00:20:50,859 --> 00:20:54,389
+podem enviar action messages
+para a caixa. E todas as coisas
+
+409
+00:20:54,409 --> 00:20:56,869
+são independentes.
+Todas as cartas podem ser viradas
+
+410
+00:20:56,889 --> 00:21:01,490
+independentemente, por isso cada uma
+precisa ter seus outlets e actions.
+
+411
+00:21:01,509 --> 00:21:04,899
+Para que elas possam conversar, basicamente.
+Então, UICollectionViewCell será
+
+412
+00:21:04,919 --> 00:21:08,460
+uma parte fundamental
+no entendimento de como fazemos
+
+413
+00:21:08,480 --> 00:21:10,279
+isso tudo funcionar, certo?
+
+
+414
+00:21:10,299 --> 00:21:14,389
+Então, como usar um UIViewControllerView?
+Você o arrasta no Xcode, claro,
+
+415
+00:21:14,409 --> 00:21:17,490
+como qualquer outra view.
+Você pode arrastar uma única
+
+416
+00:21:17,509 --> 00:21:21,690
+CollectionView, certo?
+Da mesma forma que você arrastaria um botão,
+
+417
+00:21:21,710 --> 00:21:25,190
+ou também existe aqui
+algo que se chama
+
+418
+00:21:25,210 --> 00:21:28,750
+UICollectionViewController
+e quando você arrastá-lo
+
+419
+00:21:28,769 --> 00:21:32,990
+você tem um MVC inteiro
+cuja a "self.view" será uma CollectionView.
+
+420
+00:21:33,009 --> 00:21:34,009
+e ele estará tipo
+
+
+421
+00:21:34,009 --> 00:21:37,359
+todo pré-configurado,
+pronto para rodar.
+
+422
+00:21:37,359 --> 00:21:40,960
+Você pode fazer isso,
+nada errado com isso, mas nós não vamos
+
+423
+00:21:40,980 --> 00:21:43,730
+fazer isso nesse curso.
+Nós vamos apenas criar uma UICollectionView
+
+424
+00:21:43,730 --> 00:21:45,980
+e usar essa view. E nós vamos
+amarrá-la
+
+425
+00:21:45,980 --> 00:21:46,980
+no nosso controller
+
+
+426
+00:21:46,980 --> 00:21:49,480
+com outras views,
+como o botão "deal" e o
+
+427
+00:21:49,480 --> 00:21:52,230
+label "score" e essas coisas.
+Então nós vamos usar a
+
+428
+00:21:52,230 --> 00:21:54,379
+CollectionView, mas a outra,
+não há nada errado com ela,
+
+429
+00:21:54,379 --> 00:21:57,629
+é só que ela funciona apenas
+se sua view inteira vai ser
+
+430
+00:21:57,629 --> 00:22:02,639
+uma CollectionView. Certo.
+Eu vou mostrar a vocês
+
+431
+00:22:02,659 --> 00:22:05,409
+de alguns ângulos diferentes
+como isso funciona. Primeiro,
+
+432
+00:22:05,409 --> 00:22:09,250
+eu vou começar com o ângulo
+da hierarquia de views, ok?
+
+433
+00:22:09,269 --> 00:22:12,089
+Nós vamos construir essa
+hierarquia de view quando usarmos
+
+434
+00:22:12,089 --> 00:22:15,359
+uma CollectionView. Então, no topo,
+claro, está o nosso
+
+435
+00:22:15,379 --> 00:22:18,559
+controller, ok? Todo mundo viu
+essa coias na esquerda?
+
+436
+00:22:18,579 --> 00:22:20,970
+Isso é chamado "document outline".
+Levante sua mão se você
+
+437
+00:22:20,970 --> 00:22:25,680
+já vou o document outline no Xcode.
+Tá, talvez um pouco mais da
+
+438
+00:22:25,700 --> 00:22:29,190
+metade de vocês.
+Nós vamos mostrar isso na demo hoje
+
+439
+00:22:29,210 --> 00:22:31,710
+porque é um modo bem legal,
+especialmente quando você tem
+
+440
+00:22:31,710 --> 00:22:33,710
+objetos dentro de objetos
+dentro de objetos.
+
+441
+00:22:33,710 --> 00:22:36,710
+As vezes é difícil
+de chegar neles.
+
+442
+00:22:36,710 --> 00:22:39,960
+É é um modo realment bom
+de ver o que está acontecendo. Então
+
+443
+00:22:39,960 --> 00:22:42,710
+é isso que acontece nesse
+"document outline" na esquerda.
+
+444
+00:22:42,710 --> 00:22:45,460
+Então nós temos o controller
+no topo. Aqui está nosso
+
+445
+00:22:45,460 --> 00:22:47,210
+controller self.view,
+a segundo linha, certo?
+
+446
+00:22:47,210 --> 00:22:48,210
+Essa é a view que está
+
+447
+00:22:48,210 --> 00:22:51,210
+atrás de todas,
+daí temos labels
+
+448
+00:22:51,210 --> 00:22:54,460
+e botões ali e então
+vocês podem ver essa grande coisa verde
+
+449
+00:22:54,460 --> 00:22:57,710
+é a Collection View. Então eu apenas
+arrastei e a coloquei ali
+
+450
+00:22:57,710 --> 00:23:01,079
+e dentro da Collection View
+tem essa caixinha. Ok?
+
+451
+00:23:01,099 --> 00:23:04,269
+Que eu setei para ser
+uma PlaycardCollectionViewCell, ok?
+
+452
+00:23:04,289 --> 00:23:07,859
+Porque eu quero que seja uma PlayingCard
+e nós vamos
+
+453
+00:23:07,859 --> 00:23:10,859
+falar sobre isso.
+Temos essa caixinha, essa caixa no Xcode
+
+454
+00:23:10,859 --> 00:23:13,859
+você pode pensar nela
+como um protótipo. Que ela vai
+
+455
+00:23:13,859 --> 00:23:16,859
+ser replicada para fazer
+todas as outras. Ok? Então isso é tipo
+
+456
+00:23:16,859 --> 00:23:20,339
+um template se você quiser
+pensar assim. E então,
+
+457
+00:23:20,359 --> 00:23:23,359
+aqui dentro eu arrastei uma
+PlayingCardView da nossa
+
+458
+00:23:23,359 --> 00:23:24,769
+última aula, ok?
+
+
+459
+00:23:24,789 --> 00:23:27,609
+Então minha caixinha só tem uma view,
+ela preenche a caixa inteira,
+
+460
+00:23:27,609 --> 00:23:30,980
+que é uma PlayingCard, ok?
+Então essa é a hierarquia de views
+
+461
+00:23:31,000 --> 00:23:35,789
+que nós vamos construir aqui.
+Nós podemos ter outras caixinhas,
+
+462
+00:23:35,809 --> 00:23:38,309
+essa Collection View só tem
+uma caixa, que é
+
+463
+00:23:38,329 --> 00:23:39,329
+PlayingCard,
+
+
+464
+00:23:39,329 --> 00:23:42,190
+nós poderíamos ter outras caixas
+que teriam outras coisas,
+
+465
+00:23:42,210 --> 00:23:45,460
+como eu disse, um botão ou um slider
+ou algo assim e essas coisas
+
+466
+00:23:45,460 --> 00:23:47,960
+poderiam ser replicadas também
+e nós poderíamos decidir
+
+467
+00:23:47,960 --> 00:23:51,129
+quais coisas replicar aonde.
+É realmente super poderoso mas
+
+468
+00:23:51,149 --> 00:23:53,589
+nós vamos focar no...
+e se nós tivermos apenas
+
+469
+00:23:53,589 --> 00:23:56,319
+um tipo de caixa e você quer replicá-la,
+ok? Porque nós
+
+470
+00:23:56,319 --> 00:23:57,319
+temos tempo apenas
+
+
+471
+00:23:57,319 --> 00:24:01,460
+para isso. Certo, então vaamos falar
+sobre como nós amarramos
+
+472
+00:24:01,480 --> 00:24:04,769
+todas essas coisas no Xcode, ok?
+Como nós construímos isso tudo
+
+473
+00:24:04,769 --> 00:24:07,769
+que acabei de mostrar?
+E a primeira coisa que vou fazer,
+
+474
+00:24:07,769 --> 00:24:10,519
+espero que essa seja bem fácil,
+eu vou apenas criar
+
+475
+00:24:10,519 --> 00:24:13,269
+um outlet do meu controller
+para a Collection View.
+
+476
+00:24:13,269 --> 00:24:15,769
+E eu vou fazer isso com CTRL + arrastar,
+ok? Todo mundo... ninguém tem
+
+477
+00:24:15,769 --> 00:24:18,769
+problemas com isso,
+esse é só um slide de aquecimento,
+
+478
+00:24:18,769 --> 00:24:21,269
+ok? Nós simplesmente CTRL + arrastamos
+para criar um outlet
+
+479
+00:24:21,269 --> 00:24:24,779
+para que nós possamos falar
+com a Collection View. Agora, porém,
+
+480
+00:24:24,799 --> 00:24:29,319
+nós precisamos conectar
+a Collection View com o model
+
+481
+00:24:29,339 --> 00:24:31,659
+através do nosso controller.
+Lembrem-se: é isso que os controllers fazem.
+
+482
+00:24:31,679 --> 00:24:36,769
+Eles interpretam o model para a view.
+Então nós precisamos fazer nosso trabalho
+
+483
+00:24:36,789 --> 00:24:40,599
+como um controller e prover
+os dados que vão alimentar
+
+484
+00:24:40,619 --> 00:24:44,569
+todas essas caixinhas replicadas
+que vão estar no
+
+485
+00:24:44,589 --> 00:24:47,339
+nosso model. É ali que os dados vivem,
+eles vivem no nosso model.
+
+486
+00:24:47,339 --> 00:24:50,839
+Nós precisamos alimentar todas
+essas caixinhas com eles e é
+
+487
+00:24:50,839 --> 00:24:53,839
+sobre esse processo que vamos
+falar hoje. Ok,
+
+488
+00:24:53,839 --> 00:24:57,019
+é aqui que nós usamos protocols, ok?
+Essa Collection View, certo,
+
+489
+00:24:57,039 --> 00:24:59,720
+não pode possuir os seus dados,
+então o controller vai possuir
+
+490
+00:24:59,720 --> 00:25:03,079
+os dados. Então, a view,
+como ela
+
+491
+00:25:03,099 --> 00:25:06,349
+não possui dados,
+ela precisa de alguém para possuí-los
+
+492
+00:25:06,349 --> 00:25:09,099
+e esse alguém será o controller.
+Então, a primeira coisa
+
+493
+00:25:09,099 --> 00:25:13,389
+que tem que acontecer é que
+o controller precisa se alistar
+
+494
+00:25:13,409 --> 00:25:16,889
+para ser um desses alguéns.
+E ele faz isso colocando
+
+495
+00:25:16,909 --> 00:25:21,259
+o protocolo "<UICollectionViewDataSource>"
+
+
+496
+00:25:21,279 --> 00:25:24,879
+depois da sua interface. Aqui, eu fiz isso
+na minha interface privada
+
+497
+00:25:24,899 --> 00:25:27,579
+mas eu poderia ter feito
+na minha interface pública. Eu também
+
+498
+00:25:27,579 --> 00:25:29,500
+me alistei para ser o delegate
+da Collecion View, que é um
+
+499
+00:25:29,500 --> 00:25:32,379
+protocolo diferente. Não está relacionado
+com obter os dados para a view,
+
+500
+00:25:32,399 --> 00:25:34,899
+está ligado com outras
+coisas interessantes que acontecem
+
+501
+00:25:34,899 --> 00:25:37,899
+na view. Nós não vamos olhar
+para isso hoje, mas eu queria
+
+502
+00:25:37,899 --> 00:25:41,149
+mostrar pra vocês que vocês podem
+colocar vírgulas e se
+
+503
+00:25:41,149 --> 00:25:44,399
+alistar para quantas coisas
+dessas vocês quiserem.
+
+504
+00:25:44,399 --> 00:25:48,079
+E agora que fomos autorizados
+a ser esse alguém que
+
+505
+00:25:48,099 --> 00:25:51,619
+a Collection View vai usar
+para receber seus dados,
+
+506
+00:25:51,639 --> 00:25:55,139
+nós podemos nos linkar como tal.
+E o modo como fazemos isso é
+
+507
+00:25:55,139 --> 00:25:58,389
+um pouco diferente do que vocês
+estão acostumados. Nós CTRL + arrastamos
+
+508
+00:25:58,409 --> 00:26:02,169
+da Collection View até
+o pequeno ícone que representa
+
+509
+00:26:02,189 --> 00:26:05,829
+o nosso controller
+na barrinha preta, ok? Todo mundo sabe
+
+510
+00:26:05,849 --> 00:26:08,609
+que esse pequeno controller
+no canto esquerdo da barrinha preta,
+
+511
+00:26:08,609 --> 00:26:11,399
+é a mesma coisa que o nosso controller.
+É como se fosse o ícone
+
+512
+00:26:11,399 --> 00:26:13,649
+que representa o nosso controller.
+Então nós vamos simplesmente segurar o CTRL
+
+513
+00:26:13,649 --> 00:26:16,099
+e arrastar para lá,
+porque o que nós estamos realmente fazendo
+
+514
+00:26:16,099 --> 00:26:18,960
+é setar o Data Source
+da Collection View para ser
+
+515
+00:26:18,980 --> 00:26:22,409
+o nosso controller.
+CTRL + arrastando, ok? Esse é um pouco
+
+516
+00:26:22,429 --> 00:26:25,429
+diferente. E quando nós fazemos isso,
+nós vamos ver
+
+517
+00:26:25,429 --> 00:26:28,389
+algo parecido com o que vimos
+da outra vez que
+
+518
+00:26:28,409 --> 00:26:31,389
+nós fizemos CTRL + arrastar
+que é essa caixinha de settings de Outlet.
+
+519
+00:26:31,389 --> 00:26:34,639
+E aí nós vamos setar... simplesmente
+clicar no "dataSoure" para sermos,
+
+520
+00:26:34,659 --> 00:26:37,839
+para que o nosso controller seja
+o dataSource e/ou
+
+521
+00:26:37,859 --> 00:26:40,819
+o delegate se você quiser
+ser o delegate da
+
+522
+00:26:40,839 --> 00:26:44,339
+Collection View também, ok?
+Então é assim que nós nos tornamos
+
+523
+00:26:44,359 --> 00:26:45,359
+o dataSource.
+
+
+524
+00:26:45,359 --> 00:26:49,339
+E agora o controller é o
+Data Source para
+
+525
+00:26:49,359 --> 00:26:52,220
+a Collection View.
+E a Collection View vai começar a
+
+526
+00:26:52,240 --> 00:26:54,740
+enviar mensagens para o controller
+perguntando pelos dados que
+
+527
+00:26:54,740 --> 00:27:00,109
+ela precisa para replicar
+essa coisa e mostrá-la na tela.
+
+528
+00:27:00,129 --> 00:27:04,529
+Certo, agora, esse negócio de
+setar o Data Source, nós CTRL + arrastamos
+
+529
+00:27:04,549 --> 00:27:08,549
+no Xcode para fazer, mas você pode
+fazer isso em código também
+
+530
+00:27:08,549 --> 00:27:11,549
+e eu acho que é instrutivo
+vermos isso em código.
+
+531
+00:27:11,549 --> 00:27:14,799
+Então aqui está o setter,
+lembrem-se que eu disse que a primeira coisa
+
+532
+00:27:14,799 --> 00:27:17,549
+que nós fazemos é criar um outlet
+para a Collection View para representar
+
+533
+00:27:17,549 --> 00:27:20,049
+nosso controller. E então,
+aqui está o setter para isso.
+
+534
+00:27:20,049 --> 00:27:23,299
+E vocês podem ver que no meu setter,
+eu estou setando o dataSource
+
+535
+00:27:23,299 --> 00:27:25,799
+da CollectionView para eu mesmo, certo?
+Eu apenas disse
+
+536
+00:27:25,799 --> 00:27:27,639
+"collectionView.dataSource = self"
+e isso é legal porque
+
+537
+00:27:27,639 --> 00:27:28,639
+eu coloquei aquela
+
+
+538
+00:27:28,639 --> 00:27:31,099
+coisinha que diz que eu sou um
+UICollectionViewDataSource
+
+539
+00:27:31,099 --> 00:27:35,009
+na linha de interface.
+Lembram-se disso? Ok?
+
+540
+00:27:35,029 --> 00:27:37,769
+Agora com que essas 2 propriedades
+dataSource e delegate que eu
+
+541
+00:27:37,769 --> 00:27:41,369
+estou setando aqui
+aparecem lá na UICollectionView?
+
+542
+00:27:41,389 --> 00:27:42,889
+Se eu for ver no arquivo de header
+da UICollectionView,
+
+543
+00:27:42,889 --> 00:27:43,889
+como que ia aparecer?
+
+
+544
+00:27:43,889 --> 00:27:46,889
+E a resposta é que iria
+aparecer assim.
+
+545
+00:27:46,889 --> 00:27:49,389
+"@propery (nonatomic, assign)",
+que eu vou falar em um segundo,
+
+546
+00:27:49,389 --> 00:27:52,789
+"id <UICollectionViewDataSource> datasource".
+
+
+547
+00:27:52,809 --> 00:27:56,299
+Em outras palavras,
+essa é a property que é um "id",
+
+548
+00:27:56,319 --> 00:27:59,589
+poderia ser qualquer objeto,
+mas ele tem que implementar
+
+549
+00:27:59,609 --> 00:28:02,950
+esse DataSource. E quando
+eu seto a mim mesmo para isso, fiu(??)
+
+550
+00:28:02,970 --> 00:28:06,669
+UICollectionView pode ter certeza:
+"certo, eu posso começar a enviar
+
+551
+00:28:06,689 --> 00:28:10,730
+algumas mensagens para esse carinha
+para receber meus dados", ok?
+
+552
+00:28:10,750 --> 00:28:13,710
+E sobre esse negócio de "assign"?
+Não se descabelem por causa do "assign".
+
+553
+00:28:13,730 --> 00:28:19,029
+"Assign" é basicamente "weak", ok?
+Exceto pelo fato de que
+
+554
+00:28:19,049 --> 00:28:21,299
+ele tem um pouco de compatibilidade
+com versões anteriores, acho que é
+
+555
+00:28:21,299 --> 00:28:25,529
+por isso que é feito assim,
+mas ele não faz o negócio de zerar
+
+556
+00:28:25,549 --> 00:28:28,599
+quando as coisas saem da heap,
+ele não zera o ponteiro,
+
+557
+00:28:28,599 --> 00:28:31,599
+então ele não é tão seguro.
+Mas isso nunca será um problema
+
+558
+00:28:31,599 --> 00:28:34,399
+para delegates,
+porque o controller
+
+559
+00:28:34,419 --> 00:28:37,579
+estará sempre sendo setado como delegate
+ou algum objeto que é
+
+560
+00:28:37,599 --> 00:28:40,529
+controlado pelo controller.
+Ele é o delegate ou
+
+561
+00:28:40,549 --> 00:28:44,149
+o dataSource todas as vezes
+e a view é seu servo. Então
+
+562
+00:28:44,169 --> 00:28:46,629
+nunca vai haver uma situação
+onde o controller vai embora
+
+563
+00:28:46,629 --> 00:28:49,750
+e a view ainda fica por aí.
+Isso nunca pode acontecer, ok?
+
+564
+00:28:49,769 --> 00:28:53,169
+É simplesmente impossível
+porque o controller pode
+
+565
+00:28:53,189 --> 00:28:55,990
+criar a view,
+a view é um servo do controller.
+
+566
+00:28:56,009 --> 00:28:58,589
+Então ela nunca deveria
+viver por mais tempo.
+
+567
+00:28:58,589 --> 00:29:01,089
+Então você nunca vai ter
+um problema onde esse ponteiro está
+
+568
+00:29:01,089 --> 00:29:03,339
+apontando para um controller
+que nã existe mais.
+
+569
+00:29:03,339 --> 00:29:05,339
+Porque a view sequer estaria ali
+se o controller
+
+570
+00:29:05,339 --> 00:29:06,339
+tivesse ido embora.
+
+
+571
+00:29:06,339 --> 00:29:08,509
+É algo impraticável,
+nunca será um problema.
+
+572
+00:29:08,509 --> 00:29:09,509
+Certo.
+
+
+573
+00:29:09,509 --> 00:29:11,869
+Novammente, se você lembrar do MVC,
+seu controller
+
+574
+00:29:11,869 --> 00:29:12,869
+está apenas
+
+
+575
+00:29:12,869 --> 00:29:15,869
+fazendo o seu trabalho aqui.
+Ele está interpretando os dados do model
+
+576
+00:29:15,879 --> 00:29:18,859
+para a view. Vamos ver
+como ele faz isso.
+
+577
+00:29:18,859 --> 00:29:22,250
+Em outras palavras,
+como nós implementamos o protocolo
+
+578
+00:29:22,269 --> 00:29:25,849
+UICollectionViewDataSource.
+Quais são os métodos nele, como nós
+
+579
+00:29:25,869 --> 00:29:29,710
+os implementamos? Ok?
+O primeiro método nesse protocolo
+
+580
+00:29:29,730 --> 00:29:30,730
+UICollectionViewDataSource
+
+
+581
+00:29:30,730 --> 00:29:34,399
+é chamado
+"numberOfSectionsInCollectionView:"
+
+582
+00:29:34,419 --> 00:29:36,939
+Ok? Vocês vão perceber
+que todos esses métodos de Data Source
+
+583
+00:29:36,939 --> 00:29:40,220
+passam a CollectionView como argumento,
+apenas por conveniência.
+
+584
+00:29:40,240 --> 00:29:43,559
+Meu controller
+já tem um outlet
+
+585
+00:29:43,579 --> 00:29:46,079
+que aponta para a CollectionView,
+então na verdade eu não preciso
+
+586
+00:29:46,079 --> 00:29:50,299
+desse argumento,
+mas eles sempre fazem isso, em todas as classes.
+
+587
+00:29:50,319 --> 00:29:54,990
+O negócio da "section"...
+A CollectionView pode ser mais
+
+588
+00:29:55,009 --> 00:29:57,970
+do que uma grande view com
+um monte de caixinhas replicadas.
+
+589
+00:29:57,990 --> 00:30:01,250
+Ela pode na verdade
+ser dividida em seções e cada uma
+
+590
+00:30:01,269 --> 00:30:03,819
+pode ter um monte de
+coisas replicadas, ok?
+
+591
+00:30:03,839 --> 00:30:07,579
+Isso é bem incomum.
+90+% do tempo você não precisa
+
+592
+00:30:07,599 --> 00:30:10,099
+dessas outras seções.
+Mas no seu homework, no crédito extra,
+
+593
+00:30:10,099 --> 00:30:13,099
+eu trouxe uma idéia
+onde vocês podem querer
+
+594
+00:30:13,099 --> 00:30:15,849
+outra section na CollectionView.
+E, se vocês quiserem tentar e fazer
+
+595
+00:30:15,849 --> 00:30:18,069
+seções múltiplas, sabem como é,
+é um crédito extra.
+
+596
+00:30:18,069 --> 00:30:19,429
+É avançado.
+
+
+597
+00:30:19,449 --> 00:30:23,349
+Mas vocês vão aprende rum monte sobre
+como tudo isso funciona.
+
+598
+00:30:23,369 --> 00:30:26,750
+Esse método é na verdade opcional
+porque se você não implementá-lo
+
+599
+00:30:26,769 --> 00:30:29,409
+ele assume que você quer
+uma section, ok? Então vocês
+
+600
+00:30:29,409 --> 00:30:32,740
+não precisam implementar
+esse método no Data Source.
+
+601
+00:30:32,759 --> 00:30:36,609
+Ele é @optional.
+Mas o próximo definitivamente
+
+602
+00:30:36,629 --> 00:30:40,039
+não é opcional.
+Esse é bem required, ok? Esse é
+
+603
+00:30:40,059 --> 00:30:43,319
+a CollectionView dizendo:
+quantas caixinhas tem aí?
+
+604
+00:30:43,339 --> 00:30:47,259
+Ok? Quantas? É isso que
+é essa pergunta,
+
+605
+00:30:47,279 --> 00:30:50,220
+"numberOfItemsInSection". Ele vai
+perguntar pra cada section.
+
+606
+00:30:50,220 --> 00:30:53,220
+Novamente, nós normalmente
+vamos ter 1 section. Então ele quer
+
+607
+00:30:53,220 --> 00:30:55,970
+apenas saber quantas caixas tem.
+Se ele souber disso,
+
+608
+00:30:55,970 --> 00:30:59,470
+e souber quão grande cada caixa é,
+ele pode setar sua scroll bar,
+
+609
+00:30:59,470 --> 00:31:02,470
+ele pode fazer todos os tipos de setup.
+Apenas sabendo esse pedacinho
+
+610
+00:31:02,470 --> 00:31:05,220
+de informação. Agora, ele não pode
+desenhar nenhuma dessas caixinhas ainda
+
+611
+00:31:05,220 --> 00:31:08,220
+porque ele precisa saber
+o que tem em cada caixa que é
+
+612
+00:31:08,220 --> 00:31:11,970
+o que nós vamos ver no próximo slide,
+mas esse aqui é um importante.
+
+613
+00:31:11,970 --> 00:31:14,470
+Agora, como nós respondemos essa questão
+quando a CollectionView te pergunta?
+
+
+614
+00:31:14,470 --> 00:31:17,470
+Bom, você pergunta pro seu model
+quntas coisas tem aí pra mostrar aqui?
+
+615
+00:31:17,470 --> 00:31:20,470
+Quantas caixinhas, sabe,
+quantas coisas eu vou
+
+616
+00:31:20,470 --> 00:31:23,470
+mostrar? E para o nosso model,
+o model CardGame,
+
+617
+00:31:23,470 --> 00:31:26,720
+isso significa quantas cartas
+estão em jogo nesse jogo. Certo?
+
+618
+00:31:26,720 --> 00:31:29,970
+Então eu simplesmente perguntei pro meu model
+quantas cartas estão em jogo ou,
+
+619
+00:31:29,970 --> 00:31:32,720
+num Matchismo simples,
+nós falamos pro nosso model
+
+620
+00:31:32,720 --> 00:31:35,970
+quantas cartas tem em jogo.
+Então nós já sabemos isso,
+
+621
+00:31:35,970 --> 00:31:38,970
+não precisamos perguntar pro model.
+No homework, vocês vão ter que perguntar
+
+622
+00:31:38,970 --> 00:31:41,720
+pro model, porque uma das coisas
+do homework é
+
+623
+00:31:41,720 --> 00:31:44,970
+vocês tem que permitir que
+cartas sejam adicionadas no meio de um jogo.
+
+624
+00:31:44,970 --> 00:31:48,220
+Então vocês vão ter que
+aperfeiçoar o model para ser capaz de
+
+625
+00:31:48,220 --> 00:31:51,719
+responder quantas cartas tem em jogo
+e então vocês podem
+
+626
+00:31:51,719 --> 00:31:54,719
+colocar aqui como a resposta para isso.
+Então, vêem como o controller--
+
+627
+00:31:54,719 --> 00:31:56,469
+esse método implementado pelo controller,
+ele está apenas interpretando
+
+628
+00:31:56,469 --> 00:31:58,469
+o model e respondendo a pergunta
+que a view tem
+
+629
+00:31:58,469 --> 00:31:59,469
+que é quantas caixinhas
+
+
+630
+00:31:59,469 --> 00:32:01,719
+eu quero aqui, ok?
+
+
+631
+00:32:01,719 --> 00:32:02,719
+Alguma pergunta sobre isso?
+
+
+632
+00:32:02,719 --> 00:32:07,099
+Então o próximo,
+também obrigatório, está
+
+633
+00:32:07,119 --> 00:32:10,720
+provendo os dados. E há
+2 passos para esse método.
+
+634
+00:32:10,740 --> 00:32:14,509
+Ele é chamado de "cellForItemAtIndexPath".
+O valor de retorno aqui,
+
+635
+00:32:14,529 --> 00:32:17,509
+"UICollectionViewCell *",
+essa é a caixinha.
+
+636
+00:32:17,529 --> 00:32:20,500
+As caixinhas são UICollectionViewCells.
+Elas serão subclasse disso,
+
+637
+00:32:20,519 --> 00:32:23,409
+por causa dos outlets
+e das actions que vamos querer
+
+638
+00:32:23,429 --> 00:32:27,169
+setar nelas, mas é isso que elas são,
+e cell... bom, isso está
+
+639
+00:32:27,189 --> 00:32:31,210
+apenas retornando uma caixinha.
+E, existem dois passos para
+
+640
+00:32:31,230 --> 00:32:33,809
+retornar a caixa.
+1) você tem que criá-la.
+
+641
+00:32:33,809 --> 00:32:37,250
+Essa é a primeira linha aqui
+[ditando código]
+
+642
+00:32:37,269 --> 00:32:40,349
+[ditando código]
+
+
+643
+00:32:40,369 --> 00:32:45,599
+ok? Isso está
+criando a cell e eu vou explicar
+
+644
+00:32:45,619 --> 00:32:49,169
+isso em um segundo.
+A segunda linha, que começa com
+
+645
+00:32:49,189 --> 00:32:52,189
+o "if", na verdade são quatro linhas,
+eui acho, mas esse pequeno "if"
+
+646
+00:32:52,199 --> 00:32:56,629
+está colocando os dados do model
+na cell. Agora, percebam que
+
+647
+00:32:56,649 --> 00:32:59,549
+eu usei instrospection aqui.
+Porque eu quero
+
+648
+00:32:59,569 --> 00:33:02,819
+usar uma subclasse de
+UICollectionViewCell, e eu não quero
+
+649
+00:33:02,839 --> 00:33:05,339
+tentar colocar dados na cell,
+a não ser que eu tenha certeza
+
+650
+00:33:05,339 --> 00:33:06,339
+que ela é uma subclasse
+
+
+651
+00:33:06,339 --> 00:33:09,089
+que eu queira, uma PlayingCard.
+Ok? Então
+
+652
+00:33:09,089 --> 00:33:11,089
+isso é o motivo que eu estou
+fazendo essa pequena introspecção.
+
+653
+00:33:11,089 --> 00:33:15,309
+Ok, eu estou apenas me certificando.
+Agora eu posso ter outras
+
+654
+00:33:15,329 --> 00:33:17,559
+caixinhas que tem
+outras coisas além de
+
+655
+00:33:17,559 --> 00:33:18,559
+PlayingCards
+
+
+656
+00:33:18,559 --> 00:33:21,019
+na mesma CollectionView.
+Então eu preciso me certificar que
+
+657
+00:33:21,019 --> 00:33:24,699
+é a classe certa que estamos falando aqui.
+Então temos que
+
+658
+00:33:24,719 --> 00:33:28,149
+usar o IndexPath, ok?
+Esse IndexPath, a propósito,
+
+659
+00:33:28,169 --> 00:33:31,269
+é apenas um simples objeto
+que tem apenas duas propriedades,
+
+660
+00:33:31,289 --> 00:33:35,019
+a "section" e o "item".
+Que é o item que nós estamos
+
+661
+00:33:35,039 --> 00:33:37,789
+falando na section.
+Então IndexPath é apenas um objeto,
+
+662
+00:33:37,789 --> 00:33:40,240
+duas propriedades, item e section.
+que diz qual que estamos tratando,
+
+663
+00:33:40,240 --> 00:33:42,189
+qual caixinha
+que nós estamos tratando.
+
+664
+00:33:42,189 --> 00:33:43,189
+Então é assim que
+
+
+665
+00:33:43,189 --> 00:33:46,429
+eu sei qual é a que o meu model
+está se referindo, ok?
+
+666
+00:33:46,429 --> 00:33:49,679
+O item que for, vai me dizer
+que carta que eu quero, ok?
+
+667
+00:33:49,679 --> 00:33:52,659
+Eu vou usar IndexPath.item
+para fazer isso.
+
+668
+00:33:52,659 --> 00:33:56,529
+Vocês verão tudo isso na demo.
+Agora, vamos falar um pouco mais sobre
+
+669
+00:33:56,549 --> 00:33:59,829
+essa subclasse que eu estou criando
+de UICollectionViewCell,
+
+670
+00:33:59,849 --> 00:34:04,399
+a caixinha. Com eu faço isso?
+Muito simples, eu apenas clico
+
+671
+00:34:04,419 --> 00:34:08,769
+no UICollectionViewCell
+e vou para o
+
+672
+00:34:08,789 --> 00:34:11,449
+"Identity Inspector" do mesmo modo
+que eu fiz para o meu controller
+
+673
+00:34:11,449 --> 00:34:13,610
+ou minha UIView customizada
+e eu seto a classe, ok?
+
+674
+00:34:13,630 --> 00:34:21,170
+Alguma pergunta sobre isso?
+É algo totalmente direto.
+
+675
+00:34:21,190 --> 00:34:24,250
+Por que que eu preciso dessa subclasse?
+Essa é a real questão,
+
+676
+00:34:24,269 --> 00:34:27,559
+Essa PlayingCardCell,
+por que que eu preciso subclassear
+
+677
+00:34:27,579 --> 00:34:30,519
+a caixinha? E a resposta é:
+eu preciso de outlets e actions.
+
+678
+00:34:30,539 --> 00:34:33,069
+Nesse caso, eu preciso de um outlet
+que aponta para a carta
+
+679
+00:34:33,069 --> 00:34:36,069
+que está dentro, caso contrário,
+como eu vou saber
+
+680
+00:34:36,069 --> 00:34:39,069
+que carta é? Quero dizer,
+eu poderia sair caçando na hierarquia
+
+681
+00:34:39,069 --> 00:34:42,319
+das views e tentar descobrir, mas fala sério,
+eu quero um outlet.
+
+682
+00:34:42,319 --> 00:34:45,569
+Ou, e se minha carta quiser me enviar
+uma action quando eu cliquei nela?
+
+683
+00:34:45,569 --> 00:34:49,069
+E se eu quiser
+fazer o flip através de uma action?
+
+684
+00:34:49,069 --> 00:34:52,319
+Eu não vou fazer, eu vou
+usar um gesto, mas e se
+
+685
+00:34:52,319 --> 00:34:55,819
+eu quisesse usar um "flip"?
+Eu preciso de algum lugar para colocar a action
+
+686
+00:34:55,819 --> 00:34:58,819
+e eu não posso ter outlets
+e actions ligadas na
+
+687
+00:34:58,819 --> 00:35:01,069
+CollectionView. Porque
+a Collection tem toooodas
+
+688
+00:35:01,069 --> 00:35:04,069
+as caixinhas nela. Então
+teria que ser algo como um
+
+689
+00:35:04,069 --> 00:35:05,819
+Outlet Colletion ou algo assim,
+mas seria estranho
+
+690
+00:35:05,819 --> 00:35:06,819
+porque seria
+
+691
+00:35:06,819 --> 00:35:09,069
+um Outlet Collection
+que está mudando...
+
+692
+00:35:09,069 --> 00:35:12,569
+apenas... não, ok? Nós não conseguimos
+fazer isso desse modo, então temos
+
+693
+00:35:12,569 --> 00:35:15,569
+que ter outlets e actions
+direto para a própria caixinha.
+
+694
+00:35:15,569 --> 00:35:17,819
+Então sempre que tivermos
+algo na nossa caixinha que precisarmos
+
+695
+00:35:17,819 --> 00:35:18,819
+de um outlet ou action,
+
+
+696
+00:35:18,819 --> 00:35:21,569
+nós fazemos uma subclasse da caixinha.
+Fazemos uma subclasse
+
+697
+00:35:21,569 --> 00:35:23,819
+de UICollectionViewCell.
+Uma vez que tivermos essa subclasse
+
+698
+00:35:23,819 --> 00:35:27,069
+e fizermos que nós fizemos
+no último slide, então nós podemos simplesmente
+
+699
+00:35:27,069 --> 00:35:29,679
+CTRL + arrastar a partir de coisas
+dentro da caixinha, como aqui
+
+700
+00:35:29,679 --> 00:35:31,239
+se você olhar atentamente, vocês verão
+que eu estou CTRL + arrastando
+
+701
+00:35:31,239 --> 00:35:32,239
+do PLayingCardView
+
+
+702
+00:35:32,239 --> 00:35:35,840
+no "document outline".
+Eu coloquei isso aqui porque
+
+703
+00:35:35,860 --> 00:35:39,429
+eu queria que vocês soubessem
+que vocês podem CTRL + arrastar "de e para"
+
+704
+00:35:39,449 --> 00:35:42,590
+coisas no document outline, ok?
+O que é da hora. Vocês vão ver
+
+705
+00:35:42,610 --> 00:35:45,569
+que vocês vão fazer isso
+o tempo todo.
+
+706
+00:35:45,569 --> 00:35:48,319
+É bem claro de ver
+da onde e pra onde você está arrastando.
+
+707
+00:35:48,319 --> 00:35:51,069
+Então, eu estou CTRL + arrastando
+da PlayingCardView
+
+708
+00:35:51,069 --> 00:35:54,259
+para o document, mas eu poderia
+fazer isso a partir do que está
+
+709
+00:35:54,259 --> 00:35:57,360
+no Storyboard. Eu estou apenas
+CTRL + arrastando, não para
+
+710
+00:35:57,380 --> 00:36:00,819
+o meu controller. Eu estou
+CTRL + arrastando para a subclasse da caixinha.
+
+711
+00:36:00,839 --> 00:36:02,980
+Vocês vêem onde ele diz
+PlayingCardCollectionViewCell
+
+712
+00:36:02,980 --> 00:36:06,269
+herda de UICollectionViewCell, certo?
+Essa é minha
+
+713
+00:36:06,289 --> 00:36:09,969
+pequena subclasse da caixinha.
+Ok? Então eu estou arrastando
+
+714
+00:36:09,989 --> 00:36:12,989
+pra cá e então aquela
+janelinha aparece
+
+715
+00:36:13,009 --> 00:36:16,009
+e eu digito PlayingCardView
+e ele cria
+
+716
+00:36:16,009 --> 00:36:17,009
+esse outlet para mim, ok?
+
+
+717
+00:36:17,009 --> 00:36:22,150
+É, eu o chamei de PlayingCardView,
+esse é um bom nome
+
+718
+00:36:22,170 --> 00:36:25,000
+para o outlet na caixinha
+que aponta para a view
+
+719
+00:36:25,000 --> 00:36:29,259
+dentro dela. Então, essa
+pequena subclasse que nós criamos
+
+720
+00:36:29,279 --> 00:36:32,670
+para outlets e actions,
+você poderia colocar também alguma lógica aqui.
+
+721
+00:36:32,690 --> 00:36:36,630
+Ok? É apenas uma classe.
+Você poderia fazer algumas coisas.
+
+722
+00:36:36,650 --> 00:36:39,969
+Mas vocês tem que ser cuidadosos aqui
+e serem bem claros
+
+723
+00:36:39,989 --> 00:36:42,009
+de um ponto de vista de
+encapsulação orientada a objetos
+
+724
+00:36:42,029 --> 00:36:43,029
+se vocês querem mesmo
+
+
+725
+00:36:43,029 --> 00:36:45,869
+colocar código aqui,
+nesse "mundo intermediário",
+
+726
+00:36:45,889 --> 00:36:49,299
+a caixinha. Ou se
+isso deveria ir na UIView.
+
+727
+00:36:49,319 --> 00:36:52,960
+Ou se você iria
+preferir colocar
+
+728
+00:36:52,980 --> 00:36:55,779
+no controller. Porque o controller
+também sabe sobre
+
+729
+00:36:55,799 --> 00:36:58,049
+a CollectionView e ele sabe
+sobre as caixas
+
+730
+00:36:58,049 --> 00:36:59,049
+então nós podemos fazer
+
+
+731
+00:36:59,049 --> 00:37:02,799
+um monte de coisas. Eu pessoalmente
+prefiro não colocar nessas
+
+732
+00:37:02,799 --> 00:37:05,079
+pequenas subclasses de
+UICollectionViewCell. Geralmente eu coloco
+
+733
+00:37:05,079 --> 00:37:08,429
+outolets aqui e talvez
+uma action ou duas, que eu redireciono
+
+734
+00:37:08,449 --> 00:37:13,130
+para alguém ou algo assim,
+mas normalmente uso apenas para isso, ok?
+
+735
+00:37:13,150 --> 00:37:18,289
+É algo como
+um estilo de programação aqui, certo?
+
+736
+00:37:18,309 --> 00:37:22,449
+Então, novamente, estamos fazendo essa
+introspeção, certo, porque 
+
+737
+00:37:22,469 --> 00:37:24,219
+poderíamos ter tipos diferentes
+de UICollectionViewCells.
+
+738
+00:37:24,219 --> 00:37:25,219
+Eu já falei sobre isso.
+
+739
+00:37:25,219 --> 00:37:28,409
+Então deixe-me falar
+sobre esse negócio de "dequeue" (desenfileirar).
+
+740
+00:37:28,429 --> 00:37:31,670
+Essa é a linha de código
+que cria a cell, certo?
+
+741
+00:37:31,670 --> 00:37:34,089
+Então a CollectionView está tipo:
+"ok, eu descobri quantas dessas
+
+742
+00:37:34,089 --> 00:37:37,170
+caixinhas existem. Agora eu vou
+fazê-las".
+
+743
+00:37:37,170 --> 00:37:40,420
+Ok? Ela faz isso
+chamando esse método "cellForItemAtIndexPath"
+
+744
+00:37:40,420 --> 00:37:41,420
+que estamos vendo
+
+
+745
+00:37:41,420 --> 00:37:44,920
+aqui. E o modo como 
+esse método as cria,
+
+746
+00:37:44,940 --> 00:37:48,059
+ele chama esse "dequeueReusableCell".
+E com isso pode fazer uma de duas possibilidades.
+
+747
+00:37:48,059 --> 00:37:53,940
+Ele pode reusar uma
+que estava na tela. Uma caixinha
+
+748
+00:37:53,960 --> 00:37:58,269
+que estava na tela mas foi
+scrollada pra fora da tela,
+
+749
+00:37:58,289 --> 00:38:01,039
+então não precisamos mais dela,
+e ao invés de tirá-la da heap,
+
+750
+00:38:01,039 --> 00:38:03,789
+ele a mantém. Nesse caso,
+alguma outra coisa talvez scrolle
+
+751
+00:38:03,789 --> 00:38:06,039
+pra dentro da tela e ele precise
+de outra cell. Então ele meio que
+
+752
+00:38:06,039 --> 00:38:07,039
+mantém uma fila
+
+
+753
+00:38:07,039 --> 00:38:08,039
+de reuso dessas coisas, ok?
+
+
+754
+00:38:08,039 --> 00:38:10,289
+Vocês tem que entender
+que essas coisas estão sendo reusadas.
+
+755
+00:38:10,289 --> 00:38:13,980
+Então cada vez que ela volta
+da "dequeueReusableCell",
+
+756
+00:38:14,000 --> 00:38:16,839
+você ter que resetar tudo nela,
+porque você está reusando uma
+
+757
+00:38:16,859 --> 00:38:20,900
+que talvez já tivesse
+coisas nela antes, ok?
+
+758
+00:38:20,920 --> 00:38:24,019
+Se não tiver nenhuma para reusar,
+nenhuma na fila de reuso,
+
+759
+00:38:24,019 --> 00:38:27,099
+então ele vai lá
+e copia um do Storyboard.
+
+760
+00:38:27,119 --> 00:38:29,460
+Então, qualquer coisa que você
+construir no Storyboard,
+
+761
+00:38:29,460 --> 00:38:32,779
+queisquer views e outlets conectados,
+ele cria um desses, ok?
+
+762
+00:38:32,799 --> 00:38:37,130
+Isso faz sentido?
+Então ele cria um. Então ele
+
+763
+00:38:37,150 --> 00:38:40,150
+ou vai reusar um
+ou ele vai criar um
+
+764
+00:38:40,150 --> 00:38:42,900
+a partir do Storyboard.
+Baseado no que quer que você tenha arrastado
+
+765
+00:38:42,900 --> 00:38:45,150
+no Storyboard e quaisquer
+outlets e actions que você tenha conectado
+
+766
+00:38:45,150 --> 00:38:51,460
+na cell, ok? Perguntas sobre isso?
+Bom. Certo,
+
+767
+00:38:51,480 --> 00:38:55,110
+e sobre esse pequeno
+"reuse identifier" @"Card"?
+
+768
+00:38:55,130 --> 00:38:56,369
+Ok, isso é o link
+
+
+769
+00:38:56,389 --> 00:39:02,400
+que diz que qual é a cell
+que você construiu no Storyboard
+
+770
+00:39:02,420 --> 00:39:06,460
+que você quer usar, certo?
+Nós as nomeamos.
+
+771
+00:39:06,480 --> 00:39:10,500
+E o modo como nós damos nomes a elas
+é, você seleciona a caixinha,
+
+772
+00:39:10,519 --> 00:39:13,630
+aqui eu selecioner no document outline.
+E quando você for no
+
+
+773
+00:39:13,630 --> 00:39:16,509
+"attributes inspector",
+ela tem apenas um atributo
+
+774
+00:39:16,529 --> 00:39:18,480
+que é o seu nome,
+
+775
+00:39:18,500 --> 00:39:21,579
+chamado "identifier". E então
+eu digiei "Card". Esse é um erro
+
+776
+00:39:21,599 --> 00:39:26,009
+muito comum para confundir tudo,
+então prestem atenção, agora. 
+
+777
+00:39:26,029 --> 00:39:28,949
+Vocês, nessa "dequeueReusableCell",
+vocês vão especificar alguma string
+
+778
+00:39:28,969 --> 00:39:31,609
+a string precisa estar aqui.
+Precisa ter
+
+779
+00:39:31,609 --> 00:39:32,609
+o mesmo nome
+
+
+780
+00:39:32,609 --> 00:39:35,889
+da caixinha que vocês querem
+que seja criada a partir do
+
+781
+00:39:35,909 --> 00:39:40,460
+Storyboard ou reusada, ok?
+E, claro, se você tiver
+
+782
+00:39:40,480 --> 00:39:44,089
+outra caixa, ela pode ter um outro nome.
+O "dequeue" poderia,
+
+783
+00:39:44,109 --> 00:39:47,000
+sabe, criar qualquer caixa
+que ele quisesse. Nós não vamos
+
+784
+00:39:47,000 --> 00:39:50,000
+falar muito sobre isso, mas se você
+tiver múltiplas caixas,
+
+785
+00:39:50,000 --> 00:39:51,969
+é assim que você faria, ok?
+
+
+786
+00:39:51,989 --> 00:39:55,239
+Eu sei que tem muita coisa acontecendo aqui.
+Você tem subclasses,
+
+787
+00:39:55,239 --> 00:39:57,989
+Você tem caixinhas, você tem
+coisas dentro delas. Você tem nomes.
+
+788
+00:39:57,989 --> 00:40:01,739
+Você tem... tem muita coisa acontecendo
+e eu sei que é muita coisa para absorver.
+
+789
+00:40:01,739 --> 00:40:04,239
+Estou aqui apenas reconhecendo
+que isso é coisa mais complicada
+
+790
+00:40:04,239 --> 00:40:07,489
+que vocês viram até agora em iOS.
+Mas, sabe, vocês sabem que
+
+791
+00:40:07,489 --> 00:40:10,239
+vocês tem o Foundation onde vocês
+deveriam conseguir começar a absorver
+
+792
+00:40:10,239 --> 00:40:12,779
+esse nível de complexidade.
+Ahm, headers and footers eu não vou
+
+793
+00:40:12,799 --> 00:40:14,750
+falar muito sobre isso.
+Cada seção pode ter headers
+
+794
+00:40:14,750 --> 00:40:17,929
+e footers, eles são feitos
+quase da mesma forma que
+
+795
+00:40:17,949 --> 00:40:21,819
+as cells. Mas ao invés de
+UICollctionViewCell, eles são
+
+796
+00:40:21,839 --> 00:40:24,960
+UICollectionReusableViews,
+mas nós não vamos falar sobre
+
+797
+00:40:24,980 --> 00:40:29,529
+headers e footers. Ok.
+Então agora nós já cuidamos
+
+798
+00:40:29,549 --> 00:40:33,420
+para prover para a Collection View
+os seus dados e linkamos tudo.
+
+799
+00:40:33,440 --> 00:40:36,339
+Que tipo de mensagens nós podermos
+de fato enviar para a
+
+800
+00:40:36,359 --> 00:40:39,109
+Collection View para que ela
+faça outras coisas? Bom, não existe
+
+801
+00:40:39,109 --> 00:40:42,109
+tanto assim para fazermos.
+Uma vez que você provê os dados,
+
+802
+00:40:42,109 --> 00:40:45,049
+ela meio que faz tudo sozinha.
+Mas, uma coisa que você poderia ter
+
+803
+00:40:45,049 --> 00:40:48,049
+que fazer com a Collection View é,
+o que acontece se o seu model
+
+804
+00:40:48,049 --> 00:40:53,059
+ficar dessincronizado com a sua view?
+Por exemplo, você vira
+
+805
+00:40:53,079 --> 00:40:56,429
+uma carta no jogo de cartas.
+Ok, mas quando você vira uma carta,
+
+806
+00:40:56,429 --> 00:40:59,429
+o jogo de cartas poderia virar
+um monte de outras cartas 
+
+807
+00:40:59,429 --> 00:41:02,029
+e misturar e fazer pares
+e deixar algumas cartas injogáveis.
+
+808
+00:41:02,049 --> 00:41:04,750
+Todo tipo de coisas está acontecendo.
+Então quando você chama flipCard
+
+809
+00:41:04,750 --> 00:41:08,000
+no seu model, ele fica
+dessincronizado com a view. Então você precisa
+
+810
+00:41:08,000 --> 00:41:11,250
+sincronizar de volta. Então aqui estão
+alguns métodos que você pode
+
+811
+00:41:11,250 --> 00:41:14,500
+enviar para a Collection View
+para fazer com que ela fique syncronizada
+
+812
+00:41:14,500 --> 00:41:17,250
+com o seu model. E ela faz isso
+enviando mensagens de data source
+
+813
+00:41:17,250 --> 00:41:20,889
+para o controller novamente. Ok?
+Então, o maior de todos,
+
+814
+00:41:20,909 --> 00:41:24,539
+a "marreta" é "reloadData".
+Quando você diz reloadData
+
+815
+00:41:24,559 --> 00:41:28,150
+para a CollectionView,
+ele começa tudo novamente.
+
+816
+00:41:28,170 --> 00:41:30,940
+Pergunta pro dataSource quantos
+itens tem lá. Pergunta por cada cell.
+
+817
+00:41:30,960 --> 00:41:34,170
+É um refazer completo.
+Ele ainda vai reusar as caixinhas
+
+818
+00:41:34,190 --> 00:41:37,069
+mas esse é o único reúso
+que você terá. De resto,
+
+819
+00:41:37,069 --> 00:41:41,230
+é um completo refazer. É uma maneira
+meio desastrada de fazer isso
+
+820
+00:41:41,250 --> 00:41:45,779
+mas é fácil, ok? Se você sabe
+quais tens mudaram então você
+
+821
+00:41:45,799 --> 00:41:49,400
+poderia usar reloadItemsAtIndexPaths
+e passar um array
+
+822
+00:41:49,420 --> 00:41:53,179
+desses IndexPaths (section e item)
+que mudaram, ok? Isso é
+
+823
+00:41:53,199 --> 00:41:57,289
+mais eficiente, ok? Mas ele
+não te ajuda se o que mudou...
+
+824
+00:41:57,309 --> 00:42:01,139
+se coisas foram adicionadas ao model ou
+
+
+825
+00:42:01,159 --> 00:42:03,869
+removidas do model.
+Então isso não vai funcionar,
+
+826
+00:42:03,869 --> 00:42:06,619
+porque isso só vai fazer update
+nos que já existirem.
+
+827
+00:42:06,619 --> 00:42:08,369
+Para isso, você precisa desses métodos:
+"deleteItemAtIndexPath"
+
+828
+00:42:08,369 --> 00:42:09,369
+e
+
+
+829
+00:42:09,369 --> 00:42:12,799
+"insertItemsAtIndexPath", ok?
+Agora esses métodos
+
+830
+00:42:12,819 --> 00:42:13,819
+são realmente da hora
+
+
+831
+00:42:13,819 --> 00:42:17,909
+porque eles fazer
+uma animação completa das caixinhas
+
+832
+00:42:17,929 --> 00:42:20,929
+sendo adicionadas ou removidas
+porque, imagina se eu tiro uma caixa,
+
+833
+00:42:20,929 --> 00:42:24,179
+todas as outras caixas precisam
+tipo se mover para
+
+834
+00:42:24,179 --> 00:42:26,929
+usar o espaço, certo? Nós estamos
+falando de Flow Layout aqui. Então ele faz
+
+835
+00:42:26,929 --> 00:42:29,429
+toda essa amimação.
+O único truque aqui é,
+
+836
+00:42:29,429 --> 00:42:32,329
+depois de você chamar esse método,
+qualquer um deles, o que quer que
+
+837
+00:42:32,349 --> 00:42:36,420
+tenha no seu model precisa agora
+corresponder com o novo estado
+
+838
+00:42:36,440 --> 00:42:39,339
+da sua collection view.
+Se isso não acontecer, seu app vai crashar
+
+839
+00:42:39,339 --> 00:42:42,089
+com uma "assertion". Tenho certeza
+que vocês provavelmente, quase todos vocês
+
+840
+00:42:42,109 --> 00:42:44,929
+que já tentara fazer isso
+porque o crédito extra requer
+
+841
+00:42:44,949 --> 00:42:47,380
+isso... um dos créditos extras,
+você vai receber essa "assertion"
+
+842
+00:42:47,380 --> 00:42:48,380
+e você vai tipo:
+
+
+843
+00:42:48,380 --> 00:42:51,130
+"por que meu model
+está diferente do que minha collection view?"
+
+844
+00:42:51,130 --> 00:42:54,130
+Em outras palavras, o model tem
+que ter o mesmo número de itens
+
+845
+00:42:54,130 --> 00:42:57,130
+e eles tem que estar
+na mesma relação com os
+
+846
+00:42:57,130 --> 00:43:00,509
+indexPaths. Ok? [...]
+Isso tem que ser verdade
+
+847
+00:43:00,529 --> 00:43:03,029
+antes de você chamar esses métodos,
+porque depois que esse método terminar
+
+848
+00:43:03,029 --> 00:43:06,029
+eles tem que ser os mesmos, ok?
+Esse é meu alerta
+
+849
+00:43:06,029 --> 00:43:10,400
+pra vocês. Existem vários outros
+métodos na Collection View,
+
+850
+00:43:10,420 --> 00:43:13,170
+mas você pdoe descobrir o que está acontecendo.
+Tipo, quantas sections existem,
+
+851
+00:43:13,170 --> 00:43:15,920
+quantos itens existe em cada section,
+mas, claro,
+
+852
+00:43:15,920 --> 00:43:18,670
+seu model sabe quantos itens
+tem em cada section,
+
+853
+00:43:18,670 --> 00:43:20,920
+presumidamente. Um bem legal
+é que você pode obter
+
+854
+00:43:20,920 --> 00:43:23,670
+as cells visíveis, ok?
+Ele te dirá todas as caixinhas
+
+855
+00:43:23,670 --> 00:43:26,920
+que estão pelo menos um pouquinho
+na tela. Então, quando você quiser
+
+856
+00:43:26,920 --> 00:43:29,670
+escrever um método tipo updateUI,
+você pdeo apenas fazer update naquelas
+
+857
+00:43:29,670 --> 00:43:32,670
+que estão visíveis, que é o que
+vamos fazer na nossa demo. E você pode também
+
+858
+00:43:32,670 --> 00:43:35,670
+descobrir os indexPaths
+daquelas que estiverem visíveis.
+
+859
+00:43:35,670 --> 00:43:38,670
+E você pode mapear, indo e voltando,
+entre o indexPath e a caixinha.
+
+860
+00:43:38,670 --> 00:43:41,920
+Então se você tem uma caixinha,
+você consegue obter o seu
+
+861
+00:43:41,920 --> 00:43:45,170
+indexPath. Se você tem o indexPath,
+você pode obter a caixinha,
+
+862
+00:43:45,170 --> 00:43:47,170
+ok? Indo e voltando.
+Manipulando "Gestures".
+
+863
+00:43:47,170 --> 00:43:49,920
+Existe um importante método
+"indexPathForItemAtPoint:",
+
+864
+00:43:49,920 --> 00:43:52,670
+Você passa um ponto, o que
+presumidamente você tem do gesture.
+
+865
+00:43:52,670 --> 00:43:54,920
+Esse ponto está no
+sistema de coordenadas da Collection View, ok?
+
+866
+00:43:54,920 --> 00:43:57,170
+Não no sistema de coordenadas
+da caixinha. E sim no sistema
+
+867
+00:43:57,170 --> 00:43:59,420
+de coordenadas da Collection View,
+porque você está enviando essa mensagem
+
+868
+00:43:59,420 --> 00:44:02,670
+para a Collection View. Mas você
+recebe o gesture, e ele tem
+
+869
+00:44:02,670 --> 00:44:05,170
+o toque ou algo assim,
+e ele vai te dizer qual a caixinha que
+
+870
+00:44:05,170 --> 00:44:08,170
+ele está tocando, baseado
+no ponto que você passou.
+
+871
+00:44:08,170 --> 00:44:12,319
+Esse é bem útil, nós vamo usá-lo hoje também.
+Existem coisas que vocês podem
+
+872
+00:44:12,339 --> 00:44:16,119
+inspecionar no Xcode sobre
+uma Collection View tipo se vocês
+
+873
+00:44:16,139 --> 00:44:18,289
+inspecionarem a própria Collection Voew,
+vocês podem dizer quantas
+
+874
+00:44:18,289 --> 00:44:20,789
+caixinhas de protótipo
+diferentes existem,
+
+875
+00:44:20,799 --> 00:44:23,670
+isso é esse "Items" aí.
+E vocês podem fazer o layout tanto
+
+876
+00:44:23,690 --> 00:44:27,759
+vertical ou horizontal. Vocês podem dizer
+se existe headers ou footers ou não.
+
+877
+00:44:27,779 --> 00:44:31,279
+No "Size Inspector"
+de uma Collection View, ele permite
+
+878
+00:44:31,299 --> 00:44:36,259
+você setar o espaçamento
+entre as caixas. O espaçamento do header,
+
+879
+00:44:36,279 --> 00:44:39,519
+certo? A quantia entre
+o topo e dos lados. Todo tipo
+
+880
+00:44:39,519 --> 00:44:41,519
+de oisas legais para deixar
+sua view com a cara
+
+881
+00:44:41,519 --> 00:44:45,029
+que você quiser. E se vocês
+inspecionarem uma
+
+882
+00:44:45,049 --> 00:44:47,210
+Collection View Cell, vocês também podem
+setar o seu tamanho. Vocês podem também
+
+883
+00:44:47,210 --> 00:44:48,210
+fazer isso arrastando
+
+
+884
+00:44:48,210 --> 00:44:50,880
+os guias, certo?
+Fazer a Collection View...
+
+885
+00:44:50,900 --> 00:44:55,389
+a caixinha do tamanho que você quiser.
+
+
+886
+00:44:55,409 --> 00:44:58,480
+Ok. Aquele maldito delegate, certo?
+A Collection View
+
+887
+00:44:58,500 --> 00:45:01,250
+tem um delegate, que diabos é isso?
+Nós falamos apenas sobre
+
+888
+00:45:01,250 --> 00:45:04,250
+o data source, o que tem no delegate?
+Um monte de coisas que vocês
+
+889
+00:45:04,250 --> 00:45:06,500
+não precisam pra essa tarefa.
+Coisas meio avançadas.
+
+890
+00:45:06,500 --> 00:45:09,170
+Coisas do tipo, se ele tem
+seleções que ele pode gerenciar,
+
+891
+00:45:09,170 --> 00:45:11,750
+que, a propósito, vocês
+não vao usar na tarefa de casa,
+
+892
+00:45:11,750 --> 00:45:13,789
+mesmo que eu sei que vocês acham
+que vocês vão estar gerenciando seleções
+
+893
+00:45:13,789 --> 00:45:16,969
+com o setCards,
+faça isso de outro modo. Não tente usar
+
+894
+00:45:16,969 --> 00:45:21,170
+o mecanismo de seleção
+da Collection View. Se você fizer,
+
+895
+00:45:21,190 --> 00:45:25,609
+esteja preparado para fazer
+algumas pesquisas sobre como isso funciona
+
+896
+00:45:25,629 --> 00:45:26,629
+e também existe algo
+
+
+897
+00:45:26,629 --> 00:45:29,869
+onde vocês podem fazer um "long press",
+certo? Pressionar em
+
+898
+00:45:29,889 --> 00:45:33,569
+uma cell e um pequeno menu
+aparece. Vocês provavelmente
+
+899
+00:45:33,589 --> 00:45:36,589
+já viram isso, certo? Tipo quando você
+está no iBooks e você pressiona
+
+900
+00:45:36,589 --> 00:45:39,839
+uma palavra e você pode dizer
+"defina essa palavra" ou
+
+901
+00:45:39,839 --> 00:45:42,089
+"procure no Google" ou qualquer coisa assim.
+É a mesma coisa aqui. Existe um mecanismo
+
+902
+00:45:42,089 --> 00:45:45,339
+onde vocês podem pressionar
+e ele vai colocar um menuzinho
+
+903
+00:45:45,339 --> 00:45:48,339
+e vocês podem dizer o que tem no menu
+e, sabe, fazer algo ali.
+
+904
+00:45:48,339 --> 00:45:50,839
+Então, tudo isso é feito
+através de delegates.
+
+905
+00:45:50,839 --> 00:45:54,199
+Coisas bem avançadas que não vamos
+utilizar nesse curso.
+
+906
+00:45:54,199 --> 00:45:56,839
+E existem outras coisas aqui,
+nós não teremos tempo para falar
+
+907
+00:45:56,839 --> 00:46:00,089
+sobre tudo isso e nós não precisamos
+de nada disso para o homework.
+
+908
+00:46:00,089 --> 00:46:01,109
+Certo, então,
+
+
+909
+00:46:01,129 --> 00:46:02,909
+UICollectionView,
+o que poderia dar errado,
+
+910
+00:46:02,929 --> 00:46:03,929
+certo?
+
+
+911
+00:46:03,929 --> 00:46:06,929
+Isso é tão direto.
+Não. Digo, há muitas coisas
+
+912
+00:46:06,929 --> 00:46:09,679
+que podem dar errado.
+Então eu fiz esse slide
+
+913
+00:46:09,679 --> 00:46:12,679
+que é uma checklist para vocês
+pra passar e checkar essas coisas
+
+914
+00:46:12,679 --> 00:46:15,679
+quando as coisas não estiverem funcionando, ok?
+Então vocês podem olhar
+
+915
+00:46:15,679 --> 00:46:18,679
+todas elas, eu já falei sobre todas,
+amarrando as coisas, ter certeza
+
+916
+00:46:18,679 --> 00:46:21,079
+que o reuseIdentifier está certo,
+setar os seus outlets,
+
+917
+00:46:21,099 --> 00:46:24,519
+setar as classes,
+várias coisas, ok?
+
+918
+00:46:24,539 --> 00:46:27,920
+Essa é a checklist. Tenham certeza
+que vocês fizeram todas essas coisas.
+
+919
+00:46:27,940 --> 00:46:31,440
+E, de fato, quando eu fizer essa demo,
+onde eu vou ter que fazer todas
+
+920
+00:46:31,440 --> 00:46:33,940
+essas coisas, talvez alguém possa
+gritar a checklist,
+
+921
+00:46:33,940 --> 00:46:35,940
+se eu esquecer alguma coisa da checklist.
+Espero que eu lembre
+
+922
+00:46:35,940 --> 00:46:38,739
+de tudo, ok?
+Ok. Então vamos fazer a demo.
+
+923
+00:46:38,739 --> 00:46:42,079
+A demo é: eu vou pegar o Matchismo
+como estava da última vez que vocês viram
+
+924
+00:46:42,079 --> 00:46:46,099
+e nós vamos integrar as Playing Cards
+da "Super Card", que nós
+
+925
+00:46:46,119 --> 00:46:48,359
+fizemos da última vez. Aquelas
+Playing Cards que tem "face cards"
+
+926
+00:46:48,359 --> 00:46:49,609
+e todas essas coisas. Certo.
+
+
+927
+00:46:49,609 --> 00:46:53,500
+E então, o homework,
+eu já expliquei isso.
+
+928
+00:46:53,519 --> 00:46:56,519
+Nossa próxima aula,
+eu não estou 100% certo sobre nossa próxima aula,
+
+929
+00:46:56,519 --> 00:46:58,769
+talvez nós falemos sobre Auto Layout,
+é... nós vamos
+
+930
+00:46:58,769 --> 00:47:01,269
+falar sobre isso.
+E então nós vamos começar a ir na direção
+
+931
+00:47:01,269 --> 00:47:05,339
+de termos outras maneiras 
+de ter múltiplos MVCs além de apenas
+
+932
+00:47:05,359 --> 00:47:09,269
+um TabBarController. Certo.
+Alguma pergunta antes de
+
+933
+00:47:09,289 --> 00:47:12,559
+eu começar aqui? Eu estou
+apertado de tempo, como de costume, mas eu acho
+
+934
+00:47:12,559 --> 00:47:18,829
+que eu consigo fazer quase tudo.
+Ok, então eu vou apenas
+
+935
+00:47:18,849 --> 00:47:25,319
+rodar o Matchismo.
+Abrir o Matchismo no Xcode.
+
+936
+00:47:25,339 --> 00:47:27,190
+Aqui está, bem aqui.
+Vocês provavelmente vão reconhecer isso.
+
+937
+00:47:27,190 --> 00:47:28,190
+Eu não mudei nada
+
+
+938
+00:47:28,190 --> 00:47:30,839
+desde a última...
+sei lá quando foi a última demo,
+
+939
+00:47:30,859 --> 00:47:35,219
+a antepenúltima aula ou algo assim.
+Então vamos entrar de cabeça
+
+940
+00:47:35,239 --> 00:47:37,989
+para fazer essa alteração.
+O que eu vou fazer, ao invés de
+
+941
+00:47:37,989 --> 00:47:40,880
+ter esses botões aqui,
+eu vou usar uma
+
+942
+00:47:40,900 --> 00:47:42,900
+Collection View para ter as cartas, ok?
+Então eu vou apenas
+
+943
+00:47:42,900 --> 00:47:43,900
+dar um clique duplo aqui,
+
+
+944
+00:47:43,900 --> 00:47:47,009
+me livrar desses botões,
+selecionar todos eles
+
+945
+00:47:47,029 --> 00:47:51,289
+e deletá-los. Eu vou voltar
+ao meu controller
+
+946
+00:47:51,309 --> 00:47:54,750
+e eu vou remover todas as referências
+para essas cartas, ok?
+
+947
+00:47:54,769 --> 00:47:58,519
+Porque eu acabei de me livrar delas
+e nós vamos fazer um uma nova maneira.
+
+948
+00:47:58,519 --> 00:48:02,019
+Posso me livrar desses,
+por exemplo, eu não preciso
+
+949
+00:48:02,019 --> 00:48:04,519
+mais desse "outlet collection",
+então eu vou deletar isso.
+
+950
+00:48:04,519 --> 00:48:07,269
+Nós vamos ver essa referência
+em um segundo. Eu certamente
+
+951
+00:48:07,269 --> 00:48:11,130
+não preciso do setter. Vou me livrar disso.
+updateUI não serve mais,
+
+952
+00:48:11,150 --> 00:48:13,949
+tem várias coisas
+de cardButton aqui,
+
+953
+00:48:13,969 --> 00:48:16,980
+certo? Então teremos que fazer
+o updateUI diferentemente.
+
+954
+00:48:16,980 --> 00:48:22,309
+Aqui é quando nós
+viramos uma carta, que fazemos quando
+
+955
+00:48:22,329 --> 00:48:25,460
+o botão é clicado, nós obviamente
+precisamos olhar que botão que era,
+
+956
+00:48:25,480 --> 00:48:28,829
+mas isso não vai mais ser útil,
+mas nós ainda
+
+957
+00:48:28,829 --> 00:48:31,829
+vamos ter que virar cartas, ok?
+Nosso app ainda
+
+958
+00:48:31,829 --> 00:48:34,589
+tem que virar cartas. Então,
+temporariamente, eu vou por
+
+959
+00:48:34,589 --> 00:48:38,750
+a palavra "index" aqui.
+E nós vamos dizer "int index = 0"
+
+960
+00:48:38,769 --> 00:48:39,789
+e eu vou colocar um
+
+
+961
+00:48:39,809 --> 00:48:42,690
+bom comentário aqui
+para que eu não esqueça que eu tenho
+
+962
+00:48:42,690 --> 00:48:45,489
+que voltar e arrumar isso depois.
+Ok, porque eu joguei fora aquele
+
+963
+00:48:45,509 --> 00:48:48,529
+cardButton. E por último, nós temos
+esse negócio que eu pulei.
+
+964
+00:48:48,549 --> 00:48:53,130
+E eu vou usar essa oportunidade
+porque eu sei que algum de vocês
+
+965
+00:48:53,150 --> 00:48:55,900
+ainda não viram o homework,
+mas para aqueles que já viram,
+
+966
+00:48:55,900 --> 00:48:58,150
+o que estamos vendo nas
+"monitorias" e algumas das
+
+967
+00:48:58,150 --> 00:48:59,150
+perguntas no
+
+
+968
+00:48:59,150 --> 00:49:01,650
+Piazza é, talvez um não
+tão bom entendimento de como 
+
+969
+00:49:01,650 --> 00:49:03,409
+usar programação orientada
+a objetos, especificamente
+
+970
+00:49:03,429 --> 00:49:04,579
+polimorfismo
+
+
+971
+00:49:04,599 --> 00:49:08,549
+com controllers. Ok? Então eu vou
+exigir que vocês
+
+972
+00:49:08,569 --> 00:49:11,569
+façam isso para a próxima atividade.
+Porque eu quero ter certeza
+
+973
+00:49:11,579 --> 00:49:14,829
+que vocês sabem como fazer isso
+e eu também vou demonstrar
+
+974
+00:49:14,829 --> 00:49:18,329
+isso aqui porque eu quero
+mostrar a vocês como fazer,
+
+975
+00:49:18,329 --> 00:49:21,579
+para que vocês saibam
+como fazer isso, ok? Então vamos dar uma olhada...
+
+976
+00:49:21,579 --> 00:49:24,079
+esse é o nosso
+CardGameController genérico. Eu vou fazer
+
+977
+00:49:24,079 --> 00:49:26,900
+essa a classe base para
+o meu controller e eu vou fazer
+
+978
+00:49:26,900 --> 00:49:30,049
+minha PlayingCard ser uma
+subclasse, uma classe específica
+
+979
+00:49:30,069 --> 00:49:33,079
+do CardGame. E então o "set"
+será uma outra classe específica,
+
+980
+00:49:33,099 --> 00:49:36,000
+uma outra subclasse dessa classe.
+Essa vai ser uma classe CardPlaying
+
+981
+00:49:36,019 --> 00:49:39,339
+base e genérica. Agora,
+o que não é genérico sobre isso?
+
+982
+00:49:39,359 --> 00:49:42,539
+Bom, algo grande que não é genérico
+é que ele importa
+
+983
+00:49:42,559 --> 00:49:45,460
+PlayingCardDeck, porque
+ela é totalmente amarrada a PlayingCard
+
+984
+00:49:45,460 --> 00:49:46,460
+então deixe-me tirar isso,
+
+985
+00:49:46,460 --> 00:49:50,980
+ok? Eu não quero.
+[...]
+
+986
+00:49:51,000 --> 00:49:52,000
+Mas se eu fizer isso,
+
+
+987
+00:49:52,000 --> 00:49:55,579
+então essa linha de código quebra,
+ok? Então ao invés de dizer isso,
+
+988
+00:49:55,599 --> 00:50:01,210
+eu vou dizer "[self createDeck]", ok?
+E daí vou adicionar um método
+
+989
+00:50:01,230 --> 00:50:06,079
+que retorna um Deck
+chamado "createDeck" e ele vai retornar
+
+990
+00:50:06,099 --> 00:50:10,400
+nil. E isso faz ele ser abstrato, ok?
+Todo mundo entende
+
+991
+00:50:10,420 --> 00:50:13,900
+o que abstrato significa
+em programação orientada a objetos?
+
+992
+00:50:13,920 --> 00:50:18,549
+Levante sua mão se você souber
+o que significa.
+
+993
+00:50:18,569 --> 00:50:21,869
+Eu não quero constranger vocês.
+Ok, então quase todo mundo.
+
+994
+00:50:21,889 --> 00:50:25,529
+Abstrato significa que essa classe
+não funcionará se esse método
+
+995
+00:50:25,549 --> 00:50:26,859
+não for implementado pela subclasse.
+Sim.
+
+996
+00:50:26,879 --> 00:50:29,129
+>> [Estudante perguntando]
+
+
+997
+00:50:29,129 --> 00:50:31,940
+>> A pergunta é:
+eu devo lançar uma exceção aqui
+
+998
+00:50:31,960 --> 00:50:33,710
+ou algo assim? E essa pode ser uma
+boa idéia, na verdade.
+
+999
+00:50:33,710 --> 00:50:34,710
+Eu...
+
+
+1000
+00:50:34,710 --> 00:50:37,710
+eu não tenho muito tempo,
+mas sim. Algo assim... eu teria uma
+
+1001
+00:50:37,710 --> 00:50:39,960
+"assertion", algum tipo de "assertion",
+qualquer coisa assim.
+
+1002
+00:50:39,980 --> 00:50:42,349
+Se esse método alguma vez for chamado
+isso é ruim, porque ele é
+
+1003
+00:50:42,349 --> 00:50:46,000
+abstrato, ok? Outras linguagens
+tem sintaxe para dizer
+
+1004
+00:50:46,019 --> 00:50:49,730
+que isso é abstrato.
+[...]
+
+1005
+00:50:49,750 --> 00:50:53,129
+Você sabe, mais suporte da linguagem.
+Aqui, não exite sintaxe para abstração
+
+1006
+00:50:53,149 --> 00:50:57,299
+então você tem apenas o método,
+ele não faz nada e se ele não for
+
+1007
+00:50:57,319 --> 00:51:01,190
+sobrescrito, então isso é uma falha.
+Mas nós precisamos colocar isso
+
+1008
+00:51:01,210 --> 00:51:05,679
+na nossa API pública, porque nós
+precisamos dizer as pessoas
+
+1009
+00:51:05,699 --> 00:51:09,389
+que elas precisam implementar isso.
+Então eu vou colocar essa coisa
+
+1010
+00:51:09,409 --> 00:51:12,960
+na minha API pública e eu vou
+marcá-la como abstrato.
+
+1011
+00:51:12,980 --> 00:51:16,119
+Então as pessoas saberão
+que isso é exigido. E eu tenho que
+
+1012
+00:51:16,139 --> 00:51:18,889
+importar Deck aqui, e tudo bem.
+Deck é genérico.
+
+1013
+00:51:18,909 --> 00:51:19,909
+Deck não é
+
+
+1014
+00:51:19,909 --> 00:51:23,170
+PlayingCardDeck. É apenas Deck.
+Então é isso.
+
+1015
+00:51:23,190 --> 00:51:24,759
+E temos também esse aqui,
+que é um problema.
+
+1016
+00:51:24,759 --> 00:51:25,759
+"cardButtons count".
+
+
+1017
+00:51:25,759 --> 00:51:29,659
+Ok? Eu nào tenho mais
+o cardButtons. Então eu vou
+
+1018
+00:51:29,679 --> 00:51:33,929
+substituir esse aqui
+por "[self.startingCard count]".
+
+1019
+00:51:33,949 --> 00:51:34,949
+Será apenas um property.
+
+
+1020
+00:51:34,949 --> 00:51:38,489
+E também será abstrata.
+Eu vou fazê-la pública.
+
+1021
+00:51:38,509 --> 00:51:45,799
+[ditando código]
+
+
+1022
+00:51:45,819 --> 00:51:51,799
+Ok? Então, obviamente,
+eu não vou vou fazer nada sensato
+
+1023
+00:51:51,819 --> 00:51:56,429
+a não ser que você implemente
+esse método.
+
+
+1024
+00:51:56,449 --> 00:51:59,449
+E isso funcionará, porque
+isso vai retornar 0 se ninguém
+
+1025
+00:51:59,449 --> 00:52:02,199
+implementá-lo. E como sabemos,
+quando chamarmos CardMatchingGame
+
+1026
+00:52:02,199 --> 00:52:05,199
+se você não passar nenhuma carta,
+ele retornará nil. Novamente,
+
+1027
+00:52:05,199 --> 00:52:08,759
+self.game nunca inicializará.
+Ok? Se alguma dessas coisas
+
+1028
+00:52:08,779 --> 00:52:10,909
+retornar nil, na verdade,
+não vai inicializar,
+
+1029
+00:52:10,929 --> 00:52:14,009
+que é exatamente o que eu quero.
+Ele pode tentar toda vez,
+
+1030
+00:52:14,029 --> 00:52:18,319
+mas eu não posso inicializar um jogo
+a não ser que eu tenha essas coisas.
+
+1031
+00:52:18,339 --> 00:52:21,879
+Ok? Então eu movi tudo agora,
+Tudo que
+
+1032
+00:52:21,899 --> 00:52:24,609
+era específico de uma
+PlayingCard, o deck e
+
+1033
+00:52:24,609 --> 00:52:27,589
+quantas cartas vai começar,
+tudo agora está fora dessa classe.
+
+1034
+00:52:27,609 --> 00:52:30,670
+Excelente. Eu vou manter
+tudo fora dela na medida que
+
+1035
+00:52:30,690 --> 00:52:35,460
+prosseguimos com nosso trabalho.
+Então removi todos os botões.
+
+1036
+00:52:35,480 --> 00:52:39,509
+Removi todas as referências para eles,
+entÀo agora eu vou
+
+1037
+00:52:39,529 --> 00:52:43,230
+substituir esses botões
+por uma CardCollectionView.
+
+1038
+00:52:43,250 --> 00:52:47,569
+Certo? Então eu não vou mais usar essa.
+Esse é o Controller completo,
+
+1039
+00:52:47,589 --> 00:52:50,920
+eu vou vir aqui embaixo
+e escolher esse aqui.
+
+1040
+00:52:50,940 --> 00:52:54,049
+A Collection View aqui,
+vocês podem ver que é uma Collection View.
+
+1041
+00:52:54,069 --> 00:52:57,989
+E arrasto. Agora, ele está branco,
+é meio difícil de ver.
+
+1042
+00:52:58,009 --> 00:53:04,469
+Então, para a demo,
+eu vou deixar o background
+
+1043
+00:53:04,489 --> 00:53:08,379
+ser o meu verde preferido, ok?
+É apenas para vocês verem.
+
+1044
+00:53:08,399 --> 00:53:10,899
+Provavelmente não será
+muito bonito se a UI
+
+1045
+00:53:10,899 --> 00:53:11,899
+tiver isso verde,
+
+
+1046
+00:53:11,899 --> 00:53:14,899
+e todo o resto das coisas
+estarem com
+
+1047
+00:53:14,899 --> 00:53:17,649
+um fundo branco assim.
+Mas tenho certeza que vocês farão melhor
+
+1048
+00:53:17,649 --> 00:53:20,899
+no homework, ok?
+Mas é apenas para que vocês consigam ver.
+
+1049
+00:53:20,899 --> 00:53:23,899
+Então aqui eu tenho essa CollectionView,
+ótimo. Agora eu vou
+
+1050
+00:53:23,899 --> 00:53:26,649
+criar um outlet
+para essa Collection View no
+
+1051
+00:53:26,649 --> 00:53:30,239
+meu controller, ok?
+Isso não é nada que vocês não
+
+1052
+00:53:30,259 --> 00:53:33,460
+tenham visto antes. Então eu vou aqui,
+aqui está o meu controller.
+
+1053
+00:53:33,460 --> 00:53:33,659
+
+
+
+1054
+00:53:33,659 --> 00:53:36,059
+Clico aqui, vamos fazê-lo privado.
+Então eu
+
+1055
+00:53:36,059 --> 00:53:37,059
+vou apenas
+
+
+1056
+00:53:37,059 --> 00:53:39,559
+CTRL + arrastar,
+é apenas uma view. Coloco aqui embaixo.
+
+1057
+00:53:39,559 --> 00:53:40,559
+Vamos chamá-la
+
+
+
+1058
+00:53:40,559 --> 00:53:43,920
+CardCollectionView, porque
+é isso que ela é,
+
+1059
+00:53:43,940 --> 00:53:46,940
+É uma Collection View
+que tem as cartas nela. Ok?
+
+1060
+00:53:46,940 --> 00:53:52,579
+Da hora! Então está tudo fácil até agora.
+Vamos olhar para
+
+1061
+00:53:52,599 --> 00:53:56,900
+essa pequena cell, ok?
+Essa é a caixinha. Eu quero que ela seja
+
+1062
+00:53:56,920 --> 00:53:59,670
+um pouco maior. Vamos colocar... não sei...
+algo como 
+
+1063
+00:53:59,670 --> 00:54:02,170
+70 x 100 provavelmente está bom.
+Não importa muito porque
+
+1064
+00:54:02,170 --> 00:54:06,219
+meu PlayingCardView pode ser
+de qualquer tamanho, então tanto faz.
+
+1065
+00:54:06,239 --> 00:54:10,460
+Então, para fazer essa caixinha funcionar,
+eu tenho que colocar
+
+1066
+00:54:10,480 --> 00:54:14,679
+views nela e coisas assim.
+Como eu faço isso?
+
+1067
+00:54:14,699 --> 00:54:17,699
+Bom, eu preciso daquela
+PlayingCardView primeiro. Então eu vou
+
+1068
+00:54:17,699 --> 00:54:20,989
+lá no SuperCard, ok? Vamos trazer
+essa coisa pra cá...
+
+1069
+00:54:21,009 --> 00:54:25,449
+Eu vou até a SuperCard
+e eu vou apenas
+
+1070
+00:54:25,469 --> 00:54:28,769
+arrastar a PlayingCardView
+
+1071
+00:54:28,789 --> 00:54:32,869
+que nós escrevemos na última aula.
+Eu também preciso das imagens
+
+1072
+00:54:32,889 --> 00:54:36,279
+das cartas, frente e verso,
+para que funcione. Então eu vou
+
+1073
+00:54:36,279 --> 00:54:39,000
+arrastá-los para dentro, ok?
+E, novamente, sempre tenham certeza
+
+1074
+00:54:39,000 --> 00:54:41,849
+de ter ambas essas coisas clicadas,
+para que copiemos e incluamos
+
+1075
+00:54:41,849 --> 00:54:45,650
+no que estamos construindo.
+Agora nós temos a PlayingCardView, ok?
+
+1076
+00:54:45,670 --> 00:54:50,109
+Para que eu possa usar aqui.
+E como eu arrasto
+
+1077
+00:54:50,129 --> 00:54:54,480
+uma PlayingCardView pra cá?
+É bem fácil, eu apenas vneho aqui,
+
+1078
+00:54:54,500 --> 00:54:57,900
+vou lá embaixo e acho uma
+view genérica reusável, que está bem aqui.
+
+1079
+00:54:57,920 --> 00:55:00,460
+Certo? Eu arrasto pra cá.
+E vêem que ele
+
+1080
+00:55:00,460 --> 00:55:05,369
+automaticamente quer ficar
+do tamanho da cell?
+
+1081
+00:55:05,389 --> 00:55:08,279
+Eu posso deixá-la menor,
+eu poderia colocar outras views,
+
+1082
+00:55:08,279 --> 00:55:10,929
+eu poderia arrastar outras views aqui.
+Qualquer coisa que eu queira, certo?
+
+1083
+00:55:10,929 --> 00:55:15,250
+Isso é igual uma pequena view,
+hierarquicamente, você pode colocar
+
+1084
+00:55:15,269 --> 00:55:18,400
+qualquer coisa que quiser aqui.
+E, claro, como todas as views customizadas,
+
+1085
+00:55:18,420 --> 00:55:21,949
+eu preciso inspecionar
+sua identidade e mudá-la para ser
+
+1086
+00:55:21,969 --> 00:55:26,949
+uma PlayingCardView, ok?
+Então agora eu tenho uma PlayingCardView
+
+1087
+00:55:26,969 --> 00:55:30,629
+nessa pequena cell.
+Mas agora eu preciso conseguir falar
+
+1088
+00:55:30,649 --> 00:55:33,899
+com essa PlayingCardView
+porque eu tenho que poder setar
+
+1089
+00:55:33,899 --> 00:55:37,399
+o seu rank e naipe. Para fazer isso,
+eu preciso de um outlet para ela.
+
+1090
+00:55:37,399 --> 00:55:39,899
+Eu não posso criar um outlet
+de uma Collection View para ela porque
+
+1091
+00:55:39,899 --> 00:55:42,899
+vão existir várias dessas coias.
+Então eu coloco um outlet
+
+1092
+00:55:42,899 --> 00:55:45,149
+na caixinha, ok?
+Essa é a caixinha
+
+1093
+00:55:45,149 --> 00:55:46,149
+que contém a minha
+
+
+1094
+00:55:46,149 --> 00:55:48,379
+PlayingCardView, certo?
+Mas para ter um outlet,
+
+1095
+00:55:48,379 --> 00:55:50,859
+eu não posso usar essa classe genérica.
+Eu preciso
+
+1096
+00:55:50,859 --> 00:55:53,559
+fazer uma subclasse, igual com o controller.
+Eu preciso de uma subclasse.
+
+1097
+00:55:53,559 --> 00:55:58,549
+Então eu vou criar um novo arquivo.
+É uma classe em Objective-C.
+
+1098
+00:55:58,569 --> 00:56:04,769
+Vou chamá-lo PlayingCardCollectionViewCell,
+
+
+1099
+00:56:04,789 --> 00:56:07,909
+e ele vai ser uma subclasse de
+UICollectionViewCell.
+
+1100
+00:56:07,909 --> 00:56:11,299
+E tome cuidado aqui,
+não escolha acidentalmente ReusableView,
+
+1101
+00:56:11,319 --> 00:56:14,159
+essa é para heades e footers,
+e não escolha UICollectionView,
+
+1102
+00:56:14,159 --> 00:56:16,719
+porque não é isso que estamos fazendo.
+Nós estamos falando sobre
+
+1103
+00:56:16,719 --> 00:56:18,969
+as caixinhas
+que são as Collecion View Cell.
+
+1104
+00:56:18,980 --> 00:56:22,969
+Ok? Então eu vou criar isso.
+Tenha certeza que estão
+
+1105
+00:56:22,989 --> 00:56:25,989
+nos lugares certos. É, estão.
+Aqui está. Certo. Então isso é
+
+1106
+00:56:25,989 --> 00:56:28,489
+a cara da nossa CollectionViewCell.
+Lembrem-se, eu já falei,
+
+1107
+00:56:28,489 --> 00:56:30,489
+isso não é um controller,
+mesmo que ele tenha outlets
+
+1108
+00:56:30,489 --> 00:56:31,489
+e actions.
+
+
+1109
+00:56:31,489 --> 00:56:34,190
+Isso é uma view.
+É por isso que ela tem o drawRect
+
+1110
+00:56:34,190 --> 00:56:35,190
+e initWithFrame:
+
+
+1111
+00:56:35,190 --> 00:56:38,569
+que e não preciso, então
+vou simplesmente deletar isso, ok?
+
+1112
+00:56:38,589 --> 00:56:42,480
+Agora que tenho essa classe
+eu preciso ir pro meu
+
+1113
+00:56:42,500 --> 00:56:47,159
+Storyboard e setar a caixinha
+para ser essa classe. Do mesmo jeito
+
+1114
+00:56:47,179 --> 00:56:50,139
+que fizemos com o resto, ok?
+Eu vou aqui, clico, vou no
+
+1115
+00:56:50,139 --> 00:56:54,190
+Identity Inspector, certo?
+E então escolho ele. Vai ser
+
+1116
+00:56:54,210 --> 00:56:58,819
+um PlayingCardCollection, ok?
+Agora que essas
+
+1117
+00:56:58,839 --> 00:57:01,159
+caixinhas são
+PlayingCardCollectionCells, eu posso fazer
+
+1118
+00:57:01,159 --> 00:57:05,579
+um outlet delas para
+a pequena view que está dentro, certo?
+
+1119
+00:57:05,599 --> 00:57:09,190
+Deixa eu ver se consigo
+arrumar espaço pra ver tudo isso,
+
+1120
+00:57:09,210 --> 00:57:14,679
+Então vamos ver se nós conseguimos
+achar nossa
+
+1121
+00:57:14,699 --> 00:57:18,460
+PlayingCardCollectionCell.
+Vamos achar manualmente aqui...
+
+1122
+00:57:18,480 --> 00:57:21,629
+Aqui está, ok?
+PlayingCardCollectionCell.
+
+1123
+00:57:21,649 --> 00:57:25,859
+Eu preciso fazer esse outlet público.
+Por que eu tenho que fazê-lo público?
+
+1124
+00:57:25,879 --> 00:57:28,980
+Porque o controller
+precisa conseguir chegar nele, certo?
+
+1125
+00:57:29,000 --> 00:57:32,250
+O controller vai obter essa cell,
+e ele precisa de uma API pública
+
+1126
+00:57:32,269 --> 00:57:33,579
+na cell para que ele consiga
+chegar na PlayingCardView.
+
+1127
+00:57:33,579 --> 00:57:34,579
+Então eu tenho que
+
+
+1128
+00:57:34,579 --> 00:57:35,829
+fazer isso público. Pergunta?
+
+
+1129
+00:57:35,829 --> 00:57:38,829
+>> [Estudante perguntando]
+
+
+1130
+00:57:38,829 --> 00:57:40,829
+[estudante perguntando]
+
+
+1131
+00:57:40,849 --> 00:57:43,629
+>> Esse negócio aqui,
+esse é o "document outline",
+
+1132
+00:57:43,649 --> 00:57:45,899
+esse é o esse botãozinho aqui
+Esconde ele.
+
+1133
+00:57:45,899 --> 00:57:50,609
+Ok? Isso é o que eu pensei
+da primeira vez que falamos sobre
+
+1134
+00:57:50,629 --> 00:57:52,899
+como fazer aparecer,
+nós não falamos 
+
+1135
+00:57:52,899 --> 00:57:53,899
+sobre o que tem nele,
+
+
+1136
+00:57:53,899 --> 00:57:56,649
+mas agora nós podemos ver
+o que tem nele, certo?
+
+1137
+00:57:56,649 --> 00:57:57,649
+Se eu clicar nas coisas
+
+
+1138
+00:57:57,649 --> 00:58:00,399
+ele me mostra, e vice-versa, ok?
+Então, eu quero fazer
+
+1139
+00:58:00,399 --> 00:58:04,210
+um outlet. Daqui para
+essa pequena PlayingCardView.
+
+1140
+00:58:04,230 --> 00:58:09,109
+Então eu vou apenas
+CTRL + arrastar e chamá-lo PlayingCardView.
+
+1141
+00:58:09,129 --> 00:58:12,169
+Eu já vi o Xcode as vezes
+não fazer isso direito, mas ele fez
+
+1142
+00:58:12,169 --> 00:58:17,299
+direito dessa vez. Percebam que eu
+tenho um erro aqui, isso é porque
+
+1143
+00:58:17,319 --> 00:58:25,210
+eu estou usando PlayingCardView,
+eu preciso importá-la, ok?
+
+1144
+00:58:25,230 --> 00:58:30,059
+Agora minha caixinha tem um ponteiro,
+um outlet para a sua... coisa.
+
+1145
+00:58:30,079 --> 00:58:32,859
+Então, sempre que eu tiver uma caixinha,
+eu posso obter
+
+1146
+00:58:32,879 --> 00:58:34,809
+a PlayingCardView dela,
+usando esse outlet. Ok?
+
+1147
+00:58:34,809 --> 00:58:35,809
+Porque é uma API pública
+
+
+1148
+00:58:35,809 --> 00:58:39,199
+dentro da caixinha. Certo?
+E vocês vão ver como
+
+1149
+00:58:39,219 --> 00:58:42,149
+nós obtemos uma caixinha em breve.
+Aliás, vamos fazer isso
+
+1150
+00:58:42,149 --> 00:58:47,460
+agora. Deixa eu arrumar
+mais espaço.
+
+1151
+00:58:47,480 --> 00:58:48,480
+Vamos voltar para
+
+
+1152
+00:58:48,480 --> 00:58:53,929
+o nosso controller.
+Nós queremos que nosso controller forneça
+
+1153
+00:58:53,949 --> 00:58:56,949
+dados para a Collection View, certo?
+Nós queremos que ele seja
+
+1154
+00:58:56,949 --> 00:59:00,889
+o dataSource e para fazer isso,
+nós temos que dizer para o mundo,
+
+1155
+00:59:00,909 --> 00:59:02,839
+que sim, o CardGameController
+
+
+1156
+00:59:02,859 --> 00:59:06,449
+quer ser um CollectionViewDataSource,
+ok?
+
+1157
+00:59:06,469 --> 00:59:11,549
+Agora, assim que eu digito isso,
+o que acontece? Eu recebo
+
+1158
+00:59:11,569 --> 00:59:14,250
+esse warning bem aqui.
+O que vocês acham que esse warning
+
+1159
+00:59:14,250 --> 00:59:15,599
+vai dizer?
+
+
+1160
+00:59:15,619 --> 00:59:16,599
+
+
+
+1161
+00:59:16,619 --> 00:59:20,190
+Correto. Exato.
+Ele vai dizer
+
+1162
+00:59:20,210 --> 00:59:25,179
+implementação incompleta.
+Por que? Porque nós dissemos que nós implementamos isso
+
+1163
+00:59:25,199 --> 00:59:28,549
+e nós não implementamos isso ainda.
+Então, se nós viermos aqui
+
+1164
+00:59:28,569 --> 00:59:30,069
+método
+"CollectionView:numberOfItemsInSction"
+
+1165
+00:59:30,069 --> 00:59:31,069
+não está implementado.
+
+
+1166
+00:59:31,069 --> 00:59:34,069
+De fato, se eu clicar aqui,
+alguns métodos não estão implementados
+
+1167
+00:59:34,069 --> 00:59:36,569
+então nós temos que implementá-los, ok?
+Vamos fazer isso.
+
+1168
+00:59:36,569 --> 00:59:41,949
+Eu na verdade vou implementar
+um opcional primeiro,
+
+1169
+00:59:41,969 --> 00:59:45,219
+apenas para mostrar como é.
+Que é esse cara aqui:
+
+1170
+00:59:45,219 --> 00:59:51,799
+[ditando código]
+Ok? Agora,
+
+1171
+00:59:51,819 --> 00:59:54,589
+esse é o opctional que se
+eu não implementar, ele vai
+
+1172
+00:59:54,589 --> 00:59:58,000
+retornar 1. Mas eu queria
+apenas mostrar como é. Eu vou
+
+1173
+00:59:58,000 --> 01:00:01,000
+prosseguir e retornar 1,
+mas eu poderia deletá-lo e
+
+1174
+01:00:01,000 --> 01:00:04,329
+seria exatamente a mesma coisa.
+Mas agora, vamos pro que interessa.
+
+1175
+01:00:04,349 --> 01:00:09,449
+Vamos olhar para o
+CollectionView:numberOfItemsInSection.
+
+1176
+01:00:09,469 --> 01:00:11,169
+Esse é o negócio onde
+a Collection View precisa saber
+
+1177
+01:00:11,169 --> 01:00:12,169
+quantos itens
+
+
+1178
+01:00:12,169 --> 01:00:15,789
+tem nessa section.
+Quantas dessas pequenas
+
+1179
+01:00:15,809 --> 01:00:19,059
+coisinhas eu tenho que replicar?
+E aqui eu estou apenas
+
+1180
+01:00:19,059 --> 01:00:21,809
+retornando "[self.startingCard count]".
+Agora, no seu app
+
+1181
+01:00:21,809 --> 01:00:23,809
+você não vai fazer isso,
+porque vocês vão querer perguntar
+
+1182
+01:00:23,809 --> 01:00:24,809
+para o Game
+
+
+1183
+01:00:24,809 --> 01:00:27,309
+quantas cartas estão atualmente no jogo, ok?
+Quando isso acontecer.
+
+1184
+01:00:27,309 --> 01:00:31,469
+Mas eu posso fazer desse jeito.
+E então nós temos um método realmente importante
+
+1185
+01:00:31,489 --> 01:00:37,349
+que é o negócio que desenfileira - 
+cria ou reusa - a cell
+
+1186
+01:00:37,369 --> 01:00:41,269
+e então a carrega.
+E ele é chamado
+
+1187
+01:00:41,289 --> 01:00:45,199
+"collectionView:cellForItemAtIndexPath:", ok?
+Vou colocar aqui para que
+
+1188
+01:00:45,219 --> 01:00:47,899
+vocÊs consigam enxergar um pouco melhor
+
+
+1189
+01:00:47,919 --> 01:00:51,589
+e novamente, tudo que precisamos fazer
+é "CollectionViewCell
+
+1190
+01:00:51,609 --> 01:00:59,049
+*cell = [collectionView dequeue ...", ok?
+Agora nós precisamos
+
+1191
+01:00:59,069 --> 01:01:02,619
+fornecer essa string,
+que eu vou chamar @"PlayingCard".
+
+1192
+01:01:02,639 --> 01:01:06,440
+Ok? E então o indexPath
+é apenas o indexPath que
+
+1193
+01:01:06,460 --> 01:01:10,769
+foi passado como argumento bem aqui.
+Nós precisamos ir lá e fazer
+
+1194
+01:01:10,789 --> 01:01:14,949
+essa string corresponder com o que
+está no Storyboard. Então vamos voltar
+
+1195
+01:01:14,969 --> 01:01:20,099
+ao nosso Storyboard.
+Se clicarmos na cell para selecioná-la,
+
+1196
+01:01:20,119 --> 01:01:22,730
+A propósito, se você clicar aqui,
+você vai provavelmente
+
+1197
+01:01:22,730 --> 01:01:25,949
+selecionar a view de dentro,
+então você quer clicar aqui, para pegar a cell,
+
+1198
+01:01:25,949 --> 01:01:29,329
+que está segundo ela.
+Então se eu for no Inspector,
+
+1199
+01:01:29,349 --> 01:01:32,379
+o Inspector normal,
+vocês verão que tem um Reuse Identifier
+
+1200
+01:01:32,399 --> 01:01:33,399
+e eu preciso
+
+
+1201
+01:01:33,399 --> 01:01:37,069
+digitar PlayingCard,
+isso é muito comumente esquecido.
+
+
+1202
+01:01:37,089 --> 01:01:39,009
+Então essa string precisa estar aqui.
+
+1203
+01:01:39,029 --> 01:01:42,829
+E ela precisa estar lá
+no controller, ok?
+
+1204
+01:01:42,849 --> 01:01:49,099
+Tudo bem aqui? E agora eu tenho uma cell
+e eu preciso olhar...
+
+1205
+01:01:49,119 --> 01:01:50,119
+Oh, pergunta, desculpe.
+
+
+1206
+01:01:50,119 --> 01:01:54,809
+>> [Estudante perguntando]
+
+
+1207
+01:01:54,829 --> 01:01:58,079
+>> A pergunta é:
+tem algum jeito de fazer isso de uma vez? Não.
+
+1208
+01:01:58,079 --> 01:02:01,079
+Ok, essa é uma coisa infeliz
+sobre o Xcode, você tem que
+
+1209
+01:02:01,079 --> 01:02:03,079
+digitar essa string duas vezes.
+É realmente, realmente...
+
+1210
+01:02:03,079 --> 01:02:06,879
+sensível a erros, mas é uma maneira
+pro Xcode desacoplar
+
+1211
+01:02:06,899 --> 01:02:08,960
+do seu código. Eu acho que no futuro
+eles podem ter uma maneira
+
+1212
+01:02:08,960 --> 01:02:09,960
+para, tipo,
+
+
+1213
+01:02:09,960 --> 01:02:12,199
+CTRL + click,
+CTRL + arrastar, ou algo assim.
+
+1214
+01:02:12,199 --> 01:02:13,199
+Sim.
+
+
+1215
+01:02:13,199 --> 01:02:16,449
+>> Certo, agora eu tenho a cell.
+Agora eu preciso carregar
+
+1216
+01:02:16,449 --> 01:02:19,449
+a cell com alguma coisa do model.
+Vamos então pegar
+
+1217
+01:02:19,449 --> 01:02:22,199
+algo do model, que é a carta,
+e eu vou perguntar
+
+1218
+01:02:22,199 --> 01:02:25,819
+pro game: "por favor,
+me dê a carta no índice". E o que
+
+1219
+01:02:25,839 --> 01:02:29,259
+é esse índice da carta?
+É apenas o indexPath.item, ok?
+
+1220
+01:02:29,279 --> 01:02:30,279
+Eu lembro de ter dito
+
+
+1221
+01:02:30,279 --> 01:02:33,029
+que o indexPath é
+apenas um objeto. Ele tem
+
+1222
+01:02:33,029 --> 01:02:34,529
+apenas duas propriedades,
+item e section.
+
+1223
+01:02:34,529 --> 01:02:35,529
+A section vai ser
+
+
+1224
+01:02:35,529 --> 01:02:38,279
+zero, porque nós só temos
+uma section. Então
+
+1225
+01:02:38,279 --> 01:02:40,279
+ela sempre vai ser zero.
+O item é apenas a qual carta
+
+1226
+01:02:40,279 --> 01:02:41,279
+que nós estamos
+
+
+1227
+01:02:41,279 --> 01:02:44,119
+nos referindo. Certo?
+Então agora temos a carta e
+
+1228
+01:02:44,119 --> 01:02:50,089
+temos a cell. Vamos chamar um método,
+vamos chamá-lo de
+
+1229
+01:02:50,109 --> 01:02:56,299
+"updateCell:UsingCard:" assim
+e então vamo retornar a cell, ok?
+
+1230
+01:02:56,319 --> 01:02:57,319
+Agora esse método aqui,
+
+
+1231
+01:02:57,319 --> 01:02:59,849
+nós precisamos implementar,
+[ditando código]
+
+1232
+01:02:59,869 --> 01:03:00,869
+[ditando código]
+
+
+1233
+01:03:00,869 --> 01:03:10,190
+[ditando código]
+
+
+1234
+01:03:10,210 --> 01:03:17,000
+Esse método abstrato,
+ok? Eu não posso implementar
+
+1235
+01:03:17,019 --> 01:03:19,889
+isso, nessa classe base,
+porque eu não sei nada
+
+1236
+01:03:19,909 --> 01:03:20,909
+sobre PlayingCards
+
+
+1237
+01:03:20,909 --> 01:03:23,659
+ou SetCards ou algo assim.
+Então eu não posso
+
+1238
+01:03:23,659 --> 01:03:26,710
+comprar nada aqui.
+Alguém poderia argumentar que eu poderia
+
+1239
+01:03:26,730 --> 01:03:30,599
+apenas, colocar o conteúdo ali
+de algum modo ou algo assim,
+
+1240
+01:03:30,619 --> 01:03:34,309
+realmente você poderia,
+e isso faria essa classe
+
+1241
+01:03:34,329 --> 01:03:37,000
+menos abstrata, mas essa classe
+já é abstrata por causa
+
+1242
+01:03:37,019 --> 01:03:39,769
+daqueles outros dois métodos.
+Então eu vou apenas continuar
+
+1243
+01:03:39,769 --> 01:03:44,009
+deixando-a abstrata.
+Mas eu preciso tornár-lo público,
+
+1244
+01:03:44,029 --> 01:03:49,619
+para que os subclasseadores não serão
+abstratos. Ok? As subclasses
+
+1245
+01:03:49,639 --> 01:03:51,319
+terão que implementar
+todos esses,
+
+1246
+01:03:51,339 --> 01:03:56,609
+eles não querem ser abstratos.
+Ok? Isso é bom.
+
+1247
+01:03:56,629 --> 01:04:01,009
+Tudo está funcionando bem.
+Agora que nós temos essa classe base
+
+1248
+01:04:01,029 --> 01:04:03,730
+que está fazendo tudo que ela precisa, ok?
+Vamos fazer aquela
+
+1249
+01:04:03,730 --> 01:04:08,599
+subclasse. Mas antes disso,
+pergunta.
+
+1250
+01:04:08,619 --> 01:04:10,469
+>> [Estudante perguntando]
+
+
+1251
+01:04:10,469 --> 01:04:11,469
+[estudante perguntando]
+
+
+1252
+01:04:11,469 --> 01:04:14,469
+>> A pergunta é:
+eles precisam ser públicos
+
+1253
+01:04:14,469 --> 01:04:16,969
+para serem sobrescritos?
+Seja um método público ou não,
+
+1254
+01:04:16,969 --> 01:04:19,719
+você herda ele da sua superclasse, claro.
+Você poderia sobrescrevê-lo
+
+1255
+01:04:19,719 --> 01:04:21,469
+se você souber a assinatura do método,
+certo? Se você soubesse
+
+1256
+01:04:21,469 --> 01:04:22,469
+exatamente
+
+
+1257
+01:04:22,469 --> 01:04:24,969
+quais são os argumentos,
+você poderia sobrescrevê-lo.
+
+1258
+01:04:24,969 --> 01:04:28,879
+E isso funcionaria, mas seria
+meio estranho, ok? Sobrescrever
+
+1259
+01:04:28,899 --> 01:04:32,169
+um método privado, certo,
+algo que te disseram 
+
+1260
+01:04:32,189 --> 01:04:34,989
+o que é essa coisa... não está
+no arquivo header, mas alguém te disse
+
+1261
+01:04:34,989 --> 01:04:35,989
+ou algo assim.
+
+
+1262
+01:04:35,989 --> 01:04:40,119
+Não faça isso. Isso é ruim, ok?
+Somente sobrescreva métodos
+
+1263
+01:04:40,139 --> 01:04:43,409
+que são públicos porque daí
+você tem a assinatura desses métodos,
+
+1264
+01:04:43,429 --> 01:04:46,750
+a pessa quis que você
+os sobrescrevesse. Se você
+
+1265
+01:04:46,769 --> 01:04:48,769
+está sobrescrevendo algo
+que não é público,
+
+1266
+01:04:48,769 --> 01:04:51,019
+a pessoa que desenhou a classe base
+provavelmente não queria que você
+
+1267
+01:04:51,019 --> 01:04:53,019
+sobrescrevesse. Entende o que
+eu estou dizendo?
+
+1268
+01:04:53,019 --> 01:04:56,019
+É apenas um estilo ruim, uma idéia ruim.
+Certo, então vamos criar
+
+1269
+01:04:56,039 --> 01:04:59,199
+a subclasse concreta disso.
+Eu vou apenas dizer New File,
+
+1270
+01:04:59,219 --> 01:05:02,259
+Objective-C class,
+eu vou chamá-lo de
+
+1271
+01:05:02,279 --> 01:05:03,279
+PlayingCardGameViewController
+
+
+1272
+01:05:03,279 --> 01:05:10,059
+e é uma subclasse
+da minha superclasse abstrata aqui,
+
+1273
+01:05:10,079 --> 01:05:14,199
+CardGameViewController.
+Certo, então aqui está.
+
+1274
+01:05:14,219 --> 01:05:18,349
+Coloco tudo nos lugares certos.
+Aqui está.
+
+1275
+01:05:18,369 --> 01:05:22,129
+Agora, a primeira coisa que eu faço
+quando eu vou implementar a versão concreta
+
+1276
+01:05:22,149 --> 01:05:25,549
+na nossa superclasse abstratá é:
+eu vou voltar para a minha abstrata,
+
+1277
+01:05:25,569 --> 01:05:30,440
+pegar todas essas coisas
+e imediatamente colocar aqui.
+
+1278
+01:05:30,460 --> 01:05:33,779
+Eu não preciso de nada disso, ok?
+É apenas coisa de ciclo de vida
+
+1279
+01:05:33,779 --> 01:05:39,339
+e inicialização.
+Colocando-os imediatamente aqui
+
+1280
+01:05:39,359 --> 01:05:43,379
+e preparando para implementá-los.
+Então eu vou apenas me livrar
+
+1281
+01:05:43,399 --> 01:05:47,149
+disso. Aqui, isso.
+
+
+1282
+01:05:47,169 --> 01:05:52,129
+Aqui, ali, aqui. Ok.
+Então eu preciso implementar
+
+1283
+01:05:52,149 --> 01:05:55,000
+esses três métodos. Agora, esses métodos
+vão ser realmente fáceis
+
+1284
+01:05:55,019 --> 01:05:57,819
+de implementar, e lembrem-se
+quão animado eu estava
+
+1285
+01:05:57,839 --> 01:06:03,309
+quando eu tirei o "#import PlayingCardDeck"
+da minha classe base? Ok,
+
+1286
+01:06:03,329 --> 01:06:06,329
+bom, eu estão tão animado agora
+colocando dentro da minha classe concreta
+
+1287
+01:06:06,329 --> 01:06:07,409
+[...]
+
+1288
+01:06:07,429 --> 01:06:09,909
+minha subclasse concreta.
+Então eu também vou
+
+1289
+01:06:09,909 --> 01:06:11,579
+precisar de PlayingCards.
+
+
+1290
+01:06:11,599 --> 01:06:17,649
+E eu também vou precisar
+daquela caixinha, ok?
+
+1291
+01:06:17,669 --> 01:06:21,609
+Porque é o meu trabalho
+fazer o update na cell. Olhar dentro da cell
+
+1292
+01:06:21,629 --> 01:06:25,089
+e pegar a PlayingCard e
+fazer o update. É o meu trabalho
+
+1293
+01:06:25,109 --> 01:06:29,960
+como uma subclasse concreta aqui, ok?
+Eu tão, eu vou precisar dessa classe,
+
+1294
+01:06:29,980 --> 01:06:33,619
+essa é a cell. Certo,
+agora essa é uma property, então
+
+1295
+01:06:33,639 --> 01:06:36,889
+eu quero fazer com que seja o getter.
+Então eu vou dizer...
+
+1296
+01:06:36,889 --> 01:06:41,469
+Eu provavelmente poderia
+ter feito essa property
+
+1297
+01:06:41,489 --> 01:06:44,739
+read-only, mas, bom, vamos fazer desse jeito.
+Então vamos lá. Eu não sei,
+
+1298
+01:06:44,739 --> 01:06:48,250
+20 cartas, é algo bom?
+Certo. E então aqui
+
+1299
+01:06:48,269 --> 01:06:53,149
+[[PlayingCardDeck alloc] init]. Ok?
+Vocês podem ver como a implementação
+
+1300
+01:06:53,169 --> 01:06:56,489
+de uma subclasse concreta
+quase não tem linhas de código
+
+1301
+01:06:56,509 --> 01:06:59,809
+exceto pelo que faz dela
+uma subclasse concreta.
+
+1302
+01:06:59,829 --> 01:07:04,039
+Vêem? Esse é o modo
+que você quer para ter
+
+1303
+01:07:04,059 --> 01:07:05,809
+um bom design orientado a objetos
+onde você não está escrevendo muito código
+
+1304
+01:07:05,809 --> 01:07:06,809
+em uma subclasse concreta
+
+
+1305
+01:07:06,809 --> 01:07:09,309
+exceto pelo que
+faz dessa coisa o que ela é.
+
+1306
+01:07:09,309 --> 01:07:12,089
+Certo, então, updateCell.
+Como nós implementamos
+
+1307
+01:07:12,109 --> 01:07:16,509
+esse updateCell? Bem direto, mas
+nós queremos ser
+
+1308
+01:07:16,529 --> 01:07:19,489
+cuidados aqui, porque isso
+poderia ser qualquer tipo de cell,
+
+1309
+01:07:19,509 --> 01:07:24,000
+mas nós só conseguimos tratar o caso
+onde essa cell é
+
+1310
+01:07:24,019 --> 01:07:29,489
+"kindOfClass" [PlayingCardCollectionViewCell class],
+ok?
+
+1311
+01:07:29,509 --> 01:07:33,139
+Se não for, nós não conseguiremos fazer isso.
+Por que? Porque nós precisamos
+
+1312
+01:07:33,139 --> 01:07:36,339
+tirar o PlayingCardView de lá.
+Certo, e nós vamos fazer
+
+1313
+01:07:36,359 --> 01:07:40,989
+isso pegando isso e fazendo um casting,
+nós fizemos introspecção
+
+1314
+01:07:41,009 --> 01:07:44,759
+então nós estamos certos.
+E agora nós podemos
+
+1315
+01:07:44,779 --> 01:07:49,299
+pegar a PlayingCard, ok?
+Aqui eu estou apenas acessando o outlet
+
+1316
+01:07:49,319 --> 01:07:54,429
+da caixinha para pegar
+a PlayingCardView pronta.
+
+1317
+01:07:54,449 --> 01:07:58,809
+Agora, nós vamos apenas dizer
+"se a carta for uma PlayingCard",
+
+1318
+01:07:58,829 --> 01:08:03,599
+porque nós também só conseguimos
+fazer nosso trabalho se isso for verdade, ok?
+
+1319
+01:08:03,619 --> 01:08:06,879
+Então eu vou criar uma
+variável local
+
+1320
+01:08:06,899 --> 01:08:14,440
+PlayingCard que é igual...
+[ditando código]
+
+1321
+01:08:14,460 --> 01:08:19,659
+Ok? Então agora eu sei
+que eu tenho uma PlayingCardView
+
+1322
+01:08:19,679 --> 01:08:23,369
+e eu sei que eu tenho uma PlayingCard,
+então vamos colocar
+
+1323
+01:08:23,389 --> 01:08:25,389
+dados ali. Então
+esse é uma PlayingCardView.
+
+1324
+01:08:25,389 --> 01:08:31,259
+[ditando código]
+
+
+1325
+01:08:31,279 --> 01:08:33,339
+[ditando código]
+
+
+1326
+01:08:33,359 --> 01:08:37,459
+E temos algumas
+
+1327
+01:08:37,479 --> 01:08:41,679
+outras coisas que é...
+[ditando código]
+
+1328
+01:08:41,699 --> 01:08:42,699
+[ditando código]
+
+
+1329
+01:08:42,699 --> 01:08:48,559
+[ditando código]
+
+
+1330
+01:08:48,579 --> 01:08:51,979
+[ditando código]
+
+
+1331
+01:08:52,000 --> 01:08:54,219
+Eu deveria colocar
+alguns #defines
+
+1332
+01:08:54,239 --> 01:08:58,039
+ou "const" ou algo assim,
+mas eu vou apenas digitar
+
+1333
+01:08:58,059 --> 01:09:00,809
+aqui. Nós estamos ficando sem tempo.
+Ok, então eu vou 
+
+1334
+01:09:00,809 --> 01:09:04,929
+deixar as cartas cinzas, ok?
+Todo mundo bem com isso? E, novamente,
+
+1335
+01:09:04,949 --> 01:09:07,220
+vêem que quase todas as
+linhas de código aqui
+
+1336
+01:09:07,220 --> 01:09:08,220
+são específicas
+
+
+1337
+01:09:08,220 --> 01:09:12,329
+da minha subclasse?
+E é isso. A subclase completa está pronta.
+
+1338
+01:09:12,349 --> 01:09:15,429
+Você não tem nenhuma interface
+privada para fazer, você não precisa
+
+1339
+01:09:15,449 --> 01:09:18,099
+de mais nada. Todos os nossos
+imports de coisas específicas
+
+1340
+01:09:18,099 --> 01:09:19,099
+de PlayingCard, está tudo
+
+
+1341
+01:09:19,099 --> 01:09:25,449
+nessa classe. Lindo, ok?
+É assim que você separa as coisas
+
+1342
+01:09:25,470 --> 01:09:28,969
+usando polimorfismo aqui.
+Então vamos voltar para o nosso
+
+1343
+01:09:28,989 --> 01:09:32,819
+Storyboard. Uma coisa que precisamos
+fazer é setar o nosso controller
+
+1344
+01:09:32,840 --> 01:09:36,340
+para ser um PlayingCardController agora.
+Nós não queremos que
+
+1345
+01:09:36,349 --> 01:09:38,899
+ele seja apenas um controller genérico.
+Então eu vou aqui...
+
+1346
+01:09:38,899 --> 01:09:39,099
+vou aqui,
+
+
+1347
+01:09:39,099 --> 01:09:43,189
+Vou até o meu Identity Inspector,
+Tenho meu controller selecionado aqui,
+
+1348
+01:09:43,210 --> 01:09:46,130
+certo? O próprio controller.
+E eu vou aqui
+
+1349
+01:09:46,130 --> 01:09:49,989
+e fazer ele ser um
+PlayingCardGameViewController. Certo?
+
+1350
+01:09:50,010 --> 01:09:52,939
+Se eu não fizer isso,
+então obviamente ele não vai usar
+
+1351
+01:09:52,939 --> 01:09:56,179
+nada desse belo comportamento
+que eu defini aqui.
+
+1352
+01:09:56,199 --> 01:10:00,879
+>> Eu preciso... é.
+Eu esqueci disso. Vamos fazer isso.
+
+1353
+01:10:00,899 --> 01:10:04,589
+Ok, aqui eu estou apenas
+clicando na minha CollectionView,
+
+1354
+01:10:04,609 --> 01:10:09,449
+e, olhem para isso,
+dataSource não está conectado, ok?
+
+1355
+01:10:09,470 --> 01:10:12,439
+Eu preciso conectar meu
+dataSource para... as vezes eu esqueço
+
+1356
+01:10:12,460 --> 01:10:13,460
+porque eu faço nos slides
+
+
+1357
+01:10:13,460 --> 01:10:16,460
+mas daí eu não faço na demo.
+Então,
+
+1358
+01:10:16,460 --> 01:10:17,460
+vamos conectá-lo.
+
+
+1359
+01:10:17,460 --> 01:10:20,359
+Lembrem que eu falei
+CTRL + arrastar
+
+1360
+01:10:20,380 --> 01:10:24,719
+da Collection View, até o controller,
+e então
+
+1361
+01:10:24,739 --> 01:10:27,239
+amarramos o dataSource.
+Obrigado por ver isso. Todo mundo
+
+1362
+01:10:27,239 --> 01:10:33,349
+bem com isso que eu acabei de fazer?
+Eu normalmente faço isso antes,
+
+1363
+01:10:33,369 --> 01:10:37,159
+Fa;co antes na demo, mas... boa observação.
+Ok, então nós podemos
+
+1364
+01:10:37,179 --> 01:10:40,629
+rodar isso agora,
+não vai funcionar. Ainda. Mas vai
+
+1365
+01:10:40,649 --> 01:10:44,919
+estar próximo. Certo, então aqui está,
+perto, muito perto
+
+1366
+01:10:44,939 --> 01:10:48,559
+na verdade. Nós temos os versos
+das cartas mas, eu não consigo
+
+1367
+01:10:48,579 --> 01:10:52,699
+virar elas ao contrário.
+Por que eu não consigo virá-las ao contrário?
+
+1368
+01:10:52,720 --> 01:10:57,759
+Bom, porque, voltando aqui, vocês se lembram
+que o nosso flipCard tem esse
+
+1369
+01:10:57,779 --> 01:11:03,429
+código incompleto, ok? Então
+eu preciso fazer isso funcionar.
+
+1370
+01:11:03,449 --> 01:11:06,529
+Agora, como eu vou fazer isso?
+Eu vou fazer um "gesture".
+
+1371
+01:11:06,529 --> 01:11:09,949
+um "TapGesture". Então eu vou
+adicionar um "TapGesture" para a
+
+1372
+01:11:09,970 --> 01:11:12,720
+CollectionView. E eu vou fazer
+esse ser o
+
+1373
+01:11:12,729 --> 01:11:16,039
+tratador do gesture. Esse flipCard.
+Então ao invés de flipCard ser
+
+1374
+01:11:16,059 --> 01:11:19,839
+um "UIButton *sender",
+ele será um UITapGestureRecognizer.
+
+1375
+01:11:19,859 --> 01:11:24,799
+Ok? E, deixe-me ver se eu
+posso implementá-lo logo aqui.
+
+1376
+01:11:24,819 --> 01:11:27,319
+É bem direto. Primeiro
+eu vou pegar
+
+1377
+01:11:27,319 --> 01:11:32,009
+o ponto, ok? A localização
+do toque do gesture
+
+1378
+01:11:32,029 --> 01:11:37,069
+dizendo "locantionInView:"
+e colocando a collectionView,
+
+1379
+01:11:37,090 --> 01:11:42,609
+porque eu disse a vocês que
+vocês precisam pegar a localização do toque
+
+1380
+01:11:42,630 --> 01:11:45,489
+no sistema de cordenadas da Collection View.
+então agora eu tenho isso.
+
+1381
+01:11:45,510 --> 01:11:49,219
+Agora, eu vou pegar o indexPath
+da caixinha que
+
+1382
+01:11:49,239 --> 01:11:53,039
+foi clicada, que eu posso pegar
+com esse método da CollectionView,
+
+1383
+01:11:53,059 --> 01:11:57,239
+que eu mostrei pra vocês
+nos slides, chamado
+
+1384
+01:11:57,260 --> 01:11:58,419
+"indexPathForItemAtPoint".
+
+
+1385
+01:11:58,439 --> 01:12:02,829
+E eu vou passar
+o tapLocation.
+
+1386
+01:12:02,849 --> 01:12:03,849
+Vamos arrumar mais espaço
+
+
+1387
+01:12:03,849 --> 01:12:05,599
+para que vocês possam ver.
+Melhor.
+
+1388
+01:12:05,599 --> 01:12:09,689
+Ok? Agora eu tenho o indexPath.
+Vocês perceberam que
+
+1389
+01:12:09,710 --> 01:12:12,089
+a CollectionView tem
+uns espaços em vazios, tipo,
+
+1390
+01:12:12,109 --> 01:12:15,829
+entre as coisas, certo?
+Então eu posso tocar e não ter
+
+1391
+01:12:15,849 --> 01:12:19,449
+nenhum item lá, porque eu toquei
+entre as cells. Então eu tenho que checar
+
+1392
+01:12:19,470 --> 01:12:24,759
+para ver se o indexPath não é nil, ok?
+E se não for,
+
+1393
+01:12:24,779 --> 01:12:25,779
+então eu posso fazer
+
+
+1394
+01:12:25,779 --> 01:12:29,769
+as coisas que eu quero fazer aqqui.
+Coloco isso aqui em cima.
+
+1395
+01:12:29,789 --> 01:12:30,789
+Mas o indexPath
+
+
+1396
+01:12:30,789 --> 01:12:37,219
+é apenas o indexPath.item, ok?
+Não preciso disso.
+
+1397
+01:12:37,239 --> 01:12:42,349
+Estamos prontos. Ok?
+Então esse é um "gesture handler" para um toque.
+
+1398
+01:12:42,369 --> 01:12:45,619
+Agora, a última coisa
+que precisamos fazer, que nós fizemos da última vez,
+
+1399
+01:12:45,619 --> 01:12:49,119
+e vamos fazer novamente,
+é adicionar um toque. Ok, então vamos fazer isso,
+
+1400
+01:12:49,119 --> 01:12:55,249
+vamos voltar para o nosso Storyboard.
+O modo com o fazemos isso é
+
+1401
+01:12:55,269 --> 01:12:59,639
+nós vamos aqui embaixoe a chamos um gesture,
+aqui está. Agora vocês podem
+
+1402
+01:12:59,659 --> 01:13:02,859
+arrastá-lo, mas é meio difícil
+conseguir o que você quer,
+
+1403
+01:13:02,859 --> 01:13:05,859
+e tem um modo
+que eu não vou mostrar pra vocês.
+
+1404
+01:13:05,859 --> 01:13:08,859
+Porque tem uma maneira
+para achar as coisas que
+
+1405
+01:13:08,859 --> 01:13:12,109
+você quer aqui, mas uma ótima maneira
+é simplesmente vir aqui.
+
+1406
+01:13:12,109 --> 01:13:14,859
+Ok? Vêem que enquanto eu arrasto
+pra cima da coisa certa
+
+1407
+01:13:14,859 --> 01:13:15,859
+ele destaca?
+
+1408
+01:13:15,859 --> 01:13:18,609
+Eu quero que esse Tap Gesture
+esteja na CollectionView,
+
+1409
+01:13:18,609 --> 01:13:21,859
+então eu vou arrastá-lo
+para cima 
+
+1410
+01:13:21,859 --> 01:13:24,859
+da CollectionView e soltar.
+Ele coloca todos os gestures
+
+1411
+01:13:24,859 --> 01:13:26,359
+no final, acredito que seja
+pra ficar menos tumultuado,
+
+1412
+01:13:26,359 --> 01:13:27,359
+ele não coloca
+
+
+1413
+01:13:27,359 --> 01:13:30,609
+aqui em cima onde ele está conectado.
+Mas aqui está o
+
+1414
+01:13:30,609 --> 01:13:33,359
+Tap Gesture bem aqui.
+O target para o Tap Gesture
+
+1415
+01:13:33,359 --> 01:13:37,409
+vai ser meu controller,
+então vamos
+
+1416
+01:13:37,429 --> 01:13:40,339
+para o meu controller que é...
+
+1417
+01:13:40,359 --> 01:13:44,429
+Onde está? Aqui está.
+Ok? Então eu vou apenas
+
+1418
+01:13:44,449 --> 01:13:47,829
+scrollar para o tapGestureHandler
+e eu vou
+
+1419
+01:13:47,849 --> 01:13:52,209
+CTRL + arrastar direto
+do document outline para cá
+
+1420
+01:13:52,229 --> 01:13:56,869
+e amarrar tudo isso, ok?
+Tudo que eu fiz foi adicionar
+
+1421
+01:13:56,889 --> 01:13:59,859
+um Tap Gesture na CollectionView,
+e fiz isso aqui,
+
+1422
+01:13:59,880 --> 01:14:03,389
+ok? Vamos tentar isso.
+Tem outra coisa que
+
+1423
+01:14:03,409 --> 01:14:04,409
+eu vou arrumar
+
+
+1424
+01:14:04,409 --> 01:14:07,899
+porque eu sou
+um perfeccionista que é...
+
+1425
+01:14:07,920 --> 01:14:10,729
+vamos voltar aqui,
+
+
+1426
+01:14:10,750 --> 01:14:14,199
+eu percebi que
+os cantinhos das minhas cartas
+
+1427
+01:14:14,219 --> 01:14:19,109
+não estão com o visual certo,
+e isso porque eu preciso
+
+1428
+01:14:19,130 --> 01:14:22,649
+fazer minha PlayingCardView aqui
+ser não-opaca. Com a cor "clear".
+
+1429
+01:14:22,670 --> 01:14:23,670
+Certo? Isso vai
+
+
+1430
+01:14:23,670 --> 01:14:27,699
+ficar melhor. São apenas alguns pixels,
+mais faz
+
+1431
+01:14:27,719 --> 01:14:31,359
+toda a diferença. Aqui vamos nós.
+Agora nós temos cartas com cantos arredondados.
+
+1432
+01:14:31,380 --> 01:14:34,630
+E agora nós clicamos... oops,
+ainda não funciona.
+
+1433
+01:14:34,639 --> 01:14:37,459
+O que está acontecendo aqui?
+Porque não está funcionando?
+
+1434
+01:14:37,479 --> 01:14:39,579
+Bom, a resposta é que
+tem um método, um outro método
+
+1435
+01:14:39,579 --> 01:14:40,579
+que nós não implementamos, ok?
+
+
+1436
+01:14:40,579 --> 01:14:45,499
+Que é esse logo aqui.
+Então nós
+
+1437
+01:14:45,519 --> 01:14:50,259
+[...] Aqui está
+updateUI, certo?
+
+1438
+01:14:50,279 --> 01:14:51,279
+Então,
+
+
+1439
+01:14:51,279 --> 01:14:54,219
+"flipCard" vira a carta.
+Está funcionando bem. Mas nós nunca
+
+1440
+01:14:54,219 --> 01:14:58,319
+fazemos update na UI. Agora, temos sorte que
+updateUI é realmente fácil
+
+1441
+01:14:58,340 --> 01:15:00,639
+de implementar com uma CollectionView.
+Nós vamos apenas
+
+1442
+01:15:00,639 --> 01:15:04,049
+passar por todas as células visíveis
+e updateá-las todas.
+
+1443
+01:15:04,069 --> 01:15:10,749
+Então vou apenas dizer
+[ditando código]
+
+1444
+01:15:10,769 --> 01:15:15,299
+[ditando código]
+Espero que isso seja
+
+1445
+01:15:15,319 --> 01:15:23,109
+uma property. Vamos descobrir.
+Não, não é. Vêem?
+
+1446
+01:15:23,130 --> 01:15:25,630
+[...] é um método.
+Funcionaria se eu usasse
+
+1447
+01:15:25,630 --> 01:15:26,630
+o ponto, claro,
+
+
+1448
+01:15:26,630 --> 01:15:29,719
+mas não está certo. Certo,
+tenho todas as células visíveis,
+
+1449
+01:15:29,739 --> 01:15:36,289
+e agora eu posso pegar
+o indexPath de cada uma.
+
+1450
+01:15:36,309 --> 01:15:43,849
+[ditando código]
+
+
+1451
+01:15:43,869 --> 01:15:48,069
+Agora eu tenho indexPath,
+então eu posso
+
+1452
+01:15:48,090 --> 01:15:50,859
+achá-la no model.
+[ditando código]
+
+1453
+01:15:50,859 --> 01:15:51,859
+[ditando código]
+
+
+1454
+01:15:51,859 --> 01:15:57,619
+[ditando código]
+Agora eu tenho ambas cell e a carta,
+
+1455
+01:15:57,639 --> 01:16:02,919
+então eu posso chamar
+"[self.updateCell:cell usingCard:card]",
+
+1456
+01:16:02,939 --> 01:16:09,599
+temos um vencedor! Ok?
+Isso é tudo e acabamos.
+
+1457
+01:16:09,619 --> 01:16:10,619
+Agora as cartas viram
+
+
+1458
+01:16:10,619 --> 01:16:15,369
+e estamos até conseguindo jogar.
+Ok? E nós podemos
+
+1459
+01:16:15,389 --> 01:16:26,549
+scrollar ok? Clicar.
+Certo, é isso. [estudante perguntando]
+
+1460
+01:16:26,569 --> 01:16:29,069
+Ótima pergunta. A pergunta é:
+cadê minha animação?
+
+1461
+01:16:29,069 --> 01:16:32,309
+As cartas tem que virar!
+E a resposta é: bom, eu não coloquei
+
+1462
+01:16:32,309 --> 01:16:35,059
+a animação. Porém onde que isso iria?
+Essa é uma ótima pergunta,
+
+1463
+01:16:35,059 --> 01:16:38,799
+eu vou mostrar pra você.
+Ela iria onde você faz
+
+1464
+01:16:38,819 --> 01:16:44,589
+a alteração que você gostaria que fosse
+animada. E nós fazemos isso na nossa
+
+1465
+01:16:44,609 --> 01:16:47,469
+subclasse concreta, que está aqui.
+Aqui é onde nós fazemos
+
+1466
+01:16:47,489 --> 01:16:51,759
+a alteração, esse flip aqui.
+Nós queremos colocar
+
+1467
+01:16:51,779 --> 01:16:53,960
+alguma transição que tínhamos
+no código,
+
+1468
+01:16:53,960 --> 01:16:57,079
+colocá-la bem aqui.
+Certo, aqui em volta. Se a carta
+
+1469
+01:16:57,079 --> 01:17:00,389
+estiver virando, então fazemos isso.
+Uma coisa pra ser
+
+1470
+01:17:00,409 --> 01:17:03,159
+cuidadoso sobre isso, porém, é
+que você nem sempre quer
+
+1471
+01:17:03,159 --> 01:17:07,229
+a animação. Certo? Porque quando
+as cartas aparecem pela primeira vez,
+
+1472
+01:17:07,250 --> 01:17:11,959
+elas são viradas de um jeito
+que você não quer todas elas virando
+
+1473
+01:17:11,979 --> 01:17:13,729
+e especialmente quando você scrolla.
+Você não quer que elas
+
+1474
+01:17:13,729 --> 01:17:14,729
+começem a virar
+
+
+1475
+01:17:14,729 --> 01:17:17,479
+cada vez que elas reaparecem.
+Então você precisa
+
+1476
+01:17:17,479 --> 01:17:22,029
+adicionar outro argumento aqui
+que é o "animated:(BOOL)..." e daí
+
+1477
+01:17:22,050 --> 01:17:25,969
+setar isso para YES apenas quando
+é uma reação a algo do usuário
+
+1478
+01:17:25,989 --> 01:17:30,129
+como um gesture.
+Então updateUI iria dizer
+
+1479
+01:17:30,149 --> 01:17:33,819
+animate:YES, mas o lance de desenfileirar,
+lembra? O desinfileirador
+
+1480
+01:17:33,840 --> 01:17:34,840
+chama o updateCell...
+
+
+1481
+01:17:34,840 --> 01:17:37,779
+Ele não animaria. Você não quer
+animar as coisas
+
+1482
+01:17:37,800 --> 01:17:40,550
+que estão sendo criadas
+pela primeira vez ou que
+
+1483
+01:17:40,550 --> 01:17:44,469
+estão scrollando na tela.
+Ok? Ótima pergunta.
+
+1484
+01:17:44,489 --> 01:17:48,179
+Alguma outra pergunta?
+A propósito, vocês são bem-vindos para colocar
+
+1485
+01:17:48,199 --> 01:17:51,719
+essa animação no homework.
+Fica legal. Sim?
+
+1486
+01:17:51,739 --> 01:17:52,719
+>> [Estudante perguntando]
+
+
+1487
+01:17:52,739 --> 01:17:56,219
+Se o código será postado?
+Essa foi a pergunta.
+
+1488
+01:17:56,239 --> 01:17:59,739
+Sim, eu vou postar o código.
+Como vocês sabem eu nunca posto
+
+1489
+01:17:59,739 --> 01:18:02,489
+o código para o model,
+porque essa é a tarefa
+
+1490
+01:18:02,489 --> 01:18:05,489
+de codificar o model e coisas assim.
+Mas eu vou postar o resto do código.
+
+1491
+01:18:05,489 --> 01:18:09,459
+Boa pergunta. Alguma outra pergunta?
+Ok, eu estarei aqui
+
+1492
+01:18:09,479 --> 01:18:10,089
+se vocês tiverem mais perguntas.
+
+
+1493
+01:18:10,109 --> 01:18:15,089
+Visite nosso site:
+www.centraldosapps.com
+

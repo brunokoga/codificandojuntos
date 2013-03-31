@@ -1,0 +1,3373 @@
+1
+00:00:00,012 --> 00:00:10,315
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+[music]. Stamford University. All right.
+Well welcome to Lecture 12 ? 12. Cs193p 
+
+2
+00:00:10,315 --> 00:00:17,920
+Bem-vindos à aula 12 do CS193P e hoje nós vamos
+falar -- assim que o controle funcionar --
+
+3
+00:00:17,920 --> 00:00:25,662
+e nós vamos falar sobre os requisitos
+do final project.
+
+4
+00:00:25,662 --> 00:00:31,272
+Ok? Sobre o que nós estamos pedindo
+para vocês nos seus projetos finais. E nós temos
+
+5
+00:00:31,272 --> 00:00:36,950
+dois visitantes por aqui, espero, que
+vão aparecer. E eles vão
+
+6
+00:00:36,950 --> 00:00:42,668
+compartilhar algumas idéias. São apenas
+pessoas aleatórias da comunidade
+
+7
+00:00:42,668 --> 00:00:49,442
+da Stanford. Eu só permito que pessoas
+da Stanford façam isso e nós vamos
+
+8
+00:00:49,442 --> 00:00:55,448
+ver um pouco disso e daí eu vou voltar para
+a aula e a última meia hora ou por aí
+
+9
+00:00:55,448 --> 00:01:01,536
+nós vamos falar sobre o nosso próximo grande
+assunto que é Core Data. Ok? Que é um banco
+
+10
+00:01:01,536 --> 00:01:07,609
+de datos orientado a objetos. Não vai ter
+Friday Section amanhã. Fim de semana de feriado,
+
+11
+00:01:07,609 --> 00:01:13,847
+então aproveitem. Ok, projeto final.
+É necessária uma proposta para o projeto final.
+
+12
+00:01:13,847 --> 00:01:18,563
+Ok, uma proposta. Eu vou mostrar a vocês
+uma proposta de exemplo para que vocês saibam
+
+13
+00:01:18,563 --> 00:01:23,253
+o que estamos procurando aqui. O motivo que nós
+requeremos uma proposta é basicamente pelo escopo.
+
+14
+00:01:23,253 --> 00:01:27,706
+Porque nós não queremos que vocês se joguem
+nesse projeto final e assumam algo que
+
+15
+00:01:27,706 --> 00:01:32,524
+seja muito, que vocês não consigam fazer
+em 3 semanas ou não façam o suficiente para
+
+16
+00:01:32,524 --> 00:01:37,431
+demonstrar-nos o seu mastery nesse curso,
+certo? O objetivo verdadeiro do
+
+17
+00:01:37,431 --> 00:01:42,196
+final project é par vocês nos demonstrarem
+que vocês aprenderam. Ok? Não só as coisas
+
+18
+00:01:42,196 --> 00:01:47,011
+que foi ensinado, mas coisas de iOS em geral.
+Ok? E vocês vão ver alguns
+
+19
+00:01:47,011 --> 00:01:52,063
+desses requisitos são inclinados a fazer
+com que isso aconteça. A sua proposta
+
+20
+00:01:52,063 --> 00:01:57,128
+do projeto final deve ser um arquivo PDF,
+por favor, sem outros formatos. Ok?
+
+21
+00:01:57,128 --> 00:02:03,399
+Não me envie uma apresentação do Powerpoint,
+não envie em um e-mail  normal. PDF, ok?
+
+22
+00:02:03,399 --> 00:02:08,941
+Envie um PDF. E vocês devem mandar para
+o Assistente que dá nota no seu
+
+23
+00:02:08,941 --> 00:02:15,883
+homework. Ok? Eles vão coletá-los
+e fazer a revisão das suas propostas.
+
+24
+00:02:15,883 --> 00:02:21,444
+Até quando... eu gostaria de dizer que é
+o prazo é agora, ok? Quanto antes vocês
+
+25
+00:02:21,444 --> 00:02:26,922
+conseguirem entregar-nos, mais cedo temos
+a chance de revisar e de dar um feedback sobre
+
+26
+00:02:26,922 --> 00:02:32,832
+possíveis mudanças que você precise fazer
+ou algo assim. Com certeza, não demorem mais
+
+27
+00:02:32,832 --> 00:02:37,597
+do que 1 semana, ok? Então próxima quarta...
+nós envie algo até lá.
+
+28
+00:02:37,597 --> 00:02:42,174
+Porque, sabe, vocês vão...
+se vocês não enviarem até lá, nós não
+
+29
+00:02:42,174 --> 00:02:46,194
+teremos tempo para dar um retorno a vocês
+antes de... vão faltar apenas 3 semanas para 
+
+30
+00:02:46,194 --> 00:02:50,452
+o fim do trimestre e vocês vão querer
+começar logo. É meio que... Eu até hesito
+
+31
+00:02:50,452 --> 00:02:55,008
+em dizer Quarta-feira, porque eu sei que
+muitos de vocês gostam de esperar até o último
+
+32
+00:02:55,008 --> 00:02:59,292
+minuto para fazer o homework de vocês,
+mas isso é mais algo para vocês nós darem
+
+33
+00:02:59,292 --> 00:03:03,747
+essa idéia para nós podermos analisarmos.
+E então nós vamos usar o Piazza
+
+34
+00:03:03,747 --> 00:03:08,374
+nesse trimestre, um post privado, para
+follow up, ok? Melhor do que ficar indo
+
+35
+00:03:08,374 --> 00:03:12,771
+e vindo com emails, todas nossas caixas
+de email estão tão cheias...
+
+36
+00:03:12,771 --> 00:03:17,534
+é bom ter uma thread. Então cada um de vocês
+se tiverem perguntas de follow-up
+
+37
+00:03:17,534 --> 00:03:22,433
+sobre suas propostas ou qualquer coisa,
+vocês podem iniciar um post privado no Piazza
+
+38
+00:03:22,433 --> 00:03:27,377
+e nós vamos fazendo isso. Vocês podem
+fazer perguntas e nós vamos dar feedbacks,
+
+39
+00:03:27,377 --> 00:03:31,695
+coisas assim. E isso vai ser bom para
+vocês também, porque vocês vão ter um bom
+
+40
+00:03:31,695 --> 00:03:36,375
+material de referência para voltar e ler
+sobre o que nós discutimos. A proposta tem
+
+41
+00:03:36,375 --> 00:03:40,490
+duas partes principais e eu vou mostrar
+o exemplo em um segundo aqui. Uma é o que
+
+42
+00:03:40,490 --> 00:03:44,520
+você está fazendo, o que seu app faz e
+número 2 é que partes de iOS você vai usar.
+
+43
+00:03:44,520 --> 00:03:50,813
+Ok? Então vamos falar sobre a data limite
+aqui. O projeto, incluindo uma apresentação
+
+44
+00:03:50,813 --> 00:03:56,855
+de keynote para os seus dois minutos de infâmia
+no período de exames finais são ambos
+
+45
+00:03:56,855 --> 00:04:02,644
+no Domingo, 17 de Março. Ok? É o Domingo
+antes do exame, que é numa quarta.
+
+46
+00:04:02,644 --> 00:04:08,156
+E vocês sabem, fim do dia, meia-noite,
+por favor. Usem o processo de submissão
+
+47
+00:04:08,156 --> 00:04:13,317
+normal que vocês usam para submeter o homework.
+Vocês vão apenas colocar esse arquivo de
+
+48
+00:04:13,317 --> 00:04:18,616
+keynote no nível do tipo, onde o seu Read me
+fica, basicamente. Não é permitido nenhum dia
+
+49
+00:04:18,616 --> 00:04:22,974
+de atrado no projeto final. Quero dizer,
+nós não podemos aceitar porque nós temos que
+
+50
+00:04:22,974 --> 00:04:27,589
+dar nota e cadastrar as notas logo em seguida.
+Então não podemos aceitar nenhum atraso
+
+51
+00:04:27,589 --> 00:04:32,897
+no projeto final, então entreguem o que vocês
+tiverem no domingo, ok? Não venham...
+
+52
+00:04:32,897 --> 00:04:37,382
+não importa se vocês tiveram dias tranquilos
+ou não, não venha a nós dizendo: eu vou ter que
+
+53
+00:04:37,382 --> 00:04:41,796
+entregar alguns dias atrasados.
+Não, ok? Você vai entregar no domingo,
+
+54
+00:04:41,796 --> 00:04:46,547
+o que você tiver. Ok? Então é um
+deadline difícil, então coloquem nas suas
+
+55
+00:04:46,548 --> 00:04:51,614
+agendas. Quero dizer, temos três semanas
+para fazer isso, então, ter deadlines difíceis
+
+56
+00:04:51,614 --> 00:04:56,328
+como essa não deve ser grande coisa.
+Todo mundo é obrigado a fazer uma apresentação
+
+57
+00:04:56,328 --> 00:05:00,750
+de dois minutos de duração, onde vocês vão
+ficar de pé aqui, onde eu estou, e vocês
+
+58
+00:05:00,750 --> 00:05:05,228
+devem falar sobre o seu projeto final
+por 2 minutos. Agora, vocês podem fazer
+
+59
+00:05:05,228 --> 00:05:09,847
+um monte de coisas diferentes aqui. Não importa
+o que você fez, embora você tenha que ter
+
+60
+00:05:09,847 --> 00:05:14,710
+uma apresentação de keynote com pelo menos
+um slide nela. De preferência alguns slides. Vocês
+
+61
+00:05:14,710 --> 00:05:19,717
+podem fazer uma live demo se vocês quiserem.
+Nós vamos falar sobre isso em um segundo. Nós
+
+62
+00:05:19,717 --> 00:05:25,982
+vamos ter alguns iPads aqui para que vocês possam
+fazer live demos. Esses dois minutos são realmente sobre...
+
+63
+00:05:25,982 --> 00:05:30,938
+Pensem neles como se a sala estivesse cheia de
+investidores e vocês estão tentando vender
+
+64
+00:05:30,938 --> 00:05:35,894
+a sua idéia para seu app para que eles
+invistam nele, mesmo se não for uma idéia
+
+65
+00:05:35,894 --> 00:05:41,453
+investível. Mesmo assim, ou se quiser parecer
+mais mundano, diga-nos tudas as coisas
+
+66
+00:05:41,453 --> 00:05:46,272
+que seu app pode fazer e, sabe,
+mostre-nos alguns screenshots ou
+
+67
+00:05:46,272 --> 00:05:51,643
+algo assim para termos uma idéia do que
+o seu app faz, ok? Dois minutos, de alguma forma
+
+68
+00:05:51,643 --> 00:05:56,547
+não parece muito, entretanto ele é,
+na verdade um tempo bem longo.
+
+69
+00:05:56,547 --> 00:06:01,968
+Vocês podem falar um monte em dois minutos
+se vocês estiverem preparados, ok? A razão que
+
+70
+00:06:01,968 --> 00:06:06,704
+eu "obrigo" isso, é que eu pessoalmente acredito
+que ser capaz de se levantar na frente de um
+
+71
+00:06:06,704 --> 00:06:11,588
+grupo e falar sobre o trabalho que você está
+fazendo, não importa o que é, que curso,
+
+72
+00:06:11,588 --> 00:06:16,398
+ou na vida, ou no seu trabalho, tanto faz. Se você
+não consegue ficar de pé por 2 minutos e falar sobre
+
+73
+00:06:16,398 --> 00:06:20,986
+o que você está fazendo de uma forma concisa e
+sucinta, do modo como se fala em público...
+
+74
+00:06:20,986 --> 00:06:25,966
+essa é uma skill importante de se ter. É por
+isso que é um requisito para esse curso. Alguns
+
+75
+00:06:25,966 --> 00:06:30,646
+de vocês já me disseram que vocês tem um
+conflito com o período de exame final que
+
+76
+00:06:30,646 --> 00:06:35,733
+eu sempre digo, bom, vocês não deveriam.
+É por isso que o período de exame final é
+
+77
+00:06:35,733 --> 00:06:40,100
+bem agendado assim. Mas, de qualquer forma,
+eu entendo. Então nós vamos ter um
+
+78
+00:06:40,100 --> 00:06:44,747
+horário alternativo de apresentação, se você
+não pode ou não quer fazer durante
+
+79
+00:06:44,748 --> 00:06:48,615
+o horário normal de apresentação--
+ou horário de exame final desse curso,
+
+80
+00:06:48,615 --> 00:06:53,858
+vai ser na Quinta, último dia de aula.
+Ok? Se vocês quiserem aproveitar essa
+
+81
+00:06:53,858 --> 00:06:58,631
+vantagem, me avisem cedo ok?
+Não esperem até o último segundo
+
+82
+00:06:58,631 --> 00:07:02,762
+e digam: é, eu vou fazer na Quinta.
+Não, ok? Eu quero saber antecipadamente.
+
+83
+00:07:02,762 --> 00:07:07,102
+Também se você vai apresentar na quinta,
+você obviamente tem que me entregar
+
+84
+00:07:07,102 --> 00:07:11,521
+os seu slides alguns dias antes.
+Eu pego todos os slides e os coloco
+
+85
+00:07:11,521 --> 00:07:16,590
+em uma grande apresentação, Isso faz
+com que as coisas andem rápido, ok?
+
+86
+00:07:16,590 --> 00:07:22,491
+A pessoa vem, clica, e os slides
+já estão lá. Nós não temos que ficar
+
+87
+00:07:22,491 --> 00:07:28,947
+trocando de computadores e coisas assim.
+É por isso que fazemos assim. O escopo.
+
+88
+00:07:28,947 --> 00:07:35,077
+O escopo desse projeto final é exatamente
+o mesmo das três semanas de homework de vocês, ok?
+
+89
+00:07:35,077 --> 00:07:41,037
+Para dar uma idéia inicial, vocês podem
+pensar no jogo de cartas. Isso foi algo
+
+90
+00:07:41,037 --> 00:07:46,062
+de três semanas ou algo que vocês já estão
+trabalhando atualmente. Isso seria algo de 3 semanas
+
+91
+00:07:46,062 --> 00:07:50,700
+embora vocês tenham um feriado no meio. Então
+é algo de 2 semanas e meia ou algo assim
+
+92
+00:07:50,700 --> 00:07:55,891
+mas claro, seu projeto final, vocês
+terão tido 6, 7 semanas de experiência. Então
+
+93
+00:07:55,891 --> 00:08:01,170
+deveria ser mais "escopado" do que essas
+uma dessas duas coisas. Espero que isso tenha dado
+
+94
+00:08:01,170 --> 00:08:05,337
+uma idéia geral do que nós estamos falando aqui
+sobre escopo. Lembrete para os estudantes
+
+95
+00:08:05,337 --> 00:08:09,241
+"pass no credits", vocês tem que passar
+na parte do homework e no projeto final
+
+96
+00:08:09,241 --> 00:08:13,102
+separadamente. Ambos precisam ter notas
+suficientes para passar nesse curso.
+
+97
+00:08:13,102 --> 00:08:17,657
+Então se você detonou no seu homework,
+isso não quer dizer que você tem 3 semanas
+
+98
+00:08:17,657 --> 00:08:22,107
+de folga no projeto final, porque você
+te que passar em ambos, ok? Seu projeto
+
+99
+00:08:22,107 --> 00:08:26,416
+final precisa funcionar em hardware, ok?
+Vocês podem ver que o homework atual de vocês
+
+100
+00:08:26,416 --> 00:08:31,328
+precisa disso também. Então vocês tem
+bastante tempo. Sabe, vocês devem tê-los rodando
+
+101
+00:08:31,328 --> 00:08:36,008
+essa semana então não deve ser um problema
+fazê-los rodar em hardware. Mas ele precisa
+
+102
+00:08:36,008 --> 00:08:40,918
+rodar em hardware. Você precisa testá-lo
+em hardware. Você tem que-- se você não
+
+103
+00:08:40,918 --> 00:08:45,955
+fizer a demo em hardware, nos seus dois minutos,
+vocês vão ter que mostrar para o
+
+104
+00:08:45,955 --> 00:08:50,760
+seu assistente que ele funciona em hardware.
+Em termos de nota, apenas uso do SDK do iOS
+
+105
+00:08:50,760 --> 00:08:55,900
+conta. Então se você fez esse app da hora
+que tem esse background incrível em
+
+106
+00:08:55,900 --> 00:09:00,932
+SQL server, back server e rodando todos
+os tipos de dados, mas, sabe, 70%
+
+107
+00:09:00,932 --> 00:09:06,122
+do seu app é um SQL server, você vai
+receber 0% de crédito pelos 70% disso
+
+108
+00:09:06,122 --> 00:09:10,210
+no backend, ok? Esse é um curso de iOS.
+Vocês só vão ganhar crédito pelo código
+
+109
+00:09:10,210 --> 00:09:14,443
+em iOS que vocês escreverem. Isso significa
+que se você tiver que simular um servidor,
+
+110
+00:09:14,443 --> 00:09:18,673
+está ótimo, simule-o, ok? Faça isso de
+um modo orientado a objetos, não coloque
+
+111
+00:09:18,673 --> 00:09:23,365
+um monte de código de simulação, sabe,
+emaranhado no meio dos seus objetos. Vocês
+
+112
+00:09:23,365 --> 00:09:28,157
+tem que tê-los simulados em algum tipo
+de objetos de servidor, ou algo assim. Entretanto,
+
+113
+00:09:28,157 --> 00:09:32,967
+vocês podem simular uma interação com o servidor
+se vocês quiserem, mas vocês não vão
+
+114
+00:09:32,967 --> 00:09:37,669
+receber muitos créditos por fazer a programação
+server-side, ok? Vocês vão ganhar créditos
+
+115
+00:09:37,669 --> 00:09:43,163
+pelo trabalho feito do lado iOS para falar
+com o server. Isso é bom. Vocês vão receber
+
+116
+00:09:43,163 --> 00:09:48,509
+uma pequena quantidade de créditos por simular
+o servidor, então não façam nada
+
+117
+00:09:48,509 --> 00:09:54,098
+muito elaborado, porque, sabe, vocês não
+querem gastar muito do seu tempo fazendo isso.
+
+118
+00:09:54,098 --> 00:09:59,274
+Hackear vai contar contra você. Essa é um
+curso de iOS que vocês supostamente devem
+
+119
+00:09:59,274 --> 00:10:03,796
+aprender a programar em iOS do jeito certo,
+ok? Isso significa usar prograação orientada
+
+120
+00:10:03,796 --> 00:10:07,743
+a objetos, tudo que vocês aprenderam. É por isso
+que nós enfatizamos tanto isso.
+
+121
+00:10:07,743 --> 00:10:11,589
+MVC, esse tipo de coisas. Se vocês não usarem
+MVC adequadamente, e vocês não usarem programação
+
+122
+00:10:11,589 --> 00:10:15,447
+orientada a objetos, isso vai contar
+contra você. Um requisito muito importante
+
+123
+00:10:15,447 --> 00:10:19,972
+é que vocês precisam ter pelo menos
+uma feature que não foi ensinada por mim
+
+124
+00:10:19,972 --> 00:10:25,012
+em aula durante o trimeste. Eu vou falar
+sobre o que eu vou dar nas próximas
+
+125
+00:10:25,012 --> 00:10:30,256
+três semanas, porque isso não vai
+contar também, talvez não o da última
+
+126
+00:10:30,256 --> 00:10:35,196
+semana, mas as duas primeiras
+das próximas três semanas.
+
+127
+00:10:35,196 --> 00:10:40,272
+E por que isso? Porque um programador
+iOS... isso é tão grande. Existem tantas
+
+128
+00:10:40,272 --> 00:10:45,218
+coisas em iOS. Eu poderia ensiná-los
+apenas uma pequena fração disso, acreditem ou não.
+
+129
+00:10:45,218 --> 00:10:50,024
+Eu sei que parece muito pra vocês, mas é
+uma parte muito pequena. E se você quer se chamar
+
+130
+00:10:50,024 --> 00:10:54,162
+de programador iOS, você tem que saber
+como procurar na documentação. Descobrir como
+
+131
+00:10:54,162 --> 00:10:58,131
+usar algo novo. Fazer funcionar, etc.
+Se que eu mostra a demo disso.
+
+132
+00:10:58,131 --> 00:11:02,127
+E, sabe, conseguir replicar isso de alguma
+forma. Então isso é um requisito importante:
+
+133
+00:11:02,127 --> 00:11:06,275
+vocês tem que ter pelo menos uma feature
+significante que não foi ensinada
+
+134
+00:11:06,275 --> 00:11:10,840
+em sala de aula. E tem que ser uma feature
+que seja mais do que uma feature do tipo
+
+135
+00:11:10,840 --> 00:11:17,228
+5 linhas de código. Tem que ser algo
+conceituamente, sabe, signficicante.
+
+136
+00:11:17,228 --> 00:11:22,661
+"Largura", é muuuuuuuito mais importante que
+"profundidade" (Breath x depth). Então se você estiver
+
+137
+00:11:22,661 --> 00:11:27,954
+pensando: eu já sei o que eu vou fazer. Eu vou
+fazer um jogo com gráficos 3D e ele vai
+
+138
+00:11:27,954 --> 00:11:33,336
+ter um monte de gráficos 3D. Eu vou dizer
+que isso provavelmente vai ser um uma
+
+139
+00:11:33,336 --> 00:11:37,660
+idéia FAIL. Você provavelmente vai receber
+o feedback da gente dizendo que isso não
+
+140
+00:11:37,660 --> 00:11:41,613
+vai ser bom. E por que isso? Porque
+isso vai mostrar uma enorme profundidade
+
+141
+00:11:41,613 --> 00:11:45,441
+na área gráfica, talvez com Core Graphics
+ou Core Animation ou talvez
+
+142
+00:11:45,441 --> 00:11:49,863
+OpenGL ou algo assim. Mas e sobre
+todo o resto do iOS? TableViews,
+
+143
+00:11:49,863 --> 00:11:54,436
+e View Controllers e, sabe, todas essas coisas.
+Você tem que nos mostrar tudo que--
+
+144
+00:11:54,436 --> 00:11:58,590
+que você sabe fazer todas essas coisas.
+Então largura... ter uma idéia que
+
+145
+00:11:58,590 --> 00:12:02,744
+tem várias UIs, TextFields e, sabe,
+todas essas coisas, é muito mais
+
+146
+00:12:02,744 --> 00:12:07,367
+importante do que se aprofundar muito
+e nos mostrar que você é um ótimo
+
+147
+00:12:07,367 --> 00:12:12,539
+programador. Eu gosto de dizer aqui:
+não use o seu projeto final para nos fazer
+
+148
+00:12:12,539 --> 00:12:17,306
+olhar para ele e dizer: uau, esse cara
+é um ótimo programador de OpenGL. Ok?
+
+149
+00:12:17,306 --> 00:12:22,100
+Porque isso não é um curso de OpenGL,
+então você não vai receber uma boa nota
+
+150
+00:12:22,100 --> 00:12:27,086
+nesse curso por ser um bom programador
+OpenGL. Você quer que nós digamos: uau, esse
+
+151
+00:12:27,086 --> 00:12:32,810
+cara é um ótimo programador iOS, ok?
+É esse o objetivo. É esse o motivo
+
+152
+00:12:32,810 --> 00:12:39,189
+desse curso. Tendo dito isso sobre
+Breadth, eu gostaria de ver vocês se
+
+153
+00:12:39,189 --> 00:12:45,561
+aprofundarem em uma área. Ok? Fazer algo
+que mostre alguma profundidade, porque eu não
+
+154
+00:12:45,561 --> 00:12:50,126
+quero que vocês sejam "mais ou menos". Programadores
+iOS "mais ou menos", onde vocês mal sabem como
+
+155
+00:12:50,126 --> 00:12:54,545
+usar as coisas. Eu quero que você mostre que
+você sabe como usar algo. Então, sabe,
+
+156
+00:12:54,545 --> 00:12:58,632
+desenhar uma custom view que é bem complicada,
+ou, sabe, fazer uma table view que tem
+
+157
+00:12:58,632 --> 00:13:03,108
+várias sections e ordenação. Ou fazer
+alguma coisa com Core Data, bando de dados
+
+158
+00:13:03,108 --> 00:13:07,317
+orientado a objetos que tem várias
+relações e entidades e coisas assim.
+
+159
+00:13:07,317 --> 00:13:11,343
+Sabem? Se aprofundar em uma área, mas
+vocês não vão ter tempo em três semanas
+
+160
+00:13:11,343 --> 00:13:15,584
+para mostrar toda essa largura e também
+se aprofundar em 4 áreas diferentes, ok
+
+161
+00:13:15,584 --> 00:13:20,390
+Então uma ou 2 áreas onde você pode mostrar
+que você pode se aprofundar. Porque se você
+
+162
+00:13:20,390 --> 00:13:25,538
+me mostrar que você pode se aprofundar em
+uma ou duas áreas e você for amplo, então eu posso
+
+163
+00:13:25,538 --> 00:13:31,079
+sumarizar que você poderia se aprofundar
+em várias áreas se você tivesse mais tempo. Ok?
+
+164
+00:13:31,079 --> 00:13:35,702
+A estética da sua UI importa. Mais até
+do que no homework. Elas importam
+
+165
+00:13:35,702 --> 00:13:39,789
+nos homeworks também, sabe, nós requeremos
+que os pixels estejam bem alinhados
+
+166
+00:13:39,789 --> 00:13:44,234
+e as coisas estejam com uma cara boa.
+Mas, dito isso, eu não espero que vocês
+
+167
+00:13:44,234 --> 00:13:48,369
+sejam designers gráficos, ok? Mas,
+sabe, você pode ir na internet e achar
+
+168
+00:13:48,369 --> 00:13:52,743
+gráficos e, sabe, ícones e coisas assim.
+Eles fazem com que as coisas tenham uma
+
+169
+00:13:52,743 --> 00:13:56,837
+boa aparência. Você pode escolher cores boas,
+gastar um pouco de tempo com isso. Isso faz parte
+
+170
+00:13:56,837 --> 00:14:01,192
+de ser um bom programador iOS também. Embora
+em uma empresa é provável, sabe, se você estiver
+
+171
+00:14:01,192 --> 00:14:05,677
+em uma empresa séria, fazendo um app que você
+está cobrando, você provavelmente vai ter
+
+172
+00:14:05,677 --> 00:14:09,707
+um designer gráfico que é no mínimo
+um consultor ou alguém que você contratou
+
+173
+00:14:09,707 --> 00:14:13,867
+se não alguém do seu time e essa pessoa
+vai estar fazendo de fato o seu design.
+
+174
+00:14:13,867 --> 00:14:18,027
+Mas como um programador, sabe, se você tiver
+um pouco de bom senso pelo menos para saber
+
+175
+00:14:18,027 --> 00:14:22,915
+o que está equilibrado, sabe, algo assim,
+eu acho que é uma vantagem. Então estética
+
+176
+00:14:22,915 --> 00:14:28,673
+importa. Mas, novamente, nós não esperamos
+que você seja um designer gráfico. Isso é apenas
+
+177
+00:14:28,673 --> 00:14:33,889
+o que eu estava dizendo antes. Não desvie
+do caminho on códigos não-iOS. Eu acho
+
+178
+00:14:33,889 --> 00:14:38,952
+que já falei tudo isso. A qualidade da sua
+apresntação, ok? Então essa apresentação
+
+179
+00:14:38,952 --> 00:14:44,327
+de keynote. A apresentação só conta
+um pouquinho nesse curso, mas gaste tempo
+
+180
+00:14:44,327 --> 00:14:48,996
+para fazer algo bom, ok? Isso é, sabe...
+você não tem muitas oportunidades--
+
+181
+00:14:48,996 --> 00:14:54,077
+Olhem desse modo: vocês não conseguem
+ter tantas oportunidades de ficar
+
+182
+00:14:54,077 --> 00:14:58,487
+em pé na frente de um grupo e falar sobre
+o trabalho que você está fazendo, então
+
+183
+00:14:58,487 --> 00:15:03,515
+aproveitem para fazer bem feito. Não venham
+aqui apenas e: eu fiz meu app e clica aqui
+
+184
+00:15:03,515 --> 00:15:08,404
+e ele é assim... alguma pergunta?...
+Quero dizer, isso é
+
+185
+00:15:08,404 --> 00:15:14,389
+uma oportunidade totalmente desperdiçada, ok?
+Perguntas? Não? Vocês não gostaram
+
+186
+00:15:14,389 --> 00:15:20,185
+do meu exemplo aqui, ok. Live demo. Ok.
+Vocês tem me visto, eu faço live demo
+
+187
+00:15:20,185 --> 00:15:25,393
+virtualmente em todas as aulas. E, sabe?
+Live demos são arriscadas. Coisas podem
+
+188
+00:15:25,393 --> 00:15:30,320
+dar errado. Entretando live demos podem ser
+muito efetivas também. E se você treiná-las
+
+189
+00:15:30,320 --> 00:15:35,006
+algumas vezes para ter certeza que, sabe,
+está funcionando, então elas podem ser
+
+190
+00:15:35,006 --> 00:15:39,636
+realmente uma ótima maneira de mostrar
+o seu app. Uma coisa que eu recomendo é
+
+191
+00:15:39,636 --> 00:15:43,997
+talvez ter alguns screenshots na sua
+aparesentação como backup. Ok? Então vocês vêm aqui
+
+192
+00:15:43,997 --> 00:15:47,920
+e tipo: oh, não... a internet
+não está funcionando... eu não, oh, eu
+
+193
+00:15:47,920 --> 00:15:51,675
+não consigo conectar no server.
+Sabe? Vocês podem rapidamente: ok, certo.
+
+194
+00:15:51,675 --> 00:15:55,541
+Aqui estão alguns screenshots.
+E se você vier aqui e sua demo
+
+195
+00:15:55,541 --> 00:15:59,427
+correr bem e você tiver cinco
+slides de screenshots, você pode simplesmente
+
+196
+00:15:59,427 --> 00:16:04,679
+pulá-los. Não mostrá-los pra gente,
+ok? Isso é perfeitamente ok. Em outras palavras,
+
+197
+00:16:04,679 --> 00:16:09,983
+sabe, fazer live demo é algo
+para também aprender como fazer bem.
+
+198
+00:16:09,984 --> 00:16:15,742
+Video, como captura de tela do seu app
+ou mesmo fazer uma gravação das coisas.
+
+199
+00:16:15,742 --> 00:16:20,560
+Isso é ok também. Não tão efetivo
+como uma live demo, mas muito mais seguro. Algo bom
+
+200
+00:16:20,560 --> 00:16:24,844
+de se ter ocmo backup. Mas, na pior as hipóteses,
+você tem os screenshots estáticos. Na pior
+
+201
+00:16:24,844 --> 00:16:28,406
+das hipóteses. Se você não tiver screenshots
+estáticos, no mínimo, então todos nós
+
+202
+00:16:28,406 --> 00:16:32,208
+vamos ficar tipo: como é a cara desse app?
+Nós não temos idéia. Você tem que nos mostrar.
+
+203
+00:16:32,208 --> 00:16:36,073
+E você deve nos mostrar toda a sua UI.
+Ok? Você vai trabalhar duro para fazer
+
+204
+00:16:36,073 --> 00:16:39,542
+esse app. Não nos mostre apenas
+alguns screenshots e, sabe... mostre-nos
+
+205
+00:16:39,542 --> 00:16:44,340
+o app inteiro, ok? Mostre-nos toda a sua UI.
+Nos mostre. Certo, vamos falar sobre
+
+206
+00:16:44,340 --> 00:16:49,647
+a proposta que vocês tem que mandar
+essa semana. Eu tenho aqui uma proposta
+
+207
+00:16:49,647 --> 00:16:54,495
+de exemplo, ok? Eu disse que tem duas seções.
+Tem "o que eu estou fazendo" e
+
+208
+00:16:54,495 --> 00:16:59,317
+"o que uso no iOS". Então, minha proposta
+de exemplo é: eu estou construindo uma
+
+209
+00:16:59,317 --> 00:17:05,169
+aplicação "Shakespeare director", ok? Esse é
+um app que roda somente no iPad.
+
+210
+00:17:05,169 --> 00:17:11,269
+E é para algum diretor que está dirigindo
+alguma peça teatral, alguma peça do Shakespeare.
+
+211
+00:17:11,269 --> 00:17:17,295
+E ele tem as seguintes features: ele tem
+uma tabela para escolher uma peça de Shakespeare
+
+212
+00:17:17,295 --> 00:17:23,074
+a partir do banco online Folio. Folio é
+esse banco de dados online que tem todas
+
+213
+00:17:23,074 --> 00:17:29,001
+as peças de Shakespeare, todos os textos nelas.
+Ele também tem uma custom view, como uma
+
+214
+00:17:29,001 --> 00:17:35,436
+custom view desenhada com drawRect, que você pode
+configurar a posição dos atores no palco
+
+215
+00:17:35,436 --> 00:17:40,245
+e ele vai se movendo no decorrer da
+apresentação. E também tem um modo de
+
+216
+00:17:40,245 --> 00:17:44,795
+aprendizado de diálogos. Onde os atores
+podem pegar esse app e eles podem gravar
+
+217
+00:17:44,795 --> 00:17:49,408
+as falas dos outros atores como deixas
+para ele. E então podem dar o play.
+
+218
+00:17:49,408 --> 00:17:55,083
+E dessa forma, eles podem aprender
+suas próprias falas. Ok? Porque eles vão poder
+
+219
+00:17:55,083 --> 00:17:59,967
+ver os diálogos na tela também, a partir
+do que o Folio trouxer, porque ele tem
+
+220
+00:17:59,967 --> 00:18:05,261
+isso também. Vêem como eu descrevi aqui?
+Em alguns bullets, o que essa coisa supostamente
+
+221
+00:18:05,261 --> 00:18:10,104
+faz e então eu adiante e digo que
+a custom view vai ser simples.
+
+222
+00:18:10,104 --> 00:18:13,975
+A custom view que faz o posicionamento?
+Ela vai ter apenas retângulos e círculos.
+
+223
+00:18:13,975 --> 00:18:17,831
+Talvez possa escolher uma cor. Mas eu vou
+permitir que você tire uma foto ou
+
+224
+00:18:17,831 --> 00:18:21,748
+algo assim e coloque nessa custom view.
+Ok? Então você pode mover no palco,
+
+225
+00:18:21,748 --> 00:18:25,692
+uma foto do ator, ou algum tipo
+de ícone que representa um figurante
+
+226
+00:18:25,692 --> 00:18:29,323
+ou algo assim. Ou talvez algo que
+represente uma peça do cenário,
+
+227
+00:18:29,323 --> 00:18:33,103
+qualquer coisa assim. Você vai poder colocar
+colocar na tela. É basicamente isso
+
+228
+00:18:33,103 --> 00:18:37,330
+que vai ser. Aqui eu estou falando
+o escopo do negócio. Eu não estou tentando
+
+229
+00:18:37,330 --> 00:18:41,844
+parecer que vai ser algo
+totalmente animado. Vai ser apenas,
+
+230
+00:18:41,844 --> 00:18:46,620
+sabe, formas simples. EU diria que
+o posicionamento, como o movimento de coisas
+
+231
+00:18:46,620 --> 00:18:51,400
+na custom view pode apenas mudar--
+"Blocking" a propósito, para vocês que não
+
+232
+00:18:51,400 --> 00:18:56,774
+sabem nada sobre isso, teatro ou coisas assim.
+"Blocking" é apenas a descrição de quem
+
+233
+00:18:56,774 --> 00:19:01,895
+fica aonde no palco, certo? Isso é
+Blocking. E então, aqui estou dizendo
+
+234
+00:19:01,895 --> 00:19:07,019
+que pode mudar apenas com cada fala
+de diálogo da peça.
+
+235
+00:19:07,019 --> 00:19:12,173
+Então não pode mudar no meio de um diálogo
+ou quando alguém passa
+
+236
+00:19:12,174 --> 00:19:17,199
+pelo palco. E o modo de aprendizagem
+de diálogo também só funciona
+
+237
+00:19:17,199 --> 00:19:22,552
+linha por linha. E por que eu estou
+dizendo isso? Porque eu quero simplificar
+
+238
+00:19:22,552 --> 00:19:27,441
+minha coisa pra ser fazível em 3 semanas.
+Certo? Eu não quero ter... eu quero ser
+
+239
+00:19:27,441 --> 00:19:31,851
+claro na minha proposta. Simplificações
+que estou fazendo. E percebam
+
+240
+00:19:31,851 --> 00:19:36,252
+que eu também estou dizendo que é
+somente iPad. Porque se você não disser
+
+241
+00:19:36,252 --> 00:19:39,600
+se é iPad ou iPhone, nós vamos assumir
+que você vai fazê-lo para ambas
+
+242
+00:19:39,600 --> 00:19:43,176
+as plataformas, talvez. Eu seria bem claro
+na minha proposta sobre para quais plataformas
+
+243
+00:19:43,176 --> 00:19:47,076
+você vai fazer, e eu faria para
+o maior número de plataformas que fizer sentido.
+
+244
+00:19:47,076 --> 00:19:50,538
+Sobre esse app, ele não faz sentido
+em um pequeno telefone. Não há
+
+245
+00:19:50,538 --> 00:19:53,803
+espaço suficiente para fazer
+o "blocking" e todas essas coisas. Agora,
+
+246
+00:19:53,803 --> 00:19:57,933
+você poderia term um app companion de iPhone
+que talvez faria apenas o aprendizado de diálogos.
+
+247
+00:19:57,933 --> 00:20:02,898
+Isso definitivamente seria fazível. Mas, sabe?
+O lance de blocking precisa de espaço.
+
+248
+00:20:02,898 --> 00:20:07,543
+É por isso que estou dizendo que é somente
+para iPad, ok? Então essa seria a seção 1. Uma
+
+249
+00:20:07,543 --> 00:20:12,107
+seção 1 típica. E o escopo disso é mais ou menos
+3 semanas de trabalho. É, sabe? Um chute.
+
+250
+00:20:12,107 --> 00:20:16,677
+Seção 2 é: que partes do iOS eu vou usar?
+Aqui estou dizendo que vou usar
+
+251
+00:20:16,677 --> 00:20:21,507
+uma TableView e para que eu vou usar.
+UITableViewCell customizada.
+
+252
+00:20:21,508 --> 00:20:27,032
+Ok? E porque estou usando. UIView com
+drawRect, e camera e biblioteca de fotos,
+
+253
+00:20:27,032 --> 00:20:32,792
+text field, popover, scrollviews,
+AVFoundation para sons, timers,
+
+254
+00:20:32,792 --> 00:20:38,425
+core data. Estou falando sobre meu schema
+no core data, pelo menos meu schema proposto.
+
+255
+00:20:38,425 --> 00:20:43,824
+Se eu for tentar implementar isso eu posso
+encontrar algumas entidades a mais ali. E então,
+
+256
+00:20:43,824 --> 00:20:47,792
+eu também adicionei a feature de imprimir
+o blocking usando impressoras pelo
+
+257
+00:20:47,792 --> 00:20:52,867
+Air Print. Isso é algo que nós não vamos
+falar em aula. E então essa é
+
+258
+00:20:52,867 --> 00:20:57,414
+minha feature não-coberta em aula. E isso,
+sabe? Precisa de bastante trabalho para
+
+259
+00:20:57,414 --> 00:21:02,020
+fazer a custom view conseguir se imprimir.
+Para que você possa ver o blocking
+
+260
+00:21:02,020 --> 00:21:06,806
+e segurá-lo na sua mão em um pedaço
+de papel ao invés de ter um iPad
+
+261
+00:21:06,806 --> 00:21:11,112
+na sua frente. Ok? Sabe, talvez não seja
+uma feature muito útil. Uma feature
+
+262
+00:21:11,112 --> 00:21:15,251
+muito valiosa, algo assim. Mas não
+importa muito, ok? Nada das coisas
+
+263
+00:21:15,251 --> 00:21:20,516
+que eu falei hoje... das coisas que disse...
+você não vai ser julgado pelo quão pronto
+
+264
+00:21:20,516 --> 00:21:25,776
+seu app está para a App Store. Ok?
+Isso é 0% da nota final,
+
+265
+00:21:25,776 --> 00:21:30,595
+porque o que você está tentando mostrar
+é que você "mastered" iOS de um ponto de vista
+
+266
+00:21:30,595 --> 00:21:37,072
+de programador. Sabe, um app que pode
+ser da hora pra App Store, quero dizer,
+
+267
+00:21:37,072 --> 00:21:43,532
+pronto pra começar a vender por $5 a cópia,
+isso pode não ter tanto iOS assim
+
+268
+00:21:43,532 --> 00:21:49,451
+em termos de abrangência (breadth), certo?
+Pode não mostrar coisas suficientemente diferentes.
+
+269
+00:21:49,451 --> 00:21:55,302
+Por fazar uma coisa em iOS profundamente
+e nós queremos abrangência ao invés de profundidade.
+
+270
+00:21:55,302 --> 00:22:01,711
+Ok? Alguma pergunta sobre isso? Oh, eu devo
+ter falado bem porque nenhum de vocês
+
+271
+00:22:01,711 --> 00:22:08,821
+tem perguntas. Ok, então é isso. Agora,
+vamos ver, o que mais tenho pra hoje?
+
+272
+00:22:08,821 --> 00:22:15,887
+Bom, deixa eu colocar mais esse slide
+aqui. É, ok. Umacoisa aqui
+
+273
+00:22:15,887 --> 00:22:20,549
+é se certificar que você especificamente
+mostre qual é essa feature que não foi
+
+274
+00:22:20,549 --> 00:22:25,433
+coberta em aula. Não apenas a liste, mas
+diga: essa é a feature que não foi coberta
+
+275
+00:22:25,433 --> 00:22:30,405
+em aula. Ok? A última linha ali
+é importante também. Precisa ser uma idéia
+
+276
+00:22:30,405 --> 00:22:34,456
+criativa. Ok? Eu não quero ver alguém dizendo:
+bom, eu vou fazer o jogo de cartas e
+
+277
+00:22:34,456 --> 00:22:38,698
+adicionar algumas outras features nele.
+Ok? Vocês já nos mostraram que vocês podem
+
+278
+00:22:38,698 --> 00:22:42,797
+fazer qualquer coisa naquele jogo de cartas.
+Não nos mostre novamente para o projeto final.
+
+279
+00:22:42,797 --> 00:22:46,556
+Mesma coisa com o SPoT, as tarefas
+que vocês estão trabalhando atualmente.
+
+280
+00:22:46,556 --> 00:22:50,654
+Não diga: o que eu vou fazer é algo com 
+as fotos de Stanford ou alguma coisa
+
+281
+00:22:50,654 --> 00:22:55,041
+com as fotos do Flickr. Tipo... vocês já
+nos mostraram que vocês conseguem fazer isso,
+
+282
+00:22:55,041 --> 00:22:59,380
+então façam algo diferente, ok? Ter alguma
+criatividade e ser capaz de ter idéias em um
+
+283
+00:22:59,380 --> 00:23:03,514
+curso como esse é também uma skill incrivelmente
+importante. Não apenas nos envie um email
+
+284
+00:23:03,514 --> 00:23:07,782
+na Terça a noite dizendo: eu não consigo
+pensar em nada. O que vocês recomendam?
+
+285
+00:23:07,782 --> 00:23:12,847
+Ok? Parte da atividade é para vocês serem
+criativos. Pensem em alguma coisa
+
+286
+00:23:12,847 --> 00:23:17,967
+que seja uma idéia interessante.
+Interessante para você, interessante para
+
+287
+00:23:17,967 --> 00:23:23,062
+trabalhar. E também interessante em termos
+da quantidade de iOS que usa. Ok? Isso é
+
+288
+00:23:23,062 --> 00:23:28,287
+parte da atividade. Então, faça, ok?
+Isso é tudo que eu queria falar então. Ok,
+
+289
+00:23:28,287 --> 00:23:33,559
+então aula novamente. De volta à aula normal.
+Nós vamos falar hoje e na próxima aula sobre
+
+290
+00:23:33,559 --> 00:23:38,587
+Core Data, ok? Core Data é uma API
+muito importante em iOS. Ela é
+
+291
+00:23:38,587 --> 00:23:44,127
+essencialmente um banco de dados orientado
+a objetos. Nós vamos gravar dados em algum lugar,
+
+292
+00:23:44,127 --> 00:23:50,200
+nós vamos usar essa API totalmente
+orientada a objetos para fazer isso, ok?
+
+293
+00:23:50,200 --> 00:23:56,967
+Vocês podem pensar no Code Data como um modo
+de criar um object graph que é persistente
+
+294
+00:23:56,967 --> 00:24:03,542
+em um banco SQL, ok? Isso é de fato
+o que o Core Data faz. Você cria
+
+295
+00:24:03,542 --> 00:24:10,264
+esse object graph. Existe até um
+editor gráfico no Xcode para criar o mapeamento...
+
+296
+00:24:10,264 --> 00:24:15,404
+esse object graph. Um monte de objetos
+e suas propriedades. E então ele
+
+297
+00:24:15,404 --> 00:24:20,429
+automaticamente vai gravar isso em um banco
+de dados SQL e deixar que você faça queries nele
+
+298
+00:24:20,429 --> 00:24:25,267
+e todo esse tipo de coisa. É realmente
+bem legal. Ok? Então, como funciona? Você cria
+
+299
+00:24:25,267 --> 00:24:30,939
+esse mapeamento visual no Xcode. Ok? Nós vamos
+arastando e coisas assim. Não no Storyboard,
+
+300
+00:24:30,939 --> 00:24:37,370
+mas em um lugar diferente, 
+dentro do Xcode. E então
+
+301
+00:24:37,370 --> 00:24:43,360
+você cria objetos e faz queries para eles
+e coisas assim usando uma API orientada
+
+302
+00:24:43,360 --> 00:24:48,574
+a objetos. Então as colunas nas suas tabelas
+e seus bancos de dados SQL são as
+
+303
+00:24:48,574 --> 00:24:53,859
+propriedades e os objetos. Você apenas usa
+a dot notation. Setters e getters.
+
+304
+00:24:53,859 --> 00:24:59,064
+E o sistema cria todas essas coisas pra você.
+Então é bem da hora. Então vamos falar sobre
+
+305
+00:24:59,064 --> 00:25:03,752
+criar o mapa primeiro. Vamos...
+Como que nós graficamente descrevemos os
+
+306
+00:25:03,752 --> 00:25:08,940
+objetos em nosso bando de dados? E a
+resposta é: você simplesmente faz um New File, ok?
+
+307
+00:25:08,940 --> 00:25:13,841
+New File, todo mundo está acostumado. É como
+nós criamos novas classes e coisas assim.
+
+308
+00:25:13,841 --> 00:25:18,818
+E quando fazemos New File, essa janela
+aparece. E se você clicar nesse aqui
+
+309
+00:25:18,818 --> 00:25:23,858
+à esquerda, que é chamado ou de Core Data
+ou de Database ou alguma coisa
+
+310
+00:25:23,858 --> 00:25:28,517
+assim. Aqui ele é chamado Core Data.
+Então você vai ter essas três escolhas
+
+311
+00:25:28,517 --> 00:25:33,110
+aqui e você escolhe o que é chamado
+Data Model. Então isso vai criar um
+
+312
+00:25:33,110 --> 00:25:37,797
+Novo arquivo que vai ser o modelo
+gráfico do seu database, ok? Os objetos
+
+313
+00:25:37,797 --> 00:25:42,570
+no seu database. E quando você fizer isso,
+ele vai perguntar onde você quer gravá-lo,
+
+314
+00:25:42,570 --> 00:25:46,657
+e como você quer chamá-lo. Normalmente...
+nós podemos ter vários desses mapeamentos.
+
+315
+00:25:46,657 --> 00:25:51,228
+Claro, nesse curso, nós vamos apenas
+mostrar a vocês o básico, então nós vamos
+
+316
+00:25:51,228 --> 00:25:56,135
+ter apenas um mapeamento. A se nós temos
+apenas um mapeamento, sabe, um
+
+317
+00:25:56,135 --> 00:26:00,759
+mapeamento para nosso database,
+nós geralmente o chamamos pelo mesmo
+
+318
+00:26:00,759 --> 00:26:05,492
+nome do nosso app. Então, tipo, nós poderíamos
+chamá-lo de ShutterBugDataModel. xcdatamodelc
+
+319
+00:26:05,492 --> 00:26:10,171
+ou algo assim. Então eu coloquei Shutterbug aqui,
+ok? Então aqui eu tenho um app de exemplo chamado
+
+320
+00:26:10,171 --> 00:26:14,334
+CoreDataExample. Estou chamando assim.
+Então quando você faz isso, no seu
+
+321
+00:26:14,334 --> 00:26:18,873
+navigator, você pode ver um novo arquivo. Vêem
+bem aqui? CoreDataExample.xcdatamodeld?
+
+322
+00:26:18,873 --> 00:26:25,851
+Esse é a descrição gráfica do seu 
+objeto de banco de dados. Ok? E se
+
+323
+00:26:25,851 --> 00:26:31,962
+você olhar dentro dele, ele consite de
+entidades que são como objetos,
+
+324
+00:26:31,962 --> 00:26:38,732
+atributos que são como propriedades
+e relacionamentos. Que são propriedades
+
+325
+00:26:38,732 --> 00:26:43,557
+que são basicamente NSSets de outros
+objetos. Ok? Então relacionamentos são
+
+326
+00:26:43,557 --> 00:26:49,512
+objetos de conexão que apontam para
+outros objetos no database, ok? Existem também
+
+327
+00:26:49,512 --> 00:26:55,284
+Fetch Properties ali. Nós não vamos falar
+sobre isso nesse curso, mas é basicamente
+
+328
+00:26:55,284 --> 00:27:00,762
+um modo de ter uma property que é calculada
+ao invés de ter um relacionamento fixo
+
+329
+00:27:00,762 --> 00:27:06,237
+ou uma propriedade fixa, valos de property.
+Então, você adiciona uma entidade e uma entidade,
+
+330
+00:27:06,237 --> 00:27:11,061
+novamente, é como se fosse um objeto,
+apenas clicando Add Entity aqui em baixo,
+
+331
+00:27:11,061 --> 00:27:15,694
+vocês vêem esse grande sinal de mais?
+E então você pode editar o nome dele. Aqui estou
+
+332
+00:27:15,694 --> 00:27:20,052
+chamando minha entity de Photo. Então,
+nesses próximos slides eu vou construir
+
+333
+00:27:20,052 --> 00:27:24,199
+meu object model. Vai ser o object model
+para uma aplicação que é meio
+
+334
+00:27:24,199 --> 00:27:28,684
+parecido com o Shutterbug, mas, sabe,
+o Shutterbug lista todas as fotos recentes
+
+335
+00:27:28,684 --> 00:27:33,039
+tiradas no Flickr. E tem o nome de cada foto
+e o subtítulo é a pessoa que tirou
+
+336
+00:27:33,039 --> 00:27:37,513
+a foto. Lembram-se disso? Da nossa
+última demo. Então, o que eu vou
+
+337
+00:27:37,513 --> 00:27:42,006
+fazer aqui é: eu vou colocar todos esses dados
+nesse database. E isso vai me permitir fazer
+
+338
+00:27:42,006 --> 00:27:46,166
+queries mais poderosas como: ok, bom agora
+me mostre a lista de todas as pessoas que
+
+339
+00:27:46,166 --> 00:27:50,518
+tiraram fotos e quando eu clicar nela,
+ele vai seguear e mostrar as fotos que
+
+340
+00:27:50,518 --> 00:27:54,712
+eles tiraram. Certo? Numa lista,
+eu clico nela e vejo o lance. Então eu
+
+341
+00:27:54,712 --> 00:27:59,476
+vou ter duas entidades diferentes aqui:
+a Photo e o Photographer. Ok? Essas vão ser
+
+342
+00:27:59,476 --> 00:28:03,958
+as minhas 2 entidades. E nós temos
+algumas propriedades para asa. Então é isso
+
+343
+00:28:03,958 --> 00:28:08,622
+que eu vou construir aqui. Então nós digitamos
+o nome da entidade que queremos. No nosso código--
+
+344
+00:28:08,622 --> 00:28:13,116
+eu vou falar sobre todo o código
+que acontece aqui depois que nós acabarmos
+
+345
+00:28:13,116 --> 00:28:17,677
+com a parte gráfica. Mas no código,
+essas entidades vão aparecer como a classe
+
+346
+00:28:17,677 --> 00:28:22,537
+NSManagedObject ou uma subclasse disso.
+Geralmente uma subclasse disso, que eu vou
+
+347
+00:28:22,537 --> 00:28:27,142
+falar sobre, ok? Então essas entidades
+aparecem em seu código como NSManagedObjects,
+
+348
+00:28:27,142 --> 00:28:31,462
+ou subclasse disso. Então vocês podem
+adicionar atributos, que são meio que
+
+349
+00:28:31,462 --> 00:28:35,797
+propriedades, apenas clicando naquele
+pequeno sinal de mais. Vêem aquele
+
+350
+00:28:35,797 --> 00:28:40,296
+sinal de mais na seção de atributos ali?
+Então eu cliquei no mais. E eu digitei
+
+351
+00:28:40,296 --> 00:28:45,160
+o nome. Uma foto tem um título, então nós
+vamos ter um título. Então nós digitamos
+
+352
+00:28:45,160 --> 00:28:49,696
+o nome ali. E percebam que nós recebemos
+um erro quando fazemos isso, quando adicionamos
+
+353
+00:28:49,696 --> 00:28:54,361
+um atributo. E isso é porque todos
+os atributos tem que ter um tipo. Você tem
+
+354
+00:28:54,361 --> 00:28:59,349
+que dizer ao Core Data que tipo ele é. Então
+aqui eu vou setar o título para ser uma String.
+
+355
+00:28:59,350 --> 00:29:04,518
+Ok, então eu só clico perto do título e vou
+na próxima coluna, no Type. E vocês
+
+356
+00:29:04,518 --> 00:29:09,534
+podem ver os tipos ali são: tipos numéricos,
+como integet 16, 32, 64, decimal,
+
+357
+00:29:09,534 --> 00:29:14,770
+double, float. E todos esses vão aparecer
+nos eu código como NSNumbers. Ok? Porque
+
+358
+00:29:14,770 --> 00:29:19,255
+todas as coisas, todas as propriedades
+e todas as entidades no database são
+
+359
+00:29:19,255 --> 00:29:24,176
+todos objetos, ok? Então esses tipos
+vão aparecer como NSNumbers. Strings vão obviamente
+
+360
+00:29:24,176 --> 00:29:28,880
+aparecer como NSStrings. Dados binários,
+ali embaixo da lista, vão aparecer
+
+361
+00:29:28,880 --> 00:29:33,508
+como NSData. E, claro, datas vão
+aparecer como NSDates e não se preocupem
+
+362
+00:29:33,508 --> 00:29:38,688
+em relação a Transformable. Nós não vamos
+falar sobre isso nesse curso, mas vocês
+
+363
+00:29:38,688 --> 00:29:43,397
+podem dar uma olhada quando vocês estiverem
+se aprofundando em Core Data no futuro.
+
+364
+00:29:43,397 --> 00:29:48,497
+Os atributos nos seus NSManagedObjects,
+lembram-se que eu falei que as entidades
+
+365
+00:29:48,497 --> 00:29:52,940
+vão aparecer no seu código como
+NSManagedObjects ou subclasse disso.
+
+366
+00:29:52,940 --> 00:29:58,407
+Você pode enviar para essas coisas, o método
+valueforKey: e setValue:forKey: para
+
+367
+00:29:58,407 --> 00:30:04,339
+setar e pegar os valores. Ok? Então eu poderia
+dizer: (isso deveria ser) setValue:forKey:
+
+368
+00:30:04,339 --> 00:30:10,477
+Posso dizer setValue:photo.title forKey: @"title"
+
+369
+00:30:10,477 --> 00:30:16,615
+E isso iria setar o valor
+do título para
+
+370
+00:30:16,615 --> 00:30:21,645
+aquela foto, ok? Então valueForKey:
+e setValue:ForKey:. Mas se nós
+
+371
+00:30:21,645 --> 00:30:26,832
+criarmos uma subclasse de NSManagedObject
+para esse Photo, então nós podemos ter
+
+372
+00:30:26,832 --> 00:30:31,721
+dot notation. E nós vamos mostrar, na verdade,
+que o Xcode vai fazer isso por nós. E vamos ver
+
+373
+00:30:31,721 --> 00:30:36,739
+como fazer isso. Então aqui, eu adicionei
+um monte de atributos a mais. Uma URL para
+
+374
+00:30:36,739 --> 00:30:41,824
+a foto, um subtítulo, talvez um thumbnail,
+ok? E a URL para obter o thumbnail.
+
+375
+00:30:41,824 --> 00:30:47,665
+A data que foi feito o upload disso.
+Esse tipo de coisa. Eu posso
+
+376
+00:30:47,665 --> 00:30:53,353
+adicionar todas essas informações aqui
+como propriedades no meu objeto, ou
+
+377
+00:30:53,353 --> 00:30:58,848
+atributos na minha entidade se você quiser pensar
+nisso no modelo de modelagem de dados.
+
+378
+00:30:58,848 --> 00:31:04,074
+Você também pode ver suas entidades e atributos
+em uma forma gráfica, Então esse é tipo um
+
+379
+00:31:04,074 --> 00:31:09,144
+formato de tabela, mas se você clicar nesse
+botão, você vai ver como um pedaço de
+
+380
+00:31:09,144 --> 00:31:14,025
+papel de desenho, como no seu Storyboard.
+E, conforme você tem múltiplas entidades,
+
+381
+00:31:14,025 --> 00:31:18,264
+e conexões entre elas, você vai começar
+a ver isso graficmente. Então, para fazer isso,
+
+382
+00:31:18,264 --> 00:31:22,060
+vamos seguir em frente e adicionar outra entidade.
+Eu vou clicar aqui no botão Add Entity
+
+383
+00:31:22,060 --> 00:31:25,981
+aqui embaixo novamente. E nós vamos chamar
+essa de Photographer. E vocês podem ver
+
+384
+00:31:25,981 --> 00:31:30,103
+que ele apareceu no papel gráfico como
+outra coisinha. E nós podemos arrastar
+
+385
+00:31:30,103 --> 00:31:35,135
+essas coisinhas e, conforme nós arrastamos,
+quaisquer conexões entre eles vão ser
+
+386
+00:31:35,135 --> 00:31:40,315
+mantidas assom como no Storyboard
+quando arrastamos os view controllers
+
+387
+00:31:40,315 --> 00:31:44,903
+e os segues para eles, as linhas os seguem.
+A mesma coisa acontece aqui, como vocês
+
+388
+00:31:44,903 --> 00:31:50,022
+verão. E nós podemos adicionar atributos aqui
+também, nessa view gráfica, clicando
+
+389
+00:31:50,022 --> 00:31:54,440
+no grande botão de Add Attribute aqui embaixo.
+Então eu vou adiconar name, que seria
+
+390
+00:31:54,440 --> 00:31:58,860
+o nome do fotógrafo que tirou a foto
+e vocês podem ver que o inspector
+
+391
+00:31:58,860 --> 00:32:03,260
+aqui na direita é onde eu vou setar
+o tipo, ok? E da última vez isso estava
+
+392
+00:32:03,260 --> 00:32:07,682
+na tabela e era uma das colunas na tabela,
+mas agora na view gráfica, eu simplesmente
+
+393
+00:32:07,682 --> 00:32:13,562
+vou no inspector. E então, criando
+relações entre objetos é feito simplesmente
+
+394
+00:32:13,562 --> 00:32:19,629
+com CTRL + arrastando. Ok? Então, photographer
+e photo, claramente existe uma relação
+
+395
+00:32:19,629 --> 00:32:25,511
+entre eles, certo? O Photographer tira
+uma porção de photos. Então, existe uma relação
+
+396
+00:32:25,511 --> 00:32:30,610
+do tipo um para vários. Photographer
+para Photo. E uma relação um-pra-um
+
+397
+00:32:30,610 --> 00:32:34,702
+da Photo, porque apenas
+um Photographer tirou aquela Photo.
+
+398
+00:32:34,702 --> 00:32:39,428
+Então como setamos esse relacionamento
+entre Photographers e Phtoos? Bom,
+
+399
+00:32:39,428 --> 00:32:44,378
+você pode CTRL + arrastar entre essas
+2 caixas e você verá que ele vai fazer
+
+400
+00:32:44,378 --> 00:32:49,253
+uma linha entre eles e criar um relacionamento
+de cada lado, que eu estou chamando
+
+401
+00:32:49,253 --> 00:32:55,013
+de newRelationship em ambos os lados. Ok?
+Nós obviamente queremos mudar esse nome. Não é
+
+402
+00:32:55,013 --> 00:32:59,896
+um nome muito bom. Vamos chamar o relacionamento
+na lado da Photo de "who took" (quem tirou).
+
+403
+00:32:59,896 --> 00:33:04,940
+Ok? Esse é um bom nome para esse
+relacionamento. O tipo dessa property no
+
+404
+00:33:04,940 --> 00:33:10,354
+seu código vai ser NSManagedObjects *.
+Certo? Porque a Photo tem um Photographer
+
+405
+00:33:10,354 --> 00:33:15,549
+que a tirou, e isso será simplesmente
+um outro objeto no banco de dados.
+
+406
+00:33:15,549 --> 00:33:20,544
+E eu disse a vocês, todos os objetos no
+banco de dados são NSManagedObjects. Ou sublasses
+
+407
+00:33:20,544 --> 00:33:25,365
+deles, ok? Mas a outra forma é um pouco
+diferente. Então, o Photographer--
+
+408
+00:33:25,365 --> 00:33:29,953
+vamos chamar a sua relação com a Photo...
+Photos, plural, porque um Photographer
+
+409
+00:33:29,953 --> 00:33:34,770
+pode tirar múltiplas Photos, ok?
+E se você olhar no Inspector ali,
+
+410
+00:33:34,770 --> 00:33:38,918
+existe um pequeno switch que nós vamos
+ligar que diz: To-Many Relationships.
+
+411
+00:33:38,918 --> 00:33:43,424
+Vocês vêem bem aqui? Onde ele
+diz Plural, To-Many Relashionships?
+
+412
+00:33:43,424 --> 00:33:47,523
+Então quando ligamos ali,
+o que aquilo diz é: essa
+
+413
+00:33:47,524 --> 00:33:52,280
+entidade Photographer tem um ponteiro
+para Photo, mas tem muitas Photos. Então
+
+414
+00:33:52,280 --> 00:33:57,946
+o tipo desse relacionamento, essa property,
+em um Photographer, é um NSSet. Certo,
+
+415
+00:33:57,946 --> 00:34:03,275
+todos nós sabemos o que é um NSSet, certo?
+É uma coleção não-ordenada de objetos. E dentro
+
+416
+00:34:03,275 --> 00:34:08,901
+desse NSSet vão estar NSManagedObjects.
+Muito, muito direto. Ok?
+
+417
+00:34:08,901 --> 00:34:14,595
+E então, tudo isso será configurado para você
+magicamente, ok? No seu código, tudo vai
+
+418
+00:34:14,595 --> 00:34:20,533
+simplesmente estar ali, pronto para usar.
+E qualquer modificação que você fizer
+
+419
+00:34:20,533 --> 00:34:26,422
+no object graph automaticamente vão ser
+persistidas. Ok? Então é realmente--
+
+420
+00:34:26,422 --> 00:34:33,038
+você pode fazer queries neles. É bem
+espetacular. Percebam que quando fizemos esse
+
+421
+00:34:33,038 --> 00:34:38,990
+relacionamento To-Many, no Inspector,
+ele automaticamente percebeu que
+
+422
+00:34:38,990 --> 00:34:45,354
+o inverso é chamado "who took". Certo? Então
+ele automaticamente rastreia ambos. E isso
+
+423
+00:34:45,354 --> 00:34:50,957
+funciona no seu código também. Se você
+mudar o "who took", então o conjunto de Photos
+
+424
+00:34:50,957 --> 00:34:56,907
+tiradas por aquele Photographer, será automaticamente
+mudado, para incluir essa Photo na lista
+
+425
+00:34:56,907 --> 00:35:02,055
+de Photos. Ou vice-versa. Se você mudar
+o NSSet de Photos que um Photographer tirou
+
+426
+00:35:02,055 --> 00:35:06,885
+ele vai mudar o "who took" de todas
+as Photos ali. Então ele muda ambos
+
+427
+00:35:06,885 --> 00:35:11,704
+os lados automaticamente. Você nunca precisa
+fazer isso você mesmo, ok? Então é. Isso é
+
+428
+00:35:11,704 --> 00:35:16,513
+o que eu estou falando sobre NSManagedObject em
+um conjunto. Ok, existem várias outras coisas
+
+429
+00:35:16,513 --> 00:35:20,977
+que você pode fazer no Core Data, ok? Como
+vocês podem imaginar, vocês tem um banco de dados
+
+430
+00:35:20,977 --> 00:35:25,424
+SQL por trás... tem várias coisas que você pode
+fazer ali. Mas nós vamos focar em
+
+431
+00:35:25,424 --> 00:35:29,202
+criar entidades, atributos e relacionamentos.
+Essas três coisas que nós já
+
+432
+00:35:29,202 --> 00:35:33,331
+falamos aqui. Entidades são como objetos,
+atributos são como propriedades
+
+433
+00:35:33,331 --> 00:35:37,520
+e relacionamentos também são como
+propriedades, mas são propriedades
+
+434
+00:35:37,520 --> 00:35:41,393
+que apontam para outro objeto
+no banco de dados. Certo, então como você
+
+435
+00:35:41,393 --> 00:35:44,659
+acessa as coisas no seu código? Você precisa
+de uma instância muito importante que é
+
+436
+00:35:44,659 --> 00:35:50,093
+NSManagedObjectContext. Ok? É uma classe...
+NSManagedObjectContext. Você tem que ter uma.
+
+437
+00:35:50,093 --> 00:35:55,222
+Ok? Você pode ter múltiplos contextos
+apontando para o mesmo diretór...
+
+438
+00:35:55,222 --> 00:36:00,492
+banco de dados. Isso é ok, mas você precisa
+ter um contexto. O contexto é a coisa
+
+439
+00:36:00,492 --> 00:36:05,450
+para quem você pede para fazer todo o trabalho,
+como queries ou qualquer coisa que você quiser fazer
+
+440
+00:36:05,450 --> 00:36:10,858
+no banco de dados. Você precisa de um contexto.
+É tipo a sua abertura para o mundo do banco de dados
+
+441
+00:36:10,858 --> 00:36:17,301
+orientados a objetos. Então como eu obtenho um
+desses contextos? E você tem que ter um contexto.
+
+442
+00:36:17,301 --> 00:36:23,486
+Existem duas maneiras. Uma é você pode simplesmente
+criar um UIManagedDocument, que é uma classe que
+
+443
+00:36:23,486 --> 00:36:27,135
+vamos falar mais profundamente nos próximos
+slides. E um UIManagedDocument, que é
+
+444
+00:36:27,135 --> 00:36:30,979
+na verdade qualquer documento que
+armazena um banco de dados do
+
+445
+00:36:30,979 --> 00:36:35,453
+Core Data nele, ele tem uma property chamada
+managedObjectContext. E você simplesmente pede
+
+446
+00:36:35,453 --> 00:36:39,689
+pode ela, daí você tem o seu contexto. E agora
+você pode ir e fazer tudo que você quiser.
+
+447
+00:36:39,689 --> 00:36:44,702
+Queries e coisas assim. A segunda maneira
+é que, quando você cria um projeto no Xcode,
+
+448
+00:36:44,702 --> 00:36:49,838
+quando você faz um New Project, alguns dos
+templates... tem um switch lá que diz
+
+449
+00:36:49,838 --> 00:36:54,187
+usar o Core Data. Não o template mais
+simples (aquele que nós vínhamos usando), mas algum
+
+450
+00:36:54,187 --> 00:36:58,717
+dos outros templates. VocÊ clica em 
+"use Core Data". E se você fizer isso, então
+
+451
+00:36:58,718 --> 00:37:03,373
+o seu ApplicationDelegate, que nós não
+falamos ainda, ele vai ter um método nele
+
+452
+00:37:03,373 --> 00:37:07,180
+chamado managedObjectContext. E vocês podem
+usá-lo. Mas nós não vamos falar sobre isso
+
+453
+00:37:07,180 --> 00:37:10,948
+nesse curso. Nós vamos usar o modo
+do Document, ok? Porque é tipo mais simples
+
+454
+00:37:10,948 --> 00:37:14,585
+e fácil de entender. Nós não temos que ir
+no AppDelegate e entender esse
+
+455
+00:37:14,585 --> 00:37:18,340
+negócio todo. E você pode criar um document
+em qualquer ponto no seu código desde que
+
+456
+00:37:18,340 --> 00:37:21,774
+você tenha o nome desse Document,
+certo? E você pode nomear esses Documents
+
+457
+00:37:21,774 --> 00:37:26,769
+de qualquer coisa que você quiser. Então vamos
+focar nisso. Como nós criamos um document e o abrimos
+
+458
+00:37:26,769 --> 00:37:31,389
+e coisas assim. E depois que falarmos
+sobre isso, nós vamos falar sobre: ok,
+
+459
+00:37:31,389 --> 00:37:35,811
+agora temos um managedObjectContext,
+como nós acessamos todas essas photos e
+
+460
+00:37:35,811 --> 00:37:40,683
+photographers e todas essas propriedades?
+Então UIManagedDocument herda de uma classe
+
+461
+00:37:40,683 --> 00:37:45,560
+chamada UIDocument. E UIDocument é essa
+API genérica de manuseamento de documentos.
+
+462
+00:37:45,560 --> 00:37:50,165
+Ok? E nós não vamos entrar em detalhes sobre
+isso, mas ele tem, sabe, uma API
+
+463
+00:37:50,165 --> 00:37:55,270
+nele para abrir um documento, salvar um documento,
+gerenciar as mudanças em um documento,
+
+464
+00:37:55,270 --> 00:38:00,027
+todas essas coisas. Então UIManagedDocument
+é um UIDocument onde o que está
+
+465
+00:38:00,027 --> 00:38:05,193
+armazenado nele é um banco de dados Core Data.
+Ok? Lembrem-se: por baixo é SQL.
+
+466
+00:38:05,193 --> 00:38:10,174
+É SQLite, na verdade. O SQLite
+é um banco de dados em um único arquivo, ok?
+
+467
+00:38:10,174 --> 00:38:15,502
+UIManagedDocument gerencia isso e ele faz isse
+de uma forma muito sofisticada que permite,
+
+468
+00:38:15,502 --> 00:38:20,563
+por exemplo, que esse documento esteja
+no iCloud, ok, e compartilhado entre
+
+469
+00:38:20,563 --> 00:38:25,480
+múltiplos devices. E nós vamos, espero,
+falar sobre como nós fazemos isso
+
+470
+00:38:25,480 --> 00:38:30,276
+nas últimas semanas desse curso. Mas se você
+usou UIManagedDocument para armazenar o seu
+
+471
+00:38:30,276 --> 00:38:35,211
+documento então você está no caminho certo
+para ter suporte do iCloud, ok? Porque ele faz
+
+472
+00:38:35,211 --> 00:38:39,796
+um monte de coisas do iCloud diretamente.
+Mas, fundamentalmente, você quer pensar em um
+
+473
+00:38:39,796 --> 00:38:44,882
+UIManagedDocument como um simples container
+para o seu banco de dados Core Data. É apenas
+
+474
+00:38:44,882 --> 00:38:50,321
+um container. Um documento que vai armazenar
+essas Photos e Photographers. Ok?
+
+475
+00:38:50,321 --> 00:38:55,116
+Então como você cria um? Você simplesmente
+pega uma URL, vocês todos já sabem pela atividade
+
+476
+00:38:55,116 --> 00:38:59,497
+atual de vocês e pela última aula como obter
+uma URL. Vocês provavelmente querem colocá-lo
+
+477
+00:38:59,497 --> 00:39:05,277
+no diretório documents. Ok? E uma vez
+tendo a URL, vocês apenas dizem:
+
+478
+00:39:05,277 --> 00:39:11,312
+[UIManagedDocument alloc]... oops,
+está faltando um alloc ali,
+
+479
+00:39:11,312 --> 00:39:17,056
+UIManagedDocument alloc initWithFileURL
+e você passa a URL. E isso cria um objeto
+
+480
+00:39:17,056 --> 00:39:21,765
+de documento. Entretando, ele não cria
+o arquivo, ok? Então isso cria o objeto
+
+481
+00:39:21,765 --> 00:39:25,658
+UIManagedDocument, mas ele não cria
+o arquivo. E ele cria o documento,
+
+482
+00:39:25,658 --> 00:39:29,379
+e esse é o seu arquivo, mas ele
+ainda não o criou.
+
+483
+00:39:29,379 --> 00:39:33,217
+E nós vamos falar sobre como criar o
+docuemnto em um segundo.
+
+484
+00:39:33,217 --> 00:39:38,161
+Bom, vamos falar sobre isso agora.
+O que você faz com isso? Você tem
+
+485
+00:39:38,161 --> 00:39:43,131
+UIManagedDocument que você iniciou com
+fileURL. Geralmente o que você faz é
+
+486
+00:39:43,131 --> 00:39:47,888
+você checa se o arquivo já existe,
+usando o método do File Manager, 
+
+487
+00:39:47,888 --> 00:39:52,672
+fileExistAtPath, ok? E se ele existir,
+então você vai abrí-lo usando o método
+
+488
+00:39:52,672 --> 00:39:58,000
+do UIManagedDocument, openWithCompletionHandler.
+Que nós vamos falar sobre.
+
+489
+00:39:58,000 --> 00:40:02,930
+Se ele não existe, então você provavelmente
+vai criá-lo, com o método
+
+490
+00:40:02,930 --> 00:40:08,203
+do UIManagedDocument
+saveToURL:forSaveOperation:completionHandler:.
+
+491
+00:40:08,203 --> 00:40:12,608
+Ok? É sempre assim. É um pouco infeliz
+que você tem que fazer essa
+
+492
+00:40:12,608 --> 00:40:16,820
+distinção sobre se ele já foi criado
+ou não. Seria mais legal se tivesse
+
+493
+00:40:16,820 --> 00:40:21,041
+um openWithCompletionHanderAndCreateIfDoesntExist,
+serial algo legal
+
+494
+00:40:21,041 --> 00:40:25,506
+de termos. Mas não é assim. Então você tem que
+infelizmente fazer essa checagem,
+
+495
+00:40:25,506 --> 00:40:29,671
+onde você checa para ver se ele existe
+e se existir, você simplesmente o abre,
+
+496
+00:40:29,671 --> 00:40:34,214
+e se não existir, você vai criá-lo.
+Agora, em ambos, existe esse
+
+497
+00:40:34,214 --> 00:40:38,778
+completionHandler ali, vocês vêem que
+é um block, ok? Espero que vocês já estejam
+
+498
+00:40:38,778 --> 00:40:44,010
+começando a se familiarizar com blocks.
+Esse block não tem valor de retorno, certo?
+
+499
+00:40:44,010 --> 00:40:49,177
+É um retorno void. E ele recebe um argumento,
+que é um BOOL, que é "success",
+
+500
+00:40:49,177 --> 00:40:54,465
+se ele foi capaz de abrir ou criar
+o documento. Agora, por que nós temos esse
+
+501
+00:40:54,465 --> 00:41:00,976
+completionHandler aqui? É porque abrir e salvar
+são assíncronos. Eles acontecem em outra
+
+502
+00:41:00,976 --> 00:41:07,338
+thread, ok? Então você precisa ser notificado
+quando eles acabarem e é isso que esse
+
+503
+00:41:07,338 --> 00:41:12,872
+completionHandler faz. Esse completionHandler
+vai ser executado na thread que pediu
+
+504
+00:41:12,872 --> 00:41:17,550
+para que abrisse ou salvasse. Então
+na sua main thread, você pode dizer
+
+505
+00:41:17,550 --> 00:41:22,746
+UIManagedDocument ou algo assim,
+openWithCompletionHandler: qualquer coisa,
+
+506
+00:41:22,746 --> 00:41:27,778
+e ele vai abrir em outra thread e ele vai
+chamar esse completionHandler na main thread
+
+507
+00:41:27,778 --> 00:41:32,577
+porque foi dali que você chamou o open,
+ok? Você pode chamar open ou save em
+
+508
+00:41:32,577 --> 00:41:36,798
+outras threads, mas entenda que
+o completionHandler vai ser chamado
+
+509
+00:41:36,798 --> 00:41:40,921
+nessa outra thread, ok? Não de volta
+na main thread. Mas na mesma thread
+
+510
+00:41:40,921 --> 00:41:45,274
+que você chamou o open ou o save,
+ok? Todo mundo entendeu?
+
+511
+00:41:45,274 --> 00:41:49,587
+E o BOOL vai te dizer se
+ele foi bem-sucedido ou não.
+
+512
+00:41:49,587 --> 00:41:53,735
+É por isso que você tem um block ali,
+porque eles são assíncronos e eles vão
+
+513
+00:41:53,735 --> 00:41:57,953
+te chamar de volta. É como um callback. Então,
+por exemplo, você vai ter um código que parece
+
+514
+00:41:57,953 --> 00:42:02,589
+com esse aqui na sua aplicação.
+[ditando código]
+
+515
+00:42:02,589 --> 00:42:06,433
+[arrumando desculpinha porque
+esqueceu o alloc de novo...]
+
+516
+00:42:06,433 --> 00:42:11,012
+[ditando código]
+E então você vai dizer
+
+517
+00:42:11,012 --> 00:42:15,231
+[ditando código]
+
+
+518
+00:42:15,231 --> 00:42:19,884
+Se for bem-sucedido, eu provavelmente
+vou chamar algum método
+
+519
+00:42:19,884 --> 00:42:24,364
+como documentIsReady ou algo assim,
+e ele vai disparar e começar
+
+520
+00:42:24,364 --> 00:42:28,908
+a olhar dentro do documento, olhando
+as Photos e Photographers ali porque
+
+521
+00:42:28,908 --> 00:42:33,131
+ele está pronto agora. E se não for bem-sucedido
+talvez eu vá logá-lo ou, sabe, fazer
+
+522
+00:42:33,131 --> 00:42:37,260
+alguma outra coisa, tentar abrir um documento
+diferente. Eu não sei o que você faria
+
+523
+00:42:37,260 --> 00:42:41,263
+nesse ponto. Percebam que não há NSError
+aqui para descobrir o que aconteceu. É possível
+
+524
+00:42:41,263 --> 00:42:45,058
+descobrir porque as coisas estão dando errado,
+mas não é tão direto quanto vocês
+
+525
+00:42:45,058 --> 00:42:48,633
+podem pensar e parte da razão para isso é:
+se você não pode abrir esse documento,
+
+526
+00:42:48,633 --> 00:42:52,545
+provavelmente existem pouquíssimas coisas
+que você pode fazer a respeito. Exceto
+
+527
+00:42:52,545 --> 00:42:56,547
+chorar pro usuário que você não conseguiu
+abrir o documento. Não há de fato muitos
+
+528
+00:42:56,547 --> 00:43:01,223
+modos de recuperação aqui. Caso contrário,
+se o arquivo não existir, então você
+
+529
+00:43:01,223 --> 00:43:05,342
+vai fazer o saveToURL e a operação de salvar
+que você vai passar é
+
+530
+00:43:05,342 --> 00:43:10,158
+UIDocumentSaveForCreating. Ok? Para salvar
+o documento, usamos esse mesmo método, mas
+
+531
+00:43:10,158 --> 00:43:15,073
+usa uma operação de salvamento diferente,
+ao invés de UIDocumentSaveForCreating,
+
+532
+00:43:15,073 --> 00:43:20,302
+É saveForOverriding. Ok? Mas você não vai
+precisar salvar o seu documento frequentemente
+
+533
+00:43:20,302 --> 00:43:26,349
+e vocês vão ver porque. E novamente,
+se for bem-sucedido, você provavelmente vai
+
+534
+00:43:26,349 --> 00:43:31,711
+chamar aquele mesmo documentIsReady, certo?
+Porque agora você criou o documento, ele está
+
+535
+00:43:31,711 --> 00:43:37,117
+pronto para usar. Ok? Percebam que na linha
+
+536
+00:43:37,117 --> 00:43:41,848
+de código bem embaixo "can't do anything
+with the document yet". Por que eu não posso
+
+537
+00:43:41,848 --> 00:43:46,558
+fazer nada naquela linha de código ali? Na linha
+de código que está logo após esse if-else?
+
+538
+00:43:46,558 --> 00:43:51,327
+Exatamente. Porque é assíncrono. Certo?
+Esses opens e creations estão
+
+539
+00:43:51,327 --> 00:43:56,152
+acontecendo em uma outra thread, então
+eles estão retornando imediatamente. E então
+
+540
+00:43:56,152 --> 00:43:59,277
+eles não estão abertos ainda. Então eu não
+posso fazer nada com eles. Eu tenho que esperar
+
+541
+00:43:59,277 --> 00:44:02,489
+o callback acontecer e o documento ficar pronto
+para ser chamado. Ok? É um erro muito
+
+542
+00:44:02,489 --> 00:44:05,743
+comum, alguns de vocês irão cometê-lo.
+Vocês vão fazer esse open e na próxima linha
+
+543
+00:44:05,743 --> 00:44:09,200
+de código vocês vão dizer: startLoadingPhotos.
+E vai ser tipo: as coisas ainda não
+
+544
+00:44:09,200 --> 00:44:12,666
+estão abertas, ok? Porque elas ainda
+estão sendo abertas em alguma outra thread.
+
+545
+00:44:12,667 --> 00:44:17,262
+Perguntas sobre isso? Ok, uma vez que
+o documento está aberto e ele chama esse
+
+546
+00:44:17,262 --> 00:44:22,506
+documentIsReady ou algo assim, então
+vocês provavelmente vão chegar o state
+
+547
+00:44:22,506 --> 00:44:27,014
+do documento para ter certeza que
+tudo está ok. Vai estar. Mas vocês--
+
+548
+00:44:27,014 --> 00:44:31,558
+seu documento tem uma property chamada
+documentState e vocês vão checar
+
+549
+00:44:31,558 --> 00:44:36,372
+pelo estado UIDocumentStateNormal.
+Isso significa que esse documento está aberto
+
+550
+00:44:36,372 --> 00:44:40,597
+ou acabou se ser criado. Quando você
+cria ele do zero, ele é aberto. Então
+
+551
+00:44:40,597 --> 00:44:44,538
+ele está aberto e você pode continuar. E agora
+você vai pegar o manageObjectContext do
+
+552
+00:44:44,538 --> 00:44:48,567
+documento, self.document.managedObjectContext,
+vêem? E agora vocês vão começar
+
+553
+00:44:48,567 --> 00:44:52,783
+a fazer coisas com essas Photos e
+Photographers no banco de dados
+
+554
+00:44:52,783 --> 00:44:57,897
+Core Data. Mas você não pode pegar esse
+manageObjectContext e começar a fazer coisas
+
+555
+00:44:57,897 --> 00:45:03,369
+com ele até que o documento esteja aberto, certo?
+Por isso que vocês precisam entender o que
+
+556
+00:45:03,369 --> 00:45:09,205
+está acontecendo com essa assincronidade. Ok?
+Então é assim que funciona. Outros states
+
+557
+00:45:09,205 --> 00:45:14,926
+que o documento pode ter, ele pode ter
+o state closed. Esse é um estado típico
+
+558
+00:45:14,926 --> 00:45:20,071
+de se ter. Quando está nesse estado, você precisa
+fazer o "openWithCompletionHandler".
+
+559
+00:45:20,071 --> 00:45:24,080
+Isso o colocará no normalState,
+ok? Um documento que não foi criado
+
+560
+00:45:24,080 --> 00:45:30,390
+também vai estar no closed state.
+Não há state para os que ainda não foram criados
+
+561
+00:45:30,390 --> 00:45:35,097
+em disco. Ok? Esse é somente closed também,
+então você tem que fzer o fileExistsAtPath.
+
+562
+00:45:35,097 --> 00:45:39,862
+Algumas dessas outras coisas são ou
+condições de erro ou se você tiver um documento
+
+563
+00:45:39,862 --> 00:45:44,347
+baseado em iCLoud, você poderia ter conflitos
+onde 2 devices diferentes mudaram a mesma coisa.
+
+564
+00:45:44,347 --> 00:45:49,065
+Ok? Agora ele precisa ser mergeado.
+Ok? Nós obviamentes não vamos falar
+
+565
+00:45:49,065 --> 00:45:53,673
+sobre isso logo de cara, mas esse é
+um estado que o documento pode estar,
+
+566
+00:45:53,673 --> 00:45:58,726
+em conflito e você então tem que resolver.
+O documentState, várias vezes é "observed",
+
+567
+00:45:58,726 --> 00:46:03,800
+ok? Lembram-se que o seu banco de dados no
+Core Data é o seu model no MVC, certo?
+
+568
+00:46:03,800 --> 00:46:08,947
+É o model. Ele não tem nenhuma UI.
+Ele está apenas armazenando o model
+
+569
+00:46:08,947 --> 00:46:14,612
+de photographers e photos. Relembrem-se
+do lance do MVC onde nós tínhamos uma comunicação
+
+570
+00:46:14,612 --> 00:46:20,437
+do tipo "estação de rádio". Lembram-se disso?
+Onde nós estaríamos tipo escutando o que está
+
+571
+00:46:20,437 --> 00:46:25,924
+acontecendo com o model? O DocumentState
+e também o Context, são às vezes
+
+572
+00:46:25,924 --> 00:46:31,182
+uma estação de rádio que você pode querer
+se antenar. Então nós vamos usar esse tempo
+
+573
+00:46:31,182 --> 00:46:36,198
+dos últimos 5 minutos de aula e nós vamos
+falar sobre o negócio de estação
+
+574
+00:46:36,198 --> 00:46:40,965
+de rádio. Como nós escutamos por mudanças
+em uma estação de rádio. É chamado
+
+575
+00:46:40,965 --> 00:46:45,817
+NSNotification, ok? Esse é um "tempo" que
+vamos dar para falar sobre isso. A forma
+
+576
+00:46:45,817 --> 00:46:50,500
+como notificações funcionam é que existe
+um Notification Center. É uma classe,
+
+577
+00:46:50,500 --> 00:46:55,615
+NSNotificationCenter e você pode obter
+um Center compartilhado, chamado defaultCenter.
+
+578
+00:46:55,615 --> 00:47:00,410
+Então você chama esse método e você vai obter
+essa instância compartilhada do NSNotificationCenter.
+
+579
+00:47:00,410 --> 00:47:05,111
+E então você envia a mensagem addObserver.
+E o que addObserver:selector...
+
+580
+00:47:05,111 --> 00:47:09,836
+name:object: faz é, ele sintoniza na
+estação de rádio, ok? Então "observer", essa é
+
+581
+00:47:09,836 --> 00:47:14,739
+a pessoa que está escutando. Ele provavelmente
+vai ser o seu controller, provavelmente.
+
+582
+00:47:14,739 --> 00:47:19,029
+Selector vai ser a mensagem para enviar
+quando alguma coisa passar pela
+
+583
+00:47:19,029 --> 00:47:23,551
+estação de rádio, ok? Então pode ser
+qualquer selector que você quiser. Algum
+
+584
+00:47:23,551 --> 00:47:28,226
+método no seu controller, digamos. "Name"
+é o nome da estação de rádio. Será alguma
+
+585
+00:47:28,226 --> 00:47:33,014
+constante em algum arquivo, como no
+NSManagedObjectContext existem alguns ou
+
+586
+00:47:33,014 --> 00:47:38,286
+UIManagedDocument tem algumas estações de rádio.
+Ok? Você vai na documentação em um
+
+587
+00:47:38,286 --> 00:47:43,074
+desses lugares e você tem essa string
+que diz a você as estações de rádio
+
+588
+00:47:43,074 --> 00:47:48,139
+que você pode ouvir. E então o "object"
+é o objeto que você quer ouvir os broadcasts
+
+589
+00:47:48,139 --> 00:47:53,762
+das estações de rádio DE, ok? DE.
+Agora, se você disser nil aqui, você vai
+
+590
+00:47:53,762 --> 00:47:59,765
+receber todas as estações de rádio com esse nome
+de todos os objetos. O que raramente você vai querer.
+
+591
+00:47:59,765 --> 00:48:06,002
+Ocasionalmente, mas geralmente não. Mas se você
+especificar um certo UIManagedDocument,
+
+592
+00:48:06,002 --> 00:48:11,164
+então você vai apenas receber mudanças
+de documentState-- notificações de estação de rádio
+
+593
+00:48:11,164 --> 00:48:15,302
+daquele managedObje-- managedDocument,
+não de outros managedDocuments. Faz sentido?
+
+594
+00:48:15,302 --> 00:48:19,178
+A mesma coisa com context. Se você
+quiser apenas escutar sobre coisas
+
+595
+00:48:19,178 --> 00:48:23,138
+acontecendo em um managdObjectContext
+específico, então você vai querer
+
+596
+00:48:23,138 --> 00:48:27,141
+especificá-lo como o sender aqui.
+Em outras palavas, é quem faz o broadcast
+
+597
+00:48:27,141 --> 00:48:32,095
+na estação de rádio. Então você recebe a mensagem,
+certo? O método que você recebe sempre tem
+
+598
+00:48:32,095 --> 00:48:36,660
+um argumento, que é um NSNotification *.
+Então essa seria a mensagem que você
+
+599
+00:48:36,660 --> 00:48:41,352
+implementa no seu controller e cada vez
+que a estação de rádio fizer o broadcast,
+
+600
+00:48:41,352 --> 00:48:45,892
+você tem essa mensagem enviada para você.
+E esse argumento notification, você pode olhar
+
+601
+00:48:45,892 --> 00:48:50,867
+para ele. Ele tem três propriedades interessantes.
+Ele tem "name". Isso apenas diz--
+
+602
+00:48:50,867 --> 00:48:55,899
+é o mesmo nome aí em cima, certo? O nome
+da estação de rádio. Ele tem "object", esse é
+
+603
+00:48:55,899 --> 00:49:00,583
+a mesma coisa que o "sender" aí acima,
+quem está enviando isso para você. E então
+
+604
+00:49:00,583 --> 00:49:04,963
+ele tem userInfo, que é um id, geralmente
+um dicionário, que vai te dizer
+
+605
+00:49:04,963 --> 00:49:09,561
+o que está acontecendo com esse broadcast
+particular. E você tem que olhar a
+
+606
+00:49:09,561 --> 00:49:14,233
+documentação para esse tipo de
+estação de rádio para descobrir o que pode existir
+
+607
+00:49:14,233 --> 00:49:19,802
+nesse userInfo. Por exemplo, quando você tem
+uma mudança de context, certo? De fato ??????
+
+608
+00:49:19,802 --> 00:49:26,420
+É... vamos olhar para documentStateChange
+bem aqui. Você apenas diria:
+
+609
+00:49:26,420 --> 00:49:29,828
+[Ditando código]
+
+
+610
+00:49:29,828 --> 00:49:36,726
+[ditando código]
+
+
+611
+00:49:36,726 --> 00:49:42,249
+E então você receberá essas mensagens.
+E quando você acabar, a propósito, você
+
+612
+00:49:42,249 --> 00:49:47,824
+chama essa mensagem removeObserver. Isso diz
+que você não está mais interessado.
+
+613
+00:49:47,824 --> 00:49:52,818
+Várias vezes você vai chamar o addObserver
+e o removeObserver no seu viewWillAppear
+
+614
+00:49:52,818 --> 00:49:56,430
+e no seu viewDidDisappear. Porque,
+você só está interessado nelas
+
+615
+00:49:56,430 --> 00:50:00,034
+enquanto o seu viewController
+está na tela, porque você quer
+
+616
+00:50:00,034 --> 00:50:03,639
+fazer update de coisas quando você está
+na tela. Mas se você não está na tela então,
+
+617
+00:50:03,639 --> 00:50:07,347
+tipo: "bom, eu vou checar de novo quando
+eu "viewdidAppear" novamente". Ok? As vezes
+
+618
+00:50:07,347 --> 00:50:11,019
+você quer mesmo se você não tiver na tela,
+mas, sabe, para eficiência é bom
+
+619
+00:50:11,019 --> 00:50:14,559
+desligá-lo. Então várias vezes vocês
+verÃo essas coisas ligando e desligando
+
+620
+00:50:14,559 --> 00:50:20,279
+no viewWillAppear e viewDidDisappear.
+Como aqui, certo? Aqui nós estamos
+
+621
+00:50:20,279 --> 00:50:25,547
+observando o context. Então nós temos um
+managedObjectContext que tem algumas photos
+
+622
+00:50:25,547 --> 00:50:31,432
+e photographers nele e a qualquer momento
+que algo mudar aqui. Qualquer momento que
+
+623
+00:50:31,432 --> 00:50:35,702
+qualquer pessoa mudar qualque uma das photos
+ou photographers, nós queremos receber uma
+
+624
+00:50:35,702 --> 00:50:40,460
+mensagem na estação de rádio. Ok? Que é da hora
+ser capaz de descobrir o que está acontecendo.
+
+625
+00:50:40,460 --> 00:50:44,791
+Então nós configuramos esse addObserver e nós o desativamos
+no viewWillDisappear ou viewDidDisappear
+
+626
+00:50:44,791 --> 00:50:49,203
+e nós vamos receber essas
+notifications. E o userInfo em uma
+
+627
+00:50:49,203 --> 00:50:56,265
+NSManagedObjectContextObjectsDidChangeNotification
+é um dicionário com três key-values.
+
+628
+00:50:56,265 --> 00:51:01,569
+Uma é chamada NSInsertedObjectsKeym uma é
+updateObjects e uma é deletedObjects,
+
+629
+00:51:01,569 --> 00:51:06,777
+e essas são as chaves. E os valores
+são uma lista de NSManagedObjects
+
+630
+00:51:06,777 --> 00:51:11,925
+que ou foram inseridos no banco de dados,
+ou updateados - suas propriedades
+
+631
+00:51:11,925 --> 00:51:16,653
+mudaram - ou foram deletados. Ok? 
+É bem da hora. Você realmente sabe
+
+632
+00:51:16,653 --> 00:51:20,801
+o que está acontecendo dentro do seu banco
+de dados Core Data com essas três notifications
+
+633
+00:51:20,801 --> 00:51:25,034
+apenas sintonizando na estação de rádio do
+seu contexto ali, ok? Você provavelmente nem vai
+
+634
+00:51:25,034 --> 00:51:28,734
+ter que fazer isso para a sua aplicação.
+Uma coisa que você vai descobrir é que o Core Data
+
+635
+00:51:28,734 --> 00:51:33,104
+é tão da hora que ele faz as coisas automaticamente.
+Tudo acontece meio que automaticamente.
+
+636
+00:51:33,104 --> 00:51:37,506
+Você não precisa ficar escutando o que está
+acontecendo porque as coisas - especialmente quando
+
+637
+00:51:37,506 --> 00:51:41,878
+você pluga em uma tableView, que é o que vocês
+vão fazer na próxima atividade. TableViews
+
+638
+00:51:41,878 --> 00:51:46,050
+estão tipo sempre observando o que está acontecendo.
+Ela se inscreve para uma lista dessas
+
+639
+00:51:46,050 --> 00:51:50,172
+e vai updatear automaticamente sua table
+e você nem tem que fazer nada.
+
+640
+00:51:50,172 --> 00:51:54,590
+Apenas mudar os objetos e eles... tudo simplesmente
+funciona. Então, outras coisas que você
+
+641
+00:51:54,590 --> 00:51:59,397
+pode observar. Você pode procurar pela
+documentação, essas várias estações de
+
+642
+00:51:59,397 --> 00:52:04,438
+rádio de notifications. Você pode criar
+suas próprias estações de rádio também, mas
+
+643
+00:52:04,438 --> 00:52:09,905
+não abuse desse mecanismo para tipo criar
+variável locais, ok? Ou notificações
+
+644
+00:52:09,905 --> 00:52:14,898
+globais de quando as coisas estão acontecendo.
+Quando coisas acontecem no seu model, isso é
+
+645
+00:52:14,898 --> 00:52:19,522
+tipo global, porque o banco de dados está
+disponível para seua aplicação inteira, então
+
+646
+00:52:19,522 --> 00:52:24,350
+meio que faz sentido. Mas você não quer
+se comunicar entre diferentes view controllers
+
+647
+00:52:24,350 --> 00:52:28,900
+fazendo com que cada uma tenha sua estação de rádio
+conversando uma com a outra. Isso não é
+
+648
+00:52:28,900 --> 00:52:33,021
+para esse tipo de comunicação. É bem raro
+criar as suas próprias notifications.
+
+649
+00:52:33,021 --> 00:52:37,823
+Geralmente você vai apenas usar
+as que já vem pré-construídas. Outro exemplo
+
+650
+00:52:37,823 --> 00:52:42,631
+de notification é que você é notificado
+quando o teclado aparece, ok? Então você
+
+651
+00:52:42,631 --> 00:52:46,525
+tem um view controller, você está digitando algo,
+você clica pra digitar e o teclado
+
+652
+00:52:46,525 --> 00:52:50,065
+aparece. Você recebe uma notification
+dizendo que ele apareceu,
+
+653
+00:52:50,065 --> 00:52:53,900
+e você pode mover sua view. Se vocês
+quiserem olhar em UIWindows vocês verão
+
+654
+00:52:53,900 --> 00:52:58,092
+que tem algumas notifications também.
+E elas estão espalhadas por aí,
+
+655
+00:52:58,092 --> 00:53:02,958
+ok? Isso foi notifications. Então quando
+voltarmos, na Terça, nós vamos--
+
+656
+00:53:02,958 --> 00:53:07,671
+nós praticamente acabamos UIManagedDocument.
+Nós vamos terminar UIManagedDocument
+
+657
+00:53:07,671 --> 00:53:12,294
+e então nós vamos começar a falar sobre
+NSManagedObjectContext, NSManagedObjects,
+
+658
+00:53:12,294 --> 00:53:16,917
+como nós criamos subclasses deles,
+como usamos propriedades, como nós
+
+659
+00:53:16,917 --> 00:53:21,982
+fazemos fetch de objetos. Todos esses tipos
+de mecanismos, ok? E então eu vou fazer uma demo,
+
+660
+00:53:21,982 --> 00:53:29,128
+que, como eu disse, vai ser tipo o Shutterbug,
+só que ao contrário. Nós vamos olhar
+
+661
+00:53:29,128 --> 00:53:36,436
+para os donos ao invés de olhar para
+as fotos, vamos ver ao contrário.
+
+662
+00:53:36,436 --> 00:53:43,377
+É isso que vamos fazerna terça.
+Alguma pergunta? Sim
+
+663
+00:53:43,377 --> 00:53:50,668
+>> [Estudante perguntando]
+
+664
+00:53:50,668 --> 00:53:55,913
+>> A pergunta é: se eu tiver
+
+665
+00:53:55,913 --> 00:54:00,092
+um negócio de Flicker e eu tenho
+a URL para a foto, certo?
+
+666
+00:54:00,092 --> 00:54:05,734
+Que eu tenho. E alguém muda a foto
+no Flickr. Alguém vai ser notificado
+
+667
+00:54:05,734 --> 00:54:10,110
+aqiu? E a resposta é absolutamente não.
+Isso está acontecendo no Flickr, isso não
+
+668
+00:54:10,110 --> 00:54:14,616
+está acontecendo no seu banco Core Data,
+certo? Você apenas será notificado de mudanças
+
+669
+00:54:14,616 --> 00:54:20,597
+no Cora Data database. Então a pergunta é:
+como eu descobriria se ela foi
+
+670
+00:54:20,597 --> 00:54:25,776
+modificada? Sabe, pode existir algo
+no Flickr como lastUploadData,
+
+671
+00:54:25,776 --> 00:54:30,887
+ou algo assim. Isso é provavelmente
+updateado, então deve ter outro campo no
+
+672
+00:54:30,887 --> 00:54:35,933
+Flickr dictionary que você poderia olhar.
+Mas, novamente, você não teria que se preocupar
+
+673
+00:54:35,933 --> 00:54:40,873
+com isso para seu homework, mas se você está
+perguntando no geral, você poderia
+
+674
+00:54:40,873 --> 00:54:43,869
+fazer isso. Outra pergunta? Certo.
+Estarei aqui. Obrigado.
+
+675
+00:54:43,869 --> 00:54:48,469
+Visite nosso site:
+www.centraldosapps.com
+

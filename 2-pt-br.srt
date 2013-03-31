@@ -1,0 +1,7628 @@
+1
+00:00:00,006 --> 00:00:00,596
+
+
+
+2
+00:00:00,596 --> 00:00:08,336
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+3
+00:00:08,646 --> 00:00:12,376
+>> Bem-vindos ao CS193P,
+essa é a aula número 2
+
+4
+00:00:12,736 --> 00:00:15,046
+e hoje nós vamos continuar
+
+
+5
+00:00:15,046 --> 00:00:17,336
+o que nós estávamos
+fazendo da última vez
+
+6
+00:00:17,336 --> 00:00:21,516
+que é aprender um pouco mais
+sobre Objective-C e sua sintaxe
+
+7
+00:00:21,516 --> 00:00:24,086
+e nós vamos fazer isso
+dentro de algumas aulas
+
+8
+00:00:24,086 --> 00:00:25,666
+que vão se tornar o model
+
+
+9
+00:00:25,756 --> 00:00:28,936
+da nossa primeira aplicação, ok?
+Então essas são classes model
+
+10
+00:00:29,026 --> 00:00:30,756
+então não há UI
+envolvida neles
+
+11
+00:00:31,006 --> 00:00:32,826
+mas eles tem um monte
+de Objective-C neles
+
+12
+00:00:32,826 --> 00:00:35,496
+então teremos um monte de coisas
+de uma vez, quando finalizarmos 
+
+13
+00:00:35,496 --> 00:00:38,906
+essas quatro classes que são
+carta, maço, carta de jogo
+
+14
+00:00:38,906 --> 00:00:41,686
+e maço de cartas de jogo, essas são
+as quatro classes que nós vamos fazer,
+
+15
+00:00:41,686 --> 00:00:44,006
+já fizemos a carta da última vez.
+
+
+16
+00:00:44,006 --> 00:00:46,646
+Daí nós iremos no Xcode e
+vamos de fato buildar um app
+
+17
+00:00:47,106 --> 00:00:49,806
+onde nós poderemos clicar nas coisas
+e mostrar uma carta e virá-la
+
+18
+00:00:49,806 --> 00:00:51,846
+e esse tipo de coisa,
+vai ser bem legal
+
+19
+00:00:51,846 --> 00:00:54,466
+nós vamos integrar
+nosso modelo com isso.
+
+20
+00:00:54,466 --> 00:00:56,526
+O que vou construir hoje--
+vocês vão integrar o model
+
+21
+00:00:56,526 --> 00:00:59,076
+para construir uma aplicação
+ainda mais poderosa,
+
+22
+00:00:59,076 --> 00:01:00,336
+e esse será o homework 0.
+
+
+23
+00:01:00,766 --> 00:01:03,906
+Certo? Um homerwork fácil,
+algumas linhas de código
+
+24
+00:01:04,286 --> 00:01:06,946
+mas o ponto aqui é basicamente
+reproduzir o que eu farei
+
+25
+00:01:06,946 --> 00:01:09,796
+em sala de aula hoje e criar esses
+arquivos de model, assim vocês
+
+26
+00:01:09,796 --> 00:01:12,356
+vão se acostumar a digitar
+Objective-C no Xcode, certo?
+
+27
+00:01:13,086 --> 00:01:16,376
+Vamos começar então, aqui está
+a carta que nós finalizamos,
+
+28
+00:01:16,376 --> 00:01:18,076
+uma classe muito simples,
+eu não mudei ela em nada,
+
+29
+00:01:18,076 --> 00:01:21,136
+isso é tudo que vamos fazer
+com a carta. Nós não vamos
+
+30
+00:01:21,266 --> 00:01:25,036
+aumentá-la em nada além disso,
+mas nós vamos adicionar
+
+31
+00:01:25,036 --> 00:01:26,366
+essas outras três classes
+
+
+32
+00:01:26,366 --> 00:01:27,876
+e começaremos
+pelo maço (deck).
+
+33
+00:01:28,336 --> 00:01:33,146
+Então um maço é apenas um monte
+de cartas, assim como na vida real,
+
+34
+00:01:33,146 --> 00:01:35,856
+um maço de cartas é
+somente um monte de cartas,
+
+35
+00:01:36,276 --> 00:01:39,506
+e eu terei apenas dois métodos
+na minha classe Deck
+
+36
+00:01:39,506 --> 00:01:43,446
+e eles serão ambos métodos públicos,
+um deles chamado "adicionar carta no topo"
+
+37
+00:01:43,786 --> 00:01:46,446
+ou algumas pessoas poderia chamar
+esse método de "AddCard: atTop:"
+
+38
+00:01:46,446 --> 00:01:49,066
+mas várias vezes nós
+deixamos os dois pontos
+
+39
+00:01:49,066 --> 00:01:51,926
+de fora, por que fica, sabe,
+meio complicado ficar
+
+40
+00:01:51,926 --> 00:01:52,996
+constantemente falando isso.
+
+
+41
+00:01:53,416 --> 00:01:57,336
+Mas a razão que eu criei o
+método addCard no meu maço,
+
+42
+00:01:57,336 --> 00:02:00,196
+esse é o método que adiciona
+uma carta no maço, esse "no topo"
+
+43
+00:02:00,196 --> 00:02:02,966
+é apenas para mostrar pra vocês
+como que é ter um método
+
+44
+00:02:02,966 --> 00:02:04,286
+que tem dois argumentos.
+
+
+45
+00:02:04,816 --> 00:02:07,466
+Então esse método "addCardToTop"
+tem dois argumentos,
+
+46
+00:02:07,466 --> 00:02:09,256
+o primeiro argumento é
+a carta que vamos adicionar,
+
+47
+00:02:09,766 --> 00:02:12,886
+o segundo argumento é um booleano
+que dirá se estamos colocando
+whether were adding at the top 
+
+48
+00:02:12,886 --> 00:02:15,116
+no topo do maço ou
+no fundo do maço
+
+49
+00:02:15,536 --> 00:02:18,196
+e vocês podem ver
+o que é interessante aqui é
+
+50
+00:02:18,196 --> 00:02:21,226
+que esses argumentos são
+entrelaçados no nome
+
+51
+00:02:21,696 --> 00:02:24,746
+do método, não é como
+em outras linguages
+
+52
+00:02:24,746 --> 00:02:26,426
+onde existe o nome do método
+e aí um parentesis
+
+53
+00:02:26,426 --> 00:02:28,716
+e todos os argumentos
+ficam amontoados no final.
+
+54
+00:02:28,806 --> 00:02:32,346
+Demora um pouquinho para se
+acostumar com isso. É feito assim
+
+55
+00:02:32,346 --> 00:02:36,286
+porque é o desejo do Objective-C
+de ser lido como inglês
+
+56
+00:02:36,366 --> 00:02:40,646
+e quando você está falando coisas
+em inglês nós não falamos um monte
+
+57
+00:02:40,646 --> 00:02:42,776
+de coisas e depois
+um monte de argumentos no fim,
+
+58
+00:02:42,776 --> 00:02:44,926
+nós meio que falamos tudo
+durante a nossa fala.
+
+59
+00:02:45,156 --> 00:02:48,546
+Também adicionei esse método
+"comprar uma carta aleatória",
+
+60
+00:02:48,546 --> 00:02:51,776
+para comprar uma carta aleatória,
+remover a carta do maço
+
+61
+00:02:51,776 --> 00:02:53,626
+e retorná-la,
+porque eu queria mostrar
+
+62
+00:02:53,626 --> 00:02:57,356
+como é um método que não
+recebe nenhum argumento
+
+63
+00:02:57,416 --> 00:03:00,556
+mas retorna alguma coisa,
+então esse método não recebe argumentos,
+
+64
+00:03:00,556 --> 00:03:01,346
+compra uma carta aleatória
+
+
+65
+00:03:01,636 --> 00:03:03,826
+e ele retorna essa carta,
+um ponteiro para a carta.
+
+66
+00:03:04,806 --> 00:03:08,016
+Certo, então vamos ver como é
+a implementação dessas coisas,
+
+67
+00:03:08,286 --> 00:03:09,646
+como que... primeiro eu tenho
+
+
+68
+00:03:09,646 --> 00:03:13,036
+que pensar... uma coisa eu deveria
+notar aqui é que-- percebam que
+
+69
+00:03:13,036 --> 00:03:15,206
+no nosso arquivo header,
+nós temos esses dois métodos,
+
+70
+00:03:15,206 --> 00:03:18,216
+são ambos publicos,
+e ambos também usam Card.
+
+71
+00:03:18,526 --> 00:03:20,866
+Vêem? Eles usam a classe Card,
+um deles recebe como um argumento,
+
+72
+00:03:20,866 --> 00:03:24,746
+o outro retorna ela, então nós
+precisamos importar Card nesse arquivo,
+
+73
+00:03:24,866 --> 00:03:28,966
+você não pode referenciar uma classe
+em um arquivo se não importá-lo, ok?
+
+74
+00:03:29,306 --> 00:03:30,926
+Nós precisamos
+importar aqui.
+
+75
+00:03:31,046 --> 00:03:34,986
+Agora vamos pensar sobre
+a implementação do nosso Deck,
+
+76
+00:03:35,036 --> 00:03:38,376
+é um monte de cartas, então vou
+apenas armazenar essas cartas
+
+77
+00:03:38,416 --> 00:03:42,556
+em um array, então precisarei
+de uma property que é um ponteiro
+
+78
+00:03:42,556 --> 00:03:44,316
+para um array e esse
+array vai ter
+
+79
+00:03:44,316 --> 00:03:46,416
+um monte de
+ponteiros para cartas.
+
+80
+00:03:47,016 --> 00:03:50,076
+Agora tem uma coisa sobre isso
+é que é um pouco diferente
+
+81
+00:03:50,076 --> 00:03:53,146
+das propriedades que nós vimos
+na classe Card que é
+
+82
+00:03:53,146 --> 00:03:55,946
+que essa é uma property privada,
+vejam que eu coloquei ela
+83
+00:03:55,946 --> 00:03:57,066
+no arquivo de implementação
+
+
+84
+00:03:57,066 --> 00:03:59,486
+no lugar que tem
+"@interface Deck()",
+
+85
+00:03:59,486 --> 00:04:03,296
+é aí que devem ir
+as propriedades privadas.
+
+86
+00:04:03,296 --> 00:04:07,476
+Essa property só é acessível
+do interior da implementação
+
+87
+00:04:07,526 --> 00:04:10,436
+da nossa classe, é para que
+somente nós a usemos, ok?
+
+88
+00:04:10,436 --> 00:04:13,216
+Algumas outras coisas para notar
+sobre essa property,
+
+89
+00:04:13,216 --> 00:04:16,446
+ela é strong, claro, especialmente
+porque é privada,
+
+90
+00:04:16,526 --> 00:04:18,166
+ninguém mais vai ter
+um ponteiro para ela
+
+91
+00:04:18,166 --> 00:04:19,486
+então se não quisermos
+que essa coisa viva
+
+92
+00:04:19,486 --> 00:04:21,376
+na heap, é melhor termos
+um ponteiro forte para ela.
+
+93
+00:04:21,376 --> 00:04:24,116
+É non-atomic como
+todas as propriedades
+
+94
+00:04:24,616 --> 00:04:27,686
+e o tipo não é NSArray
+como na Card,
+
+95
+00:04:27,686 --> 00:04:30,986
+lembram no "match, onde ele recebia
+um argumento NSArray "otherCards",
+
+96
+00:04:30,986 --> 00:04:35,326
+esse é um NSMutableArray.
+Essa é uma das maneiras
+
+97
+00:04:35,326 --> 00:04:38,676
+que o Foundation, que é
+a biblioteca de praticamente
+98
+00:04:38,676 --> 00:04:43,326
+todos os objetos básicos
+que você usa no iOS,
+
+99
+00:04:43,326 --> 00:04:50,136
+faz para manter a API segura,
+que é tendo classes
+
+100
+00:04:50,256 --> 00:04:53,296
+e daí versões mutáveis delas.
+Então MutableArray é a subclasse
+
+101
+00:04:53,356 --> 00:04:56,986
+de Array, ok? E em um array mutável
+você pode adicionar objetos nele,
+
+102
+00:04:56,986 --> 00:05:00,306
+você pode modificar o array.
+Em um array imutável, você não pode.
+
+103
+00:05:00,556 --> 00:05:02,196
+Ok? Não há um método
+"addObject" em um
+
+104
+00:05:02,236 --> 00:05:04,916
+array simples, você precisa
+de um NSMutableArray
+
+105
+00:05:05,316 --> 00:05:07,936
+e isso é uma coisa boa porque
+no "match", lembram-se?
+
+106
+00:05:07,936 --> 00:05:10,826
+Se nós passássemos um array para
+o "match" e você pudesse modificá-lo,
+
+107
+00:05:11,196 --> 00:05:13,556
+poderia haver um efeito colateral
+ao chamar o match,
+
+108
+00:05:13,556 --> 00:05:15,936
+alguém poderia deletar alguma coisa
+desse array, certo?
+
+109
+00:05:15,936 --> 00:05:18,196
+Você não quer isso,
+então é ótimo que
+
+110
+00:05:18,196 --> 00:05:21,026
+o "match" receba um NSArray,
+o array que não pode ser modificado
+
+111
+00:05:21,296 --> 00:05:23,136
+mas aqui onde vamos usar um array
+que é interno e que
+
+112
+00:05:23,136 --> 00:05:25,286
+nós vamos estar adicionando
+e removendo cartas e coisas assim
+
+113
+00:05:25,286 --> 00:05:26,486
+o que nós queremos é que
+ele seja mutável.
+
+114
+00:05:26,936 --> 00:05:27,776
+Todo mundo sacou isso?
+
+
+115
+00:05:28,456 --> 00:05:30,616
+Nós vamos aprender muito mais
+sobre array e mutable array
+
+116
+00:05:30,616 --> 00:05:32,036
+e dictionary, mutable
+dictionary e coisas assim
+
+117
+00:05:32,036 --> 00:05:33,656
+na próxima semana.
+
+
+118
+00:05:34,326 --> 00:05:38,486
+Certo, então eu tenho essa
+property, que eu chamei de "cards"
+
+119
+00:05:38,586 --> 00:05:41,986
+e ela é um array, então como
+poderei usá-la? Bom, vamos dar uma
+
+120
+00:05:41,986 --> 00:05:44,996
+olhada no "addCard:atTop",
+de novo, isso é um pouco forçado
+
+121
+00:05:44,996 --> 00:05:49,046
+termos esse "atTop", mas 
+acabei de dizer que se você quiser
+
+122
+00:05:49,046 --> 00:05:51,076
+adicionar a carta no topo,
+então eu vou chamar um  método
+
+123
+00:05:51,076 --> 00:05:56,066
+do NSMutableArray que é
+"insertCardAtIndex:" e passar
+
+124
+00:05:56,626 --> 00:05:59,006
+o índice zero, que significa
+o começo do array e eu
+
+125
+00:05:59,396 --> 00:06:02,606
+estou apenas enviando isso
+para a minha property Cards, que
+
+126
+00:06:02,606 --> 00:06:05,706
+eu obtenho chamando o getter
+da minha property: self.cards.
+
+127
+00:06:05,966 --> 00:06:09,436
+Todo mundo... entenderam
+a sintaxe agora? Espero que sim.
+
+128
+00:06:09,436 --> 00:06:13,076
+Caso contrário, se eu não vou
+adicionar no topo, eu vou apenas
+
+129
+00:06:13,076 --> 00:06:16,046
+chamar o "addObject:", outro
+método do NSMutableArray
+
+130
+00:06:16,286 --> 00:06:17,936
+que simplesmente adiciona
+um objeto no fim,
+
+131
+00:06:18,496 --> 00:06:19,756
+simplesmente adiciona no fim.
+
+
+132
+00:06:20,326 --> 00:06:22,106
+De novo, meio forçado.
+
+
+133
+00:06:23,246 --> 00:06:26,616
+Na verdade esse método tem
+um problema se a carta que
+
+134
+00:06:26,616 --> 00:06:31,416
+eu passar for nil, ok? É zero
+e eu falei pra vocês que
+
+135
+00:06:31,416 --> 00:06:34,196
+nós escrevemos código em
+Objective-C tentando
+
+136
+00:06:34,196 --> 00:06:38,046
+antecipar as coisas sendo nil
+e apenas seguindo o fluxo,
+
+137
+00:06:38,046 --> 00:06:40,426
+mas nessa caso,
+seguir o fluxo disso sendo nil
+
+138
+00:06:40,426 --> 00:06:43,976
+vai causar um crash, ok?
+Por que vai crashar?
+
+139
+00:06:43,976 --> 00:06:46,786
+Porque você não pode
+colocar um nil em um array.
+
+140
+00:06:47,976 --> 00:06:50,596
+Esse código não nos proteje
+contra uma carta sendo nil
+
+141
+00:06:51,086 --> 00:06:54,596
+então isso crasharia, ok? Uma
+das duas linhas aí iriam crashar
+
+142
+00:06:55,176 --> 00:07:00,976
+então eu devo por "if (card)"
+e então o resto desse método.
+
+143
+00:07:01,386 --> 00:07:03,086
+Eu não coloquei, eu provavelmente
+deveria ter colocado, mas eu
+
+144
+00:07:03,086 --> 00:07:05,936
+estava meio sem espaço nesse slide,
+então eu não pude colocar tudo aqui.
+
+145
+00:07:06,106 --> 00:07:09,836
+Existe outro problema com isso,
+self.cards,
+
+146
+00:07:10,366 --> 00:07:12,126
+vocês vêem que quando eu
+chamo o getter de cards,
+
+147
+00:07:12,476 --> 00:07:14,646
+qual é o valor que
+isso terá
+
+148
+00:07:14,646 --> 00:07:16,256
+quando o objeto deck é
+criado pela primeira vez?
+
+149
+00:07:16,936 --> 00:07:19,346
+Alguém sabe?
+
+
+150
+00:07:19,976 --> 00:07:20,076
+>> Nil.
+
+
+151
+00:07:20,296 --> 00:07:23,346
+>> Nil, certo. A property começa
+com nil, então o que acontece
+
+152
+00:07:23,476 --> 00:07:27,986
+quando eu envio uma mensagem
+para nil? Isso crasha?
+
+153
+00:07:29,176 --> 00:07:29,636
+>> Não.
+
+
+154
+00:07:29,636 --> 00:07:31,726
+>> Não, não faz nada
+e retorna zero,
+
+155
+00:07:31,726 --> 00:07:33,466
+nesse caso, esses métodos
+não retornam nada,
+
+156
+00:07:33,466 --> 00:07:37,226
+então eles não fazem nada,
+então não farão nada,
+
+157
+00:07:37,316 --> 00:07:39,716
+e isso não é bom, nós não queremos
+que não aconteça nada
+
+158
+00:07:39,716 --> 00:07:42,266
+dentro do nosso deck, nós queremos
+essas cartas adicionadas
+
+159
+00:07:42,416 --> 00:07:45,536
+então a questão é:
+quando nós vamos criar
+
+160
+00:07:45,536 --> 00:07:47,676
+esse mutable array
+na heap?
+
+161
+00:07:48,156 --> 00:07:51,366
+E a resposta é:
+nós vamos usar o getter.
+
+162
+00:07:52,216 --> 00:07:55,426
+Então aqui vocês estão vendo
+a primeira utilidade real
+
+163
+00:07:55,466 --> 00:07:57,546
+de termos esses
+getters e setters.
+
+164
+00:07:57,916 --> 00:08:02,796
+Quando eu chamo o getter de cards,
+se eu chamá-lo e
+
+165
+00:08:03,286 --> 00:08:07,366
+minha variável de instância cards
+ainda for nula, então eu vou
+
+166
+00:08:07,366 --> 00:08:09,516
+alocar e inicializar um array
+logo ali.
+
+167
+00:08:10,696 --> 00:08:13,046
+Isso é chamado
+instanciação "lazy".
+
+168
+00:08:13,486 --> 00:08:14,706
+"Lazy" (preguiçosa) porque
+estamos esperando
+
+169
+00:08:14,706 --> 00:08:16,696
+até que alguém realmente
+precise desse array,
+
+170
+00:08:17,246 --> 00:08:20,476
+para instanciá-lo,
+criá-lo.
+
+171
+00:08:20,746 --> 00:08:23,436
+Nós usamos instanciação lazy
+o tempo todo, é realmente bom,
+
+172
+00:08:23,436 --> 00:08:26,916
+é performático, o código
+fica fácil de ser protegido,
+
+173
+00:08:26,916 --> 00:08:28,806
+temos muito menos código,
+pois não precisamos perguntar
+
+174
+00:08:29,066 --> 00:08:32,196
+"se self.cards é nil" em cada um
+dos métodos que queiram usar
+
+175
+00:08:32,196 --> 00:08:34,616
+o self.cards. Nós apenas
+colocamos isso no getter,
+
+176
+00:08:35,836 --> 00:08:37,186
+Todo mundo entende
+como nós vamos fazer isso?
+
+177
+00:08:37,966 --> 00:08:39,276
+Nós vamos estar
+fazendo isso
+
+178
+00:08:39,276 --> 00:08:40,056
+em todos os lugares. Pergunta.
+
+
+179
+00:08:40,316 --> 00:08:41,656
+>> Então isso sobrescreve o getter?
+
+
+180
+00:08:42,186 --> 00:08:44,526
+>> A pergunta é
+"isso sobrescreve o getter?",
+
+181
+00:08:44,526 --> 00:08:46,566
+Eu diria que
+não sobrescreve
+
+182
+00:08:46,566 --> 00:08:48,806
+porque sobrescrever é
+um termo orientado a objetos
+
+183
+00:08:48,806 --> 00:08:51,526
+que significa que estou
+herdando algo da minha super classe
+
+184
+00:08:51,526 --> 00:08:54,586
+e estou fazendo outra coisa.
+Estamos na verdade implementando
+
+185
+00:08:55,276 --> 00:08:57,576
+o getter e o compilador
+não implementará o getter
+
+186
+00:08:57,706 --> 00:08:59,076
+se você implementá-lo para ele.
+
+
+187
+00:08:59,316 --> 00:09:00,976
+Certo, falamos na última aula
+
+
+188
+00:09:00,976 --> 00:09:03,336
+que se você faz uma property
+ele vai fazer o setter e
+
+189
+00:09:03,336 --> 00:09:05,636
+o getter para você, bom, mas se
+você fizer o setter ou o getter,
+
+190
+00:09:05,806 --> 00:09:07,826
+o compilador simplesmente
+não irá fazê-los.
+
+191
+00:09:08,006 --> 00:09:09,166
+Então não é sobrescrever
+
+
+192
+00:09:09,166 --> 00:09:10,386
+No sentido de orientação
+a objetos.
+
+193
+00:09:10,386 --> 00:09:12,456
+É mais no sentido de você estar
+implementando ele. Ótima pergunta.
+
+194
+00:09:13,436 --> 00:09:15,806
+Isso é fantástico. Bom, agora
+
+
+195
+00:09:15,966 --> 00:09:18,736
+no "addCard", toda vez que
+chamarmos o self.cards ele nunca
+
+196
+00:09:18,736 --> 00:09:19,966
+retornará nil. Ele vai sempre,
+
+
+197
+00:09:19,966 --> 00:09:23,366
+no mínimo, retornar um mutable array
+alocado e vazio.
+
+198
+00:09:23,776 --> 00:09:26,166
+Agora, vamos dar uma olhada
+na alocação e inicialização
+
+199
+00:09:26,166 --> 00:09:27,216
+desse mutable array. Vejam
+
+
+200
+00:09:27,216 --> 00:09:30,256
+que "_cards" igual a
+"NSMutableArray alloc"
+
+201
+00:09:30,426 --> 00:09:31,076
+e depois "init".
+
+
+202
+00:09:31,716 --> 00:09:35,066
+Em Objective-C a alocação
+do espaço na heap
+
+203
+00:09:35,066 --> 00:09:39,556
+e a inicialização de um objeto
+são duas coisas separadas.
+
+204
+00:09:40,296 --> 00:09:44,376
+O alloc é essa pequena mensagem
+enviada na parte de dentro
+
+205
+00:09:44,666 --> 00:09:45,956
+e a inicialização é essa
+
+206
+00:09:45,956 --> 00:09:50,036
+do lado de fora, ok? Essa
+inicialização "init" é tipo
+
+207
+00:09:50,036 --> 00:09:53,036
+o mais simples, mas o "init"
+poderia ter argumentos.
+
+208
+00:09:53,376 --> 00:09:56,006
+Algumas classes tem inicializações
+mais complicadas que precisam
+
+209
+00:09:56,006 --> 00:09:57,376
+de argumentos para inicializar.
+
+
+210
+00:09:58,006 --> 00:10:00,916
+Comparando isso com um
+construtor em C++
+
+211
+00:10:01,116 --> 00:10:03,796
+ou com a maneira que vocês fariam
+em Java - nessas linguagens - onde
+
+212
+00:10:03,796 --> 00:10:05,946
+a alocação e inicialização
+estão combinadas,
+
+213
+00:10:06,006 --> 00:10:10,656
+aqui elas são separadas,
+entretando, nunca separe o "alloc"
+
+214
+00:10:10,656 --> 00:10:11,146
+do "init".
+
+
+215
+00:10:11,566 --> 00:10:14,906
+Em outras palavras, o "alloc"
+deve sempre estar aninhado
+
+216
+00:10:14,906 --> 00:10:18,816
+dentro de um "init" como esse
+e o init nunca deve ser chamado
+
+217
+00:10:18,816 --> 00:10:21,826
+exceto em algo recém-alocado,
+então eles devem sempre estar juntos,
+
+218
+00:10:22,216 --> 00:10:25,196
+vocês sempre os vêem aninhados
+desta forma. É errado-- você vai
+
+219
+00:10:25,196 --> 00:10:29,066
+estar em apuros se você tentar
+separar essas duas coisas, ok?
+
+220
+00:10:29,216 --> 00:10:31,376
+Nós vamos falar mais sobre
+alocação e inicialização mais tarde,
+
+221
+00:10:31,896 --> 00:10:33,356
+mas isso é algo
+importante de se notar,
+
+222
+00:10:33,446 --> 00:10:35,576
+esse "alloc init". É assim
+que nós alocamos
+
+223
+00:10:35,686 --> 00:10:38,016
+e inicializamos objetos.
+Pergunta.
+
+224
+00:10:38,146 --> 00:10:39,846
+>> Isso gerencia automaticamente
+quanto espaço
+
+225
+00:10:39,846 --> 00:10:41,076
+precisa ser alocado?
+
+
+226
+00:10:41,376 --> 00:10:43,926
+>> A pergunta: isso gerencia
+automaticamente o espaço 
+
+227
+00:10:43,926 --> 00:10:45,596
+na heap? E
+a resposta é sim.
+
+228
+00:10:45,806 --> 00:10:48,146
+Ele cria esse espaço na heap
+e assim que você
+
+229
+00:10:48,146 --> 00:10:51,006
+atribuir para a sua
+variável de instância, é colocado 
+
+230
+00:10:51,006 --> 00:10:53,516
+um ponteiro strong para ele,
+então ele continua na heap
+
+231
+00:10:53,726 --> 00:10:56,386
+até que esse ponteiro "_cards"
+seja setado para nil,
+
+232
+00:10:56,746 --> 00:10:58,646
+e então ninguém mais apontará
+fortemente para ele e ele
+
+233
+00:10:58,646 --> 00:11:02,776
+sai da heap automaticamente.
+
+
+234
+00:11:02,776 --> 00:11:03,606
+>> [Pergunta inaudível] 
+
+
+235
+00:11:03,606 --> 00:11:05,556
+>> Você quer dizer mais...
+a pergunta é: e se eu quiser
+
+236
+00:11:05,556 --> 00:11:06,456
+alocar mais espaço, você diz
+
+
+237
+00:11:06,456 --> 00:11:08,736
+tipo se o array crescer?
+É tarefa do array gerenciar
+
+238
+00:11:08,736 --> 00:11:10,956
+internamente sua implementação,
+então, sim,
+
+239
+00:11:10,956 --> 00:11:13,096
+ele faz isso automaticamente...
+quando você adiciona algo
+
+240
+00:11:13,096 --> 00:11:16,576
+em um array - um NSMutableArray -
+ele fica maior
+
+241
+00:11:16,736 --> 00:11:20,596
+e quando você tira coisas dele
+ele fica menor. Outras perguntas?
+
+242
+00:11:20,686 --> 00:11:20,753
+Sim?
+
+
+243
+00:11:20,816 --> 00:11:25,596
+[Pergunta quase inaudível]
+
+244
+00:11:25,596 --> 00:11:27,216
+[inaudível]
+
+
+245
+00:11:27,466 --> 00:11:30,276
+>> Arram. Então a pergunta é:
+quando eu faço alloc e init
+
+246
+00:11:30,276 --> 00:11:33,266
+como aqui, todas minhas propriedades
+são zero? Sim, são.
+
+247
+00:11:33,386 --> 00:11:35,736
+Todas as propriedades são zero, ok?
+Elas começam como zero.
+
+248
+00:11:35,736 --> 00:11:38,396
+Agora, o init é um método
+que pode ser sobrescrito,
+
+249
+00:11:38,396 --> 00:11:39,916
+ele pode então setá-las
+para alguma coisa
+
+250
+00:11:39,916 --> 00:11:42,416
+mas normalmente nós usamos
+instanciação lazy ao invés.
+
+251
+00:11:43,276 --> 00:11:46,866
+Ok, agora vamos olhar o
+drawRandomCard, eu estou tipo
+
+252
+00:11:46,956 --> 00:11:49,706
+tirando essa coisa da frente,
+esse simbolozinho amarelo,
+
+253
+00:11:49,706 --> 00:11:52,846
+vocês verão isso no Xcode também,
+você pode clicar nele para expandir
+
+254
+00:11:52,846 --> 00:11:55,486
+e contrair o código
+para abrir espaço para você.
+
+255
+00:11:56,096 --> 00:11:58,576
+Vamos pensar sobre
+drawRandomCard,
+
+256
+00:11:58,576 --> 00:12:03,196
+Bom, drawRandomCard retorna
+uma carta, então vou começar
+
+257
+00:12:03,196 --> 00:12:04,536
+com minha implementação padrão,
+
+
+258
+00:12:04,756 --> 00:12:07,676
+Card *randomCard = nil;
+return randomCard;
+
+259
+00:12:07,676 --> 00:12:08,686
+Está retornando nil.
+
+
+260
+00:12:09,136 --> 00:12:12,486
+Agora essa linha
+Card *randomCard = nil
+
+261
+00:12:12,486 --> 00:12:15,706
+no começo... o motivo pelo qual
+eu coloquei dessa forma
+
+262
+00:12:15,706 --> 00:12:18,096
+é que eu queria que vocês
+vissem o símbolo "nil".
+
+263
+00:12:18,786 --> 00:12:21,726
+Vêem? nil é esse negócio
+meio roxo... ok, é roxo
+
+264
+00:12:21,726 --> 00:12:25,366
+do mesmo modo que é "@property"
+ou "@end" ou como qualquer uma
+
+265
+00:12:25,366 --> 00:12:28,916
+dessas outras keywords são,
+nil é basicamente uma keyword
+
+266
+00:12:29,386 --> 00:12:32,706
+em Objective-C. Agora, de verdade,
+é somente o número zero
+
+267
+00:12:33,196 --> 00:12:36,786
+mas nós o usamos em qualquer lugar
+que queremos dizer que é um ponteiro
+
+268
+00:12:36,786 --> 00:12:37,876
+que não aponta para nada,
+
+
+269
+00:12:38,086 --> 00:12:42,066
+certo? É isso que esse símbolo
+nil quer dizer aqui. Estou dizendo
+
+270
+00:12:42,066 --> 00:12:43,556
+que essa carta, por padrão,
+vai ser nil.
+
+271
+00:12:43,556 --> 00:12:46,466
+Agora, eu não preciso dizer
+necessariamente  "igual a nil" ali
+
+272
+00:12:46,856 --> 00:12:50,906
+porque variáveis locais, assim
+com propriedades, começam em zero.
+
+273
+00:12:51,456 --> 00:12:53,316
+VocÊ não precisa iniciar
+variáveis locais
+
+274
+00:12:53,316 --> 00:12:56,466
+em algumas linguages, algumas
+versões de C, você precisa, certo?
+
+275
+00:12:56,466 --> 00:12:58,386
+Caso contrário você teria lixo
+de memória ali, mas não
+
+276
+00:12:58,386 --> 00:13:01,646
+em Objective-C. Variáveis locais
+são iniciadas com zero
+
+277
+00:13:01,646 --> 00:13:05,166
+ou nil, caso seja um objeto.
+Se fosse um int, então seria zero,
+
+278
+00:13:05,356 --> 00:13:05,836
+etc.
+
+
+279
+00:13:06,396 --> 00:13:10,546
+Continuando, eu quero comprar
+uma carta aleatória então eu
+
+280
+00:13:10,546 --> 00:13:11,816
+tenho que colocar algum código aqui
+
+
+281
+00:13:11,816 --> 00:13:13,576
+pra fazer isso, entÃo aqui
+estão três linhas de código
+
+282
+00:13:13,896 --> 00:13:15,276
+que vão comprar
+uma carta aleatória.
+
+283
+00:13:15,276 --> 00:13:17,706
+Eu tenho essa variável local
+chamada index
+
+284
+00:13:17,706 --> 00:13:20,346
+que é um unsigned int, isso é
+só uma coisa de C, unsigned
+
+285
+00:13:20,866 --> 00:13:24,626
+e eu estou chamando arc4random,
+que é um ótimo gerador aleatório
+
+286
+00:13:24,626 --> 00:13:27,036
+que gera um inteiro grande
+aleatoriamente,
+
+287
+00:13:27,736 --> 00:13:33,326
+poderia ser 10.562.504 ou 27,
+
+288
+00:13:33,326 --> 00:13:34,546
+ou qualquer outro número grande
+aleatório,
+
+289
+00:13:34,956 --> 00:13:38,396
+e estou usando a função de C
+"mod" para modulá-lo,
+
+290
+00:13:38,526 --> 00:13:43,486
+o que significa pegar o resto apóis
+dividir pelo número de cartas
+
+291
+00:13:43,856 --> 00:13:45,616
+no nosso "self.cards".
+
+
+292
+00:13:46,136 --> 00:13:49,366
+Fazendo isso eu vou obter
+um índice que está entre zero
+
+293
+00:13:49,746 --> 00:13:51,316
+e o número de cartas menos 1,
+
+
+294
+00:13:51,316 --> 00:13:53,336
+logo é um índice válido
+dentro do meu array.
+
+295
+00:13:53,776 --> 00:13:56,696
+Na próxima linha eu estou
+dizendo a carta aleatória que
+
+296
+00:13:56,696 --> 00:13:58,856
+eu quero retornar, certo?
+É a variável local acima
+
+297
+00:13:58,856 --> 00:14:03,356
+igual a "self.card[index]",
+nós já vimos isso na aula de Card,
+
+298
+00:14:03,646 --> 00:14:07,316
+nós vimos como nós usamos essa
+notação tipo array para
+
+299
+00:14:07,316 --> 00:14:10,616
+enviar uma mensagem
+para self.cards,
+
+300
+00:14:10,646 --> 00:14:13,076
+esse mutable array e obter
+o objeto naquele índice.
+
+301
+00:14:13,556 --> 00:14:15,586
+Essa notação, por acaso,
+de usar tipo
+
+302
+00:14:15,706 --> 00:14:19,216
+array e colchetes
+é nova em iOS 6,
+
+303
+00:14:19,866 --> 00:14:22,156
+então se o seu programa é iOS 5
+você não pode fazer isso, então
+
+304
+00:14:22,156 --> 00:14:25,976
+você teria que dizer:
+"[self.cards objectAtIndex:index]"
+
+305
+00:14:25,976 --> 00:14:27,866
+em outras palavras,
+você teria
+
+306
+00:14:27,866 --> 00:14:30,576
+que enviar uma mensagem, e aqui
+também estamos enviando uma mensagem,
+
+307
+00:14:30,906 --> 00:14:34,076
+estamos enviando uma mensagem, algo
+do tipo "objectAtSubscriptedIndex"
+
+308
+00:14:34,076 --> 00:14:37,376
+ou algo assim, mas essa é
+uma sintaxe muito melhor, fica com
+
+309
+00:14:37,376 --> 00:14:39,386
+mais cara de array.
+
+
+310
+00:14:39,386 --> 00:14:42,786
+Já que estou comprando
+uma carta aleatória, eu também vou
+
+311
+00:14:42,786 --> 00:14:45,676
+remover o objeto do array,
+usando "removeObjectInIndex",
+
+312
+00:14:45,676 --> 00:14:46,706
+ok?
+
+
+313
+00:14:47,646 --> 00:14:50,706
+Agora esse trecho de código também
+tem um problema, ok? Eu continuo
+
+314
+00:14:50,706 --> 00:14:52,856
+mostrando esses trechos de código
+e eles tem sempre um problema
+
+315
+00:14:53,286 --> 00:14:54,336
+e nós vamos corrigir esse daqui.
+
+
+316
+00:14:54,406 --> 00:14:58,146
+O problema com ele é:
+e se o array está vazuo, ok?
+
+317
+00:14:59,326 --> 00:15:01,286
+Então o array não pode
+nunca ser nil
+
+318
+00:15:01,286 --> 00:15:03,326
+porque nossos getters vão sempre
+nos assegurar que nós o alocamos
+
+319
+00:15:03,366 --> 00:15:05,066
+mas quando alocamos pela
+primeira vez, ele está vazio
+
+320
+00:15:05,506 --> 00:15:09,306
+assim como self.cards.count
+também será zero
+
+321
+00:15:09,606 --> 00:15:11,846
+então quando você faz o módulo,
+você vai ter um zero, você vai
+
+322
+00:15:11,846 --> 00:15:13,426
+ter um índice zero,
+você vai dizer
+
+323
+00:15:13,426 --> 00:15:17,236
+self.card[0], e isso
+vai dar crash
+
+324
+00:15:17,996 --> 00:15:20,406
+porque não há cartas no array
+e então o "objectAtIndex:0" 
+
+325
+00:15:20,406 --> 00:15:24,166
+vai acabar te gerando
+um erro do tipo
+
+326
+00:15:24,166 --> 00:15:25,956
+"Out of Bounds", ok?
+
+
+327
+00:15:26,376 --> 00:15:29,346
+Então nós precisamos colocar
+um pequeno "if" aqui para proteger
+
+328
+00:15:29,346 --> 00:15:31,396
+contra esse caso, dizendo
+que nós precisamos ter
+
+329
+00:15:31,396 --> 00:15:33,506
+algumas cartas antes
+de continuar com isso.
+
+330
+00:15:34,846 --> 00:15:37,286
+Todo mundo entendeu?
+
+
+331
+00:15:37,436 --> 00:15:40,666
+Simples, ok, então é isso
+para o deck. Uma classe muito,
+
+332
+00:15:40,666 --> 00:15:43,566
+muito simples que tudo que faz
+é deixar você adicionar cartas
+
+333
+00:15:43,566 --> 00:15:46,256
+e comprar cartas
+aleatórias dele.
+
+334
+00:15:46,936 --> 00:15:49,026
+Vamos olhar a nossa carta de jogo,
+
+
+335
+00:15:49,486 --> 00:15:51,396
+Eu queria mostrar pra vocês,
+oh, desculpa, pergunta?
+
+336
+00:15:51,396 --> 00:15:52,686
+>> [Pergunta inaudível]
+
+
+337
+00:15:52,686 --> 00:15:52,806
+>> Desculpa?
+
+
+338
+00:15:52,806 --> 00:15:56,596
+>> Você pode explicar
+a key word "self"?
+
+339
+00:15:57,036 --> 00:15:59,236
+>> Se eu posso explicar a
+key word "self"? Sim, claro,
+
+340
+00:15:59,236 --> 00:16:01,726
+"self" é igual
+o "self" ou o "this"
+
+341
+00:16:01,786 --> 00:16:04,486
+em outras linguages orientadas
+a objetos. Ele é um ponteiro
+
+342
+00:16:04,816 --> 00:16:09,986
+para o objeto o qual código
+está executando... ok,
+
+343
+00:16:10,546 --> 00:16:14,146
+fez sentido? Você conhece
+o "self" ou "this" em outras linguagens,
+
+344
+00:16:14,426 --> 00:16:17,196
+Você já viu isso antes?
+
+
+345
+00:16:17,196 --> 00:16:17,366
+>> [inaudível]
+
+
+346
+00:16:17,366 --> 00:16:19,436
+>> Ok, então "self" and "this"
+são basicamente a mesma coisa,
+
+347
+00:16:19,576 --> 00:16:23,446
+ele significa que é o objeto
+que está executando no momento
+
+348
+00:16:23,586 --> 00:16:29,036
+então se eu digo "self.cards",
+significa que estou chamando o getter
+
+349
+00:16:29,036 --> 00:16:31,506
+"card" de mim mesmo, ok?
+Que é exatamente o que eu quero
+
+350
+00:16:31,506 --> 00:16:32,756
+nesse caso. Faz sentido?
+
+
+351
+00:16:33,546 --> 00:16:37,076
+É o básico self/this de 
+orientação a objetos. Mesma coisa.
+
+352
+00:16:38,206 --> 00:16:41,676
+Então, a carta de jogo, a razão
+que eu vou fazer a carta de jogo aqui
+
+353
+00:16:41,676 --> 00:16:43,946
+é que eu quero mostrar pra vocês
+uma subclasse óbvia
+
+354
+00:16:44,276 --> 00:16:47,176
+então "PlayingCard" é uma subclasse
+de "Card, como vocês podem ver
+
+355
+00:16:47,176 --> 00:16:49,216
+a partir do
+"PlayingCard : Card" aqui.
+
+356
+00:16:49,886 --> 00:16:53,116
+Vou colocar apenas
+duas propriedades nela,
+
+357
+00:16:53,116 --> 00:16:55,356
+As propriedades fundamentais
+que vocês precisam para cartas de jogo
+
+358
+00:16:55,356 --> 00:16:57,206
+que são seu naipe e seu rank.
+
+
+359
+00:16:57,576 --> 00:17:01,076
+Eu vou representar o rank
+como um inteiro, ok?
+
+360
+00:17:01,206 --> 00:17:04,926
+Entre zero e 13, zero é
+tipo um rank indefinido,
+
+361
+00:17:05,416 --> 00:17:07,736
+Eu vou permitir isso nessa classe,
+como vocês vão ver,
+
+362
+00:17:07,896 --> 00:17:10,586
+e todo os números até 13,
+que é o Rei, ok? 
+
+363
+00:17:11,286 --> 00:17:14,746
+E então o naipe vai ser uma de
+quatro possíveis strings: copas,
+
+364
+00:17:14,826 --> 00:17:18,046
+paus, espadas, ouros. Na verdade
+existem caracteres no Unicode
+
+365
+00:17:18,046 --> 00:17:20,566
+para isso e essa será a string
+com esse único caractere
+
+366
+00:17:20,916 --> 00:17:22,956
+para cada um dos quatro naipes.
+
+
+367
+00:17:23,096 --> 00:17:24,586
+Então é assim que eu vou
+representar minhas cartas.
+
+368
+00:17:24,586 --> 00:17:26,676
+Vocês podem ver que o naipe
+é apenas uma NSString,
+
+369
+00:17:27,096 --> 00:17:28,406
+essa property é strong,
+
+
+370
+00:17:28,586 --> 00:17:30,716
+Obviamente ninguém mais está
+interessado nela exceto
+
+371
+00:17:30,716 --> 00:17:33,786
+a nossa classe, então precisamos
+manter um ponteiro forte para ela.
+
+372
+00:17:34,156 --> 00:17:37,956
+Tendo essas duas propriedades,
+poderíamos, na verdade, como
+
+373
+00:17:37,956 --> 00:17:41,316
+implementar essa PlayingCard,
+a classe inteira, em uma linha
+
+374
+00:17:41,666 --> 00:17:44,036
+de código, que é implementar
+o getter do "contents".
+
+375
+00:17:44,206 --> 00:17:46,866
+Lembra que a Card tem um "contents"
+que é o que tem na carta
+
+376
+00:17:47,356 --> 00:17:50,756
+e nessa caso nós poderíamos dizer
+por exemplo NSString,
+
+377
+00:17:50,756 --> 00:17:54,616
+"stringWithFormat:@"%d %@" "
+que é como
+
+378
+00:17:54,616 --> 00:17:56,256
+um "printf" para strings,
+
+
+379
+00:17:56,596 --> 00:17:59,276
+todo mundo... alguém não sabe
+o que é "printf"? Vocês já ouviram
+
+380
+00:17:59,316 --> 00:18:01,106
+falar de... ok, todos vocês
+sabem o que é "printf",
+
+381
+00:18:02,056 --> 00:18:04,596
+ubíquo em C, vocês usam
+o tempo todo, então isso é tipo
+
+382
+00:18:04,596 --> 00:18:07,386
+"printf" para strings,
+o %d é um número decimal,
+
+383
+00:18:07,546 --> 00:18:10,646
+e o %@ é significa
+um objeto, ok?
+
+384
+00:18:10,646 --> 00:18:13,136
+É tipo algo
+especial no "printf",
+
+385
+00:18:13,476 --> 00:18:16,056
+quando você tem
+um objeto lá: porcento arroba,
+
+386
+00:18:16,436 --> 00:18:19,556
+o que acontece é que o objeto
+recebe uma mensagem,
+
+387
+00:18:19,626 --> 00:18:21,646
+uma mensagem muito especial,
+"description",
+
+388
+00:18:22,316 --> 00:18:25,126
+que o NSObject
+também implementa.
+
+389
+00:18:25,326 --> 00:18:28,896
+"description" no NSString é
+implementado com uma linha
+
+390
+00:18:28,896 --> 00:18:34,346
+de código, "return self", ok?
+Então quando você coloca %@
+
+391
+00:18:34,346 --> 00:18:35,276
+e você provê uma string
+
+
+392
+00:18:35,276 --> 00:18:37,916
+como o argumento,
+você recebe essa string, ok?
+
+393
+00:18:38,716 --> 00:18:40,176
+Então é isso que está
+acontecendo aqui.
+
+394
+00:18:40,426 --> 00:18:42,606
+Mas essa não seria uma
+boa implementação
+
+395
+00:18:42,676 --> 00:18:45,166
+de PlayingCard, alguém aqui
+vê por que isso não seria bom?
+
+396
+00:18:45,166 --> 00:18:47,646
+Porque você não
+teria o valete de copas,
+
+397
+00:18:47,646 --> 00:18:50,696
+você teria o
+11 de copas, ok?
+
+398
+00:18:50,696 --> 00:18:53,376
+e você não teria o ás de espadas,
+você teria o 1 de espadas,
+
+399
+00:18:53,376 --> 00:18:56,686
+e isso não é
+o conteúdo certo aqui.
+
+400
+00:18:56,686 --> 00:19:00,766
+Vamos tentar uma implementação
+um pouco mais sofisticada
+
+401
+00:19:01,316 --> 00:19:07,036
+que é: eu vou criar um array, ok?
+que tem um "A" para 1, 2, 3,
+
+402
+00:19:07,036 --> 00:19:09,286
+4, 5, 6, e por aí vai até
+o valete, dama e rei.
+
+403
+00:19:09,286 --> 00:19:11,136
+J, Q e K no topo.
+
+
+404
+00:19:11,136 --> 00:19:14,086
+Para o zero, o rank zero que é
+meio indefinido, eu vou
+
+405
+00:19:14,086 --> 00:19:18,046
+fazer um grande ponto de interrogação
+e daí eu vou retornar como o
+
+406
+00:19:18,046 --> 00:19:22,856
+contents da minha carta,
+a string indexada desse array,
+
+407
+00:19:23,706 --> 00:19:26,436
+adicionando o naipe,
+então está
+
+408
+00:19:26,436 --> 00:19:30,006
+stringByAppendingString, é um
+método de string, você envia para
+
+409
+00:19:30,306 --> 00:19:32,456
+uma string e ela recebe outra string
+e anexa as duas junto
+
+410
+00:19:32,456 --> 00:19:34,726
+e te devolve uma
+terceira string, ok?
+
+411
+00:19:34,726 --> 00:19:36,056
+porque essas não são
+strings mutáveis,
+
+412
+00:19:36,056 --> 00:19:38,326
+essas são strings imutáveis,
+então não podemos modificar
+
+413
+00:19:38,326 --> 00:19:40,076
+nenhuma dessas strings.
+Criamos uma terceira
+
+414
+00:19:40,386 --> 00:19:42,826
+na qual essas duas strings são
+anexadas juntas. Agora eu vou
+
+415
+00:19:42,826 --> 00:19:47,306
+ter o ás de paus, valete de copas,
+percebem como isso
+
+416
+00:19:47,306 --> 00:19:50,156
+vai funcionar e se você
+olhar na linha
+
+417
+00:19:50,156 --> 00:19:52,666
+com a "rankStrings =",
+você vê algumas
+
+418
+00:19:52,666 --> 00:19:54,106
+coisas interessantes,
+
+419
+00:19:54,416 --> 00:19:57,426
+arroba, abre colchete,
+aquele negócio azul,
+
+420
+00:19:57,586 --> 00:20:00,376
+e então fecha colchete.
+É assim que você cria
+
+421
+00:20:00,376 --> 00:20:01,736
+rapidamente um array.
+
+
+422
+00:20:02,656 --> 00:20:05,976
+Isso significa que
+eu vou ter um array
+
+423
+00:20:05,976 --> 00:20:08,196
+e vai ter um monte de
+objetos separados por vírgula
+
+424
+00:20:08,196 --> 00:20:09,496
+e é isso é o que está
+acontecendo no meu array.
+
+425
+00:20:09,696 --> 00:20:13,716
+É um NSArray, não mutável,
+é um NSArray, imutável,
+
+426
+00:20:13,716 --> 00:20:15,576
+vai ser fixo
+com esses itens nele,
+
+427
+00:20:15,576 --> 00:20:19,356
+é isso o que essa notação
+significa. Isso é novo no iOS 6.
+
+428
+00:20:19,826 --> 00:20:23,376
+O arroba, o arroba vermelho
+seguido de aspas
+
+429
+00:20:23,376 --> 00:20:26,136
+significa criar uma
+NSString rapidamente.
+
+430
+00:20:26,606 --> 00:20:30,006
+Novamente, constante imutável,
+NSString básica.
+
+431
+00:20:30,606 --> 00:20:34,566
+Aqui eu estou criando um array
+rapidamente que tem um monte
+
+432
+00:20:34,566 --> 00:20:36,536
+de objetos NSString
+criados rapidamente.
+
+433
+00:20:37,746 --> 00:20:39,266
+Faz sentido? Conseguem ver
+o que está acontecendo nessa linha?
+
+434
+00:20:39,386 --> 00:20:43,336
+Bem legal. Bem conciso,
+fácil de especificar.
+
+435
+00:20:43,336 --> 00:20:47,276
+Acabei de criar um array
+com 14 strins ali, certo?
+
+436
+00:20:47,766 --> 00:20:49,836
+Todo mundo tranquilo com isso?
+Então isso será tudo que precisamos
+
+437
+00:20:49,836 --> 00:20:51,476
+para uma carta de jogo, nós vamos
+fazer um pouco mais,
+
+438
+00:20:51,476 --> 00:20:52,466
+mas não precisamos fazer. Sim?
+
+
+439
+00:20:53,196 --> 00:20:54,646
+>> [Estudante perguntando] 
+
+
+440
+00:20:55,876 --> 00:20:57,736
+[pergunta meio inaudível]
+
+441
+00:20:58,066 --> 00:21:00,846
+>> A pergunta é: Eu tenho que...
+num array eu não preciso
+
+442
+00:21:00,846 --> 00:21:02,716
+especificar que tipo de dados
+ele está recebendo
+
+443
+00:21:02,716 --> 00:21:06,466
+e a resposta é: não. Objective-C--
+os objetos em um array
+
+444
+00:21:06,466 --> 00:21:09,906
+podem ser de qualquer classe, ok?
+E existem vantagens e desvantagens
+
+445
+00:21:09,906 --> 00:21:12,576
+nisso. Nós vamos falar sobre isso
+mais pra frente
+
+446
+00:21:12,576 --> 00:21:13,456
+Mas é uma ótima pergunta.
+but that's a great question.
+
+
+447
+00:21:13,746 --> 00:21:14,146
+Aí no fundo.
+
+
+448
+00:21:14,146 --> 00:21:15,676
+>> rankStrings, esse
+NSArray rankStrings está
+
+449
+00:21:15,676 --> 00:21:18,116
+sendo alocado na heap?
+
+
+450
+00:21:18,116 --> 00:21:20,076
+>> A pergunta é: rankStrings,
+
+
+451
+00:21:20,076 --> 00:21:23,156
+esse NSArray rankStrings
+está sendo alocado na heap?
+
+452
+00:21:23,156 --> 00:21:25,326
+e a resposta é sim,
+todos os objetos
+
+453
+00:21:25,326 --> 00:21:26,866
+em Objective-C aqui estão
+sendo alocados na heap.
+
+454
+00:21:27,296 --> 00:21:31,616
+Cada um deles, você não pode
+alocar um objeto em qualquer
+
+455
+00:21:31,676 --> 00:21:33,816
+outro lugar em Objective-C.
+Sim, é na heap
+
+456
+00:21:33,816 --> 00:21:36,476
+e o NSArray rankStrings é apenas
+uma variável local,
+
+457
+00:21:36,476 --> 00:21:37,926
+é um ponteiro que
+aponta para ele.
+
+458
+00:21:39,126 --> 00:21:41,506
+Ok, pergunta, é, você.
+
+
+459
+00:21:41,726 --> 00:21:45,966
+>> [pergunta inaudível]
+
+460
+00:21:46,376 --> 00:21:48,696
+[pergunta inaudível]
+
+461
+00:21:48,696 --> 00:21:52,086
+>> Sim, a pergunta é: um array pode
+ter algumas strings,
+
+462
+00:21:52,086 --> 00:21:54,636
+algumas cartas e algumas
+outras classes
+
+463
+00:21:54,636 --> 00:21:56,006
+ao mesmo tempo? Sim, pode.
+
+
+464
+00:21:57,316 --> 00:21:57,926
+Pergunta.
+
+
+465
+00:21:58,916 --> 00:22:00,176
+>> Ali atrás, na property
+
+
+466
+00:22:00,316 --> 00:22:03,676
+para rank, porque você
+não usou um unsigned int?
+
+467
+00:22:03,836 --> 00:22:07,306
+>> Oh, ótima pergunta, estou
+feliz por você ter perguntado isso.
+
+468
+00:22:07,306 --> 00:22:09,356
+Ele está perguntando...
+vêem na property para rank,
+
+469
+00:22:09,356 --> 00:22:13,146
+eu usei NSUInteger, ok?
+isso é um typedef,
+
+470
+00:22:13,146 --> 00:22:16,036
+por que eu não digo simplesmente
+"typedef unsigned int"
+
+471
+00:22:16,356 --> 00:22:17,956
+ou unsigned? E a resposta é:
+eu queria mostrar pra vocês
+
+472
+00:22:17,956 --> 00:22:20,536
+que typedef existe,
+ele é basicamente typedef
+
+473
+00:22:20,536 --> 00:22:26,806
+para unsigned int, mas vocês verão
+isso nas APIs de iOS, NSInteger
+
+474
+00:22:26,806 --> 00:22:28,646
+e NSUInteger,
+é só um typedef,
+
+475
+00:22:28,646 --> 00:22:30,776
+eu só coloquei aí pra
+que vocês saibam o que é
+
+476
+00:22:30,776 --> 00:22:33,366
+mas é exatamente
+a mesma coisa.
+
+477
+00:22:33,416 --> 00:22:35,886
+Então isso é tudo que teremos
+para a PlayingCard,
+
+478
+00:22:36,056 --> 00:22:37,566
+Eu vou fazer algumas
+outras coisas apenas
+
+479
+00:22:37,566 --> 00:22:39,826
+para mostrar pra vocês
+um pouco mais de Objective-C, ok?
+
+480
+00:22:40,266 --> 00:22:43,826
+uma coisa é que nós poderíamos
+usar o getter do naipe (suit)
+
+481
+00:22:44,156 --> 00:22:45,766
+para fazer a mesma coisa
+que fizemos com o rank,
+
+482
+00:22:45,836 --> 00:22:47,576
+se nós tivermos um rank indefinido
+
+
+483
+00:22:47,576 --> 00:22:52,056
+rank zero, nós devolvemos
+um ponto de interrogação no contents.
+
+484
+00:22:52,116 --> 00:22:53,356
+Nós poderíamos fazer
+a mesma coisa no naipe,
+
+485
+00:22:53,566 --> 00:22:54,926
+Se o naipe nunca foi setado
+
+
+486
+00:22:54,926 --> 00:22:58,086
+e ele é nil, nós poderíamos devolver
+um "?" para ele tambem.
+
+487
+00:22:59,166 --> 00:23:05,096
+Vejam como fazemos isso, ok?
+E poderíamos usar o setter
+
+488
+00:23:05,096 --> 00:23:09,176
+de "suit" para ter certeza que
+ninguém nunca vai setar o naipe
+
+489
+00:23:09,176 --> 00:23:11,506
+para qualquer coisa que não seja
+copas, ouros, paus ou espadas.
+
+490
+00:23:12,116 --> 00:23:14,096
+Agora, essa é uma
+linha de código interessante,
+
+491
+00:23:14,096 --> 00:23:17,346
+vejam, estou criando um array
+rapidamente de novo, @,
+
+492
+00:23:17,676 --> 00:23:19,556
+arroba azul,
+abre colchete,
+
+493
+00:23:19,786 --> 00:23:23,356
+jogo as quatro
+strings de naipes lá e então
+
+494
+00:23:23,356 --> 00:23:25,796
+pego o array, não estou nem
+atribuindo para uma variável local
+
+495
+00:23:25,966 --> 00:23:28,076
+e então eu estou perguntando
+"containsObject" para ele
+
+496
+00:23:28,076 --> 00:23:31,376
+que é um método de array,
+envie essa mensagem "containsObject"
+
+497
+00:23:31,626 --> 00:23:33,216
+para um array, com outro objeto
+
+
+498
+00:23:33,216 --> 00:23:37,056
+e o que ele vai fazer é basicamente
+igual-- enviar a mensagem "isEqual"
+
+499
+00:23:37,176 --> 00:23:39,436
+para tudo que tiver no array,
+procurando se algum
+
+500
+00:23:39,436 --> 00:23:41,896
+dos objetos são iguais.
+Não é o ponteiro,
+
+501
+00:23:41,896 --> 00:23:44,376
+isso aqui está checando para ver
+se algum dos objetos é igual.
+
+502
+00:23:45,006 --> 00:23:47,766
+Ok? E claro "isEqual" no
+NSString é implementado
+
+503
+00:23:47,766 --> 00:23:51,386
+pelo método que vocês já viram
+anteriormente, "isEqualToString".
+
+504
+00:23:52,086 --> 00:23:55,026
+Isso é legal, mas tem
+um problema aqui,
+
+505
+00:23:55,936 --> 00:23:59,006
+Nós implementamos ambos
+o setter e o getter
+
+506
+00:23:59,666 --> 00:24:01,256
+e quando você 
+implementa ambos
+
+507
+00:24:01,556 --> 00:24:03,776
+setter e getter, você
+não ganha mais
+
+
+508
+00:24:03,886 --> 00:24:05,506
+o "@synthesize".
+
+
+509
+00:24:05,996 --> 00:24:08,496
+Então agora você tem
+que digitar o @synthesize.
+
+510
+00:24:09,316 --> 00:24:11,756
+Isso é algo infeliz,
+eu queria que não fosse assim,
+
+511
+00:24:12,096 --> 00:24:14,556
+Acho que devíamos dizer que
+somos sortudos de no iOS 6 nós termos
+
+512
+00:24:14,556 --> 00:24:18,386
+o @synthesize de graça,
+porque não tínhamos no iOS 5
+
+513
+00:24:18,726 --> 00:24:19,986
+mas você não ganha ele mais
+
+
+514
+00:24:19,986 --> 00:24:21,856
+se você implementa ambos
+o setter e o getter.
+
+515
+00:24:22,776 --> 00:24:25,326
+Ok? Então você tem que por
+essa linha você mesmo
+
+516
+00:24:25,326 --> 00:24:26,906
+é algo que temos
+que prestar atenção.
+
+517
+00:24:27,086 --> 00:24:30,346
+Certo, então agora eu vou
+mostrar outro tipo de método,
+
+518
+00:24:30,346 --> 00:24:34,166
+percebam que todos os métodos
+que definimos até agora
+
+519
+00:24:34,166 --> 00:24:38,956
+com um "-", "- (NSString *)contents",
+"- (void)setSuit",
+
+520
+00:24:39,286 --> 00:24:42,156
+ok? Um "menos" significa
+que esse método é enviado
+
+521
+00:24:42,156 --> 00:24:44,446
+para instâncias desse objeto.
+
+
+522
+00:24:45,316 --> 00:24:48,226
+Novamente, estou assumindo que
+vocês entendem orientação a objetos,
+
+523
+00:24:48,226 --> 00:24:50,386
+sabe? Já viram antes e sabem o que
+eu quero dizer quando eu falo que
+
+524
+00:24:50,386 --> 00:24:52,756
+é enviado para uma instância
+de um objeto. Então, no caso
+
+525
+00:24:52,756 --> 00:24:55,606
+de uma carta de jogo, ele é enviado
+para uma carta de jogo.
+
+526
+00:24:55,606 --> 00:24:58,186
+Uma carta de jogo que existe
+e foi alocada
+
+527
+00:24:58,186 --> 00:24:59,336
+e você está enviando
+uma mensagem para ela.
+
+528
+00:25:00,046 --> 00:25:03,436
+Existe outro tipo de método
+chamado método de classe,
+
+529
+00:25:03,786 --> 00:25:07,696
+eles começam com um "+" ao invés
+do "-" e eles não são enviados
+
+530
+00:25:07,956 --> 00:25:10,766
+para instâncias, eles
+são enviados para a classe.
+
+531
+00:25:12,136 --> 00:25:14,276
+Ok? Agora por que você enviaria
+uma mensagem para a classe,
+
+532
+00:25:15,156 --> 00:25:16,996
+a única razão que você
+enviaria uma mensagem
+
+533
+00:25:16,996 --> 00:25:21,166
+para uma classe? Método de utilidade,
+talvez você queira que a classe
+
+534
+00:25:21,166 --> 00:25:23,066
+crie... aloque e inicialize
+
+
+535
+00:25:23,066 --> 00:25:25,606
+de alguam forma especial
+um objeto ou algo assim.
+
+536
+00:25:25,606 --> 00:25:28,416
+Essa é a única razão para que
+você envie para a classe.
+
+537
+00:25:28,416 --> 00:25:30,906
+A classe é tipo
+para métodos de utilidade,
+
+538
+00:25:31,426 --> 00:25:33,296
+coisas que tem
+a ver com a classe
+
+539
+00:25:33,296 --> 00:25:35,986
+mas não são coisas... não são
+operações em uma carta de jogo,
+
+540
+00:25:36,356 --> 00:25:39,106
+eles são apenas métodos de utilidade,
+aqui tem um bom exemplo de um,
+
+541
+00:25:39,106 --> 00:25:43,536
+Eu vou tirar esse array, ok?
+pra fora do meio do "setSuit"
+
+542
+00:25:43,536 --> 00:25:46,426
+e eu vou colocar esse
+método de classe
+
+543
+00:25:46,426 --> 00:25:50,236
+e em vez disso, eu vou chamar
+o método de classe.
+
+544
+00:25:51,616 --> 00:25:55,446
+Então agora "validSuits" é
+um método que pode ser chamado
+
+545
+00:25:55,446 --> 00:25:59,096
+a qualquer momento para receber
+um array com os naipes válidos
+
+546
+00:25:59,096 --> 00:26:01,406
+e vocês podem ver que a convenção
+para chamar é um pouco diferente
+
+547
+00:26:01,406 --> 00:26:04,746
+para um método de classe. Ao invés
+de abrir colchetes e ponteiro
+
+548
+00:26:04,746 --> 00:26:06,436
+para o nome da instância
+
+
+549
+00:26:06,436 --> 00:26:09,136
+do método, é abre
+colchetes, nome
+
+550
+00:26:09,136 --> 00:26:11,466
+da classe e então o método.
+
+
+551
+00:26:12,726 --> 00:26:15,146
+Vêem como é
+"[PlayingCard ...",
+
+552
+00:26:15,146 --> 00:26:18,046
+e não: abre colchetes,
+ponteiro para uma instância
+
+553
+00:26:18,046 --> 00:26:21,106
+de uma PlayingCard"?
+É o nome da classe, ok?
+
+554
+00:26:21,626 --> 00:26:24,466
+Nós já vimos isso antes
+no slide anterior
+
+555
+00:26:24,776 --> 00:26:29,526
+no Deck, onde nós dissemos
+"[[NSMutableArray alloc] init]".
+
+556
+00:26:29,856 --> 00:26:32,936
+Aquele "[NSMutableArray alloc]",
+NSMutableArray é o nome
+
+557
+00:26:32,936 --> 00:26:36,556
+da classe, alloc é o método de classe.
+Você envia ele para a classe
+
+558
+00:26:36,556 --> 00:26:39,316
+para dizer: aloque-me uma
+insância em algum lugar da heap
+
+559
+00:26:39,316 --> 00:26:41,406
+e me dê e então
+eu vou inicializá-lo.
+
+560
+00:26:41,406 --> 00:26:42,816
+Esse é o motivo que fazemos
+aquele alloc init.
+
+561
+00:26:43,586 --> 00:26:47,286
+Então esse é um método
+de classe. Eu vou fazer
+
+562
+00:26:47,286 --> 00:26:48,956
+esse método de classe
+público, na verdade,
+
+563
+00:26:48,956 --> 00:26:50,116
+É um método de classe bem útil
+
+
+564
+00:26:50,116 --> 00:26:53,196
+para saber quais naipes
+são validos. Naipes de cartas.
+
+565
+00:26:53,196 --> 00:26:56,556
+Vamos fazer mais um. Vamos
+tirar esses do caminho,
+
+566
+00:26:56,926 --> 00:27:01,626
+vamos pegar o rankStrings, ok?
+E fazer um método de classe
+
+567
+00:27:01,836 --> 00:27:04,816
+para eles também. Então, vou
+colocar esses aqui embaixo
+
+568
+00:27:04,816 --> 00:27:06,786
+e daí colocar
+rankStrings aqui
+
+569
+00:27:07,036 --> 00:27:09,126
+e então eu posso até
+adicionar outro método de classe
+
+570
+00:27:09,306 --> 00:27:11,886
+que me diz qual o máximo
+rank que eu posso ter
+
+571
+00:27:12,176 --> 00:27:14,836
+e um jeito legal de implementar
+seria ver quão grande
+
+572
+00:27:14,836 --> 00:27:16,366
+o rankStrings é.
+
+
+573
+00:27:17,006 --> 00:27:19,166
+Porque, claro, se eu tiver
+um rank que é maior
+
+574
+00:27:19,166 --> 00:27:22,086
+do que o tamanho
+do rankStrings, eu vou
+
+575
+00:27:22,086 --> 00:27:23,746
+ter um erro de
+índice de array out of bounds
+
+576
+00:27:23,746 --> 00:27:25,086
+quando eu tentar usá-lo, certo?
+
+
+577
+00:27:25,966 --> 00:27:28,596
+E claro, agora que nós temos
+o max rank, nós poderíamos sobrescrever
+
+578
+00:27:28,596 --> 00:27:30,636
+o setter do rank para ter certeza
+
+
+579
+00:27:30,636 --> 00:27:32,736
+que ninguém nunca setará
+o rank para ser tão grande.
+
+580
+00:27:33,216 --> 00:27:37,676
+Vêem como nós simplesmente criamos
+uma classe que é meio que
+
+581
+00:27:37,676 --> 00:27:40,666
+auto-protegida? Se ela
+for criada e o rank
+
+582
+00:27:40,666 --> 00:27:42,826
+e o naipe forem zero, ela
+fala "? ?"
+
+583
+00:27:42,826 --> 00:27:45,506
+como o seu conteúdo, mas
+depois disso, ninguém consegue
+
+584
+00:27:45,506 --> 00:27:49,096
+setá-la com algum estado inválido
+e essa classe nunca vai crashar,
+
+585
+00:27:49,136 --> 00:27:52,506
+não há como setar nenhum
+dos naipes ou ranks para algo
+
+586
+00:27:52,506 --> 00:27:55,266
+que crasharia, ok?
+Ela é auto-protegida. Sim?
+
+587
+00:27:55,266 --> 00:27:55,333
+>> [Pergunda inaudível] 
+
+
+588
+00:27:55,333 --> 00:27:55,400
+>> Arram.
+
+
+589
+00:27:55,766 --> 00:28:00,326
+>> [Pergunta inaudível]
+
+590
+00:28:02,046 --> 00:28:04,486
+[inaudível]
+
+
+591
+00:28:05,036 --> 00:28:07,296
+>> Arram, a pergunta é
+veja que eu criei um método
+
+592
+00:28:07,356 --> 00:28:10,886
+para rankStrings, certo, e
+para naipes válidos. Eu posso
+
+593
+00:28:10,886 --> 00:28:13,746
+simplesmente fazer um NSArray
+constante e a resposta é não,
+
+594
+00:28:14,036 --> 00:28:15,776
+Não há como fazer
+uma constante
+
+595
+00:28:15,776 --> 00:28:17,256
+de NSArray, infelizmente.
+
+
+596
+00:28:17,536 --> 00:28:19,326
+O mais perto disso que você
+poderia fazer seria
+
+597
+00:28:19,326 --> 00:28:22,116
+criar uma variável estática
+em C, certo?
+
+598
+00:28:22,116 --> 00:28:25,316
+Infelizmente uma estática
+não pode ser inicializada
+
+599
+00:28:25,316 --> 00:28:27,566
+para um valor não-constante
+então você teria que inicializar
+
+600
+00:28:27,566 --> 00:28:30,526
+essa estática em nil e então
+a primeira vez que vocÊ quisesse
+
+601
+00:28:30,526 --> 00:28:31,696
+usá-la, você teria que dizer, "oh
+
+
+602
+00:28:31,696 --> 00:28:33,276
+se a estática é nil,
+então eu vou alocar
+
+603
+00:28:33,276 --> 00:28:36,096
+o array", bom, você provavelmente
+vai acabar fazendo
+
+604
+00:28:36,096 --> 00:28:38,806
+com um método de qualquer forma,
+então você não se beneficia muito.
+
+605
+00:28:39,146 --> 00:28:41,166
+Com estáticas você
+teria a vantagem--
+
+606
+00:28:41,166 --> 00:28:44,496
+Aquele rankStrings, cada vez que
+você o chama, ele cria um novo array,
+
+607
+00:28:45,246 --> 00:28:46,976
+agora, esse array não
+vive por muito tempo
+
+608
+00:28:46,976 --> 00:28:49,376
+e, sabe, alguém recebe ele,
+e usa ele e então ele vai
+
+609
+00:28:49,376 --> 00:28:52,406
+pra fora da heap, mas você está
+tipo criando um na heap
+
+610
+00:28:52,406 --> 00:28:53,626
+e então ele é destruído
+
+
+611
+00:28:53,626 --> 00:28:56,596
+então você poderia usar uma estática
+aqui para deixá-lo vivo.
+
+612
+00:28:56,956 --> 00:29:00,416
+Na verdade, no slides que eu postei,
+eu mostro a vocês
+
+613
+00:29:00,416 --> 00:29:00,946
+como fazer isso.
+
+
+614
+00:29:00,946 --> 00:29:02,486
+Eu geralmente não falo
+sobre isso... eu não
+
+615
+00:29:02,486 --> 00:29:04,476
+vou demonstrar aqui, mas eu vou
+mostrar como usar as estáticas,
+
+616
+00:29:04,896 --> 00:29:06,866
+são apenas estáticas em C,
+nada em especial.
+
+617
+00:29:07,936 --> 00:29:09,886
+Certo, todo mundo vê como nós
+estamos fazendo com as cartas de jogo,
+
+618
+00:29:09,886 --> 00:29:10,936
+vêem como nós estamos entrando
+
+
+619
+00:29:10,936 --> 00:29:13,686
+nos eixos usando Objective-C?
+A última coisa que eu vou mostrar
+
+620
+00:29:13,686 --> 00:29:15,006
+para vocês é um maço de
+cartas de jogo.
+
+
+621
+00:29:15,876 --> 00:29:18,776
+"PlayingCardDeck" é uma
+subclasse de "Deck",
+
+622
+00:29:19,406 --> 00:29:22,776
+certo? Não tem métodos públicos,
+apenas aqueles que ele herda
+
+623
+00:29:22,776 --> 00:29:25,256
+de "Deck" e de NSObject
+também, a propósito,
+
+624
+00:29:25,946 --> 00:29:28,366
+como o "description" que ele herda.
+
+
+625
+00:29:28,366 --> 00:29:31,196
+"Description" no NSObject
+não funciona muito bem,
+
+626
+00:29:31,386 --> 00:29:33,646
+ele imprime o valor
+do ponteiro ou algo assim
+
+627
+00:29:33,646 --> 00:29:37,326
+mas ele herda, então todos
+os NSObjects implementam description
+
+628
+00:29:37,326 --> 00:29:40,696
+pelo menos, então eles podem
+ser impressos com o "printf %@",
+
+629
+00:29:40,726 --> 00:29:41,756
+A propósito, vocês são bem-vindos
+
+
+630
+00:29:41,756 --> 00:29:43,756
+para implementar seus próprios
+description, sempre quiserem.
+
+631
+00:29:43,786 --> 00:29:47,886
+Para Card provavelmente
+implementariam description
+
+632
+00:29:47,886 --> 00:29:51,616
+como retornando "self.contents",
+essa seria uma boa descrição
+
+633
+00:29:51,806 --> 00:29:55,036
+de carta, ok?
+Método "description".
+
+634
+00:29:55,646 --> 00:29:56,896
+Bom, voltando ao PlayingCardDeck,
+
+
+635
+00:29:57,176 --> 00:29:58,776
+a unica coisa que
+PlayingCardDeck vai fazer
+
+636
+00:29:58,776 --> 00:30:01,486
+é implementar seu próprio
+inicializador, porque eu quero
+
+637
+00:30:01,486 --> 00:30:04,546
+mostrar qual a cara
+de um inicializador, ok?
+
+638
+00:30:05,026 --> 00:30:07,926
+Na próxima linha de código
+eu vou mostrar para vocês,
+
+639
+00:30:08,236 --> 00:30:10,886
+a propósito, vocês vÃo criar
+um PlayingCardDeck
+
+640
+00:30:10,946 --> 00:30:14,056
+abrindo colchete, dizendo
+"[PlayinCardDeck alloc"...
+
+641
+00:30:14,756 --> 00:30:17,486
+e, por fora disso, "init".
+
+
+642
+00:30:18,566 --> 00:30:20,786
+Então quando qualquer pessoa criar
+um PlayingCardDeck, ela vai
+
+643
+00:30:20,786 --> 00:30:23,526
+usar alloc, que é um método
+de classe do NSObject
+
+644
+00:30:23,786 --> 00:30:27,236
+para alocá-lo e então vão aninhar
+isso com uma chamada
+
+645
+00:30:27,236 --> 00:30:29,466
+para init, então "init" é
+a nossa chance para fazer algo...
+
+646
+00:30:29,466 --> 00:30:31,506
+Bom, o que um PlayinCardDeck 
+quer fazer quando é
+
+647
+00:30:31,506 --> 00:30:34,366
+inicializado?
+Ele quer criar 52 cartas,
+
+648
+00:30:35,326 --> 00:30:37,776
+certo? É isso que vamos fazer,
+esse método init vai criar
+
+649
+00:30:37,776 --> 00:30:41,446
+52 cartas de jogo,
+todos os ranks e todos os naipes.
+
+650
+00:30:41,486 --> 00:30:42,786
+Agora, a próxima linha
+de código que vou mostrar
+
+651
+00:30:42,786 --> 00:30:47,826
+é realmente assustadora,
+se segurem nas suas cadeiras,
+
+652
+00:30:47,826 --> 00:30:50,406
+aqui vamos nós,
+"self = [super init]".
+
+653
+00:30:51,076 --> 00:30:52,146
+Ok, por que isso é
+
+
+654
+00:30:52,146 --> 00:30:55,096
+tão assustador? Porque
+atribuir algo
+
+655
+00:30:55,096 --> 00:30:57,196
+para self é realmente estranho,
+
+
+656
+00:30:57,616 --> 00:31:00,846
+ok? Porque self é essa
+variável especial que nós
+
+657
+00:31:00,846 --> 00:31:03,806
+falamos anteriormente,
+que aponta para a instância
+
+658
+00:31:03,926 --> 00:31:05,576
+que está executando esse código,
+
+
+659
+00:31:05,946 --> 00:31:08,706
+você nunca faz "self ="
+a alguma coisa, exceto
+
+660
+00:31:08,706 --> 00:31:10,906
+para esse caso, onde
+é a primeira linha
+
+661
+00:31:10,906 --> 00:31:14,966
+no seu init, onde vocÊ diz
+"self = [Superclasse init]"
+
+662
+00:31:15,176 --> 00:31:17,786
+para dar a sua superclasse
+a chance de se inicializar.
+
+663
+00:31:18,186 --> 00:31:20,456
+Ok? Por que nós atribuímos para self?
+
+
+664
+00:31:20,856 --> 00:31:23,696
+porque nossa superclasse
+pode retornar nil
+
+665
+00:31:24,736 --> 00:31:29,316
+se ela não conseguir se inicializar,
+isso quase nunca acontece,
+
+666
+00:31:29,316 --> 00:31:33,206
+o init retorna nil
+.00001% das vezes, ok?
+
+667
+00:31:33,206 --> 00:31:37,526
+Poderia acontecer, mas não...
+De qualquer forma, faça isso,
+
+668
+00:31:37,526 --> 00:31:38,556
+é ridículo, mas faça isso.
+
+
+669
+00:31:38,836 --> 00:31:41,686
+Então olhamos para o self e
+ele não é nil, então vamos
+
+670
+00:31:41,686 --> 00:31:44,226
+fazer o que nós fazemos,
+vamos inicializar nossa classe.
+
+671
+00:31:44,226 --> 00:31:47,356
+Essa é só uma convenção,
+essa é a forma que é feito.
+
+672
+00:31:47,756 --> 00:31:51,066
+Eu não gosto,
+tem essa cara estranha,
+
+673
+00:31:51,416 --> 00:31:57,086
+mas é assim que é.
+Pergunta.
+
+674
+00:31:57,086 --> 00:31:57,153
+>> [Pergunta inaudível] 
+
+
+675
+00:31:57,153 --> 00:31:58,436
+[aluno perguntando...]
+
+
+676
+00:31:58,816 --> 00:32:00,656
+[aluno perguntando...]
+
+
+677
+00:32:00,656 --> 00:32:06,826
+[aluno perguntando...]
+
+678
+00:32:06,826 --> 00:32:07,946
+[aluno perguntando...]
+
+
+679
+00:32:07,946 --> 00:32:11,286
+>> Oh, ótima pergunta,
+oh, vocês são incríveis,
+
+680
+00:32:11,436 --> 00:32:14,536
+então, por que o tipo de
+retorno do init é "id",
+
+681
+00:32:14,616 --> 00:32:19,516
+que raios é "id", ao invés de
+"PlayingCardDeck *"
+
+682
+00:32:19,516 --> 00:32:20,566
+porque na verdade,
+é isso que retorna,
+
+683
+00:32:20,566 --> 00:32:22,076
+ele retorna um
+"PlayingCardDeck *",
+
+684
+00:32:22,076 --> 00:32:24,126
+um ponteiro para um
+PlayingCardDeck, e a resposta
+
+685
+00:32:24,126 --> 00:32:30,356
+para isso é que "id" significa:
+ponteiro para um objeto
+
+686
+00:32:31,306 --> 00:32:34,046
+de qualquer classe, ou até 
+de uma classe desconhecida.
+
+687
+00:32:34,506 --> 00:32:38,556
+Nossos inicializadores sempre
+retornam id e isso é porque
+
+688
+00:32:38,556 --> 00:32:41,826
+o método init é herdado
+de NSObject pelo Deck
+
+689
+00:32:42,026 --> 00:32:44,636
+mas e se o NSOBject
+
+
+690
+00:32:44,636 --> 00:32:49,386
+declarasse ele como
+"- (NSObject *)init"
+
+691
+00:32:49,676 --> 00:32:51,466
+então, nós chegamos e dizemos:
+"ah, não, não...
+
+692
+00:32:51,466 --> 00:32:53,216
+é - (PlayingCardDeck *)init"
+
+
+693
+00:32:53,486 --> 00:32:56,196
+Então teríamos o mesmo método
+com dois tipos diferentes de retorno,
+
+694
+00:32:56,366 --> 00:32:59,596
+e isso é confuso, ok?
+Então colocamos "id".
+
+695
+00:33:00,726 --> 00:33:03,066
+Não vou falar muito
+sobre id agora,
+
+696
+00:33:03,066 --> 00:33:06,586
+é um tipo muito importante 
+em Objective-C, ok? Vou falar
+
+697
+00:33:06,586 --> 00:33:10,406
+tudo sobre ele na próxima semana,
+mas por enquanto, todos os inits
+
+698
+00:33:10,646 --> 00:33:13,306
+sempre retornam "id". Não é 
+"PlayingCard *", certo? Ótima pergunta.
+
+699
+00:33:13,936 --> 00:33:17,536
+Bom, como nós vamos fazer isso?
+Muito fácil, nós vamos simplesmente
+
+700
+00:33:17,536 --> 00:33:18,996
+ter um loop aninhado aqui,
+
+
+701
+00:33:18,996 --> 00:33:21,246
+nós vamos usar aqueles dois
+métodos públicos que criamos,
+
+702
+00:33:21,246 --> 00:33:23,786
+validSuits e maxRank
+e apenas fazer um loop
+
+703
+00:33:23,816 --> 00:33:26,426
+por todos os suits válidos
+usando aquele "for n coisa"
+
+704
+00:33:26,736 --> 00:33:29,326
+e então fazer o loop por
+todos os ranks usando um loop for
+
+705
+00:33:29,536 --> 00:33:32,016
+normal, e
+como nós vamos
+
+706
+00:33:32,276 --> 00:33:34,126
+estar criando cartas de jogo,
+nós precisamos
+
+707
+00:33:34,126 --> 00:33:36,116
+importar PlayingCards.h, 
+claro,
+
+708
+00:33:36,586 --> 00:33:40,976
+e então nós vmos dizer apenas
+"[[PlayingCard alloc] init]"
+
+709
+00:33:40,976 --> 00:33:43,416
+que aloca e inicializa uma
+PlayingCard em branco e
+
+710
+00:33:43,416 --> 00:33:46,276
+os naipes e rank serão zero
+e nil, ou nil e zero,
+
+711
+00:33:46,276 --> 00:33:49,836
+mas daí nós vamos imediatamente
+usar os setters
+
+712
+00:33:50,176 --> 00:33:53,566
+de rank e naipe, setar o
+rank e o naipe para o valor
+
+713
+00:33:53,566 --> 00:33:55,026
+que nosso for estiver iterando.
+
+
+714
+00:33:55,826 --> 00:33:58,396
+Essa é a primeira vez que vocês
+vão ver um setter sendo chamado,
+
+715
+00:33:59,046 --> 00:34:02,336
+percebam que ele é exatamente
+igual à chamada do getter,
+
+716
+00:34:02,996 --> 00:34:05,316
+qual a diferença?
+Ele está do lado esquerdo
+
+717
+00:34:05,316 --> 00:34:07,116
+de um símbolo de igual
+ao invés do lado direito
+
+718
+00:34:07,116 --> 00:34:09,166
+de um símbolo de igual, vêem?
+
+
+719
+00:34:09,996 --> 00:34:13,246
+"card.rank = rank"
+é a mesma coisa que
+
+720
+00:34:13,246 --> 00:34:17,186
+"[card setRank:rank]" 
+
+
+721
+00:34:17,186 --> 00:34:17,856
+"[card setRank:rank]" 
+
+
+722
+00:34:17,856 --> 00:34:20,566
+Em outras palavras, estamos apenas
+chamando o setter com o rank.
+
+723
+00:34:21,146 --> 00:34:23,396
+Ok? Getters e setters são
+exatamente iguais, a diferença
+
+724
+00:34:23,396 --> 00:34:25,756
+é de que lado do sinal de igual
+eles estão. Isso determina
+
+725
+00:34:25,756 --> 00:34:26,656
+qual deles é chamado.
+
+
+726
+00:34:26,836 --> 00:34:33,146
+É uma sintaxe muito elegante.
+Alguma pergunta sobre isso?
+
+727
+00:34:33,366 --> 00:34:37,216
+Ok? E finalmente, nós somos um
+PlayingCardDeck, herdamos
+
+728
+00:34:37,216 --> 00:34:40,476
+"addCard" então vamos enviar
+a nós mesmos "addCardAtTop",
+
+729
+00:34:40,476 --> 00:34:43,126
+vamos colocar no topo ou algo assim,
+nós vamos simplesmente adicionar
+
+730
+00:34:43,126 --> 00:34:44,746
+a carta. Estamos dentro do
+loop for e vamos adicionar
+
+731
+00:34:44,746 --> 00:34:48,066
+todas as 52 cartas em nós mesmos,
+alguma pergunta sobre isso? Sim?
+
+732
+00:34:48,066 --> 00:34:51,476
+>> Por favor explique o for loop
+de dentro. Como ele vai passar
+
+733
+00:34:51,966 --> 00:34:53,896
+pelos diferentes ranks?
+
+
+734
+00:34:54,626 --> 00:34:57,306
+>> O for loop de dentro, é um
+for normal, certo?
+
+735
+00:34:57,616 --> 00:35:00,046
+"for (NSUInteget rank = 1",
+
+
+736
+00:35:00,046 --> 00:35:02,896
+Eu estou declarando uma iteração
+de variável ali, rank,
+
+737
+00:35:03,276 --> 00:35:06,646
+ok? Estou declarando ela na hora,
+estou setando ela igual a 1
+
+738
+00:35:06,646 --> 00:35:11,216
+e então eu continuo fazendo
+o que está no fim "rank++"
+
+739
+00:35:11,506 --> 00:35:14,396
+até rank... enquanto rank
+for menor
+
+740
+00:35:14,396 --> 00:35:16,226
+que o rank máximo de cartas de jogo.
+
+
+741
+00:35:17,006 --> 00:35:19,596
+Ok? É só
+um loop normal.
+
+742
+00:35:19,596 --> 00:35:20,636
+>> [Pergunta inaudível]
+
+
+743
+00:35:20,636 --> 00:35:21,006
+>> Arram.
+
+
+744
+00:35:21,006 --> 00:35:22,606
+>> [Pergunta inaudível] 
+
+
+745
+00:35:22,606 --> 00:35:27,426
+>> Arram, não, não, maxRank,
+não rankStrings e sim maxRank.
+
+746
+00:35:28,276 --> 00:35:30,156
+Esse não é o código
+mais eficiente do mundo,
+
+747
+00:35:30,156 --> 00:35:32,836
+Toda vez que você chama o maxRank
+ele vai criar um array
+
+748
+00:35:32,836 --> 00:35:35,266
+com todas aquelas strings nele
+e então vai pegar o "count" dele,
+
+749
+00:35:35,856 --> 00:35:38,236
+é por isso que nós queremos
+fazer aquela coisa estática
+
+750
+00:35:38,236 --> 00:35:40,716
+mas mesmo assim nós não...
+Tenho uma coisa pra dizer e vou
+
+751
+00:35:40,896 --> 00:35:41,936
+usar essa oportunidade
+
+
+752
+00:35:41,936 --> 00:35:46,156
+para dizer. Sabe, Donald Knuth
+estava certo, ok?
+
+753
+00:35:46,346 --> 00:35:50,616
+Otimização prematura é o assassino
+de escrever código entendível.
+
+754
+00:35:50,866 --> 00:35:53,946
+O código que escrevemos é muito
+simples, muito entendível,
+
+755
+00:35:54,056 --> 00:35:55,746
+você pode lê-lo.
+São pouquíssimas linhas de código,
+
+756
+00:35:56,046 --> 00:35:57,466
+todo mundo entende
+o que está acontecendo.
+
+757
+00:35:57,746 --> 00:36:01,646
+Ele é realmente eficiente? Não.
+Eficiência conta? Não.
+
+758
+00:36:02,246 --> 00:36:04,026
+Por que eficiencia
+não conta aqui?
+
+759
+00:36:04,336 --> 00:36:05,476
+Porque nós estamos falando
+
+
+760
+00:36:05,476 --> 00:36:07,606
+sobre construir uma aplicação
+de interface com o usuário.
+
+761
+00:36:07,696 --> 00:36:10,756
+Serão alguns poucos bits
+chegando no processador gráfico
+
+762
+00:36:10,756 --> 00:36:13,246
+para desenhar um botão
+ou algo assim. Será
+
+763
+00:36:13,246 --> 00:36:17,226
+irrelevante qualquer tempo que
+gastarmos criando um array na heap
+
+764
+00:36:17,596 --> 00:36:20,396
+e contando quantos... Quero dizer,
+isso não vai ser nada comparado
+
+765
+00:36:20,396 --> 00:36:23,906
+com o quão custoso é
+desenhar na tela,
+
+766
+00:36:23,906 --> 00:36:24,736
+entendem o que eu digo?
+
+
+767
+00:36:25,306 --> 00:36:28,646
+Então, nessa aula,
+escolha código legível,
+
+768
+00:36:28,966 --> 00:36:32,776
+não otimize prematuramente
+as coisas, porque isso não importa.
+
+769
+00:36:32,776 --> 00:36:35,626
+Ok? Vai consumir centenas
+ou milhares de vezes
+
+770
+00:36:35,626 --> 00:36:40,786
+mais tempo apenas para desenhar
+o botão - bits na tela - do que
+
+771
+00:36:40,786 --> 00:36:44,496
+vai demorar pra fazer isso
+100 vezes. Quero dizer, são apenas
+
+772
+00:36:44,496 --> 00:36:47,726
+instruções de magnitude...
+então não... várias pessoas
+
+773
+00:36:47,726 --> 00:36:50,866
+ficam presas nisso. Então
+leiam Donald Knuth e
+
+774
+00:36:51,466 --> 00:36:54,356
+otimização prematura se você
+nunca viu isso antes,
+
+775
+00:36:54,806 --> 00:36:55,876
+um professor famoso da Stanford.
+
+
+776
+00:36:57,196 --> 00:37:00,696
+Ok, hora da demo, timing
+perfeito aqui. Tenho meia hora
+
+777
+00:37:00,696 --> 00:37:03,006
+sobrando. O que vocês acham
+que eu consigo fazer nesse tempo?
+
+778
+00:37:03,226 --> 00:37:05,796
+O que eu vou fazer é
+eu vou criar
+
+779
+00:37:05,796 --> 00:37:08,116
+uma interface pro usuário.
+Primeiro eu vou criar
+
+780
+00:37:08,116 --> 00:37:09,436
+uma nova aplicação,
+
+
+781
+00:37:09,566 --> 00:37:11,046
+essa é uma das principais coisas
+que vocês verão.
+
+782
+00:37:11,306 --> 00:37:15,666
+Ela vai ter um MVC, ok?
+O controller
+
+783
+00:37:15,666 --> 00:37:17,766
+e a view é o que eu vou
+motrar para vocês. Vocês vão
+
+784
+00:37:17,766 --> 00:37:21,976
+adicionar o model, ok?
+É parte do homework.
+
+785
+00:37:22,326 --> 00:37:25,376
+O que eu vou fazer é,
+eu vou criar a view
+
+786
+00:37:25,576 --> 00:37:28,756
+que tem uma carta. Eu vou usar
+um botão para representar a carta
+
+787
+00:37:29,106 --> 00:37:30,976
+e vocês vão tocar no botão
+e ele vai virar a carta
+
+788
+00:37:30,976 --> 00:37:33,196
+mostrando a vocês
+o verso da carta,
+
+789
+00:37:33,246 --> 00:37:34,886
+frente da carta, verso da carta,
+frente da carta.
+
+790
+00:37:35,056 --> 00:37:36,646
+Minha carta será sempre
+o ás de paus, ok?
+
+791
+00:37:36,646 --> 00:37:39,416
+Toda vez que eu mostrar,
+ás de paus... oh, ainda
+
+792
+00:37:39,416 --> 00:37:40,726
+é o ás de espadas. Vocês que vão
+fazer que...
+
+793
+00:37:40,726 --> 00:37:43,056
+"oh, é cada uma das cartas
+do maço... oh, é um ás
+
+794
+00:37:43,056 --> 00:37:45,906
+de ouros, oh, três de paus,
+oh, valete de copas",
+
+795
+00:37:45,906 --> 00:37:48,936
+vocês sabem, vai basicamente
+percorrer... vocês vão
+
+796
+00:37:49,066 --> 00:37:51,386
+poder tocar e ir
+para todas as cartas do deck.
+
+797
+00:37:52,146 --> 00:37:55,206
+Ok, mas como eu nÀo vou ter
+o model, eu não posso fazer isso.
+
+798
+00:37:55,486 --> 00:37:57,336
+Ok, então eu vou amarrar o meu
+no ás de paus.
+
+799
+00:37:57,836 --> 00:38:01,146
+Tem muitas coisas para prestar
+atenção aqui. Eu não vou 
+
+800
+00:38:01,306 --> 00:38:03,076
+passar por tudo, é perda de tempo
+ficar lendo esse slide,
+
+801
+00:38:03,076 --> 00:38:04,656
+acredito que vocês tem
+esse slide na frente de vocês
+
+802
+00:38:04,656 --> 00:38:05,846
+ou vocês o verão novamente depois.
+
+
+803
+00:38:06,916 --> 00:38:10,486
+Quando vocês... mesmo que vocês
+tenham que replicar
+
+804
+00:38:10,486 --> 00:38:12,406
+o que eu vou
+fazer aqui hoje,
+
+805
+00:38:12,736 --> 00:38:14,636
+vocês não precisam fazer
+anotações e "Oh, meu deus,
+
+806
+00:38:14,636 --> 00:38:18,476
+onde vou que ele clicou?", ok?
+Tudo será minusciosamente
+
+807
+00:38:18,476 --> 00:38:20,316
+reproduzido nos
+slides de aula,
+
+808
+00:38:20,316 --> 00:38:26,676
+Quero dizer, cada clique do mouse
+é claramente mostrado
+
+809
+00:38:26,736 --> 00:38:30,956
+e aprsentado com vários screenshots,
+então vocês não precisam
+
+810
+00:38:30,956 --> 00:38:33,656
+anotar, apenas me assistam,
+para ter um feeling de como é
+
+811
+00:38:33,656 --> 00:38:35,976
+fazer isso e então, quando vocês
+forem fazer, usando o walkthrough
+
+812
+00:38:35,976 --> 00:38:37,946
+vocês vão estar tipo "ah, eu
+estou entendendo tudo isso"
+
+813
+00:38:38,156 --> 00:38:40,736
+e de fato o walkthrough,
+vocês terão que fazê-lo
+
+814
+00:38:40,736 --> 00:38:41,866
+porque é necessário
+para o homework.
+
+815
+00:38:41,866 --> 00:38:44,656
+E ele também terá muito mais
+detalhes do que eu vou ser capaz
+
+816
+00:38:44,656 --> 00:38:45,676
+de cobrir em meia hora.
+
+
+817
+00:38:46,056 --> 00:38:47,966
+Ok, eu vou apenas tentar
+dar a vocês uma idéia,
+
+818
+00:38:48,356 --> 00:38:50,576
+o walkthrough é que vai mostrar
+todos os tipos diferentes
+
+819
+00:38:50,576 --> 00:38:52,746
+de botões no Xcode e
+o que eles fazem e coisas assim.
+
+820
+00:38:52,786 --> 00:38:57,016
+Eu não terei tempo para
+passar por tudo isso.
+
+821
+00:38:57,146 --> 00:39:01,656
+E na próxima semana, próxima terça,
+eu vou continuar essa demonstração
+
+822
+00:39:01,656 --> 00:39:04,746
+e construir um jogo de cartas
+muito mais complicado
+
+823
+00:39:04,746 --> 00:39:07,406
+que vai fazer pares de verdade,
+você vai receber algumas cartas
+
+824
+00:39:07,406 --> 00:39:11,076
+você tem que clicar nelas,
+tipo "jogo da memória",
+
+825
+00:39:11,076 --> 00:39:13,146
+sabe? aquele jogo onde você
+vira a carta e então você
+
+826
+00:39:13,146 --> 00:39:14,896
+tem que lembrar qual era e então
+você vira outra carta
+
+827
+00:39:14,896 --> 00:39:16,486
+e então você tem que tentar
+fazer um par e você ganha os pontos
+
+828
+00:39:16,486 --> 00:39:19,046
+se você fez o par. Vamos fazer
+isso na terça-feira.
+
+829
+00:39:19,086 --> 00:39:22,516
+Vocês vão por o model e tudo,
+daí nós estaremos prontos
+
+830
+00:39:22,716 --> 00:39:24,996
+para usar nosso model pra isso.
+
+
+831
+00:39:25,456 --> 00:39:30,366
+Ok, eu também vou mostrar a vocês
+esse slide de MVC novamente,
+
+832
+00:39:30,766 --> 00:39:32,766
+vêem como ele está
+mostrando aquele outlet
+
+833
+00:39:33,186 --> 00:39:34,566
+e então o "target action",
+
+
+834
+00:39:34,836 --> 00:39:37,336
+essas são as duas coisas principais
+que eu vou mostrar a vocês hoje.
+
+835
+00:39:37,636 --> 00:39:40,426
+Eu oviamente vou mostrar
+a vocês o MVC, pelo menos
+
+836
+00:39:40,426 --> 00:39:44,076
+a parte do C e do V mas eu
+também vou mostrar o "target action".
+
+837
+00:39:44,076 --> 00:39:45,296
+Eu também vou usar um "outlet".
+
+
+838
+00:39:45,896 --> 00:39:49,186
+Ok, então eu quis colocar
+esse slide pra ficar tipo
+
+839
+00:39:49,626 --> 00:39:52,366
+como uma imagem na mente de vocês
+enquanto eu faço essa demo
+
+840
+00:39:52,366 --> 00:39:54,276
+e então vocês lembrarão
+o que eu quis dizer
+
+841
+00:39:54,276 --> 00:39:56,376
+com "target action" e outlet.
+
+
+842
+00:39:57,296 --> 00:40:00,436
+Vamos lá. A primeira coisa
+que vocês vão fazer
+
+843
+00:40:00,436 --> 00:40:02,466
+quando vocês pegarem o homework
+é que vocês vão
+
+844
+00:40:02,466 --> 00:40:07,326
+não pro iTunes, pra App Store
+no seu Mac, então quando
+
+845
+00:40:07,326 --> 00:40:10,056
+eu vou na App Store no meu Mac,
+se eu digitar Xcode
+
+846
+00:40:10,506 --> 00:40:13,766
+e procurar, vocês vão ver
+o Xcode vai ser o primeiro resultado
+
+847
+00:40:14,066 --> 00:40:16,276
+e vocês vão aqui
+e vão clicar aqui,
+
+848
+00:40:16,276 --> 00:40:19,226
+não vai dizer "instalado",
+vai dizer grátis (free)
+
+849
+00:40:19,846 --> 00:40:21,516
+porque ele é grátis
+e vocês vão clicar aqui
+
+850
+00:40:21,516 --> 00:40:24,646
+e ele vai baixar o Xcode,
+é meio grande e então
+
+851
+00:40:24,646 --> 00:40:26,316
+vocês estarão prontos.
+
+
+852
+00:40:26,426 --> 00:40:27,566
+Isso é tudo que vocês precisam
+
+
+853
+00:40:27,566 --> 00:40:30,806
+para começar. Não,
+não é no iTunes.
+we're not doing iTunes. 
+
+854
+00:40:31,176 --> 00:40:33,056
+Então, o que você faz? Você vai
+
+
+855
+00:40:33,056 --> 00:40:36,256
+ter esse app, você vai vê-lo
+logo aqui, Xcode, ok?
+
+856
+00:40:36,726 --> 00:40:40,816
+e você vai rodá-lo
+e eu vou esconder os outros.
+
+857
+00:40:42,036 --> 00:40:44,526
+Esse é o Xcode quando você roda,
+vai aparecer essa tela,
+
+858
+00:40:44,526 --> 00:40:47,126
+É a splash screen dele,
+bem aqui vai ter uma lista
+
+859
+00:40:47,126 --> 00:40:49,586
+com todas
+as aplicações que você
+
+860
+00:40:49,586 --> 00:40:51,176
+já criou, ok?
+
+
+861
+00:40:51,606 --> 00:40:53,776
+Agora, eu não criei nenhuma
+até agora, então não vai ter
+
+862
+00:40:53,776 --> 00:40:56,306
+nenhuma aqui. Tem alguns botões
+aqui em baixo que são tipo
+
+863
+00:40:56,306 --> 00:40:58,126
+auto-explicativos,
+mas o botão real
+
+864
+00:40:58,126 --> 00:41:00,606
+que importa aqui é o
+"Create a new Xcode project"
+
+865
+00:41:01,056 --> 00:41:03,016
+então vamos clicar nesse
+enorme botão aqui
+
+866
+00:41:03,486 --> 00:41:06,646
+para criar um projeto e ele vai
+mostrar imediatamente
+
+867
+00:41:06,646 --> 00:41:09,876
+essa janela de escolha de template
+
+
+868
+00:41:10,266 --> 00:41:13,886
+que nos deixa escolher vários
+tipos diferentes de aplicações
+
+869
+00:41:14,216 --> 00:41:17,336
+que o Xcode vai criar um
+template de código pra gente
+
+870
+00:41:17,336 --> 00:41:21,386
+para começarmos. Não é
+muito código mas é tipo
+
+871
+00:41:21,386 --> 00:41:23,156
+um modo de fazer você começar
+com esse tipo de aplicação.
+
+872
+00:41:23,156 --> 00:41:25,586
+Bom, nessa aula eu acho que
+nós vamos sempre escolher
+
+873
+00:41:25,586 --> 00:41:27,626
+esse aqui que
+você começará
+
+874
+00:41:27,626 --> 00:41:30,726
+com um único MVC que é o que
+"Single view application" significa,
+
+875
+00:41:30,966 --> 00:41:31,806
+um MVC só.
+
+
+876
+00:41:31,856 --> 00:41:35,266
+Vocês vão construir apps
+muito complicados, com muitos MVC's
+
+877
+00:41:35,266 --> 00:41:37,636
+nesse curso, mas vocês começara,
+todo mundo, eu acho, começa
+
+878
+00:41:37,636 --> 00:41:38,476
+com um MVC só.
+
+
+879
+00:41:38,526 --> 00:41:42,206
+Esses outros templates colocam
+outras coisas no código, que
+
+880
+00:41:42,206 --> 00:41:43,406
+vocês vão aprender sozinhos;
+vocês não vão
+
+881
+00:41:43,406 --> 00:41:44,526
+deixar que os templates
+façam isso por vocês
+
+882
+00:41:45,146 --> 00:41:48,086
+Certo, então eu clico
+em "next" e agora ele pergunta
+
+883
+00:41:48,086 --> 00:41:49,756
+por algumas informações,
+ele quer um nome,
+
+884
+00:41:50,656 --> 00:41:52,326
+nós estamos construindo
+um jogo cartas de fazer par
+
+885
+00:41:52,326 --> 00:41:56,076
+então eu acho que um nome bom
+que eu pensei é "Matchismo",
+
+886
+00:41:56,606 --> 00:42:00,316
+ok? Então é assim que vai
+chamar o nosso app
+
+887
+00:42:00,626 --> 00:42:04,056
+e em "Organization", você pode
+colocar o que quiser aqui,
+
+888
+00:42:04,056 --> 00:42:07,456
+"Seu Nome Apps ltda.", ou
+qualquer outra coisa. Isso só serve...
+
+889
+00:42:07,456 --> 00:42:09,086
+Isso serve para
+coisas do tipo
+
+890
+00:42:09,086 --> 00:42:11,056
+copyright e coisas assim.
+
+
+891
+00:42:11,606 --> 00:42:13,036
+"Copyright Stanford University"
+ou qualquer coisa assim,
+
+892
+00:42:13,036 --> 00:42:14,896
+ele coloca isso em cada arquivo.
+
+
+893
+00:42:15,066 --> 00:42:18,126
+Isso é interessante, certo?
+Aqui, esse "company identifier",
+
+894
+00:42:18,126 --> 00:42:21,166
+recomendo fortemente colocar
+a notação "DNS reverso"
+
+895
+00:42:21,166 --> 00:42:27,046
+que é "edu.Stanford.cs193p."
+e talvez seu endereço de email
+
+896
+00:42:27,046 --> 00:42:27,966
+da Stanford aqui.
+
+
+897
+00:42:27,966 --> 00:42:30,976
+Esse aqui é bom que seja
+um identificador único
+
+898
+00:42:30,976 --> 00:42:32,616
+que identifique unicamente
+o seu app,
+
+899
+00:42:33,086 --> 00:42:35,466
+é por isso que usamos o DNS reverso
+porque esse é um modo bom
+
+900
+00:42:35,466 --> 00:42:37,026
+de se identificar unicamente,
+
+
+901
+00:42:37,496 --> 00:42:40,956
+certo? Não será muito comum
+outra pessoa colocar
+
+902
+00:42:40,956 --> 00:42:46,876
+"edu.Stanford.cs193p."
+mais o seu ID da Stanford.
+
+903
+00:42:46,876 --> 00:42:51,276
+O próximo é esse negócio de
+prefixo de classe aqui. Esse template
+
+904
+00:42:51,276 --> 00:42:55,846
+vai criar um controller para nós,
+tipo um controller em branco
+
+905
+00:42:56,416 --> 00:43:00,226
+e ele precisa nomear essa classe
+e se nós não colocarmos nada
+
+906
+00:43:00,226 --> 00:43:03,016
+nesse campo, se nós deixarmos
+em branco, então ele vai chamar
+
+907
+00:43:03,016 --> 00:43:06,436
+essa classe de "ViewController",
+esse será o nome da classe,
+
+908
+00:43:06,436 --> 00:43:08,916
+é meio que uma ViewController
+genérica, então eu vou
+
+909
+00:43:08,916 --> 00:43:10,796
+chamar... vou
+colocar CardGame aqui
+
+910
+00:43:11,026 --> 00:43:13,646
+assim ele vai chamar meu controller
+de CardGameViewController.
+
+911
+00:43:14,436 --> 00:43:17,096
+Ok? Então esse é só um prefixo
+que vamos colocar na frente
+
+912
+00:43:17,096 --> 00:43:18,916
+do controller que ele cria.
+
+
+913
+00:43:19,026 --> 00:43:23,006
+Devices. Existem três tipos diferentes
+de dispositivos para os quais podemos
+Devices, there's three different
+kinds of devices you can develop 
+
+914
+00:43:23,006 --> 00:43:25,146
+desenvolver. Obviamente iPhone
+e iPad,
+
+915
+00:43:25,546 --> 00:43:28,746
+o terceiro "Universal" é uma
+aplicação que funciona
+
+916
+00:43:28,746 --> 00:43:32,816
+tanto no iPhone como no iPad
+e o Xcode tem um mecanismo
+
+917
+00:43:33,006 --> 00:43:34,836
+para ter duas views diferentes
+
+
+918
+00:43:35,026 --> 00:43:38,376
+com o mesmo controller,
+é assim que implementamos um app
+
+919
+00:43:38,376 --> 00:43:41,156
+que funciona nos dois, porque
+o iPad só é diferente porque ele tem
+
+920
+00:43:41,156 --> 00:43:45,536
+mais bits, paradigmas de UI
+diferentes. Nós vamos fazer
+
+921
+00:43:46,006 --> 00:43:48,776
+para iPhone aqui basicamente
+porque eu preciso de espaço
+
+922
+00:43:48,776 --> 00:43:51,226
+porque não tenho muitos pixels
+para trabalhar aqui
+
+923
+00:43:51,226 --> 00:43:53,396
+então o iPhone é menor.
+
+
+924
+00:43:53,666 --> 00:43:58,366
+E então "Use Storyboard",
+Storyboard é o modo como
+
+925
+00:43:58,366 --> 00:44:01,876
+fazemos as nossas views,
+desde o iOS 5, não lembro bem
+
+926
+00:44:01,876 --> 00:44:04,806
+é a partir do iOS 4 ou 5 em diante.
+Vamos sempre usar Storyboards
+
+927
+00:44:04,806 --> 00:44:07,136
+nesse curso. Nós não vamos usar
+a maneira antiga de fazer,
+
+928
+00:44:07,136 --> 00:44:09,026
+que são chamaos arquivos XIB.
+
+
+929
+00:44:09,486 --> 00:44:11,586
+"Automatic Reference Counting"
+é aquilo que eu falei para vocês
+
+930
+00:44:11,586 --> 00:44:13,846
+sobre manter a contagem
+do que está na heap para você,
+
+931
+00:44:14,136 --> 00:44:16,096
+ok? Então definitivamente
+queremos isso o tempo todo,
+
+932
+00:44:16,096 --> 00:44:19,556
+se você desligar isso, você
+vai estar um mundo de dor, ok?
+
+933
+00:44:19,556 --> 00:44:21,956
+E "Unit Testing". Pode ser que
+queiramos fazer unit testing
+
+934
+00:44:21,956 --> 00:44:23,446
+no fim do trimestre, mas
+nós não vamos fazer agora
+
+935
+00:44:23,446 --> 00:44:24,836
+então você deve deixar
+esse desligado.
+
+936
+00:44:25,386 --> 00:44:28,646
+Certo, então nós o criamos e agora
+ele está perguntando onde você quer
+
+937
+00:44:28,646 --> 00:44:33,196
+salvar esse projeto, ok? Eu
+recomendo fortemente vocês colocarem
+
+938
+00:44:33,196 --> 00:44:36,686
+em um diretório chamado "developer"
+no seu home directory.
+
+939
+00:44:36,686 --> 00:44:39,496
+Então, aqui estou eu, no meu
+home directory, é só "CS193P",
+
+940
+00:44:39,496 --> 00:44:41,776
+eu não tenho um "developer", entÃo
+eu vou criar uma nova pasta,
+
+941
+00:44:42,546 --> 00:44:46,116
+"developer", ok? Está criado
+agora e selecionado
+
+942
+00:44:46,406 --> 00:44:48,296
+então agora está pronto
+para criar meu projeto aqui,
+
+943
+00:44:48,296 --> 00:44:50,396
+eu definitivamente faria isso se
+fosse vocês. Não o coloque
+
+944
+00:44:50,396 --> 00:44:53,496
+em qualquer lugar.
+Coloque no seu home directory,
+
+945
+00:44:53,496 --> 00:44:55,186
+na pasta developer,
+e então, a propósito,
+
+946
+00:44:55,186 --> 00:44:58,496
+use o "Time Machine" ou algo assim
+para fazer backup
+
+947
+00:44:58,496 --> 00:45:01,636
+das suas coisas o tempo todo.
+Eu tenho o time machine rodando
+
+948
+00:45:01,636 --> 00:45:03,676
+então eu nunca perco mais do que
+uma hora de trabalho
+
+949
+00:45:04,026 --> 00:45:05,586
+e eu não quero ouvir vocês
+vindo a mim e dizendo:
+
+950
+00:45:05,586 --> 00:45:09,106
+"Oh, eu trabalhei dia e noite
+no meu programa
+
+951
+00:45:09,106 --> 00:45:10,516
+e agora ele sumiu".
+
+
+952
+00:45:10,516 --> 00:45:14,676
+Ok? Faça backups. Faça backups
+na rede, especialmente lá
+
+953
+00:45:14,676 --> 00:45:17,046
+porque mesmo se seu computador
+explodir, você ainda vai estar ok.
+
+954
+00:45:17,476 --> 00:45:22,606
+Controle de versão aqui. Xcode
+tem uma integração incrível
+
+955
+00:45:22,606 --> 00:45:25,286
+com gerenciamento de controle
+de versão (SCM), que é o que
+
+956
+00:45:25,286 --> 00:45:27,576
+você usa quando você está trabalhando
+em um time e todos vocês estão
+
+957
+00:45:27,576 --> 00:45:30,016
+fazendo alterações e vocês querem
+fazer merge dessas alterações,
+
+958
+00:45:30,016 --> 00:45:32,176
+não é o caso, então você pode
+deixar essa caixa desmarcada.
+
+959
+00:45:32,586 --> 00:45:36,826
+Na verdade, as vezes eu gosto
+de desenvolver, mesmo que eu
+
+960
+00:45:36,936 --> 00:45:39,886
+esteja sozinho, com isso ligado,
+porque daí eu consigo ver minhas
+
+961
+00:45:39,886 --> 00:45:42,356
+alterações e olhar pra trás e
+perguntar: por que eu fiz essa
+
+962
+00:45:42,766 --> 00:45:44,916
+alteração?" Mas por enquanto
+vamos deixar isso desligado.
+
+963
+00:45:45,716 --> 00:45:50,446
+Ok, então eu clico "create",
+essa é a visão básica,
+
+964
+00:45:50,446 --> 00:45:53,276
+o visão de sumário básica 
+do nosso projeto, nós vamos
+
+965
+00:45:53,276 --> 00:45:56,136
+passar por todas as partes dele,
+mas não hoje.
+
+966
+00:45:56,716 --> 00:45:58,166
+Ok? Nós não vamos
+olhar essas coisas.
+
+967
+00:45:58,166 --> 00:46:00,036
+Tem essas perguntas que vocês
+acabaram de responder,
+
+968
+00:46:00,036 --> 00:46:02,756
+e algumas outras coisas aqui
+embaixo, algumas imagens
+
+969
+00:46:02,756 --> 00:46:04,046
+e ícones e coisas do tipo.
+
+
+970
+00:46:04,476 --> 00:46:07,136
+O que nós vamos focar são
+as coisas aqui. Essa área
+
+971
+00:46:07,136 --> 00:46:10,686
+na esquerda é chamada
+"File Navigator" e ela tem
+
+972
+00:46:10,686 --> 00:46:14,206
+uma lista com todos os
+arquivos na sua aplicação, certo?
+
+973
+00:46:14,536 --> 00:46:16,276
+Aqui o que nós vemos:
+
+
+974
+00:46:16,826 --> 00:46:19,206
+Tem esse
+CardGameAppDelegate,
+
+975
+00:46:19,206 --> 00:46:22,546
+".m" e ".h", isso é algo...
+é basicamente como uma
+
+976
+00:46:22,546 --> 00:46:25,876
+grande variável global para
+o seu app. Nós não o usamos mais,
+
+977
+00:46:25,876 --> 00:46:29,586
+ok? Mas lá no iOS 3
+você tinha que usá-lo
+
+978
+00:46:29,776 --> 00:46:33,396
+para ter mais funcionalidades,
+mas a partir do iOS 5 e iOS 6
+
+979
+00:46:33,396 --> 00:46:35,876
+foi feito um
+belo trabalho de
+
+980
+00:46:35,876 --> 00:46:38,596
+design do modelo do MVC.
+Vocês não vão precisar mais dele
+
+981
+00:46:38,596 --> 00:46:42,896
+e, na verdade, eu gosto
+de selecioná-lo e arrastá-lo
+
+982
+00:46:43,206 --> 00:46:46,656
+aqui pra baixo,
+em "Supporting Files"
+
+983
+00:46:46,656 --> 00:46:49,136
+"Supporting Files" são coisas
+como o ícone do seu app,
+
+984
+00:46:49,136 --> 00:46:51,246
+coisas que não vamos ficar olhando...
+coisas que estão no projeto,
+
+985
+00:46:51,546 --> 00:46:53,676
+mas são coisas que você
+não olha frequentemente
+
+986
+00:46:53,676 --> 00:46:55,586
+por isso que eles são
+Supporting Files.
+
+987
+00:46:55,856 --> 00:46:58,346
+Então vou mover isso
+para baixo e escondê-lo.
+
+988
+00:46:58,676 --> 00:47:01,066
+Então só nos resta
+esses três arquivos
+
+989
+00:47:01,066 --> 00:47:04,546
+E o que são eles? Esse dois
+são o seu controller,
+
+990
+00:47:04,846 --> 00:47:06,866
+vêem? É um .h e um .m,
+
+
+991
+00:47:06,956 --> 00:47:10,536
+é a sua classe controller
+e esse aqui é a sua view
+
+992
+00:47:11,656 --> 00:47:14,946
+você deve entender bem o que
+está acontecendo aqui
+
+993
+00:47:15,166 --> 00:47:18,196
+model, view, controller.
+Nós temos o controller. Temos a view.
+
+994
+00:47:18,926 --> 00:47:21,286
+Certo? Então vamos começar
+com a view, ver qual a cara dela.
+
+995
+00:47:21,286 --> 00:47:24,096
+É um arquivo branco,
+eu só cliquei nela,
+
+996
+00:47:24,156 --> 00:47:26,906
+É um arquivo branco,
+podem perceber como é alta e fina,
+
+997
+00:47:27,136 --> 00:47:28,126
+por que vocês acham que é tão alta
+
+
+998
+00:47:28,126 --> 00:47:31,706
+e fina?
+Porque é para o iPhone 5.
+
+999
+00:47:32,686 --> 00:47:34,476
+Certo? O iPhone 5
+é alto e fino.
+
+1000
+00:47:34,916 --> 00:47:38,516
+Estou fazendo meu desenvolvimento
+e eu recomendo vocês a fazerem também.
+
+1001
+00:47:38,516 --> 00:47:41,666
+Assim, vocês conseguem seguir
+o pequeno walkthrough mais facilmente.
+
+1002
+00:47:41,666 --> 00:47:43,516
+É exatamente a mesma cara...
+Eu vou fazê-lo
+
+1003
+00:47:43,516 --> 00:47:46,816
+no aspecto do iPhone antigo,
+na maior parte do tempo
+
+1004
+00:47:46,816 --> 00:47:48,576
+porque eu preciso
+de espaço na tela, ok?
+
+1005
+00:47:48,576 --> 00:47:49,956
+Por nenhum outro motivo.
+
+
+1006
+00:47:50,366 --> 00:47:53,066
+Nós vamos falar sobre
+como você constrói aplicações
+
+1007
+00:47:53,066 --> 00:47:56,856
+que vão funcionar em devices
+com aspect ratio diferentes
+
+1008
+00:47:56,856 --> 00:47:58,826
+não só iPad x iPhone,
+mas até mesmo dois tipos
+
+1009
+00:47:59,156 --> 00:48:04,036
+diferentes de iPhone, certo?
+Os mais altos e os menores e daí
+
+1010
+00:48:04,036 --> 00:48:11,336
+nós vamos falar sobre isso e,
+na verdade, nesse mesmo tema,
+
+1011
+00:48:11,336 --> 00:48:14,616
+vamos falar sobre um mecanismo
+no iOS 6, chamado auto-layout
+
+1012
+00:48:14,616 --> 00:48:17,926
+que é uma maneira realmente
+poderosa para fazer isso
+
+1013
+00:48:17,926 --> 00:48:19,856
+e assim sua interface de usuário
+se ajusta dependendo 
+
+1014
+00:48:19,856 --> 00:48:23,186
+do device que estiver rodando,
+ou se ele rotacionar ou
+
+1015
+00:48:23,186 --> 00:48:26,056
+coisas assim, mas nós não vamos
+usar isso para esse projeto
+
+1016
+00:48:26,286 --> 00:48:27,746
+então você pode desligar isso.
+
+
+1017
+00:48:28,436 --> 00:48:30,526
+Isso está no walkthrough,
+então certifique-se de desligar,
+
+1018
+00:48:30,816 --> 00:48:34,096
+ok? "Use auto-layout". Nós
+vamos fazer isso para evitar
+
+1019
+00:48:34,096 --> 00:48:37,196
+qualquer tipo de confusão
+nos estágios finais
+
+1020
+00:48:37,196 --> 00:48:39,746
+do desenvolvimento
+dessa aplicação, ok?
+
+1021
+00:48:39,746 --> 00:48:41,136
+Então, desligue.
+
+
+1022
+00:48:41,166 --> 00:48:45,276
+Agora nós vamos ir direto
+construir nossa view
+
+1023
+00:48:45,276 --> 00:48:48,826
+e então nós vamos linkar
+nosso controller nela, em um momento.
+
+1024
+00:48:48,826 --> 00:48:51,516
+O que nossa view tem? Nossa view
+tem apenas um botão que
+
+1025
+00:48:51,516 --> 00:48:53,596
+representa a carta, que é
+a view inteira e eu
+
+1026
+00:48:53,596 --> 00:48:57,096
+só tenho 19 minutos sobrando
+então isso é tudo que eu
+
+1027
+00:48:57,096 --> 00:48:59,726
+posso fazer nesse tempo.
+Na verdade, eu posso ainda
+
+1028
+00:48:59,726 --> 00:49:02,506
+fazer uma coisa a mais.
+Então, como nós achamos botões
+
+1029
+00:49:02,506 --> 00:49:05,196
+e como nós construímos nossa view?
+Bom, tudo isso é feito graficamente.
+
+1030
+00:49:05,196 --> 00:49:08,176
+No Xcode nós construímos nossa
+interface com o usuário graficamente.
+
+1031
+00:49:08,596 --> 00:49:11,386
+Ok? Nós não digitamos um monte
+de código, "põe o botão ali,
+
+1032
+00:49:11,386 --> 00:49:14,326
+faça isso"... nós construímos
+tudo graficamente.
+
+1033
+00:49:14,616 --> 00:49:17,116
+E, na verdade, ele não estará
+gerando código, mesmo que alguns
+
+1034
+00:49:17,116 --> 00:49:18,706
+de vocês possam estar acostumados
+
+
+1035
+00:49:18,706 --> 00:49:21,656
+a sistemas onde, é, existe algumas
+coisas gráficas para construir UI,
+
+1036
+00:49:21,656 --> 00:49:23,576
+mas na verdade ele está
+gerando um monte de código
+
+1037
+00:49:23,576 --> 00:49:26,306
+que diz "coloque um botão aqui,
+mova isso para outro lugar",
+
+1038
+00:49:26,306 --> 00:49:27,536
+não estamos gerando nenhum código.
+
+
+1039
+00:49:27,786 --> 00:49:29,396
+Estamos na verdade colocando
+os objetos diretamente lá
+
+1040
+00:49:29,676 --> 00:49:31,926
+e então tirando uma foto deles
+e então quando você roda
+
+1041
+00:49:31,926 --> 00:49:35,606
+ele basicamente injeta
+a vida de volta
+
+1042
+00:49:35,606 --> 00:49:38,286
+naquela foto e começa
+a andar de novo.
+
+1043
+00:49:38,776 --> 00:49:40,446
+Nós vamos falar sobre como
+
+
+1044
+00:49:40,446 --> 00:49:42,216
+esse mecanismo funciona,
+mais tarde nesse trimestre.
+
+1045
+00:49:43,586 --> 00:49:48,436
+Agora, como nós arrastamos um botão
+ou algo assim? Bom, esse lado
+
+1046
+00:49:48,436 --> 00:49:52,866
+da tela, a propósito, esse navegador
+pode ser escondido com esse
+
+1047
+00:49:52,866 --> 00:49:56,056
+botão aqui em cima, vêem?
+Ele esconde e se livra dele
+
+1048
+00:49:56,056 --> 00:49:59,796
+e outras coisas desse lado
+podem ser escondidas também, ok?
+
+1049
+00:50:00,136 --> 00:50:02,986
+Isso é o que nós chamamos de
+"Utilities Area". Tem um monte
+
+1050
+00:50:02,986 --> 00:50:05,026
+de coisas diferentes
+aqui no topo,
+
+1051
+00:50:05,286 --> 00:50:07,396
+consultem o walkthrough.
+Eu não tenho tempo
+
+1052
+00:50:07,396 --> 00:50:09,846
+para passar por todos eles.
+
+
+1053
+00:50:09,846 --> 00:50:12,326
+Então, aqui embaixo tem
+essa pequena área aqui
+
+1054
+00:50:12,546 --> 00:50:17,246
+onde é a paleta, ok? E nós
+queremos estar nessa aba,
+
+1055
+00:50:17,246 --> 00:50:20,896
+essa que parece um pequeno cubo
+que são objetos que podemos arrastar
+
+1056
+00:50:20,896 --> 00:50:23,296
+para a nossa view. Então se você
+scrollar pra baixo aqui, você vê
+
+1057
+00:50:23,296 --> 00:50:29,016
+que existem "labels" e botões
+e "switches" e "imageViews"
+
+1058
+00:50:29,016 --> 00:50:32,256
+e "web views" inteiros. É só
+arrastar eles e nós vamos estar
+
+1059
+00:50:32,256 --> 00:50:33,776
+fazendo isso
+durante todo o trimestre.
+
+1060
+00:50:34,096 --> 00:50:35,976
+Hoje nós vamos começar
+com o mais simples
+
+1061
+00:50:35,976 --> 00:50:38,626
+que é o "Round Rect Button",
+então eu escolho ele
+
+1062
+00:50:38,626 --> 00:50:41,226
+e quando eu arrasto, vocês
+podem ver que ele vira um botão
+
+1063
+00:50:41,586 --> 00:50:45,006
+e enquanto eu arrasto ele na
+minha view, vêem essas pequenas
+
+1064
+00:50:45,006 --> 00:50:48,126
+linhas azuis para me ajudar a colocar
+ele no canto, ou colocar no centro,
+
+1065
+00:50:48,986 --> 00:50:53,616
+vêem como está me ajudando aqui?
+Então vamos colocar no meio
+
+1066
+00:50:53,956 --> 00:50:56,846
+e uma vez lá, conseguimos
+redimensioná-lo
+
+1067
+00:50:56,846 --> 00:50:58,986
+com esses pequenos manuseadores,
+vocês vêem eles aqui do lado?
+
+1068
+00:50:58,986 --> 00:51:01,556
+então vamos lá... é um
+pouco estreito
+
+1069
+00:51:01,556 --> 00:51:03,826
+alguma coisa com um
+aspect ratio mais de carta,
+
+1070
+00:51:03,826 --> 00:51:07,076
+vamos tentar alguma coisa assim,
+ou algo... assim fica um botão
+
+1071
+00:51:07,076 --> 00:51:10,996
+com o formato de carta
+e, novamente, nós podemos pegá-lo
+
+1072
+00:51:10,996 --> 00:51:13,556
+e movê-lo a qualquer hora
+e as linhas azuis nos ajudarão,
+
+1073
+00:51:14,116 --> 00:51:14,486
+ok?
+
+
+1074
+00:51:14,916 --> 00:51:18,316
+Mas existem outras coisas
+que queremos setar nesse botão.
+
+1075
+00:51:18,316 --> 00:51:24,516
+Tenho certezai, além do tamanho,
+nós podemos fazer isso indo aqui
+
+1076
+00:51:24,516 --> 00:51:28,846
+e aqui em cima temos
+esse carinha aqui.
+
+1077
+00:51:28,846 --> 00:51:31,396
+Eu não sei o que isso era
+pra ser, em termo de
+
+1078
+00:51:31,646 --> 00:51:34,896
+ícone, mas esse é
+o "Attributes Inspector".
+
+1079
+00:51:35,496 --> 00:51:39,186
+Ok? E ele deixa você editar
+todos os atributor
+
+1080
+00:51:39,616 --> 00:51:41,816
+do que estiver selectionado,
+que no caso é um botão.
+
+1081
+00:51:42,386 --> 00:51:44,896
+Agora você pode ver um botão
+tem vários atributos
+
+1082
+00:51:44,896 --> 00:51:46,586
+e, na verdade, isso é
+orientado a objetos
+
+1083
+00:51:46,586 --> 00:51:49,226
+aqui estão os atributos
+que ele herda
+
+1084
+00:51:49,226 --> 00:51:51,286
+da sua superclasse
+Control,
+
+1085
+00:51:51,286 --> 00:51:52,526
+A superclasse do Button
+é Control,
+
+1086
+00:51:52,916 --> 00:51:55,526
+e até mesmo aquelas herdadas
+até a View,
+
+1087
+00:51:55,666 --> 00:51:57,026
+que é a superclasse do Control.
+
+
+1088
+00:51:57,026 --> 00:51:59,346
+Esse aqui é tipo
+um "Inspector" legal
+
+1089
+00:51:59,346 --> 00:52:02,576
+nos entido de que ele herda
+a habilidade de inspectionar
+
+1090
+00:52:02,786 --> 00:52:05,636
+de todos objetos. Que tipo
+de coisas podem ser ditas
+
+1091
+00:52:05,636 --> 00:52:07,926
+sobre um botão aqui? Bom,
+obviamente temos a fonte
+
+1092
+00:52:07,926 --> 00:52:10,246
+e a cor do texto, podemos
+setar sombras,
+
+1093
+00:52:10,576 --> 00:52:13,596
+o offset da sombra,
+todos os tipos de coisas aqui.
+
+1094
+00:52:14,176 --> 00:52:15,136
+Porém, a primeira coisa que
+
+
+1095
+00:52:15,136 --> 00:52:21,296
+vou mudar é somente o título.
+Agora, o modo que nós vamos
+
+1096
+00:52:21,296 --> 00:52:24,386
+implementar nossa carta, o verso
+será o botão no estado normal,
+
+1097
+00:52:24,386 --> 00:52:27,516
+a frente será
+o botão no seu estado
+
+1098
+00:52:27,516 --> 00:52:28,766
+selecionado.
+
+
+1099
+00:52:29,366 --> 00:52:31,986
+Ok? Um botÃo tem uma property
+chamada selected,
+
+1100
+00:52:31,986 --> 00:52:34,606
+que na verdade herda de Control,
+vêem? Logo aqui,
+
+1101
+00:52:35,146 --> 00:52:38,326
+"Content Selected", certo?
+Aí está a property que
+
+1102
+00:52:38,576 --> 00:52:40,016
+o Button herda
+de Control
+
+1103
+00:52:40,246 --> 00:52:44,086
+e o Button tem a habilidade
+de setar o seu título
+
+1104
+00:52:44,596 --> 00:52:47,146
+no seu estado selecionado
+separadamente do título
+
+1105
+00:52:47,146 --> 00:52:49,016
+no seu estado default, vêem?
+Eu estou apenas trocando e
+
+1106
+00:52:49,016 --> 00:52:52,076
+retrocando e vocês percebem esse
+"selected title" aqui está mudando
+
+1107
+00:52:52,076 --> 00:52:56,386
+de "Button", que é o que vemos aqui,
+para nada, branco,
+
+1108
+00:52:56,536 --> 00:52:58,656
+está em branco
+para o estado selecionado.
+
+1109
+00:52:58,896 --> 00:53:03,876
+Então eu vou fazer o tútilo
+no estado normal ser "O verso"
+
+1110
+00:53:04,506 --> 00:53:05,806
+e eu vou fazer o verso
+
+
+1111
+00:53:05,806 --> 00:53:08,006
+do meu botão ter o logo
+da Apple nele.
+
+1112
+00:53:08,916 --> 00:53:11,086
+Acredite ou não, existe um
+caractere no Unicode
+
+1113
+00:53:11,086 --> 00:53:16,376
+para o logo da Apple,
+é Alt + Shift + k. Certo,
+
+1114
+00:53:17,246 --> 00:53:21,606
+então aqui está o logo da Apple...
+boom! Nós temos o verso que é a maçã,
+
+1115
+00:53:21,606 --> 00:53:23,176
+essas são as cartas de jogo
+da Apple.
+
+1116
+00:53:23,216 --> 00:53:27,106
+Esse iconezinho pequeno,
+eu quero deixá-lo maior
+
+1117
+00:53:27,106 --> 00:53:29,246
+então eu vou
+selecioná-lo aqui
+
+1118
+00:53:29,486 --> 00:53:31,526
+do "button inspector",
+vou apenas clicar aqui
+
+1119
+00:53:31,526 --> 00:53:33,406
+e fazê-lo maior e maior
+e maior até
+
+1120
+00:53:33,406 --> 00:53:34,276
+mais ou menos aqui,
+
+
+1121
+00:53:34,276 --> 00:53:36,356
+Eu poderia também
+mudar a cor do texto,
+
+1122
+00:53:36,356 --> 00:53:39,746
+certo? Basta escolher cores
+daqui, qualquer uma,
+
+1123
+00:53:40,116 --> 00:53:41,256
+mas vamos deixar assim, ok?
+
+
+1124
+00:53:41,916 --> 00:53:44,186
+Vocês podem brincar com todas
+essas coisas que vocês podem
+
+1125
+00:53:44,496 --> 00:53:46,686
+setar aqui. Pronto, setamos
+o verso da carta, ótimo.
+
+1126
+00:53:46,686 --> 00:53:49,696
+Agora vamos setar a frente
+da carta e para isso, eu vou
+
+1127
+00:53:49,696 --> 00:53:55,136
+para o estado selecionado e aqui
+eu vou digitar "as de paus",
+
+1128
+00:53:55,286 --> 00:53:57,516
+ok? Onde eu vou achar
+o caracter de paus?
+
+1129
+00:53:57,696 --> 00:53:59,576
+Sim, existe um caractere
+para isso também
+
+1130
+00:53:59,986 --> 00:54:02,226
+e vocês podem achar esses
+caracteres diferentes indo
+
+1131
+00:54:02,226 --> 00:54:07,116
+no Edit Menu, até Special
+Characters e daí, se você for
+
+1132
+00:54:07,116 --> 00:54:09,056
+aqui, várias coisas,
+setas e todo tipo de coisa
+
+1133
+00:54:09,056 --> 00:54:12,226
+em "pictographs" vocês podem ver
+que eles tem os quatro naipes aqui
+
+1134
+00:54:12,606 --> 00:54:16,796
+então eu vou colocar meu "paus" ali,
+agora eu tenho um as de paus.
+
+1135
+00:54:17,106 --> 00:54:19,086
+Agora, eu não vejo o
+as de paus aqui. Isso porque
+
+1136
+00:54:19,086 --> 00:54:22,286
+esse botão está no estado normal,
+mas se eu for aqui embaixo
+
+1137
+00:54:22,336 --> 00:54:26,626
+e trocar isso, whoo,
+olha esse as de paus!
+
+1138
+00:54:26,966 --> 00:54:31,166
+Agora temos a carta setada
+exatamente como nós queremos,
+
+1139
+00:54:31,166 --> 00:54:33,576
+quando está no estado normal,
+o verso da carta aparece,
+
+1140
+00:54:33,726 --> 00:54:36,306
+o logo da Apple, e então, quando
+ele está no estado selecionado,
+
+1141
+00:54:36,306 --> 00:54:38,066
+a frente da carta aparece,
+as de paus.
+of the card is showing,
+ace of clubs. 
+
+1142
+00:54:38,996 --> 00:54:40,276
+Então vamos rodar nosso app,
+
+
+1143
+00:54:40,856 --> 00:54:43,516
+então, rodar a aplicação
+é realmente fácil,
+
+1144
+00:54:43,516 --> 00:54:47,416
+tem esse botão aqui chamado "run"
+e você clica nele e ele roda.
+
+1145
+00:54:47,466 --> 00:54:48,476
+Agora, vocês podem ver,
+está buildando,
+
+1146
+00:54:48,476 --> 00:54:52,356
+Ele diz "build succeeded",
+ele roda, você precisa digitar
+
+1147
+00:54:52,356 --> 00:55:00,256
+a senha aqui, ok? Esse é o
+iOS Simulator, ele está
+
+1148
+00:55:00,256 --> 00:55:05,316
+simulando o iOS 6, nesse
+caso no iPhone.
+
+1149
+00:55:06,056 --> 00:55:09,586
+Existem simuladores para iPad
+e iPhone 5, retina display,
+
+1150
+00:55:09,986 --> 00:55:13,056
+todo esse tipo de coisa.
+Esse aqui é bom porque ele cabe 
+
+1151
+00:55:13,116 --> 00:55:17,846
+nessa tela pequena que eu tenho,
+por causa da projeção,
+
+1152
+00:55:18,246 --> 00:55:19,486
+vamos ver se funciona.
+
+
+1153
+00:55:19,626 --> 00:55:23,156
+A propósito, isso aqui
+está simulando um monte
+
+1154
+00:55:23,156 --> 00:55:24,986
+do iPhone, não só
+a nossa aplicação,
+
+1155
+00:55:24,986 --> 00:55:27,746
+se nós pressionarmos
+o Home Button, vocês podem ver
+
+1156
+00:55:27,746 --> 00:55:30,636
+que ele tem até um Settings
+e coisas desse tipo.
+
+1157
+00:55:31,016 --> 00:55:32,096
+é divertido.
+
+
+1158
+00:55:32,716 --> 00:55:35,276
+Mas voltando ao nosso app,
+aqui está o nosso app,
+
+1159
+00:55:35,276 --> 00:55:39,136
+e vamos tentar apertar
+nosso botão, oh, bom, está
+
+1160
+00:55:39,136 --> 00:55:42,106
+meio que funcionando, ok? Está
+highlighting quando eu toco nele
+
+1161
+00:55:42,466 --> 00:55:44,426
+mas ele nunca vai
+pro estado selecionado.
+
+1162
+00:55:45,156 --> 00:55:48,546
+Ok, a razão para isso é que
+os botões no iOS não vão
+
+1163
+00:55:48,546 --> 00:55:49,896
+para o estado selecionado
+quando você clica
+
+1164
+00:55:49,896 --> 00:55:53,016
+neles, ok? Isso é algo que
+o nosso controller tem que fazer.
+
+1165
+00:55:53,536 --> 00:55:56,006
+Então o próximo passo que vamos dar,
+vamos fazer de tal modo que
+
+1166
+00:55:56,006 --> 00:55:59,416
+quanto tocarmos nesse botão,
+ele setará o botão... ele basicamente
+
+1167
+00:55:59,566 --> 00:56:03,236
+troca e destroca entre o estado
+normal e selecionado, ok? Agora
+
+1168
+00:56:03,236 --> 00:56:04,786
+é hora de escrevermos código
+no nosso controller.
+
+1169
+00:56:05,346 --> 00:56:09,096
+Todo mundo entende o que estamos
+fazendo agora... ok, então nós vamos
+
+1170
+00:56:09,096 --> 00:56:11,456
+parar, vou pressionar esse
+botão stop aqui,
+
+1171
+00:56:11,456 --> 00:56:17,466
+ele pára a execução do nosso
+simulador e, para linkar
+
+1172
+00:56:17,466 --> 00:56:20,486
+nosso controller, eu realmente
+quero minha view e meu controller
+
+1173
+00:56:20,486 --> 00:56:23,736
+na tela ao mesmo tempo, então
+eu vou arrumar espaço aqui
+
+1174
+00:56:23,736 --> 00:56:26,026
+me livrando dessa coisa,
+esse pequeno botão aqui,
+
+1175
+00:56:26,026 --> 00:56:27,726
+me livrar disso e eu vou
+
+
+1176
+00:56:27,726 --> 00:56:29,766
+escolher esse botãozinho aqui,
+vocês vêeem,
+
+1177
+00:56:29,766 --> 00:56:31,296
+isso era pra parecer
+com um mordomo,
+
+1178
+00:56:31,796 --> 00:56:34,066
+vêem a pequena
+gravata borboleta ali?
+
+1179
+00:56:34,066 --> 00:56:36,636
+E o mordomo é chamado mordomo
+porque ele vai ajudar,
+
+1180
+00:56:36,636 --> 00:56:38,286
+ele vai ser
+o nosso assistente
+
+1181
+00:56:38,516 --> 00:56:41,266
+e quando eu clico aqui,
+ele divide a tela em duas
+
+1182
+00:56:41,626 --> 00:56:44,046
+e automaticamente me mostra
+alguma coisa do lado direito
+
+1183
+00:56:44,396 --> 00:56:46,676
+que é relacionado com a coisa
+que eu tenho do lado esquerdo.
+
+1184
+00:56:47,466 --> 00:56:49,466
+Ok, então tudo isso está
+acontecendo automaticamente,
+
+1185
+00:56:49,466 --> 00:56:51,096
+é isso que o "automatic"
+aqui em cima significa,
+
+1186
+00:56:51,176 --> 00:56:53,326
+nós ainda temos nossa view aqui.
+
+
+1187
+00:56:53,536 --> 00:56:57,246
+Podemos mover isso para criar
+mais espaço pro nosso código por exemplo.
+
+1188
+00:56:58,366 --> 00:57:02,286
+Ele escolher mostrar-nos o arquivo
+header do nosso controller,
+
+1189
+00:57:03,306 --> 00:57:04,886
+vêem? Essa é a interface
+do nosso controller.
+
+1190
+00:57:05,366 --> 00:57:09,436
+Na verdade, quero a
+implementação do meu controller
+
+1191
+00:57:10,226 --> 00:57:12,446
+e o modo que eu vou trocar
+é indo aqui em cima
+
+1192
+00:57:12,446 --> 00:57:15,116
+nessa barra e clicar aqui.
+
+
+1193
+00:57:16,106 --> 00:57:18,376
+Ok, e isso me permite
+trocar e destrocar
+
+1194
+00:57:18,846 --> 00:57:21,416
+entre meu header
+e minha implementação.
+
+1195
+00:57:22,586 --> 00:57:25,736
+Esse é meu controller, esse é
+o código do meu controller,
+
+1196
+00:57:26,056 --> 00:57:28,986
+agora ele tem esses dois métodos
+logo aqui que são parte
+
+1197
+00:57:28,986 --> 00:57:31,246
+do ciclo de vida do view controller,
+dos quais a gente vai falar
+
+1198
+00:57:31,246 --> 00:57:33,556
+nas próximas semanas,
+
+
+1199
+00:57:33,866 --> 00:57:35,886
+mas hoje nós vamos apenas
+tirá-los daqui
+
+1200
+00:57:35,996 --> 00:57:37,356
+assim eles não
+atrapalham vocês, ok?
+
+1201
+00:57:37,356 --> 00:57:41,016
+Eles não são necessários, eles
+estão apenas fazendo coisas default
+
+1202
+00:57:41,016 --> 00:57:42,166
+que é praticamente nada.
+
+1203
+00:57:43,286 --> 00:57:45,526
+Aqui temos
+nossa implementação,
+
+1204
+00:57:45,526 --> 00:57:46,836
+ele até coloca automaticamente
+
+
+1205
+00:57:46,836 --> 00:57:48,656
+essa pequena
+área privada aqui
+
+1206
+00:57:48,656 --> 00:57:50,396
+no caso de você querer
+alguma property privada
+
+1207
+00:57:50,396 --> 00:57:54,006
+que nós vamos ter na verdade,
+então agora nós queremos que
+
+1208
+00:57:54,006 --> 00:57:57,076
+nossa view envie a mensagem
+"target action" 
+
+1209
+00:57:57,296 --> 00:57:59,656
+para o nosso controller. Lembram-se?
+Aquele slide MVC que eu mostrei?
+
+1210
+00:57:59,656 --> 00:58:02,276
+Nós vamos fazer a view enviar
+a mensagem target action
+
+1211
+00:58:02,276 --> 00:58:05,766
+para o nosso controller quando
+o botão for tocado, dizendo
+
+1212
+00:58:05,766 --> 00:58:06,526
+"por favor, vire essa carta".
+
+
+1213
+00:58:07,436 --> 00:58:11,396
+Agora, isso vai assustar
+algumas pessoas, então
+
+1214
+00:58:11,396 --> 00:58:14,236
+se segurem nas suas cadeiras
+novamente, o modo como vamos fazer
+
+1215
+00:58:14,236 --> 00:58:16,726
+isso, seguramos o CTRL, Eu estou
+segurando a tecla CTRL
+
+1216
+00:58:16,726 --> 00:58:21,706
+no teclado, e eu estou apenas
+arrastando uma linha do meu
+
+1217
+00:58:22,656 --> 00:58:26,906
+botão no meu código, ok?
+
+
+1218
+00:58:27,266 --> 00:58:30,486
+Eu solto e ele diz: "oh, você quer
+uma target action?" Vêem essa
+
+1219
+00:58:30,736 --> 00:58:32,736
+primeira linha? Target action
+logo ali. Ele diz: você quer um
+
+1220
+00:58:32,736 --> 00:58:34,026
+target action,
+isso é legal.
+
+1221
+00:58:34,026 --> 00:58:37,336
+como você quer chamar esse método
+target action? Bom, chamarei de
+
+1222
+00:58:37,716 --> 00:58:39,956
+"flipCard", que tal... ok?
+
+
+1223
+00:58:40,506 --> 00:58:42,766
+Percebam que nós sempre
+temos nomes de métodos
+
+1224
+00:58:43,016 --> 00:58:46,116
+começando com minúsculo
+e todas as palavras seguintes são
+
+1225
+00:58:46,116 --> 00:58:49,326
+capitalizadas, como flipCard,
+com o C maíusculo, essa é a
+
+1226
+00:58:49,326 --> 00:58:51,656
+nossa "naming convention".
+
+
+1227
+00:58:51,656 --> 00:58:54,666
+Aqui estamos... vocês meio que
+tem algumas escolhas
+
+1228
+00:58:54,666 --> 00:58:56,036
+com suas mensagens
+target action,
+
+1229
+00:58:56,246 --> 00:58:59,016
+que argumentos são enviados
+com a mensagem.
+
+1230
+00:58:59,356 --> 00:59:02,096
+O padrão é enviar
+o "sender"
+
+1231
+00:59:03,056 --> 00:59:04,846
+como o botão que está enviando
+essa target action
+
+1232
+00:59:04,846 --> 00:59:07,516
+como argumento, mas você pode
+também setar para "none"
+
+1233
+00:59:07,716 --> 00:59:08,856
+como se não tivesse argumentos.
+
+
+1234
+00:59:08,856 --> 00:59:10,136
+E tem um
+mais complicado ainda
+
+1235
+00:59:10,136 --> 00:59:10,926
+que nós não falaremos.
+
+
+1236
+00:59:10,926 --> 00:59:14,776
+Mas nós vamos ter o sender,
+esse logo aqui
+
+1237
+00:59:14,776 --> 00:59:17,466
+que diz "id", esse é o tipo,
+
+
+1238
+00:59:18,036 --> 00:59:20,416
+o tipo em Objective-C
+do sender.
+
+1239
+00:59:21,576 --> 00:59:27,476
+Ok, e "id", lembram-se, significa
+qualquer objeto, então se deixarmos
+
+1240
+00:59:27,476 --> 00:59:31,466
+como id, qualquer objeto poderia
+enviar-nos essa mensagem target action,
+
+1241
+00:59:31,886 --> 00:59:34,536
+ok? E nós precisaríamos
+fazer alguma introspecção,
+
+1242
+00:59:34,536 --> 00:59:36,256
+alguma mágica na linguagem
+Objective-C,
+
+1243
+00:59:36,256 --> 00:59:38,646
+que vocês vão aprender na próxima
+semana, como descobrir
+
+1244
+00:59:38,646 --> 00:59:40,196
+que objeto está nos enviando isso.
+
+
+1245
+00:59:40,776 --> 00:59:42,506
+Certo, porque nós estamos assumindo
+que nós estamos interessados
+
+1246
+00:59:42,506 --> 00:59:45,476
+nele, caso contrário nós poderíamos
+setar os argumentos para "none".
+
+1247
+00:59:45,476 --> 00:59:49,096
+Se nós não nos importássemos, mas
+nesse caso nós sabemos que o botão
+
+1248
+00:59:49,096 --> 00:59:51,226
+vai enviar-nois essa mensagem
+target action, então vamos
+
+1249
+00:59:51,226 --> 00:59:52,816
+setar isso para Button, ok?
+
+
+1250
+00:59:53,116 --> 00:59:55,486
+E quando eu clico "Connect"
+aqui, esse evento
+
+1251
+00:59:55,486 --> 00:59:57,686
+a propósito, está dizendo
+que tipo de evento no botão
+
+1252
+00:59:57,686 --> 01:00:00,196
+está causando isso,
+a target action a ser enviada,
+
+1253
+01:00:00,416 --> 01:00:02,966
+nesse caso, se você
+tocar o botão e então
+
+1254
+01:00:03,006 --> 01:00:05,946
+tirar o dedo enquanto ainda
+estiver dentro dos arredores
+
+1255
+01:00:05,946 --> 01:00:08,796
+do botão, ele envia a target
+action. É isso que significa
+
+1256
+01:00:08,796 --> 01:00:11,496
+"Touch Up Inside". Existem
+várias outras opções aqui,
+
+1257
+01:00:12,096 --> 01:00:13,596
+algumas que nem
+se aplicam a botões.
+
+1258
+01:00:14,076 --> 01:00:15,896
+Mas quando eu clico "Connect",
+ele vai adicionar
+
+1259
+01:00:15,896 --> 01:00:19,606
+um método, ok? Um método target
+action no meu controller,
+
+1260
+01:00:19,726 --> 01:00:21,246
+deixa eu abrir um espaço aqui
+
+
+1261
+01:00:21,246 --> 01:00:25,526
+para vocês verem
+um pouco melhor
+
+1262
+01:00:25,526 --> 01:00:28,906
+Isso vai... o nome é
+"flipCard" e o tipo
+
+1263
+01:00:29,206 --> 01:00:31,686
+de retorno é void, 
+
+
+1264
+01:00:32,246 --> 01:00:34,306
+parece que o tipo de retorno
+é "IBAction", mas isso
+
+1265
+01:00:34,526 --> 01:00:35,886
+é apenas
+um typedef pra void.
+
+1266
+01:00:35,886 --> 01:00:38,436
+É apenas algo que o Xcode usa
+para saber quais métodos
+
+1267
+01:00:38,436 --> 01:00:40,036
+são métodos action
+e quais são
+
+1268
+01:00:40,036 --> 01:00:41,976
+epnas métodos normais
+que retornam void.
+
+1269
+01:00:42,576 --> 01:00:45,506
+E esse método tem um argumento
+que é o botão que
+
+1270
+01:00:45,506 --> 01:00:46,596
+nos enviou essa mensagem.
+
+
+1271
+01:00:46,746 --> 01:00:49,616
+Ok, bom, é realmente conveniente
+para nós termos isso
+
+1272
+01:00:49,616 --> 01:00:52,526
+pois o que esse método
+quer fazer... ele quer
+
+1273
+01:00:52,526 --> 01:00:55,146
+setar o estado desse
+botão para selecionado, certo?
+
+1274
+01:00:55,496 --> 01:00:57,576
+Então é realmente conveniente
+que ele está sendo enviado junto.
+
+1275
+01:00:57,746 --> 01:01:02,666
+Então eu vou dizer que se o sender
+está selecionado, e perceba,
+
+1276
+01:01:02,666 --> 01:01:05,426
+o Xcode está realmente tentando
+me ajudar aqui enquando digito,
+
+1277
+01:01:05,426 --> 01:01:09,686
+então vou dizer
+"sender.selected = NO", certo?
+
+1278
+01:01:09,686 --> 01:01:13,026
+Então vou
+fazer isso...
+
+1279
+01:01:13,026 --> 01:01:16,906
+"else sender.selected = YES", ok?
+
+
+1280
+01:01:18,216 --> 01:01:21,446
+Só estou trocando
+o estado do selected.
+
+1281
+01:01:21,446 --> 01:01:23,586
+Agora percebam que quando
+eu estava aqui atrás
+
+1282
+01:01:23,626 --> 01:01:27,906
+e comecei a digitar "sender.is",
+ele me mostra todos os métodos
+
+1283
+01:01:27,956 --> 01:01:32,756
+de botão que começam com "is",
+vêem isso? Se eu pressionar
+
+1284
+01:01:32,756 --> 01:01:35,736
+"s", agora todos os métodos
+de botão com começam com "iss"
+
+1285
+01:01:35,936 --> 01:01:39,866
+que é apenas o "isSelected" e
+eu posso apenas apertar Tab
+
+1286
+01:01:40,576 --> 01:01:45,386
+e ele vai completá-lo para mim,
+certo? Vocês vão se acostumar
+
+1287
+01:01:45,386 --> 01:01:46,806
+com o Xcode ajudando vocês.
+
+
+1288
+01:01:47,026 --> 01:01:49,756
+E esse é o motivo pelo qual
+métodos com nomes longos
+
+1289
+01:01:49,756 --> 01:01:51,636
+são comuns em iOS. Eles
+não são um grande problema
+
+1290
+01:01:51,636 --> 01:01:53,426
+porque você está praticamente
+apertando Tab o tempo todo
+
+1291
+01:01:53,656 --> 01:01:54,936
+para auto-completar as coisas
+
+
+1292
+01:01:54,936 --> 01:01:56,546
+depois de digitar
+os primeiros caracteres.
+
+1293
+01:01:57,116 --> 01:01:59,826
+Existe um modo bem melhor de fazer
+isso que é simplesmente
+
+1294
+01:01:59,826 --> 01:02:03,256
+dizer
+sender.selected = !sender.isSelected
+
+1295
+01:02:04,356 --> 01:02:09,006
+ok? Uma linha só para isso,
+vejam como é o mesmo código.
+
+1296
+01:02:09,656 --> 01:02:11,016
+Outra coisa que é da hora
+
+
+1297
+01:02:11,866 --> 01:02:15,266
+sobre esse "isSelected"...
+lembram-se que eu falei
+
+1298
+01:02:15,266 --> 01:02:17,666
+sobre "getter=alguma coisa",
+que fizemos com o faceUp,
+
+1299
+01:02:17,666 --> 01:02:19,876
+"isFaceUp, isPlayable"...
+
+1300
+01:02:19,876 --> 01:02:23,886
+isso é o que o botão está
+fazendo aqui. Vamos descobrir
+
+1301
+01:02:23,886 --> 01:02:26,316
+segurando o ALT.
+
+
+1302
+01:02:26,406 --> 01:02:28,016
+Estou segurando
+o ALT agora e eu estou
+
+1303
+01:02:28,256 --> 01:02:30,886
+apenas movendo o mouse
+sobre isso,
+
+1304
+01:02:30,886 --> 01:02:33,446
+vêem como ele fica azul
+e tem um tracejado embaixo,
+
+1305
+01:02:33,446 --> 01:02:35,446
+mesma coisa aqui, certo?
+
+
+1306
+01:02:35,446 --> 01:02:39,906
+Se eu clicar, ele vai me mostrar
+a adocumentação logo ali, ok?
+
+1307
+01:02:39,906 --> 01:02:43,236
+Essa é a documentação
+de referência inteira
+
+1308
+01:02:43,236 --> 01:02:44,726
+para isSelected,
+é um método simples.
+
+1309
+01:02:44,996 --> 01:02:47,326
+Vocês podem ver que é
+uma property nonatomic
+
+1310
+01:02:47,576 --> 01:02:50,266
+getter = isSelected,
+BOOL selected.
+
+1311
+01:02:51,126 --> 01:02:53,566
+Ok? Percebam que está
+em UIControl,
+
+1312
+01:02:53,566 --> 01:02:57,026
+então na verdade é herdado
+de UIControl por UIButton.
+
+1313
+01:02:57,836 --> 01:03:01,076
+Podemo clicar aqui
+para ir para a documentação.
+
+1314
+01:03:01,316 --> 01:03:03,886
+essa é a documentação,
+logo aqui, para "selected".
+
+1315
+01:03:04,506 --> 01:03:08,706
+Certo? Isso está dentro
+da classe Control. Nós podemos
+
+1316
+01:03:08,706 --> 01:03:10,626
+olhar UIButton aqui...
+whoops, button,
+
+1317
+01:03:10,906 --> 01:03:12,726
+e enquanto nós digitamos,
+ele vai automaticamente
+
+1318
+01:03:12,726 --> 01:03:16,936
+procurando as coisas que tem
+isso nelas, ok? Aqui está UIButton,
+
+1319
+01:03:17,186 --> 01:03:18,876
+Posso clicar aqui,
+tenho UIButton.
+
+1320
+01:03:19,126 --> 01:03:22,586
+Aqui estão todos os métodos
+de UIButton, todos os clicáveis,
+
+1321
+01:03:22,896 --> 01:03:25,666
+um que vocês podem querer
+pro homework é esse aqui,
+
+1322
+01:03:26,406 --> 01:03:29,326
+setTitleForState, ok?
+Porque vocÊs vão querer
+
+1323
+01:03:29,536 --> 01:03:31,366
+setar o título para
+o estado selecionado
+
+1324
+01:03:31,606 --> 01:03:35,526
+para ser o conteúdo da carta
+que vocês estão pegando.
+
+1325
+01:03:36,016 --> 01:03:39,076
+Ele diz que ele seta o título,
+uma certa string, para um
+
+1326
+01:03:39,076 --> 01:03:41,706
+dado estado, você pode sempre
+clicar aqui, para, por exemplo,
+
+1327
+01:03:41,706 --> 01:03:43,926
+descobrir quais
+são os estados,
+
+1328
+01:03:43,926 --> 01:03:46,456
+bom, tem o estado normal,
+highlited, disabled, selected,
+
+1329
+01:03:46,456 --> 01:03:49,956
+etc. Todos bem similares
+ao que nós vimos no Xcode.
+
+1330
+01:03:50,216 --> 01:03:52,736
+A documentação
+é realmente legal, ok?
+
+1331
+01:03:53,086 --> 01:03:57,506
+Você definitivamente quer
+se acostumar a fazer coisas assim,
+
+1332
+01:03:57,506 --> 01:03:59,546
+segurar ALT e ver as coisas.
+ALT + click num Button te diz
+
+1333
+01:03:59,546 --> 01:04:00,696
+sobre a classe do botão.
+Você pode ir
+
+1334
+01:04:00,696 --> 01:04:02,586
+para a referência da
+classe Button, etc.
+
+1335
+01:04:02,756 --> 01:04:04,816
+Ok, entÃo se acostumem com
+essa documentação. Vocês vão
+
+1336
+01:04:04,816 --> 01:04:05,596
+usar bastante.
+
+
+1337
+01:04:06,786 --> 01:04:09,596
+Agora se nós rodarmos,
+isso deve funcionar,
+
+1338
+01:04:10,476 --> 01:04:12,746
+Ok, agora nós clicamos, oh,
+aí está o ás de paus,
+
+1339
+01:04:12,866 --> 01:04:15,246
+virando ao contrário... oh,
+indo e vindo, ok.
+
+1340
+01:04:15,246 --> 01:04:16,746
+E o homework de vocês será
+
+
+1341
+01:04:16,746 --> 01:04:18,526
+fazer exatamente a mesma coisa,
+só que não vai ser sempre
+
+1342
+01:04:18,526 --> 01:04:20,646
+o as de paus. Cada vez que você
+
+1343
+01:04:20,646 --> 01:04:22,506
+virar a carta, será uma carta
+diferente até você não ter mais
+
+1344
+01:04:22,506 --> 01:04:25,376
+cartas no seu
+maço de cartas de jogo, ok?
+
+1345
+01:04:26,326 --> 01:04:28,076
+Agora eu vou fazer
+uma coisa a mais,
+
+1346
+01:04:28,496 --> 01:04:31,196
+que é: nós fizemos uma action.
+Agora vamos fazer um outlet.
+
+1347
+01:04:31,196 --> 01:04:32,926
+Eu vou fazer um outlet,
+entÃo eu vou colocar
+
+1348
+01:04:32,926 --> 01:04:34,816
+um pequeno text field
+aqui no canto, vou trazer
+
+1349
+01:04:34,816 --> 01:04:37,796
+isso de volta,
+arrumar mais espaço.
+
+1350
+01:04:38,506 --> 01:04:41,436
+Eu vou lá embaixo
+e vou pegar um label ao invés
+
+1351
+01:04:41,436 --> 01:04:43,856
+de um Round Rect Button. 
+Eu vou pegar um label,
+
+1352
+01:04:44,246 --> 01:04:46,276
+colocar ele aqui,
+eu vou usar as linhas azuis.
+
+1353
+01:04:46,946 --> 01:04:51,626
+Ok, eu vou chamá-lo de
+"Flips: 0", ok?
+
+1354
+01:04:51,926 --> 01:04:54,266
+Ele vai mostrar quantas vezes
+eu virei a carta,
+
+1355
+01:04:54,266 --> 01:04:57,026
+é isso que essa coisinha
+aqui vai dizer.
+
+1356
+01:04:57,476 --> 01:05:00,766
+Outlets são conectados
+da mesma forma que actions,
+
+1357
+01:05:01,076 --> 01:05:02,806
+eles são diferentes, mas eles
+são conectados da mesma forma
+
+1358
+01:05:02,806 --> 01:05:04,566
+que é, vou segurar
+o CTRL
+
+1359
+01:05:05,086 --> 01:05:06,666
+e arrastar no meu código.
+
+
+1360
+01:05:06,966 --> 01:05:09,166
+Agora eu não posso arrastar aqui,
+vocês vêem como parece que
+
+1361
+01:05:09,166 --> 01:05:11,356
+ele não está fazendo nada,
+e aqui parece que ele faz algo,
+
+1362
+01:05:11,676 --> 01:05:12,986
+isso é porque "text fields",
+
+
+1363
+01:05:12,986 --> 01:05:15,826
+esse text field estático,
+ele não pode enviar nenhuma
+
+1364
+01:05:15,826 --> 01:05:18,176
+target action, como um botão.
+Então ele nem te dá essa opção
+
+1365
+01:05:18,506 --> 01:05:21,516
+mas ele pode ser linkado
+como um "outlet", para que você 
+
+1366
+01:05:21,866 --> 01:05:25,026
+possa conversar com ele. Por isso que
+dentro do "@interface @end" ele está
+
+1367
+01:05:25,026 --> 01:05:26,666
+pronto pra por uma property, ok?
+
+
+1368
+01:05:26,986 --> 01:05:29,486
+Então eu solto e ele pergunta
+como eu quero chamar essa property,
+
+1369
+01:05:29,486 --> 01:05:34,436
+vamos chamá-la flipsLabel,
+é um UILabel,
+
+1370
+01:05:34,656 --> 01:05:37,996
+perceba que nós vamos ter
+o armazenamento weak e não strong,
+
+1371
+01:05:38,656 --> 01:05:42,426
+weak porque essa view vai
+manter um ponteiro forte para ele
+
+1372
+01:05:43,056 --> 01:05:45,026
+e se essa view algum dia for embora
+
+
+1373
+01:05:45,026 --> 01:05:47,626
+ou se o label for embora,
+nós não queremos um ponteiro
+
+1374
+01:05:47,626 --> 01:05:50,266
+para ele de qualquer jeito, porque
+nós não poderemos fazer update nele,
+
+1375
+01:05:50,536 --> 01:05:51,886
+ele sequer existirá, por isso
+não precisamos de um
+
+1376
+01:05:51,886 --> 01:05:54,286
+ele sequer existirá, por isso
+não precisamos de um
+
+1377
+01:05:54,286 --> 01:05:55,416
+ponteiro forte para ele.
+Só nos importamos
+
+1378
+01:05:55,416 --> 01:05:56,506
+se ele existe
+se a view se importar.
+
+1379
+01:05:56,506 --> 01:05:58,466
+Nós vamos deixar a view
+ter um ponteiro forte para ele,
+
+1380
+01:05:58,676 --> 01:05:59,886
+deixar ele na heap e se
+
+
+1381
+01:05:59,886 --> 01:06:02,626
+a view algum dia parar de apontar,
+nosso ponteiro será setado pra nil.
+
+1382
+01:06:03,416 --> 01:06:05,696
+Certo, o que tá bom, porque
+todo nosso código vai ser escrito
+
+1383
+01:06:05,986 --> 01:06:10,206
+onde enviar mensagens pra nil
+faz sentido e o tipo
+
+1384
+01:06:10,206 --> 01:06:14,206
+disso é obviamente UILabel,
+esse é o tipo
+
+1385
+01:06:14,206 --> 01:06:15,296
+desses labels.
+
+
+1386
+01:06:15,896 --> 01:06:18,476
+Então clicamos Connect,
+ele criou uma property aqui,
+
+1387
+01:06:19,126 --> 01:06:20,036
+vamos arrumar mais espaço,
+
+
+1388
+01:06:20,036 --> 01:06:23,746
+agora vocês conseguem ver
+um pouco melhor, certo?
+
+1389
+01:06:23,746 --> 01:06:27,086
+Aqui está a property, é weak,
+nonatomic como sempre.
+
+1390
+01:06:27,406 --> 01:06:31,236
+Esse IBOutlet, novamente, não é nada.
+É somente um typedef para nada,
+
+1391
+01:06:31,236 --> 01:06:35,996
+ele é ignorado pelo compilador
+mas é usado pelo Xcode
+
+1392
+01:06:35,996 --> 01:06:38,956
+para saber que essa property
+é um outlet e tem conexões.
+
+1393
+01:06:39,306 --> 01:06:40,876
+Agora o fato disso estar aqui
+
+
+1394
+01:06:40,876 --> 01:06:43,786
+habilida esses pequenos
+botõezinhos redondos aqui,
+
+1395
+01:06:43,786 --> 01:06:45,856
+vêem essa coisinha redonda aqui?
+E essa coisinha aqui,
+
+1396
+01:06:46,366 --> 01:06:50,276
+olhem o que acontecem quando eu
+passo o mouse nelas, ele mostra
+
+1397
+01:06:50,276 --> 01:06:51,606
+aonde o outlet está conectado
+
+
+1398
+01:06:51,636 --> 01:06:53,516
+ou que ação é.
+Não é legal?
+
+1399
+01:06:53,966 --> 01:06:56,726
+Então essa é uma ótima maneira
+de saber o que está acontecendo,
+
+1400
+01:06:56,726 --> 01:06:58,086
+passando o mouse por cima.
+
+
+1401
+01:06:58,326 --> 01:07:00,296
+você também pode clicar
+com o botão direito aqui
+
+1402
+01:07:00,296 --> 01:07:02,066
+e ele vai te dizer
+todas as conexões,
+
+1403
+01:07:02,646 --> 01:07:04,536
+ok? Essa é uma janela
+redimensonável na verdade,
+
+1404
+01:07:04,536 --> 01:07:05,946
+ele te tirá
+todas as conexões,
+
+1405
+01:07:05,946 --> 01:07:07,976
+todos os target actions,
+outlets, etc.
+
+1406
+01:07:07,976 --> 01:07:09,596
+Então, clicar com o botão direto
+nas coisas é legal,
+
+1407
+01:07:09,686 --> 01:07:11,986
+essa pequena coisinha aqui
+é o seu controller,
+
+1408
+01:07:12,336 --> 01:07:15,266
+se você clicar com o botão direito
+aqui, ele vai te mostrar todas
+
+1409
+01:07:15,266 --> 01:07:18,526
+as conexões nos eu controller, ok?
+Nesse caso, temos um target action
+
+1410
+01:07:18,526 --> 01:07:21,026
+aqui embaixo. Vêem como
+ele está mostrando quando eu passo
+
+1411
+01:07:21,206 --> 01:07:22,726
+o mouse em cima? E nós temos
+um outlet bem aqui.
+
+1412
+01:07:22,826 --> 01:07:25,126
+Vêem? outlets... actions.
+
+
+1413
+01:07:25,526 --> 01:07:28,886
+Certo, então temos
+esse label,
+
+1414
+01:07:29,166 --> 01:07:31,676
+Eu vou adicionar
+mais uma property aqui
+
+1415
+01:07:32,046 --> 01:07:36,196
+que é nonatomic, int,
+flipCount, então isso vai
+
+1416
+01:07:36,196 --> 01:07:38,466
+ser a property que mantém
+a contagem das viradas, ok
+
+1417
+01:07:39,336 --> 01:07:40,676
+Quantas vezes nós
+a viramos.
+
+1418
+01:07:40,716 --> 01:07:42,506
+É sí um int.
+Property int normal.
+
+1419
+01:07:42,826 --> 01:07:47,486
+Vejam essa linha de código,
+"self.flipCount++".
+
+1420
+01:07:48,386 --> 01:07:52,416
+Ok? Whoa, O que está acontecendo aqui?
+Esse é o mesmo que
+
+1421
+01:07:52,416 --> 01:07:57,496
+self.flipCount = self.flipCount +1"
+
+
+1422
+01:07:58,296 --> 01:08:02,006
+em outras palavras, ele está chamando
+o getter, somando um e então
+
+1423
+01:08:02,006 --> 01:08:03,426
+chamando o setter.
+
+
+1424
+01:08:04,606 --> 01:08:06,836
+Essa única linha de código
+chama o getter e o setter
+
+1425
+01:08:07,896 --> 01:08:10,106
+e na verdade
+faz com que
+
+1426
+01:08:10,106 --> 01:08:13,466
+as propriedades se pareçam
+como variáveis, certo,
+
+1427
+01:08:14,056 --> 01:08:15,276
+todo mundo entendeu
+essa linha de código?
+
+1428
+01:08:16,136 --> 01:08:18,466
+Demais essa linha de código.
+E a última coisa que eu vou
+
+1429
+01:08:18,466 --> 01:08:22,076
+fazer é: eu vou usar
+o poder dos setters
+
+1430
+01:08:22,626 --> 01:08:26,086
+para cada vez que o flipCount
+for setado e isso é o que acontece
+
+1431
+01:08:26,136 --> 01:08:27,456
+quando chamamos o flipCount++, certo,
+
+
+1432
+01:08:28,376 --> 01:08:31,646
+toda vez que isso acontecer,
+eu vou updatear o label,
+
+1433
+01:08:32,626 --> 01:08:40,116
+eu vou dizer somente
+"self.flipLabel.text = "
+
+1434
+01:08:40,116 --> 01:08:44,066
+e eu vou fazer novamente
+"[NSString stringWithFormat"
+
+1435
+01:08:44,526 --> 01:08:49,696
+digamos,
+"Flips: %d", self.flipCount".
+
+1436
+01:08:50,036 --> 01:08:54,676
+Ok, todo mundo entende
+essa linha de código?
+
+1437
+01:08:55,116 --> 01:09:00,046
+"Text" é a property
+de UILabel
+
+1438
+01:09:00,206 --> 01:09:03,026
+que retorna... é
+uma NSString,
+
+1439
+01:09:03,316 --> 01:09:06,766
+isso está chamando
+o setter pra setar essa property
+
+1440
+01:09:06,766 --> 01:09:08,096
+e ele está setando para uma string
+
+
+1441
+01:09:08,096 --> 01:09:12,466
+que construímos usando
+esse lance do printf.
+
+1442
+01:09:12,666 --> 01:09:16,416
+Vocês vêe, como usar o setter...
+nós já vimos tantas utilizações
+
+1443
+01:09:16,416 --> 01:09:18,146
+para o setter e o getter,
+temos instanciação lazy,
+
+1444
+01:09:18,146 --> 01:09:20,376
+temos checagem de extremos,
+
+1445
+01:09:20,376 --> 01:09:22,476
+para nos certificar que os naipes
+são válidos e os ranks são válidos,
+
+1446
+01:09:22,716 --> 01:09:24,436
+agora nós temos update de UI.
+
+
+1447
+01:09:24,826 --> 01:09:26,736
+Agora vocês vêem por que
+usar propriedades ao invés de
+
+1448
+01:09:26,806 --> 01:09:29,646
+acessar variáveis de instância
+diretamente? Fazer isso
+
+1449
+01:09:29,646 --> 01:09:31,406
+nos dá muito poder.
+
+
+1450
+01:09:31,406 --> 01:09:32,386
+De um modo que é
+realmente entendível.
+
+1451
+01:09:32,386 --> 01:09:37,276
+Então vamos rodar e
+cada vez que virarmos, vocês verão
+
+1452
+01:09:37,276 --> 01:09:41,696
+que estará updateando
+o flip count lá embaixo.
+
+1453
+01:09:41,916 --> 01:09:44,066
+Ok, uma coisa a mais que
+eu vou mostrar pra vocês
+
+1454
+01:09:44,066 --> 01:09:45,466
+pra ajudá-los a começar
+o homework
+
+1455
+01:09:45,766 --> 01:09:49,176
+porque a demo foi isso,
+agora é a vez de vocês,
+
+1456
+01:09:49,396 --> 01:09:52,646
+vocês tem que pegar isso
+e adicionar o model nele,
+
+1457
+01:09:52,926 --> 01:09:55,886
+então como você adiciona
+uma classe no seu projeto?
+
+1458
+01:09:56,296 --> 01:09:57,196
+Antes de tudo eu vou colocar
+
+
+1459
+01:09:57,196 --> 01:09:59,746
+o Project Navigator de volta aqui,
+ou File Navigator...
+
+1460
+01:09:59,746 --> 01:10:01,626
+Para vocês verem que,
+vou me livrar do assistente
+
+1461
+01:10:01,626 --> 01:10:04,336
+esse [inaudível] assistente.
+
+
+1462
+01:10:04,386 --> 01:10:08,886
+Vai em File, New File,
+ok? Isso está
+
+1463
+01:10:08,886 --> 01:10:10,766
+no documento
+dos slides da aula,
+
+1464
+01:10:11,086 --> 01:10:13,266
+e então você pode criar
+vários tipos de arquivos,
+
+1465
+01:10:13,266 --> 01:10:16,836
+outros Storyboards, pode criar
+arquivos de banco de dados
+
+1466
+01:10:17,136 --> 01:10:19,456
+mas o que nós vamos criar
+é uma classe em Objective-C,
+
+1467
+01:10:19,846 --> 01:10:21,996
+certo? Nós vamos criar
+minha classe Card aqui
+
+1468
+01:10:22,416 --> 01:10:24,206
+chamaremos de Card. Queremos
+
+
+1469
+01:10:24,206 --> 01:10:27,116
+ter certeza que a superclasse
+está correta e é NSObject
+
+1470
+01:10:27,116 --> 01:10:28,046
+nesse caso está certo.
+
+
+1471
+01:10:28,656 --> 01:10:30,976
+Vamos aqui, ele vai dizer onde
+queremos gravá-la,
+
+1472
+01:10:30,976 --> 01:10:33,806
+vou colocar todos meus
+arquivos model
+
+1473
+01:10:34,046 --> 01:10:35,886
+num subdiretório aqui,
+eu não vou colocá-los
+
+1474
+01:10:35,886 --> 01:10:38,196
+todos no mesmo lugar
+que o meu controller está,
+
+1475
+01:10:38,196 --> 01:10:41,196
+eu vou colocá-los num
+subdiretório chamado model.
+
+1476
+01:10:41,196 --> 01:10:44,866
+Eu vou dizer, New Folder, Model,
+isso está selecionado,
+
+1477
+01:10:45,156 --> 01:10:46,906
+Create, vêem?
+
+
+1478
+01:10:46,906 --> 01:10:49,406
+Pronto. Criamos o Card
+bem aqui. Eu posso trazer
+
+1479
+01:10:49,406 --> 01:10:54,526
+o Assistente. A propósito agora
+eu tenho ambos os... se eu selecionar
+
+1480
+01:10:54,636 --> 01:10:57,616
+o Card.h desse lado,
+
+
+1481
+01:10:57,616 --> 01:11:00,836
+se eu quiser que esse seja o .h
+e o .m, eu posso voltar aqui
+
+1482
+01:11:00,836 --> 01:11:05,096
+no modo manueal ou automático
+e fazer isso, daí cada vez
+
+1483
+01:11:05,096 --> 01:11:08,226
+que eu selectionar o .m
+ele me mostra o .h
+
+1484
+01:11:08,226 --> 01:11:09,686
+ou vice-versa, ok?
+
+
+1485
+01:11:10,216 --> 01:11:12,036
+Agora você digita
+todo esse código aqui,
+
+1486
+01:11:12,036 --> 01:11:13,716
+que é parte do seu homework,
+digitar todo o código
+
+1487
+01:11:13,716 --> 01:11:17,316
+das aulas, quando vocês estiverem
+prontos para fazer isso
+
+1488
+01:11:17,316 --> 01:11:19,996
+ou mesmo antes, vocês podem
+adicionar o próximo,
+
+1489
+01:11:20,066 --> 01:11:24,546
+New File para Deck,
+por exemplo... Deck
+
+1490
+01:11:25,536 --> 01:11:28,746
+e aqui um truquezinho
+que vocês provavelmente vão querer
+
+1491
+01:11:28,926 --> 01:11:30,856
+ter certeza que esse
+Model está selecionado
+
+1492
+01:11:30,856 --> 01:11:32,656
+para que o Deck vá
+para o mesmo lugar que o Card.
+
+1493
+01:11:33,006 --> 01:11:35,016
+Tenho certeza que metade de vocÊs
+vão esquecer como faz isso
+
+1494
+01:11:35,016 --> 01:11:36,966
+e  vocês vão acabar com
+o Deck aqui
+
+1495
+01:11:36,966 --> 01:11:38,006
+e a Card aqui.
+
+
+1496
+01:11:38,006 --> 01:11:40,546
+Não tem problema se fizerem,
+onde seus arquivos estão
+
+1497
+01:11:40,546 --> 01:11:43,206
+no file system não afeta,
+embora seja difícil
+
+1498
+01:11:43,206 --> 01:11:46,606
+de mudar, então fazer certo
+da primeira vez é bom
+
+1499
+01:11:46,606 --> 01:11:50,946
+mas de qualquer forma, aqui está
+o deck e também... aqui está
+
+1500
+01:11:50,996 --> 01:11:53,806
+Deck e Card. Você sempre pode
+movê-los no Navigator.
+
+1501
+01:11:53,996 --> 01:11:55,056
+Você pode também agrupá-los.
+
+
+1502
+01:11:55,056 --> 01:11:57,076
+Se eu selecionar todos eles,
+eu posso Shift + click aqui,
+
+1503
+01:11:57,356 --> 01:12:00,226
+você pode clicar com o botão
+direito no grupo e dizer
+
+1504
+01:12:00,226 --> 01:12:02,676
+New Group From Selection,
+talvez eu devesse chamar de Model
+
+1505
+01:12:03,316 --> 01:12:04,796
+e então tenho um grupo.
+
+
+1506
+01:12:04,796 --> 01:12:08,806
+Agora esse grupo Model
+é diferente do diretório
+
+1507
+01:12:08,806 --> 01:12:10,186
+no file system. Não tem relação,
+
+
+1508
+01:12:10,776 --> 01:12:12,626
+ok? Esses arquivos poderiam
+estar em qualquer lugar.
+
+1509
+01:12:13,016 --> 01:12:15,616
+É isso que vocês vão fazer
+
+
+1510
+01:12:15,616 --> 01:12:18,226
+para adicionar as outras
+duas classes. Vocês vão
+
+1511
+01:12:18,226 --> 01:12:19,846
+digitar toda a implementação
+e depois vocês vão
+
+1512
+01:12:19,846 --> 01:12:22,856
+literalmente escrever algumas
+linhas de código para ter
+
+1513
+01:12:22,856 --> 01:12:24,756
+as cartas virando,
+passando por todas as cartas.
+
+1514
+01:12:25,806 --> 01:12:27,126
+Perguntas? Sim?
+
+
+1515
+01:12:27,556 --> 01:12:30,406
+>> [Estudante perguntando]
+
+
+1516
+01:12:30,666 --> 01:12:33,556
+[Pergutando...]
+
+1517
+01:12:34,136 --> 01:12:36,436
+>> A pergunta é: Quando que
+
+
+1518
+01:12:36,436 --> 01:12:38,526
+eu envio mensagens
+usando ponto e 
+
+1519
+01:12:38,526 --> 01:12:40,226
+quando envio
+usando colchetes
+
+1520
+01:12:40,816 --> 01:12:45,526
+e a resposta é: colchetes
+é a notação básica,
+
+1521
+01:12:45,896 --> 01:12:48,806
+existem algumas notações
+convenientes, como ponto,
+
+1522
+01:12:48,806 --> 01:12:52,026
+para usar setters e getters
+e também o "@[ ]"
+
+1523
+01:12:52,026 --> 01:12:55,846
+para usar arrays. Mas a 
+maioria é colchetes, ok?
+
+1524
+01:12:55,846 --> 01:12:57,766
+É só para setters e getters
+e esses arrays
+
+1525
+01:12:57,836 --> 01:12:58,796
+Que você usa outras coisas.
+
+
+1526
+01:12:59,656 --> 01:13:01,576
+Valeu, obrigado todo mundo.
+
+
+1527
+01:13:03,006 --> 01:13:01,576
+Visite nosso site
+www.centraldosapps.com
+

@@ -1,0 +1,6941 @@
+1
+00:00:00,459 --> 00:00:08,109
+Legendas em portugues por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:08,129 --> 00:00:14,159
+>> Olá, bem vindos à aula 5
+do CS193P
+
+3
+00:00:14,179 --> 00:00:17,859
+e hoje nós vamos cobrir dois
+tópicos que são, de alguma forma,
+
+4
+00:00:17,879 --> 00:00:21,019
+relacionados. Um é
+o ciclo de vida de uma ViewController
+
+5
+00:00:21,039 --> 00:00:24,140
+e o outro são múltiplos MVCs,
+certo? Até agora
+
+6
+00:00:24,160 --> 00:00:25,140
+vocês fizeram aplicações
+
+7
+00:00:25,160 --> 00:00:27,039
+com apenas um MVC,
+que é seu
+
+8
+00:00:27,059 --> 00:00:31,079
+CardGameViewController.
+E então nós vamos adicionar mais
+
+9
+00:00:31,099 --> 00:00:33,659
+outro MVC, e vocês vão
+ver o processo em que
+
+10
+00:00:33,679 --> 00:00:37,870
+adicionamos outro MVC.
+Agora, obviamente, uma aplicação complexa
+
+11
+00:00:37,890 --> 00:00:42,719
+no iPhone pode ter vários MVCs.
+Dezenas ou até
+
+12
+00:00:42,739 --> 00:00:45,620
+centenas de MVCs em uma
+aplicação realmente
+
+13
+00:00:45,640 --> 00:00:49,419
+complexa e vai me levar
+algumas semanas para mostrar
+
+14
+00:00:49,439 --> 00:00:53,519
+a vocês todas as maneiras que
+vocês consegue fazer vários MVCs
+
+15
+00:00:53,539 --> 00:00:56,339
+trabalharem jjuntos para fazer seu app.
+Então hoje nós vamos começar
+
+16
+00:00:56,359 --> 00:00:58,339
+da maneira mais simples,
+que é UITabBarController,
+
+17
+00:00:58,359 --> 00:00:59,339
+que é apenas
+
+18
+00:00:59,359 --> 00:01:02,589
+aquela coisa com tabs que
+fica embaixo que você clica na tab
+
+19
+00:01:02,609 --> 00:01:05,839
+e cada tab é vai apenas mostrar
+um MVC diferente.
+
+20
+00:01:05,859 --> 00:01:08,089
+Muito direto e endentível
+e eu vou, como de costume, fazer
+
+21
+00:01:08,109 --> 00:01:10,180
+uma demo no final, a qual,
+espero que tenhamos tempo
+
+22
+00:01:10,200 --> 00:01:11,180
+porque nos atrasamos
+
+23
+00:01:11,200 --> 00:01:14,180
+um pouco hoje. Posso ter que
+correr um pouquinho novamente
+
+24
+00:01:14,200 --> 00:01:18,260
+se eu fizer, sintam-se livres para
+sair em silêncio se vocês tiverem que sair.
+
+25
+00:01:18,280 --> 00:01:22,409
+Eu vou postar esse código,
+mas eu vou tentar passar por pelo menos
+
+26
+00:01:22,429 --> 00:01:25,529
+90% das coisas. Certo, então
+ciclo de vida do View Controller
+
+27
+00:01:25,549 --> 00:01:29,620
+View Controllers são
+os controllers
+
+28
+00:01:29,640 --> 00:01:33,339
+do seu MVC. Eles têm o que é chamado
+de ciclo de vida (lifecycle).
+
+29
+00:01:33,359 --> 00:01:36,849
+Um lifecycle significa apenas que
+eles nascem, que eles fazem coisas
+
+30
+00:01:36,869 --> 00:01:40,579
+enquanto estiverem vivos e então
+eles morrem. Por que isso interessa?
+
+31
+00:01:40,599 --> 00:01:43,510
+Por que nós falamos sobre
+o lifecycle de um view controller?
+
+32
+00:01:43,530 --> 00:01:47,289
+Bom, porque enquanto as coisas vão
+acontecendo no seu view controller,
+
+33
+00:01:47,309 --> 00:01:51,029
+você é notificado, ok?
+Existem alguns métodos em
+
+34
+00:01:51,049 --> 00:01:54,059
+UIViewController, que é superclasse
+do seu view controller,
+
+35
+00:01:54,079 --> 00:01:56,849
+então essas mensagens serão
+enviadas para você. Certo?
+
+36
+00:01:56,869 --> 00:01:57,849
+Isso é importante de se saber,
+
+37
+00:01:57,869 --> 00:02:00,459
+o que vocÊ pode fazer
+nessas mensagens,
+
+38
+00:02:00,479 --> 00:02:04,209
+e quando as coisas
+devem acontecer. Então, o começo
+
+39
+00:02:04,229 --> 00:02:06,849
+desse lifecycle, a criação,
+o nascimento do seu view controller,
+
+40
+00:02:06,869 --> 00:02:14,040
+hoje em dia, no iOS 4 ou 5 em diante...
+99% das vezes ele ganha vida
+
+41
+00:02:14,060 --> 00:02:17,309
+a partir do Storyboard, ok?
+Então é no seu Storyboard,
+
+42
+00:02:17,329 --> 00:02:19,589
+e vocês já viram o
+CardGameViewController
+
+43
+00:02:19,609 --> 00:02:22,139
+num Storyboard. E o sistema
+basicamente
+
+44
+00:02:22,159 --> 00:02:23,139
+o descongela,
+
+45
+00:02:23,159 --> 00:02:27,079
+quando você está no Xcode e está
+construindo ele, então
+
+46
+00:02:27,099 --> 00:02:28,630
+ele é congelado e quando
+sua aplicação roda
+
+47
+00:02:28,650 --> 00:02:29,630
+ele é tipo descongelado
+
+
+48
+00:02:29,650 --> 00:02:32,309
+e ganha vida. Ok?
+Então é assim
+
+49
+00:02:32,329 --> 00:02:36,600
+99% das vezes.
+Os View Controllers podem ser criados
+
+50
+00:02:36,620 --> 00:02:39,699
+com alloc + init, mas é
+muito raro fazer isso hoje em dia.
+
+51
+00:02:39,719 --> 00:02:42,559
+Nós quase sempre os criamos
+a partir de um Storyboard.
+
+52
+00:02:42,579 --> 00:02:45,059
+Ok, então é a partir daí
+que eles são criados.
+
+53
+00:02:45,079 --> 00:02:48,820
+E eu vou falar um pouco
+como esse processo funciona
+
+54
+00:02:48,840 --> 00:02:50,559
+mais pra frente no trimeste.
+E hoje eu vou falar um pouco...
+
+55
+00:02:50,579 --> 00:02:51,559
+[?]
+
+
+56
+00:02:51,579 --> 00:02:55,540
+mas vocês podem ir atrás disso.
+Mas então, esse é o começo do
+
+57
+00:02:55,560 --> 00:02:58,999
+lifecycle. Ele acabou de ser criado.
+Mas o que acontece depois
+
+58
+00:02:59,019 --> 00:03:01,699
+que ele é criado a partir
+do Storyboard? Bom, existe a
+
+59
+00:03:01,719 --> 00:03:04,760
+fase de configuração dos outlets,
+nos chamamos isso de "loading da view".
+
+60
+00:03:04,780 --> 00:03:07,619
+E vocês sabem sobre isso, certo?
+Setando todos seus outlets
+
+61
+00:03:07,639 --> 00:03:10,549
+e coisas assim.
+Existe o aparecimento e o
+
+62
+00:03:10,569 --> 00:03:14,249
+desaparecimento. O seu MVC
+até agora está sempre na tela.
+
+63
+00:03:14,269 --> 00:03:16,399
+Ele inicia, e já está na tela.
+Ele está sempre lá até
+
+64
+00:03:16,419 --> 00:03:19,839
+a sua aplicação terminar.
+Bom, obviamente se você tem uma
+
+65
+00:03:19,859 --> 00:03:22,839
+tabBar view e sua view é uma
+das tabs, sua view pode desaparecer
+
+66
+00:03:22,859 --> 00:03:25,159
+quando alguém for para
+outra tab, certo? E então
+
+67
+00:03:25,179 --> 00:03:27,419
+você clica na sua tab,
+ela vai voltar e aparecer novamente.
+
+68
+00:03:27,439 --> 00:03:30,529
+E existem várias outras maneiras
+que seu MVC pode aparecer
+
+69
+00:03:30,549 --> 00:03:33,079
+e desaparecer. Esse processo todo
+de aparecer e desaparecer
+
+70
+00:03:33,099 --> 00:03:35,409
+é importante. Existem também
+mudanças geométricas,
+
+71
+00:03:35,429 --> 00:03:40,219
+as mais notáveis são quando você
+rotaciona o seu device e a view
+
+72
+00:03:40,239 --> 00:03:45,249
+do seu MVC vai de comprida e fina
+para curta e larga, ok?
+
+73
+00:03:45,269 --> 00:03:48,619
+Situações de baixa memória também
+podem aparecer, ok? Isso é um dispositivo,
+
+74
+00:03:48,639 --> 00:03:51,369
+ele está no seu bolso,
+ele tem uma quantidade limitada
+
+75
+00:03:51,389 --> 00:03:54,619
+de memória. Ele tem uma memória razoável,
+mas mesmo assim, se você estiver fazendo
+
+76
+00:03:54,639 --> 00:03:57,119
+coisas realmente grandes com
+imagens e sons, você pode
+
+77
+00:03:57,139 --> 00:03:59,869
+se encrencar por aqui. E então
+você é notificado quando isso acontece.
+
+78
+00:03:59,889 --> 00:04:03,139
+E em cada um desses estágios
+você é notificado.
+
+79
+00:04:03,159 --> 00:04:07,019
+A notificação mais importante que
+você recebe é depois que todos
+
+80
+00:04:07,039 --> 00:04:10,889
+os outlets foram setados,
+o método "viewDidLoad" é chamado,
+
+81
+00:04:10,909 --> 00:04:13,790
+ok? Porque nós chamamos as confiurações
+de outlet de "loading", então
+
+82
+00:04:13,810 --> 00:04:16,540
+quando a view acabou de carregar,
+o viewDidLoad é chamado. Agora, quando você
+
+83
+00:04:16,560 --> 00:04:18,910
+recebe o viewDidLoad, você
+simplesmente implementa ele no seu
+
+84
+00:04:18,930 --> 00:04:21,790
+viewController, você o herda
+da sua superclasse, UIViewController,
+
+85
+00:04:21,810 --> 00:04:25,459
+e você quer dar uma chance pro super.
+Em todos esses métodos, esses métodos
+
+86
+00:04:25,479 --> 00:04:28,230
+de ciclo de vida, você quer
+dar uma chance pra sua superclasse
+
+87
+00:04:28,250 --> 00:04:31,439
+fazer o trabalho dela.
+Basicamente o UIViewController.
+
+88
+00:04:31,459 --> 00:04:34,239
+Certo? A classe base.
+Ele quer uma chance, então sempre vamos
+
+89
+00:04:34,259 --> 00:04:38,259
+dizer: [super viewDidLoad]
+ou o que for. O método
+
+90
+00:04:38,279 --> 00:04:41,850
+de lifecycle vem primeiro
+e então nós fazemos qualquer tipo
+
+91
+00:04:41,870 --> 00:04:45,280
+de setup, ok? Então viewDidLoad
+é um ótimo lugar para colocar código de
+
+92
+00:04:45,300 --> 00:04:48,519
+setup para o seu controller e,
+de fato, eu mostrei para vocês
+
+93
+00:04:48,539 --> 00:04:51,769
+na minha última demo, eu até coloquei
+uma pequena linha de código no meu viewDidLoad
+
+94
+00:04:51,789 --> 00:04:54,519
+e o que é legal sobre isso
+é que todos os seus outlets já estão
+
+95
+00:04:54,539 --> 00:04:57,519
+setados. Alguns de vocês podem
+ter percebido que quando você
+
+96
+00:04:57,539 --> 00:05:00,269
+tenta iniciar coisas em um setter,
+você tem um outlet que depende de outro
+
+97
+00:05:00,289 --> 00:05:03,269
+e um é setado e o outro não.
+
+
+98
+00:05:03,289 --> 00:05:06,519
+e então as coisas ficam meio
+que fora de ordem e você nunca sabe
+
+99
+00:05:06,539 --> 00:05:09,769
+em qual ordem os outlets são setados.
+Então isso pode virar uma loucura.
+
+100
+00:05:09,789 --> 00:05:12,019
+Então viewDidLoad
+soluciona todos esses problemas
+
+101
+00:05:12,039 --> 00:05:15,019
+porque todos os outlets serão
+setados nesse ponto, ok?
+
+102
+00:05:15,039 --> 00:05:17,769
+Todos os seus outlets na sua UI
+são setados e então você pode
+
+103
+00:05:17,789 --> 00:05:18,769
+ir em frente e fazer
+
+104
+00:05:18,789 --> 00:05:21,519
+o que você precisar fazer.
+A única coisa que devemos tomar cuidado
+
+105
+00:05:21,539 --> 00:05:26,290
+no viewDidLoad é que a sua
+geometria não está setada.
+
+106
+00:05:26,310 --> 00:05:31,109
+Em outras palavras, o seu MVC...
+ele pensa que ele tem o tamanho que
+
+107
+00:05:31,129 --> 00:05:33,819
+está no Storyboard. Então se caso acontecer
+de ele estar rodando em outro lugar,
+
+108
+00:05:33,839 --> 00:05:37,429
+como em um iPhone 5 ou iPad,
+ou em uma orientação diferente da que
+
+109
+00:05:37,449 --> 00:05:40,439
+ele estava no Storyboard,
+isso não está setado ainda.
+
+110
+00:05:40,459 --> 00:05:43,850
+Ok, então não façam coisas
+relacionadas a geometria no viewDidLoad,
+
+111
+00:05:43,870 --> 00:05:47,609
+ok? Ao invés disso, nós fazemos isso
+no próximo, que é o viewDidAppear, ok?
+
+112
+00:05:47,629 --> 00:05:51,299
+viewWillAppear
+é enviado para o nosso controller
+
+113
+00:05:51,319 --> 00:05:56,209
+logo antes dela aparecer
+na tela, ok? Então 
+
+114
+00:05:56,229 --> 00:06:00,230
+alguém clica na tab que representa
+o seu MVC e ela
+
+115
+00:06:00,250 --> 00:06:02,929
+está no limiar de aparecer na tela.
+Ela não está na tela ainda,
+
+116
+00:06:02,949 --> 00:06:05,679
+mas está muito próxima de estar.
+Então o viewDidAppear é enviado
+
+117
+00:06:05,699 --> 00:06:09,519
+para você. O argumento "animated"
+apenas significa se a sua view vai
+
+118
+00:06:09,539 --> 00:06:12,660
+deslizar ou se vai apenas boom,
+aparecer na tela.
+
+119
+00:06:12,680 --> 00:06:15,910
+Então, tipo, se for uma tab,
+ele só aparece na tela. Mas se
+
+120
+00:06:15,930 --> 00:06:18,160
+você está fazendo algo como
+navigationController, onde você
+
+121
+00:06:18,180 --> 00:06:21,410
+clica em um botão e ele
+desliza pra tela, então ele vai te dizer
+
+122
+00:06:21,430 --> 00:06:23,910
+é animado. Normalmente, você
+não se importa com o argumento desse método.
+
+123
+00:06:23,930 --> 00:06:29,139
+Então sua view é carregada, ou seja,
+todos os outlets são setados
+
+124
+00:06:29,159 --> 00:06:33,209
+apenas uma vez, mas ela pode aparecer
+e desaparecer várias vezes.
+
+125
+00:06:33,229 --> 00:06:36,720
+Então você não quer fazer algo em
+viewWillAppear que você só precisa
+
+126
+00:06:36,740 --> 00:06:39,910
+fazer uma vez, certo? Porque
+cada vez que ela aparecer
+
+127
+00:06:39,930 --> 00:06:42,410
+isso vai ser chamado novamente.
+Faz sentido?
+
+128
+00:06:42,430 --> 00:06:45,559
+Então viewDidLoad é onde você
+coloca toda a inicialização que
+
+129
+00:06:45,579 --> 00:06:48,799
+você quer que rode apenas
+quando seu controller se inicia
+
+130
+00:06:48,819 --> 00:06:51,199
+pela primeira vez. E viewWillAppear
+é algo que você quer fazer
+
+131
+00:06:51,219 --> 00:06:52,199
+toda vez que ele aparecer.
+
+132
+00:06:52,219 --> 00:06:54,949
+Então, que tipo de coisas iriam
+no viewWillAppear?
+
+133
+00:06:54,969 --> 00:06:57,699
+Se parece que o viewDidLoad é
+o lugar que você colocaria tudo.
+
+134
+00:06:57,719 --> 00:07:00,160
+Bom, obviamente, mudanças
+geométricas tem que ir no viewWillAppear.
+
+135
+00:07:00,180 --> 00:07:03,089
+Nós falamos sobre
+o porquê disso. Também, se
+
+136
+00:07:03,109 --> 00:07:06,359
+coisas estão mudando enquanto
+o seu MVC está fora da tela,
+
+137
+00:07:06,379 --> 00:07:07,359
+vocês verão nessa demo
+
+138
+00:07:07,379 --> 00:07:10,359
+que vou fazer hoje.
+Coisas acontecendo em outras tabs
+
+139
+00:07:10,379 --> 00:07:13,109
+que podem afetar minha tab,
+então obviamente, quando eu
+
+140
+00:07:13,129 --> 00:07:16,209
+for aparecer, eu preciso, sabe,
+me ligar no o que está acontecendo
+
+141
+00:07:16,229 --> 00:07:18,910
+mundo a fora.
+Então essa é outra razão para
+
+142
+00:07:18,930 --> 00:07:21,660
+colocar as coisas no viewWillAppear.
+E existem também motivos de
+
+143
+00:07:21,680 --> 00:07:24,160
+performance para colocar
+coisas no viewWillAppear. Nós vamos
+
+144
+00:07:24,180 --> 00:07:26,910
+falar sobre isso mais pra frente,
+mas, o resumo é,
+
+145
+00:07:26,930 --> 00:07:29,359
+viewWillAppear é para inicializações
+relacionadas a geometria,
+
+146
+00:07:29,379 --> 00:07:33,609
+execução lazy e update tardio.
+Update tardio significa
+
+147
+00:07:33,629 --> 00:07:36,230
+update que você quer...
+coisas acontecendo enquanto você
+
+148
+00:07:36,250 --> 00:07:39,179
+não está na tela, e então, quando
+você aparece, você quer se atualizar.
+
+149
+00:07:39,199 --> 00:07:41,819
+Ok, pergunta.
+
+
+150
+00:07:41,839 --> 00:07:44,959
+>> [Estudante pergutando]
+
+
+151
+00:07:44,979 --> 00:07:45,959
+[estudante pergutando]
+
+
+152
+00:07:45,979 --> 00:07:48,209
+>> Ok, a pergunta é:
+o viewDidLoad é executado
+
+153
+00:07:48,229 --> 00:07:50,209
+antes do viewWillAppear? E a resposta é:
+absolutamente. Não se preocupe,
+
+154
+00:07:50,229 --> 00:07:53,339
+o iOS não vai colocar o seu MVC
+na ela até que todos os seus outlets
+
+155
+00:07:53,359 --> 00:07:56,579
+estejam setados, ok? A configuração
+dos outlets acontece primeiro
+
+156
+00:07:56,599 --> 00:08:00,769
+e então você tem o viewDidLoad.
+E então cada vez que você aparece
+
+157
+00:08:00,789 --> 00:08:03,019
+você vai ter o viewWillAppear, ok?
+Obviamente você não iria querer
+
+158
+00:08:03,039 --> 00:08:06,269
+aparecer na tela
+quando você ainda não está carregado.
+
+159
+00:08:06,289 --> 00:08:10,649
+Certo, você também recebe
+uma mensagem quando você desaparece.
+
+160
+00:08:10,669 --> 00:08:14,749
+Certo, então quando seu MVC
+some da tela. Então alguém clica
+
+161
+00:08:14,769 --> 00:08:17,469
+em uma tab diferente, boom.
+Agora você não está mais na tela.
+
+162
+00:08:17,489 --> 00:08:21,079
+Você recebe isso. O que você coloca
+no viewWillDisappear? Coisas como,
+
+163
+00:08:21,099 --> 00:08:24,169
+se você quer lembrar
+o estados das coisas para quando
+
+164
+00:08:24,189 --> 00:08:27,839
+ela voltar, você possa redesenhá-las,
+Quero dizer, diversas vezes sua view
+
+165
+00:08:27,859 --> 00:08:30,839
+não vai mudar, então ela apenas
+vai ficar lá esperando
+
+166
+00:08:30,859 --> 00:08:32,590
+até voltar pra tela
+e tudo
+
+167
+00:08:32,610 --> 00:08:33,590
+continuará igual.
+
+168
+00:08:33,610 --> 00:08:36,590
+Então você não precisa fazer nada
+no viewWillDisappear.
+
+169
+00:08:36,610 --> 00:08:39,090
+Mas, você pode ter
+algum motivo para salvar
+
+170
+00:08:39,110 --> 00:08:42,090
+o estado do mundo, talvez.
+Talvez você queira que--
+
+171
+00:08:42,110 --> 00:08:44,590
+o usuário estava editando
+alguma coisa e você quer
+
+172
+00:08:44,610 --> 00:08:47,090
+pegar o que ele estava editando
+e salvar, tanto
+
+173
+00:08:47,110 --> 00:08:49,590
+temporariamente ou permanentemente,
+então se eles voltarem, você vai
+
+174
+00:08:49,610 --> 00:08:52,340
+voltar a mostrar o que eles
+estavam fazendo antes.
+
+175
+00:08:52,360 --> 00:08:54,999
+Uma coisa sobre viewWillDisappear,
+que é verdade também 
+
+176
+00:08:55,019 --> 00:08:55,999
+com viewWillAppear.
+
+177
+00:08:56,019 --> 00:08:59,259
+Na verdade, com todos os métodos
+de lifecycle. Você não quer
+
+178
+00:08:59,279 --> 00:09:02,939
+fazer nada muito demorado, ok?
+Você não faria tipo um
+
+179
+00:09:02,959 --> 00:09:05,739
+request de rede.
+Algo que poderia demorar
+
+180
+00:09:05,759 --> 00:09:08,450
+um segundo ou mais, ok?
+Todas essas coisas precisam acontecer
+
+181
+00:09:08,470 --> 00:09:12,039
+em outra thread e nós vamos
+falar sobre isso daqui três ou
+
+182
+00:09:12,059 --> 00:09:14,289
+quatro semanas porque isso
+é realmente uma parte importante
+
+183
+00:09:14,309 --> 00:09:16,289
+de programar em um device como esse,
+é programação
+
+184
+00:09:16,309 --> 00:09:19,629
+multi-threaded. Mas no viewWillDisappear,
+você poderia lançar uma thread
+
+185
+00:09:19,649 --> 00:09:22,499
+que vai fazer alguma
+persistência, ok? E no
+
+186
+00:09:22,519 --> 00:09:25,619
+viewWillAppear, você poderia
+lançar uma thread que vai
+
+187
+00:09:25,639 --> 00:09:28,439
+e faz um request de rede,
+e então, na tela você teria apenas
+
+188
+00:09:28,459 --> 00:09:31,249
+uma "spinning wheel" até
+o request de rede voltar 
+
+189
+00:09:31,269 --> 00:09:34,369
+e então você faria um update.
+Mas nós não queremos nunca
+
+190
+00:09:34,389 --> 00:09:37,369
+bloquear a thread do view controller,
+ok? Então esses viewWillDisappear,
+
+191
+00:09:37,389 --> 00:09:40,600
+viewDidLoad, todas essas coisas,
+não podem fazer nada muito custoso,
+
+192
+00:09:40,620 --> 00:09:45,509
+que consuma tempo, quero dizer. Ok?
+Existem também versões "did"
+
+193
+00:09:45,529 --> 00:09:47,809
+de ambos os "appears",
+viewDidAppear
+
+194
+00:09:47,829 --> 00:09:48,809
+e viewDidDisappear,
+
+
+195
+00:09:48,829 --> 00:09:51,350
+são exatamente o que vocês
+estão pensando,
+
+196
+00:09:51,370 --> 00:09:54,689
+depois de ter desaparecido
+completamente. Não está mais
+
+197
+00:09:54,709 --> 00:09:56,989
+na tela, então você tem
+o viewDidDisappear e
+
+198
+00:09:57,009 --> 00:10:00,259
+a mesma coisa, depois que a view
+aparece, está na tela,
+
+199
+00:10:00,279 --> 00:10:04,059
+você recebe o viewDidAppear, ok?
+Esses são raros... muito mais raros
+
+200
+00:10:04,079 --> 00:10:09,279
+de serem usados. Ok, agora digamos que
+sua geometria mudou,
+
+201
+00:10:09,299 --> 00:10:12,149
+então o viewWillAppear já aconteceu,
+digamos na sua tela,
+
+202
+00:10:12,169 --> 00:10:15,279
+ou o viewDidLoad aconteceu
+e vocÊ ainda não recebeu o
+
+203
+00:10:15,299 --> 00:10:18,379
+viewWillAppear, mas
+sua geometria muda...
+
+204
+00:10:18,399 --> 00:10:23,049
+o usuário vira o iPhone,
+ou você carregou alguma coisa e
+
+205
+00:10:23,069 --> 00:10:25,189
+você vai ser mostrado em um
+dispositivo que está numa orientação
+
+206
+00:10:25,209 --> 00:10:27,929
+diferente, ou algo assim.
+Você vai receber esse método
+
+207
+00:10:27,949 --> 00:10:31,470
+viewWillLayoutSubviews.
+E também o
+
+208
+00:10:31,490 --> 00:10:36,850
+viewDidLayoutSubviews. E aí
+sua view, a view do seu controller
+
+209
+00:10:36,870 --> 00:10:40,989
+vai ter essa nova forma.
+E então você pode reagir a isso.
+
+210
+00:10:41,009 --> 00:10:43,659
+Agora, você praticamente nunca
+tem que implementar algo
+
+211
+00:10:43,679 --> 00:10:46,100
+no viewWillLayoutSubviews
+ou viewDidLayoutSubviews,
+
+212
+00:10:46,120 --> 00:10:48,100
+porque eu vou mostrar
+algo a vocês em uma semana e meia
+
+213
+00:10:48,120 --> 00:10:49,100
+chamada
+
+214
+00:10:49,120 --> 00:10:51,869
+auto-layout.
+E auto-layout é algo novo
+
+215
+00:10:51,889 --> 00:10:56,600
+no iOS 6 que permite você dizer:
+"ok, bom, se minha view
+
+216
+00:10:56,620 --> 00:11:00,299
+mudar de orientação,
+aqui estão os lugares para onde
+
+217
+00:11:00,319 --> 00:11:02,999
+eu quero que tudo se mova.
+Eu quero que isso fique aqui nesse canto,
+
+218
+00:11:03,019 --> 00:11:05,850
+eu quero que isso seja redimensionado,
+eu quero que essas duas coisas
+
+219
+00:11:05,870 --> 00:11:08,600
+fiquem na mesma distância entre elas."
+Vêem o que eu estou dizendo?
+
+220
+00:11:08,620 --> 00:11:10,850
+Vocês conseguirão especificar
+a relação entre tudo na view de vocês.
+
+221
+00:11:10,870 --> 00:11:13,609
+E então tudo isso acontecerá
+automaticamente.
+
+222
+00:11:13,629 --> 00:11:17,819
+Mas se você achar que,
+depois que eu explicar auto-layout
+
+223
+00:11:17,839 --> 00:11:21,069
+para vocês, que tipo, ele não
+consegue fazer o que vocês querem
+
+224
+00:11:21,089 --> 00:11:23,819
+e você tiver que reposicionar as coisas
+manualmente, você poderá fazer isso aqui
+
+225
+00:11:23,839 --> 00:11:26,710
+no viewWillLayoutSubviews.
+Muito raro. Nunca vamos precisar disso
+
+226
+00:11:26,730 --> 00:11:30,929
+nesse curso, mas eu estou
+apenas mostrando pra vocês que existe.
+
+227
+00:11:30,949 --> 00:11:34,889
+Agora, auto-roration é o mecanismo
+no qual, quando você vira
+
+228
+00:11:34,909 --> 00:11:37,970
+o dispositivo de landscape para portrait
+ou de portrait para landscape
+
+229
+00:11:37,990 --> 00:11:40,549
+ou landscape de volta
+para portrait, tanto faz,
+
+230
+00:11:40,569 --> 00:11:41,549
+você tem esse
+
+231
+00:11:41,569 --> 00:11:47,919
+re-layout automático da sua view.
+Auto-rotation acontece apenas
+
+232
+00:11:47,939 --> 00:11:52,009
+em certas circunstâncias,
+que é que o controller que estiver
+
+233
+00:11:52,029 --> 00:11:55,499
+no "top-level", que no caso
+seria tipo a tabbar, ok?
+
+234
+00:11:55,519 --> 00:11:58,189
+Eu ainda não falei sobre tabbar,
+vocês verão em breve.
+
+235
+00:11:58,209 --> 00:12:02,019
+A tabbar, o view controller
+que está no "top-level". Se ela retornar
+
+236
+00:12:02,039 --> 00:12:05,419
+YES do shouldAutoRotate, ok? Que é algo
+
+237
+00:12:05,439 --> 00:12:09,230
+que a tabbar faz, se as coisas
+dentro delas puderem rotacionar...
+
+238
+00:12:09,250 --> 00:12:14,210
+E também se a orientação
+para a qual você estiver rotacionando
+
+239
+00:12:14,230 --> 00:12:17,929
+tipo landscape é suportada
+por aquele view controller,
+
+240
+00:12:17,949 --> 00:12:21,139
+retornando essa orientação landscape
+no supportedInterfaceOrientations.
+
+241
+00:12:21,159 --> 00:12:25,090
+Essa é apenas uma property
+do UIViewController.
+
+242
+00:12:25,110 --> 00:12:28,749
+E também se a aplicação permitir
+essa orientação, tipo landscape.
+
+243
+00:12:28,769 --> 00:12:31,619
+Agora, se o seu view controller
+ou a sua aplicação
+
+244
+00:12:31,639 --> 00:12:35,009
+não permitir essa nova orientação,
+então, sua UI vai apenas ficar
+
+245
+00:12:35,029 --> 00:12:38,799
+de lado, certo? Vocês já viram
+apps no iPhone que fazer isso,
+
+246
+00:12:38,819 --> 00:12:41,799
+certo? Você os rotaciona
+e então você tem que virar sua cabeça
+
+247
+00:12:41,819 --> 00:12:44,049
+de lado para vê-los, ok?
+Esses não suportam auto-rotation.
+
+248
+00:12:44,069 --> 00:12:47,480
+Nesse curso, e na vida,
+você quer tentar
+
+249
+00:12:47,500 --> 00:12:50,019
+suportar auto-rotation
+sempre que fizer sentido.
+
+250
+00:12:50,039 --> 00:12:52,579
+Porque as pessoas vão querer
+virar o telefone delas de lado.
+
+251
+00:12:52,599 --> 00:12:55,989
+E elas fazem isso por uma razão.
+Talvez elas queiram mais informações horizontalmente.
+
+252
+00:12:56,009 --> 00:12:59,449
+Ok? Ou, vocês sabem,
+pode ser mais fácil segurar desse jeito,
+
+253
+00:12:59,469 --> 00:13:03,419
+ou qualquer coisa assim. Então,
+fazer suas telas não auto-rotacionarem
+
+254
+00:13:03,439 --> 00:13:05,789
+provavelmente não é bom. E nós vamos
+falar tudo sobre auto-rotation.
+
+255
+00:13:05,809 --> 00:13:08,999
+Nosso vamos fazer nosso jogo
+ser apto a auto-rotacionar na próxima semana,
+
+256
+00:13:09,019 --> 00:13:12,369
+usando vários outros mecanismos
+que nós vamos falar sobre.
+
+257
+00:13:12,389 --> 00:13:15,059
+Mas auto-rotation é muito importante.
+Quando a auto-rotation acontece,
+
+258
+00:13:15,079 --> 00:13:18,119
+você recebe todas essas
+outras mensagens,
+
+259
+00:13:18,139 --> 00:13:20,710
+podem ver que eu as deixei cinza,
+para que vocês não prestem
+
+260
+00:13:20,730 --> 00:13:24,079
+atenção nelas. Muito além
+do escopo desse curso. Não se preocupe,
+
+261
+00:13:24,099 --> 00:13:26,639
+nós vamos tratar bastante
+de auto-rotation de outros modos,
+
+262
+00:13:26,659 --> 00:13:30,980
+auto-layout e outras maneiras.
+E finalmente, bom não finalmente, mas
+
+263
+00:13:31,000 --> 00:13:33,359
+em situações de baixa memória,
+nós vamos ter essa mensagem
+
+264
+00:13:33,379 --> 00:13:35,600
+enviada para o nosso
+view controller.
+
+265
+00:13:35,620 --> 00:13:39,039
+"didReceiveMemoryWarning", ok?
+E isso significa que a aplicação
+
+266
+00:13:39,059 --> 00:13:41,779
+recebeu um memory warning,
+e seu view controller está
+
+267
+00:13:41,799 --> 00:13:45,119
+sendo notificado sobre isso.
+Isso raramente acontece, mas
+
+268
+00:13:45,139 --> 00:13:49,519
+quando acontece, se você usar
+coisas grandes na memória como imagens, ok?
+
+269
+00:13:49,539 --> 00:13:52,850
+Imagens usam um monte de memória, ok?
+Especialmente imagens de
+
+270
+00:13:52,870 --> 00:13:55,819
+alta resolução. Ok, não como
+a imagem do verso da carta
+
+271
+00:13:55,839 --> 00:13:56,819
+que vocês tem no jogo
+
+
+272
+00:13:56,839 --> 00:14:00,379
+mas como uma foto
+ou algo assim. Ou você tem um
+
+273
+00:14:00,399 --> 00:14:03,039
+um som que é mais do que um beep,
+certo? É alguma...
+
+274
+00:14:03,059 --> 00:14:06,239
+você está tocando alguma música...
+Esses usam bastante memória, ok?
+
+275
+00:14:06,259 --> 00:14:07,239
+E então se você
+
+
+276
+00:14:07,259 --> 00:14:09,379
+receber esse "didReceiveMemoryWarning"
+e você não estiver
+
+277
+00:14:09,399 --> 00:14:10,379
+usando essa imagem
+
+
+278
+00:14:10,399 --> 00:14:13,639
+ou esse som e você puder
+recriá-lo,
+
+279
+00:14:13,659 --> 00:14:16,439
+recarregando-o do disco ou algo assim,
+então você deve setar o seu
+
+280
+00:14:16,459 --> 00:14:20,100
+ponteiro forte para nil
+para que ele possa ser libertado
+
+281
+00:14:20,120 --> 00:14:23,869
+da heap, ok? Então, novamente,
+isso é raro,
+
+282
+00:14:23,889 --> 00:14:27,049
+embora nós vamos ver isso
+nesse curso, ok? Tomara que
+
+283
+00:14:27,069 --> 00:14:30,069
+vocês nunca recebam esse
+didReceiveMemoryWarning, mas nós
+
+284
+00:14:30,089 --> 00:14:33,459
+vamos tentar nos adiantar
+e tentar nos prevenir não mantendo
+
+285
+00:14:33,479 --> 00:14:37,129
+dez fotos imensas na memória
+ao mesmo tempo. Nós vamos apenas
+
+286
+00:14:37,149 --> 00:14:40,629
+manter uma ou duas, ou você
+pode usar um cache ou algo do tipo.
+
+287
+00:14:40,649 --> 00:14:42,379
+Certo, agora,
+eu mencionei esse último
+
+288
+00:14:42,399 --> 00:14:43,379
+mesmo sendo a última coisa
+
+
+289
+00:14:43,399 --> 00:14:45,879
+que vocês vão receber. Ops, desculpe.
+Pergunta.
+
+290
+00:14:45,899 --> 00:14:50,639
+Ok, então a pergunta é
+quanto de memória você tem?
+
+291
+00:14:50,659 --> 00:14:54,519
+E a resposta é: você não sabe,
+ok? Você quer manter seu
+
+292
+00:14:54,539 --> 00:14:58,869
+uso de memória baixo.
+Entretanto, você pode assumir que
+
+293
+00:14:58,889 --> 00:15:03,389
+coisas pequenas como um array
+ou string são insignificantes.
+
+294
+00:15:03,409 --> 00:15:06,340
+Mas você não pode assumir que
+algo como uma foto, uma foto de
+
+295
+00:15:06,360 --> 00:15:09,269
+alta resolução,
+você não pode assumir que
+
+296
+00:15:09,289 --> 00:15:12,329
+isso é insignificante. Então você
+tem que manter esse tipo de uso de memória
+
+297
+00:15:12,349 --> 00:15:15,069
+baixo. Então a resposta é:
+você não sabe. Ninguém te fala.
+
+298
+00:15:15,089 --> 00:15:18,279
+Você não é avisado de quão grande
+sua heap está. Você não deve
+
+299
+00:15:18,299 --> 00:15:21,419
+escrever seu programa baseado
+em analisar quão grande sua heap é
+
+300
+00:15:21,439 --> 00:15:24,419
+e quando espaço você pode usar, ok?
+Você deve apenas manter
+
+301
+00:15:24,439 --> 00:15:28,840
+seu uso da heap no mínimo, ok?
+Certo. Então essa mensagem
+
+302
+00:15:28,860 --> 00:15:32,199
+não faz parte estritamente
+do lifecycle do view controller.
+
+303
+00:15:32,219 --> 00:15:35,569
+Mas é meio que importante saber.
+E mesmo que eu esteja
+
+304
+00:15:35,589 --> 00:15:38,949
+mencionando por último,
+na verdade ele vem primeiro.
+
+305
+00:15:38,969 --> 00:15:42,129
+Essa mensagem é enviada para cada
+objeto que venha de um storyboard,
+
+306
+00:15:42,149 --> 00:15:45,529
+não apenas os controllers,
+mas as views ou qualquer
+
+307
+00:15:45,549 --> 00:15:49,169
+coisa que venha
+de um Storyboard recebe esse
+
+308
+00:15:49,189 --> 00:15:56,759
+awakeFromNib, ok? Agora,
+[...]
+
+309
+00:15:56,779 --> 00:15:59,759
+quando as coisas saem de um Storyboard,
+elas não são alloc+init.
+
+310
+00:15:59,779 --> 00:16:02,509
+Essa é a principal coisa
+que você precisa entender.
+
+311
+00:16:02,529 --> 00:16:05,779
+Alloc + init. Nenhuma mensagem
+init é enviada para algo que
+
+312
+00:16:05,799 --> 00:16:08,759
+saiu de um Storyboard, ok?
+Existe um método init diferente,
+
+313
+00:16:08,779 --> 00:16:12,139
+um mecanismo diferente para
+essas coisas que saem do Storyboard.
+
+314
+00:16:12,159 --> 00:16:16,929
+Então, se você tem coisas
+que estariam no seu método init
+
+315
+00:16:16,949 --> 00:16:20,899
+do view controller,
+elas também precisam estar
+
+316
+00:16:20,919 --> 00:16:23,909
+no awakeFromNib. Uma
+boa prática de programação seria colocar
+
+317
+00:16:23,929 --> 00:16:26,899
+em ambos método init, o qual
+eu mostrarei pra vocês em um segundo,
+
+318
+00:16:26,919 --> 00:16:29,649
+e no awakeFromNib, porque
+você não sabe se o seu
+
+319
+00:16:29,669 --> 00:16:32,399
+view controller vai sair de um Storyboard,
+que é o caso 99%
+
+320
+00:16:32,419 --> 00:16:35,149
+das vezes, ou ele pode ser
+alloc + init'ed, que é menos que
+
+321
+00:16:35,169 --> 00:16:38,549
+1% das vezes, ok?
+Então aqui está
+
+322
+00:16:38,569 --> 00:16:41,819
+um pequeno template do tipo
+de coisas que fazemos aqui.
+
+323
+00:16:41,839 --> 00:16:46,439
+Então temos um método chamado setup,
+e é esse setup que você quer
+
+324
+00:16:46,459 --> 00:16:52,329
+fazer na hora da sua inicialização,
+mas antes que eu prossiga,
+
+325
+00:16:52,349 --> 00:16:55,379
+percebam que vocês quase nunca
+farão isso porque
+
+326
+00:16:55,399 --> 00:16:56,379
+vocês tem o
+
+
+327
+00:16:56,399 --> 00:16:59,119
+viewDidLoad, ok?
+Vocês vão colocar tudo que puderem
+
+328
+00:16:59,139 --> 00:17:02,470
+no viewDidLoad.
+Não coloquem algo nesse mecanismo
+
+329
+00:17:02,490 --> 00:17:05,440
+que eu estou falando agora
+a não ser que você realmente tenha,
+
+330
+00:17:05,460 --> 00:17:07,700
+tipo se você tiver algo que
+precisa ser inicializado no
+
+331
+00:17:07,720 --> 00:17:10,450
+seu view controller antes de que
+os outlets sejam setados, por exemplo.
+
+332
+00:17:10,470 --> 00:17:14,379
+Ok? Mas isso é muito raro,
+normalmente você coloca todo
+
+333
+00:17:14,399 --> 00:17:16,839
+o seu código de inicialização
+para o seu view controller no viewDidLoad. 
+
+334
+00:17:16,859 --> 00:17:19,160
+Mas, de qualquer forma,
+se você tiver algo que queira colocar
+
+335
+00:17:19,180 --> 00:17:23,039
+no inicializador, então você poderia
+colocar em um método chamado Setup
+
+336
+00:17:23,059 --> 00:17:26,609
+e você poderia chamar Setup
+no awakeFromNib. E também
+
+337
+00:17:26,629 --> 00:17:30,190
+chamar "[self setup]" do
+designated initializer do UIViewController,
+
+338
+00:17:30,210 --> 00:17:33,220
+o que, infelizmente,
+é chamado 
+
+339
+00:17:33,240 --> 00:17:35,999
+"initWithNibName:bundle:".
+Certo, é assim apenas
+
+340
+00:17:36,019 --> 00:17:36,999
+por razões históricas,
+
+341
+00:17:37,019 --> 00:17:40,829
+esse é
+o designated initializer
+
+342
+00:17:40,849 --> 00:17:43,980
+do UIViewController,
+nem se preocupem com o porquê.
+
+343
+00:17:44,000 --> 00:17:47,369
+Não se preocupem. O resumo é que
+você teria apenas essas
+
+344
+00:17:47,389 --> 00:17:49,519
+três linhas de código,
+[super initWithNibName],
+
+345
+00:17:49,539 --> 00:17:52,749
+[self setup], return self,
+e então você colocaria tudo no setup.
+
+346
+00:17:52,769 --> 00:17:55,559
+Ok? Não importa se a coisa foi
+"alloc init" com o seu
+
+347
+00:17:55,579 --> 00:17:58,499
+designated initializer, ou se
+ela veio de um Storyboard,
+
+348
+00:17:58,519 --> 00:18:01,349
+awakeFromNib,
+você vai ter o método setup chamado.
+
+349
+00:18:01,369 --> 00:18:04,599
+Ok? Mas novamente, não faça isso
+a não ser que você realmente tenha que fazer.
+
+350
+00:18:04,619 --> 00:18:07,599
+E eu sei que alguns de vocês
+estão vindo de linguagens,
+
+351
+00:18:07,619 --> 00:18:10,579
+especialmente como C++,
+onde construtores são reis, certo?
+
+352
+00:18:10,599 --> 00:18:12,899
+Onde você deve colocar tudo nos contrutores
+e os construtores são essas peças
+
+353
+00:18:12,919 --> 00:18:15,450
+fundamentais do quebra-cabeças,
+e isso não é 
+
+354
+00:18:15,470 --> 00:18:16,450
+tão verdadeiro aqui, ok?
+
+
+355
+00:18:16,470 --> 00:18:20,349
+Nós estamos usando lazy instantiation,
+nos estamos usando 
+
+356
+00:18:20,369 --> 00:18:23,210
+o ciclo de vida do nosso view controller.
+É aí que a inicialização
+
+357
+00:18:23,230 --> 00:18:27,289
+está acontecendo, ok?
+Nos setters e getters, coisas assim...
+
+358
+00:18:27,309 --> 00:18:28,789
+Isso é simplesmente
+diferente em Objective-C.
+
+359
+00:18:28,809 --> 00:18:29,789
+Pergunta?
+
+
+360
+00:18:29,809 --> 00:18:33,149
+>> [Estudante pergutando]
+
+
+361
+00:18:33,169 --> 00:18:34,149
+[estudante perguntando]
+
+
+362
+00:18:34,169 --> 00:18:34,899
+[estudante pergutando]
+
+
+363
+00:18:34,919 --> 00:18:35,899
+[estudante pergutando]
+
+
+364
+00:18:35,919 --> 00:18:38,149
+>> Então a pergunta é:
+qual é um exemplo de quando você
+
+365
+00:18:38,169 --> 00:18:40,549
+usaria isso?
+Ok, aqui está um caso muito raro:
+
+366
+00:18:40,569 --> 00:18:41,549
+O Tabbar Controller
+
+
+367
+00:18:41,569 --> 00:18:46,039
+não carrega todas as suas tabs
+até que alguém
+
+
+368
+00:18:46,059 --> 00:18:48,940
+clique nelas. Ele as instancia,
+mas não as carrega.
+
+369
+00:18:48,960 --> 00:18:52,059
+E a tabbar também pode
+olhar para todos os view controllers
+
+370
+00:18:52,079 --> 00:18:54,059
+e perguntar: ei, qual
+o título que eu devo colocar
+
+371
+00:18:54,079 --> 00:18:55,059
+nessa sua tab?
+
+
+372
+00:18:55,079 --> 00:18:58,690
+Ok? Bom, isso precisaria
+ser inicializado
+
+373
+00:18:58,710 --> 00:19:01,809
+antes do viewDidLoad
+porque a tabbar ainda
+
+374
+00:19:01,829 --> 00:19:04,159
+não a carregou.
+Embora, mesmo nesse caso
+
+375
+00:19:04,179 --> 00:19:06,799
+seria bem raro, porque
+você normalmente setaria
+
+376
+00:19:06,819 --> 00:19:10,049
+o título na tab, no Xcode.
+E então ele já vai vir
+
+377
+00:19:10,069 --> 00:19:12,549
+carregado, mas estou
+apenas tentando inventar alguma coisa.
+
+378
+00:19:12,569 --> 00:19:15,299
+É difícil pra mim inventar algo,
+porque você normalmente
+
+379
+00:19:15,319 --> 00:19:16,549
+não usa isso, ok? Pergunta?
+
+
+380
+00:19:16,569 --> 00:19:23,109
+[Estudante perguntando]
+
+
+381
+00:19:23,129 --> 00:19:24,109
+[estudante perguntando]
+
+
+382
+00:19:24,129 --> 00:19:27,109
+>> Ok, então a pergunta é: por que
+eu não tenho... depois de dizer
+
+383
+00:19:27,129 --> 00:19:29,519
+self = initWithNibNabe,
+por que eu não digo
+
+384
+00:19:29,539 --> 00:19:30,519
+"if self", então
+
+
+385
+00:19:30,539 --> 00:19:33,749
+"[self setup]". Bom, eu provavelmente
+deveria, mas eu estou tentando
+
+386
+00:19:33,769 --> 00:19:37,369
+fazer caber nesse slide
+e também, "if self", se o self
+
+387
+00:19:37,389 --> 00:19:40,899
+voltar nil, então "[self setup]"
+não vai fazer nada
+
+388
+00:19:40,919 --> 00:19:43,589
+de qualquer forma, ok? Se eu estivesse
+fazendo algo a mais além de
+
+389
+00:19:43,609 --> 00:19:45,700
+chamar "[self setup]", é,
+eu deveria falar "if self" blá,
+
+390
+00:19:45,720 --> 00:19:46,700
+blá blá blá.
+
+
+391
+00:19:46,720 --> 00:19:49,289
+Essa é a resposta pra isso, ok?
+Mas não é só porque eu estou querendo
+
+392
+00:19:49,309 --> 00:19:50,289
+fazer caber no slide,
+
+
+393
+00:19:50,309 --> 00:19:53,539
+isso é provavelmente
+como você faria.
+
+394
+00:19:53,559 --> 00:19:56,539
+Esse é um código bem limpo
+e você está apenas fazendo essa
+
+395
+00:19:56,559 --> 00:19:59,039
+chamada pro setup, então...
+Certo, então o resumo aqui,
+
+396
+00:19:59,059 --> 00:20:01,529
+você tem o awakeFromNib,
+ou você pode ter o
+
+397
+00:20:01,549 --> 00:20:03,440
+inicializador, se for "alloc init",
+mas esqueçam esse caso,
+
+398
+00:20:03,460 --> 00:20:06,249
+você vai ter o awakeFromNib,
+você tem o viewDidLoad depois
+
+399
+00:20:06,269 --> 00:20:07,249
+que as coisas estão setadas.
+
+
+400
+00:20:07,269 --> 00:20:09,960
+Você pode ter uma notificação
+de mudança geométrica.
+
+401
+00:20:09,980 --> 00:20:13,940
+Então você vai aparecer, ok?
+Você pode receber mais mudanças
+
+402
+00:20:13,960 --> 00:20:16,440
+geométricas se estiver rotacionando
+enquanto você estiver na tela.
+
+403
+00:20:16,460 --> 00:20:18,940
+Então, você vai desaparecer.
+Você pode voltar a aparecer novamente.
+
+404
+00:20:18,960 --> 00:20:22,930
+Desaparecer, aparecer, desaparecer.
+Durante todo o percurso você poderia
+
+405
+00:20:22,950 --> 00:20:25,389
+receber esse didReceiveMemoryWarning
+a qualquer momento,
+
+406
+00:20:25,409 --> 00:20:29,289
+mesmo que você esteja aparecendo ou não,
+e é isso, ok? Esse é o
+
+407
+00:20:29,309 --> 00:20:33,180
+ciclo de vida de um view controller.
+Todo mundo, alguma pergunta sobre isso?
+
+408
+00:20:33,200 --> 00:20:36,069
+No passado existiu algo onde você
+poderia ser "descarregado"
+
+409
+00:20:36,089 --> 00:20:38,529
+tipo, todos os seus outlets
+poderiam ser setados pra nil,
+
+410
+00:20:38,549 --> 00:20:45,689
+mas isso não acontece mais,
+então não se preocupem. Sim?
+
+411
+00:20:45,709 --> 00:20:45,889
+>> [Estudante perguntando]
+
+
+412
+00:20:45,909 --> 00:20:48,139
+>> [Estudante perguntando]
+
+
+413
+00:20:48,159 --> 00:20:49,139
+[estudante perguntando]
+
+
+414
+00:20:49,159 --> 00:20:52,139
+>> Então ele está pergutando:
+quando eu digo que a view apareceu,
+
+415
+00:20:52,159 --> 00:20:54,889
+eu quero dizer que o Storyboard aparecey?
+Nãom quero dizer, a view do MVC,
+
+416
+00:20:54,909 --> 00:20:58,289
+a view que esse controller está controllando,
+ela está vindo pra tela
+
+417
+00:20:58,309 --> 00:21:02,789
+em algum lugar, ok? O Storyboard
+contém todos os MVCs.
+
+418
+00:21:02,809 --> 00:21:06,269
+Um Storyboard tem todos os MVCs nele,
+que vocês vão ver,
+
+419
+00:21:06,289 --> 00:21:10,639
+hoje eu vou adicionar outro MVC.
+Então esse MVC está indo e vindo
+
+420
+00:21:10,659 --> 00:21:11,920
+da tela. Todos eles
+
+
+421
+00:21:11,940 --> 00:21:14,139
+estão no Storyboard,
+mas eles aparecem e desaparecem
+
+422
+00:21:14,159 --> 00:21:19,920
+da tela.
+Isso faz sentido?
+
+423
+00:21:19,940 --> 00:21:21,420
+>> [Estudante perguntando]
+
+
+424
+00:21:21,440 --> 00:21:23,670
+>> Então a pergunta é:
+eu posso ter múltiplos Storyboards?
+
+425
+00:21:23,690 --> 00:21:25,920
+Sim, isso é possível.
+Isso é meio que programação avançada em iOS,
+
+426
+00:21:25,940 --> 00:21:28,420
+nós não vamos nem
+cobrir isso nesse curso.
+
+427
+00:21:28,440 --> 00:21:31,670
+A maioria de vocês
+vai ter um grande storyboard
+
+428
+00:21:31,690 --> 00:21:32,670
+com vários MVCs lá
+
+
+429
+00:21:32,690 --> 00:21:33,670
+Ok, mas sim. Vcoê pode ter
+
+
+430
+00:21:33,690 --> 00:21:34,670
+vários storyboards.
+
+
+431
+00:21:34,690 --> 00:21:38,239
+>> [Estudante pergutando]
+
+
+432
+00:21:38,259 --> 00:21:40,739
+[estudante perguntando]
+
+
+433
+00:21:40,759 --> 00:21:52,269
+[estudante perguntando]
+
+
+434
+00:21:52,289 --> 00:21:53,269
+[estudante perguntando]
+
+
+435
+00:21:53,289 --> 00:21:54,269
+[estudante perguntando]
+
+
+436
+00:21:54,289 --> 00:21:55,269
+[estudante perguntando]
+
+
+437
+00:21:55,289 --> 00:21:56,519
+[estudante perguntando]
+
+
+438
+00:21:56,539 --> 00:21:57,519
+[estudante perguntando]
+
+
+439
+00:21:57,539 --> 00:22:00,519
+[estudante perguntando]
+
+
+440
+00:22:00,539 --> 00:22:02,269
+[estudante perguntando]
+
+
+441
+00:22:02,289 --> 00:22:05,470
+>> A pergunta é:
+Eu tenho que, tipo, 
+
+442
+00:22:05,490 --> 00:22:08,440
+sobrescrever UITabBarController
+e eimplementar algum desses métodos?
+
+443
+00:22:08,460 --> 00:22:12,089
+Não. Você nunca
+sobrescreve UITabBarController.
+
+444
+00:22:12,109 --> 00:22:14,819
+Nunca. UITabBarController
+é, por si só,
+
+445
+00:22:14,839 --> 00:22:18,859
+um controller. Sua view...
+vamos prosseguir então e começar
+
+446
+00:22:18,879 --> 00:22:20,859
+com isso, UITabBarController.
+Sua view...
+
+447
+00:22:20,879 --> 00:22:24,930
+a view de um tabbar controller
+é um monte de outras view controllers.
+
+448
+00:22:24,950 --> 00:22:31,399
+Ok? A tabbar depende da sua view,
+cada um dos seus
+
+449
+00:22:31,419 --> 00:22:33,499
+view controllers, para tudo.
+Incluindo
+
+450
+00:22:33,519 --> 00:22:34,499
+qual é o ícone
+
+451
+00:22:34,519 --> 00:22:37,700
+e o nome para essa tab, tudo.
+Tudo que os difere.
+
+452
+00:22:37,720 --> 00:22:40,789
+Você nunca deve sobrescrever
+UITabBarController, ok?
+
+453
+00:22:40,809 --> 00:22:43,460
+Ele está sempre pegando toda a informação
+que ele precisa da sua view,
+
+454
+00:22:43,480 --> 00:22:46,210
+que são esse view controllers.
+Então vamos falar sobre tabbar controller.
+
+455
+00:22:46,230 --> 00:22:49,809
+Exstem várias maneiras
+de se colocar MVCs na tela,
+
+456
+00:22:49,829 --> 00:22:53,529
+como o iPad tem uma Split View.
+Existem Navgation Controllers,
+
+457
+00:22:53,549 --> 00:22:56,849
+existe "modal", que é quando
+uma view controller fica na tela
+
+458
+00:22:56,869 --> 00:22:59,899
+temporariamente. Como quando você
+está nos Contatos e você, digamos,
+
+459
+00:22:59,919 --> 00:23:02,899
+adiciona um contato e ele aparece
+na tela e faz você digitar
+
+460
+00:23:02,919 --> 00:23:05,649
+nome, sobrenome, e-mail,
+e então você toca em Done
+
+461
+00:23:05,669 --> 00:23:08,399
+E ele para de ficar na tela
+e volta para
+
+462
+00:23:08,419 --> 00:23:11,149
+sua lista de contatos.
+Nós vamos falar sobre todos eles
+
+463
+00:23:11,169 --> 00:23:13,899
+nas próximas semanas, mas nós vamos
+falar sobre a maneira mais simples
+
+464
+00:23:13,919 --> 00:23:16,899
+de você ter múltiplos MVCs na tela
+agora, que é a tabbar.
+
+465
+00:23:16,919 --> 00:23:20,149
+Porém, em todos esses casos,
+nós precisamos conseguir criar 
+
+466
+00:23:20,169 --> 00:23:23,399
+outro MVC que esteja no Storyboard,
+certo? Outra view com o seu
+
+467
+00:23:23,419 --> 00:23:26,359
+controller. E nós fazemos isso
+seguindo os passos a seguir:
+
+468
+00:23:26,379 --> 00:23:31,379
+Nós arrastamos uma View Controller
+da aba de objetos para
+
+469
+00:23:31,399 --> 00:23:33,609
+o nosso Storyboard, da mesma maneira
+que nós arrastamos um botão,
+
+470
+00:23:33,629 --> 00:23:34,609
+nós simplesmente o arrastamos
+
+471
+00:23:34,629 --> 00:23:37,079
+para um espaço livre
+no nosso Storyboard e *plim*
+
+472
+00:23:37,099 --> 00:23:40,529
+ele vai aparecer. Então nós precisamos
+setar a classe para o controller
+
+473
+00:23:40,549 --> 00:23:44,180
+que controla aquilo,
+porque quando você o arrasta
+
+474
+00:23:44,200 --> 00:23:46,419
+Ele tem apenas UIViewController
+como a sua classe.
+
+475
+00:23:46,439 --> 00:23:47,419
+Isso não é bom,
+
+
+476
+00:23:47,439 --> 00:23:49,669
+porque nós precisamos conseguir
+adicionar 
+
+477
+00:23:49,689 --> 00:23:50,669
+outlets e actions e coisas assim,
+
+
+478
+00:23:50,689 --> 00:23:53,669
+então nós precisamos
+da nossa própria subclasse de UIViewController.
+
+479
+00:23:53,689 --> 00:23:57,230
+Então nós usamos
+"New File" para criar o código
+
+480
+00:23:57,250 --> 00:24:00,089
+para o nosso View Controller,
+nossa subclasse, assim como foi em
+
+481
+00:24:00,109 --> 00:24:02,099
+CardGameViewController.
+Lembrem-se,
+
+482
+00:24:02,119 --> 00:24:03,099
+CardGameViewController.m
+
+
+483
+00:24:03,119 --> 00:24:05,099
+e .h foram criados
+automaticamente par anós
+
+484
+00:24:05,119 --> 00:24:06,099
+por aquele template
+
+
+485
+00:24:06,119 --> 00:24:09,099
+que nós escolhemos quando nós criamos
+o nosso projeto. Mas quando nós adicionamos
+
+486
+00:24:09,119 --> 00:24:12,359
+um segundo MVC, nós temos que ir
+em "New File" e criar uma subclasse
+
+487
+00:24:12,379 --> 00:24:16,129
+de UIViewController para termos
+o código, ok? E entÃo você simplesmente
+
+488
+00:24:16,149 --> 00:24:18,450
+contrói a view e amarra os
+outlets e actions
+
+489
+00:24:18,470 --> 00:24:19,450
+e você está pronto, ok?
+
+
+490
+00:24:19,470 --> 00:24:22,200
+Então é bem direto,
+O passo que as pessoas
+
+491
+00:24:22,220 --> 00:24:25,019
+acabam esquecendo frequentemente
+é esse negócio de
+
+492
+00:24:25,039 --> 00:24:28,489
+setar a classe, ok?
+Quando eu arrasto um novo View Controller,
+
+493
+00:24:28,509 --> 00:24:31,230
+eu tenho que dizer ao Xcode qual é
+a classe de View Controller que representa
+
+494
+00:24:31,250 --> 00:24:33,980
+aquele negócio. Vai fazer
+todo o sentido quando vocês verem.
+
+495
+00:24:34,000 --> 00:24:36,669
+Certo, então aqui está o
+TabBar Controller. Vocês todos sabem
+
+496
+00:24:36,689 --> 00:24:38,419
+o que é um TabBar Controller.
+Eu não vou perder tempo, certo?
+
+497
+00:24:38,439 --> 00:24:39,419
+Alguém aqui nunca viu
+
+
+498
+00:24:39,439 --> 00:24:42,749
+um TabBar Controller?
+Num iPhone?
+
+499
+00:24:42,769 --> 00:24:46,450
+Ok? É muito, muito comum.
+O TabBar Controller,
+
+500
+00:24:46,470 --> 00:24:50,009
+como eu disse, a sua view é
+um número de view controllers.
+
+501
+00:24:50,029 --> 00:24:54,440
+Você conecta esses controllers
+com CTRL + arrastar.
+
+502
+00:24:54,460 --> 00:24:56,309
+Você vai no seu Storyboard
+e apenas CTRL + arrasta
+
+503
+00:24:56,329 --> 00:24:57,309
+do TabBar Controller,
+
+
+504
+00:24:57,329 --> 00:25:00,509
+que tem eu próprio ícone
+de MVC lá,
+
+505
+00:25:00,529 --> 00:25:03,859
+para cada um dos view controllers
+que representam uma das tabs, ok?
+
+506
+00:25:03,879 --> 00:25:07,499
+Apenas CTRL + arraste
+e fazendo isso, estamos setando
+
+507
+00:25:07,519 --> 00:25:10,940
+essa property no UITabBarController
+chamada viewControllers.
+
+508
+00:25:10,960 --> 00:25:14,549
+É apenas um NSArray de ViewControllers.
+Não poderia ser mais simples.
+
+509
+00:25:14,569 --> 00:25:16,509
+Ok? Isso é tudo será feito
+com o CTRL + arrastar,
+
+510
+00:25:16,529 --> 00:25:17,509
+e vocês verão quando
+
+
+511
+00:25:17,529 --> 00:25:20,819
+vocês fizerem isso.
+Vocês podem ver que cada tab tem
+
+512
+00:25:20,839 --> 00:25:26,349
+um pequeno título e tem um ícone.
+O título... normalmente o título
+
+513
+00:25:26,369 --> 00:25:29,669
+e o ícone nós quase sempre
+setamos no Xcode. Então eu
+
+514
+00:25:29,689 --> 00:25:32,169
+realmente não quero perder
+muito tempo falando sobre outras maneiras
+
+515
+00:25:32,189 --> 00:25:34,919
+de setar essas coisas,
+mas também é verdade que o UIViewController
+
+516
+00:25:34,939 --> 00:25:37,569
+tem uma property chamada "title",
+que é uma NSString e
+
+517
+00:25:37,589 --> 00:25:40,730
+se você não quiser setar nada
+no Xcode, então
+
+518
+00:25:40,750 --> 00:25:43,099
+o TabBarController vai perguntar
+para o ViewController: ok,
+
+519
+00:25:43,119 --> 00:25:46,099
+qual é seu "title"? E ele vai
+usá-lo e você não terá ícone, ok?
+
+520
+00:25:46,119 --> 00:25:48,569
+Você terá apenas o título.
+Mas existem outras coisas que podem
+
+521
+00:25:48,589 --> 00:25:51,599
+aparecer na tabbar, como um "badge".
+Vocês já viram isso?
+
+522
+00:25:51,619 --> 00:25:55,579
+As vezes as tabs, assim como
+uma aplicação, podem ter
+
+523
+00:25:55,599 --> 00:25:58,579
+um pequeno "badge". Você pode ter
+um pequeno "badge" nas tabs.
+
+524
+00:25:58,599 --> 00:26:01,509
+E a maneira como isso funciona é:
+novamente, em uma abordagem orientada a objetos,
+
+525
+00:26:01,529 --> 00:26:04,899
+você não fala pro TabBarController
+que você quer uma "badge" ali.
+
+526
+00:26:04,919 --> 00:26:08,359
+O que você faz é, você seta uma property
+no ViewController
+
+527
+00:26:08,379 --> 00:26:11,319
+que é controlado pelo...
+que está associado com aquela tab,
+
+528
+00:26:11,339 --> 00:26:15,279
+certo? O nome da property
+é chamada
+
+529
+00:26:15,299 --> 00:26:17,909
+tabBarItem, então esse código que
+eu estou mostrando logo aqui poderia ser
+
+530
+00:26:17,929 --> 00:26:21,369
+algum método no ViewController,
+que é controlado por aquele
+
+531
+00:26:21,389 --> 00:26:24,629
+TabBarController, certo?
+[???], 
+
+532
+00:26:24,649 --> 00:26:27,879
+É chamado TabBarItem,
+e então você diz "self.tabBarItem",
+
+533
+00:26:27,899 --> 00:26:31,259
+você recebe esse objeto,
+ele tem algumas propriedades nele,
+
+534
+00:26:31,279 --> 00:26:34,759
+e uma delas é "title",
+uma delas é a imagem para a pequena imagem,
+
+535
+00:26:34,779 --> 00:26:37,509
+e uma delas é chamada badgeItem.
+badgeItem é apenas
+
+536
+00:26:37,529 --> 00:26:40,960
+uma String e você a seta
+e entÃo uma coisinha vermelha
+
+537
+00:26:40,980 --> 00:26:43,460
+aparecerá com aquela string
+e você obviamente vai querer
+
+538
+00:26:43,480 --> 00:26:46,210
+que essa string seja curta,
+tipo dois ou três caracteres
+
+539
+00:26:46,230 --> 00:26:49,169
+no máximo, ok? Isso mal vai
+caber lá, mas é assim
+
+540
+00:26:49,189 --> 00:26:52,129
+que você a seta, ok?
+E o UITabBarController está tipo
+
+541
+00:26:52,149 --> 00:26:54,389
+vigiando seus view controllers
+para ver se algum deles
+
+542
+00:26:54,409 --> 00:26:57,579
+setou o seu tabBarItems para alguma coisa,
+e se ele fez isso, então
+
+543
+00:26:57,599 --> 00:27:01,359
+ele vai fazer um update, ok?
+Então é aqui que eu estou respondendo
+
+544
+00:27:01,379 --> 00:27:03,919
+a sua pergunta, quando você perguntou antes,
+se eu tenho que fazer uma subclasse
+
+545
+00:27:03,939 --> 00:27:06,909
+de TabBarItem para... não.
+Tudo é controlado por cada tab,
+
+546
+00:27:06,929 --> 00:27:11,649
+basicamente através desse
+método "tabBarItem". Mas, novamente,
+
+547
+00:27:11,669 --> 00:27:14,399
+se você não precisa de um valor para a "badge",
+não se preocupe sobre o título
+
+548
+00:27:14,419 --> 00:27:17,399
+e o ícone, você vai setá-los
+no Xcode. Agora, o que acontece
+
+549
+00:27:17,419 --> 00:27:20,559
+se você tiver mais do que quatro
+view controllers na sua
+
+550
+00:27:20,579 --> 00:27:24,739
+tabbar? E a resposta é
+você vai ter essa quinta tab
+
+551
+00:27:24,759 --> 00:27:28,379
+chamada "More" e se você clicar
+na tab "More" você vai receber esse negócio
+
+552
+00:27:28,399 --> 00:27:33,109
+onde o usuário pode escolher
+quais quatro ele quer lá, ok?
+
+553
+00:27:33,129 --> 00:27:36,889
+Porque eles só podem ter
+quatro de cada vez. Tudo isso
+
+554
+00:27:36,909 --> 00:27:39,879
+acontece automaticamente,
+então você não precisa fazer nada aqui.
+
+555
+00:27:39,899 --> 00:27:42,879
+Você apenas adiciona quantos
+view controllers você quiser
+
+556
+00:27:42,899 --> 00:27:45,129
+e o botão "More" vai aparecer
+automaticamente. E todas essas coisas,
+
+557
+00:27:45,149 --> 00:27:47,429
+tudo automático. Agora, tendo dito isso,
+eu não acho que vocês vão querer ter
+
+558
+00:27:47,449 --> 00:27:51,129
+mais do que cinco tabs ali,
+porque é meio que, hmm,
+
+559
+00:27:51,149 --> 00:27:54,099
+pertubador para o usuário: "oh,
+essa tabbar que eu sempre quero está
+
+560
+00:27:54,119 --> 00:27:57,389
+dentro do More", ok?
+Simplesmente não é uma boa UI.
+
+561
+00:27:57,409 --> 00:28:00,409
+Talvez uma tabbar não seja
+o que você quer quando você
+
+562
+00:28:00,429 --> 00:28:05,139
+começa a ter mais
+do que cinco tabs, ok? Certo.
+
+563
+00:28:05,159 --> 00:28:08,339
+Eu vou mostrar pra vocês
+como é o processo de adicionar um MVC,
+
+564
+00:28:08,359 --> 00:28:11,129
+esse é um pouco diferente
+dos desenhos de telas que
+
+565
+00:28:11,149 --> 00:28:13,879
+eu estava mostrando
+nas coisas anteriores e eu não vou mostrar
+
+566
+00:28:13,899 --> 00:28:15,879
+um walkthrough para vocês
+construírem algo.
+
+567
+00:28:15,899 --> 00:28:16,879
+Eu vou apenas mostrar
+
+568
+00:28:16,899 --> 00:28:19,879
+no geral. Então isso é mais
+para referência, para se você quiser voltar
+
+569
+00:28:19,899 --> 00:28:23,129
+e se lembrar "como que adiciona
+um segundo MVC mesmo? Eu esqueci"
+
+570
+00:28:23,149 --> 00:28:26,419
+E no caminho,
+eu vou definir alguns termos,
+
+571
+00:28:26,439 --> 00:28:29,269
+ok? que nós vamos usar
+para que possamos falar sobre essas coisas,
+
+572
+00:28:29,289 --> 00:28:32,519
+e todos nós vamos estar alinhados.
+E o primeiro termo que eu vou definir
+
+573
+00:28:32,539 --> 00:28:36,689
+é "scene", ok?
+a palavra "scene" significa que
+
+574
+00:28:36,709 --> 00:28:39,309
+as coisas rodeadas por azul aqui,
+com a barra preta embaixo.
+
+575
+00:28:39,329 --> 00:28:44,569
+Uma "scene" é uma view e seu
+controller, ok? 
+
+576
+00:28:44,589 --> 00:28:47,679
+Os dois juntos, nós chamamos de scene.
+É essa coisa retangular.
+
+577
+00:28:47,699 --> 00:28:50,289
+Vocês estão familiarizados
+com a "scene".
+
+578
+00:28:50,309 --> 00:28:51,289
+Vocês vem usando ela
+
+579
+00:28:51,309 --> 00:28:54,039
+em todos os lugares
+com o CardGameController.
+
+580
+00:28:54,059 --> 00:28:56,539
+Mas é isso que nós queremos dizer
+por "scene". Apenas isso,
+
+581
+00:28:56,559 --> 00:28:59,039
+essa coisas que vocês estão vendo
+logo aqui, essa coisa retangular
+
+582
+00:28:59,059 --> 00:29:02,039
+com a barra preta embaixo.
+E todo MVC vai ter essa cara.
+
+583
+00:29:02,059 --> 00:29:05,039
+Nós teremos a barra preta
+embaixo e ele terá
+
+584
+00:29:05,059 --> 00:29:09,749
+a view... a view desse MVC
+vai estar ali,
+
+585
+00:29:09,769 --> 00:29:15,279
+ok? Você pode selecionar
+o controller. Vocês
+
+586
+00:29:15,299 --> 00:29:18,879
+não tiveram que selecionar um controller
+até agora, porque vocês tem
+
+587
+00:29:18,899 --> 00:29:21,179
+basicamente apenas selecionado os botões.
+Mas vocês podem selecionar
+
+588
+00:29:21,199 --> 00:29:24,919
+o controller de uma "scene"
+clicando na barra preta,
+
+589
+00:29:24,939 --> 00:29:28,029
+ou clicando em algum lugar da view,
+não em um label ou
+
+590
+00:29:28,049 --> 00:29:29,029
+em um botão, certo?
+
+
+591
+00:29:29,049 --> 00:29:31,529
+No background da view.
+Se você fizer isso,
+
+592
+00:29:31,549 --> 00:29:32,529
+se você tiver o contorno azul
+
+
+593
+00:29:32,549 --> 00:29:35,279
+ao redor das bordas como aqui,
+o controller está selecionado.
+
+594
+00:29:35,299 --> 00:29:38,029
+Agora, por que eu vou querer
+escolher o controller?
+
+595
+00:29:38,049 --> 00:29:40,329
+Porque, vejam, eu estou mostrando
+o "attributes inspector" na direita
+
+596
+00:29:40,349 --> 00:29:43,649
+para um controller e
+não tem muita coisa interessante.
+
+597
+00:29:43,669 --> 00:29:46,529
+Nós vamos falar um pouco mais
+sobre essas coisas depois.
+
+598
+00:29:46,549 --> 00:29:49,279
+Vocês podem ver que tem o título.
+Eu falei pra vocês que o view controller
+
+599
+00:29:49,299 --> 00:29:51,779
+tem uma property chamada "title",
+vocês podem ver ela em branco logo aqui.
+
+600
+00:29:51,799 --> 00:29:54,779
+Existem algumas outras coisas
+que não vamos falar sobre,
+
+601
+00:29:54,799 --> 00:29:57,279
+mas é bem desinteressante.
+Não é interessante
+
+602
+00:29:57,299 --> 00:29:59,779
+como um botão, onde tem a fonte,
+e todas aquelas
+
+603
+00:29:59,799 --> 00:30:00,779
+outras coisas. Mas sério,
+o que é interessante
+
+604
+00:30:00,799 --> 00:30:01,779
+sobre o controller,
+
+605
+00:30:01,799 --> 00:30:04,529
+se você o tiver selecionado,
+é trocar para o
+
+606
+00:30:04,549 --> 00:30:06,619
+"identity inspector" do controller.
+Ok? É nesse botão adiante,
+
+607
+00:30:06,639 --> 00:30:10,889
+próximo ao Attributes Inspector.
+Porque quando
+
+608
+00:30:10,909 --> 00:30:11,889
+você clica ali,
+
+
+609
+00:30:11,909 --> 00:30:16,220
+vocês vão ver
+a classe para aquele controller
+
+610
+00:30:16,240 --> 00:30:19,059
+e vocês podem ver que esse é
+o nosso CardGameViewController.
+
+611
+00:30:19,079 --> 00:30:21,960
+Então vocês vêem que está
+no popup Class ali, nós temos
+
+612
+00:30:21,980 --> 00:30:25,179
+CardGameViewController selecionado, ok?
+É crítico que vocês entendam isso
+
+613
+00:30:25,199 --> 00:30:28,529
+porque isso... quando você
+adiciona um novo MVC,
+
+614
+00:30:28,549 --> 00:30:32,439
+você tem que setar esse campo.
+Você tem que dizer qual a classe 
+
+615
+00:30:32,459 --> 00:30:35,859
+do controller que está controllando
+essa scene, ok? Controlando a view
+
+616
+00:30:35,879 --> 00:30:41,509
+nessa scene. Então,
+vamos adicionar outro MVC.
+
+617
+00:30:41,529 --> 00:30:41,710
+Eu apenas vou descer
+
+
+618
+00:30:41,730 --> 00:30:44,710
+aqui na aba de objetos
+aqui embaixo,
+
+619
+00:30:44,730 --> 00:30:47,710
+no mesmo lugar que eu peguei
+os botões e labels. E eu vou arrastar,
+
+620
+00:30:47,730 --> 00:30:50,210
+é o primeiro de todos,
+chamado ViewController, ok?
+
+621
+00:30:50,230 --> 00:30:52,839
+Eu vou apenas arrastá-lo
+para o meu Storyboard
+
+622
+00:30:52,859 --> 00:30:57,599
+e boop! Eu tenho um, ok?
+Simples assim.
+
+623
+00:30:57,619 --> 00:31:02,249
+O único problema com isso,
+é se eu clicar nele, quando eu olhar
+
+624
+00:31:02,269 --> 00:31:05,329
+no Identity Inspector,
+vocês podem ver a classe dele é
+
+625
+00:31:05,349 --> 00:31:08,349
+UIViewController, em outras palavras,
+um view controller genérico.
+
+626
+00:31:08,369 --> 00:31:11,879
+E isso não é bom porque
+nós não podemos adicionar...
+
+627
+00:31:11,899 --> 00:31:14,129
+nós não podemos adicionar nenhum
+outlet ou actions para o UIViewController
+
+628
+00:31:14,149 --> 00:31:17,009
+porque ele foi escrito pela Apple,
+não é a nossa classe.
+
+629
+00:31:17,029 --> 00:31:19,779
+Então nós temos que criar uma subclasse.
+Para fazer isso,
+
+630
+00:31:19,799 --> 00:31:20,779
+percebam também que nós temos
+
+
+631
+00:31:20,799 --> 00:31:23,759
+um warning aqui, vêem
+esse triangulozinho amarelho de warning?
+
+632
+00:31:23,779 --> 00:31:27,429
+Assim que você arrasta um novo MVC,
+você recebe um warning.
+
+633
+00:31:27,449 --> 00:31:30,629
+Ok? Nós vamos falar sobre isso
+daqui a alguns slides, assim como
+
+634
+00:31:30,649 --> 00:31:33,889
+o que exatamente é isso.
+Tudo o que você precisa fazer é digitar
+
+635
+00:31:33,909 --> 00:31:36,509
+o nome da nova classe ali,
+se você criar uma classe primeiro
+
+636
+00:31:36,529 --> 00:31:37,509
+então, na verdade,
+
+
+637
+00:31:37,529 --> 00:31:41,439
+a classe vai estar no popup,
+ok? Mas você pode fazer
+
+638
+00:31:41,459 --> 00:31:44,439
+em qualquer ordem.
+Digite o noe da classe aqui e então
+
+639
+00:31:44,459 --> 00:31:47,439
+crie a classe, ou crie e a classe
+e então vem e seta ela aqui.
+
+640
+00:31:47,459 --> 00:31:50,939
+Eu geralmente prefiro
+digitar primeiro, apenas para que
+
+641
+00:31:50,959 --> 00:31:54,189
+eu não esqueça. Porque várias vezes,
+eu crio um arquivo novo
+
+642
+00:31:54,209 --> 00:31:56,939
+e crio minha nova subclasse
+de UIViewController e então eu
+
+643
+00:31:56,959 --> 00:31:59,939
+esqueço completamente de voltar
+e mudar a classe e daí
+
+644
+00:31:59,959 --> 00:32:01,939
+eu não consigo usar nenhum dos outlets
+ou actions e fico tipo:
+
+645
+00:32:01,959 --> 00:32:02,939
+"O que está acontecendo?"
+
+
+646
+00:32:02,959 --> 00:32:07,519
+Vamos dar uma olhada naquele warning.
+Se você clicar em um warning,
+
+647
+00:32:07,539 --> 00:32:09,779
+a propósito, vocês provavelmente
+já perceberam que se vocês clicarem
+
+648
+00:32:09,799 --> 00:32:13,210
+nesse triângulo, o navegador
+vai aparecer e mostrar
+
+649
+00:32:13,230 --> 00:32:17,019
+qual é o problema. Então, cliquei nele,
+e vocês podem ver que
+
+650
+00:32:17,039 --> 00:32:19,519
+ele está me dizendo o que é o warning.
+"Scene is unreachable...
+
+651
+00:32:19,539 --> 00:32:22,519
+due to lack of entry points
+and does not have an identifier...
+
+
+652
+00:32:22,539 --> 00:32:24,519
+for runtime access via
+-instantiateViewControllerWithIdentifier:"
+
+
+653
+00:32:24,539 --> 00:32:26,899
+Certo, bom, basicamente
+o que isso está nos dizendo é que
+
+654
+00:32:26,919 --> 00:32:30,379
+não há como chegarmos na view
+desse view controller na tela.
+
+655
+00:32:30,399 --> 00:32:35,279
+Ok? Ela não é alcançável
+nesse Storyboard. O que é verdade,
+
+656
+00:32:35,299 --> 00:32:38,279
+porque nós ainda não colocamos
+um TabBarController ou qualquer outro modo
+
+657
+00:32:38,299 --> 00:32:41,619
+de chegar nesse negócio.
+E, por padrão, nossa aplicação
+
+658
+00:32:41,639 --> 00:32:43,879
+vai apenas para o nosso
+CardGameViewController. Nós vamos
+
+659
+00:32:43,899 --> 00:32:48,519
+ter que arrumar isso com um
+TabBarController. Para fazer isso
+
+660
+00:32:48,539 --> 00:32:51,769
+nós simplesmente arrastamos um
+TabBarController, ele também está
+
+661
+00:32:51,789 --> 00:32:54,769
+aqui embaixo nessa aba, ok?
+Então eu só arrasto, vocês podem
+
+662
+00:32:54,789 --> 00:32:57,269
+arrastá-lo para qualquer lugar
+no Storyboard. Geralmente, não arrastem
+
+663
+00:32:57,289 --> 00:33:00,519
+para cima de algum outro,
+mas eu acho que isso nem importa.
+
+664
+00:33:00,539 --> 00:33:03,279
+Você apenas joga ele em qualquer lugar
+e bloop, ele vai explodir
+
+665
+00:33:03,299 --> 00:33:06,379
+e te dar uma TabBarController.
+Ele vai até te dar
+
+666
+00:33:06,399 --> 00:33:09,809
+um par de views em branco,
+ou, sabe, "scnenes" em branco para começar,
+
+667
+00:33:09,829 --> 00:33:14,109
+duas tabs em outras palavras.
+Agora, isso tudo está bem confuso,
+
+668
+00:33:14,129 --> 00:33:17,359
+é difícil de ver o que está acontecendo,
+então se você der um duplo clique
+
+669
+00:33:17,379 --> 00:33:19,859
+no background do seu Storyboard,
+certo? No fundo parecido
+
+670
+00:33:19,879 --> 00:33:22,609
+com um papel quadriculado,
+ou se você clicar em uma das
+
+671
+00:33:22,629 --> 00:33:25,609
+coisinhas no canto inferior direito,
+o zoom in e zoom out,
+
+672
+00:33:25,629 --> 00:33:28,389
+Você pode dar um zoom out
+e ver tudo melhor. Ok? Nós ainda
+
+673
+00:33:28,409 --> 00:33:31,649
+temos um monte de coisas
+se sobrepondo aqui, então eu vou
+
+674
+00:33:31,669 --> 00:33:34,369
+arrastar nosso CardGameViewController
+e esse outro ViewController que eu
+
+675
+00:33:34,389 --> 00:33:38,049
+acabei de criar para fora do caminho,
+ok? E os dois...
+
+676
+00:33:38,069 --> 00:33:39,049
+vocês podem ver que eu tenho
+
+
+677
+00:33:39,069 --> 00:33:42,049
+uma TabBarController agora
+na esquerda. Ela é
+
+678
+00:33:42,069 --> 00:33:44,949
+um controller e MVC como
+qualquer outro. Então se parece
+
+679
+00:33:44,969 --> 00:33:49,470
+com os outros e ele tem
+essas duas linhas indo para
+
+680
+00:33:49,490 --> 00:33:52,289
+dois view controllers,
+essas são as duas tabs que ele tem,
+
+681
+00:33:52,309 --> 00:33:55,529
+mas eu não quero essas duas tabs.
+Então vou selecioná-las
+
+682
+00:33:55,549 --> 00:33:59,099
+e deletá-las, ok? Então agora
+minha TabBarController não tem tabs.
+
+683
+00:33:59,119 --> 00:34:00,099
+Vocês pode ver,
+
+
+684
+00:34:00,119 --> 00:34:03,199
+aqui embaixo,
+ele mostra que não tem tabs, certo?
+
+685
+00:34:03,219 --> 00:34:09,380
+Agora eu quero linkar
+as duas "scenes" que eu tenho.
+
+686
+00:34:09,400 --> 00:34:11,590
+A CardGameViewController que eu já tinha,
+e então essa nova
+
+687
+00:34:11,610 --> 00:34:12,590
+que eu arrastei pra cá
+
+
+688
+00:34:12,610 --> 00:34:15,590
+alguns slides atrás.
+E você faz isso com
+
+689
+00:34:15,610 --> 00:34:18,340
+CTRL + arrastar. Você apenas segura
+o CTRL e arrasta da
+
+690
+00:34:18,360 --> 00:34:22,329
+TabBarController para algum MVC
+que você quer que seja parte
+
+691
+00:34:22,349 --> 00:34:24,469
+da view do TabBarController,
+para ser uma tab,
+
+692
+00:34:24,489 --> 00:34:25,469
+e quando você faz isso
+
+
+693
+00:34:25,489 --> 00:34:28,639
+você vai receber esse menuzinho
+preto. Ele está falando sobre
+
+694
+00:34:28,659 --> 00:34:32,360
+o tipo de "segue".
+Sempre que nós CTRL + arrastamos
+
+695
+00:34:32,380 --> 00:34:35,710
+de um view controller para outro,
+ele quer saber qual será o tipo
+
+696
+00:34:35,730 --> 00:34:39,269
+de transição que nós queremos
+que aconteça, desse praquele.
+
+697
+00:34:39,289 --> 00:34:41,909
+Um TabBarController só tem um tipo
+que é chamado de
+
+698
+00:34:41,929 --> 00:34:44,849
+"Relationships Segue". Por isso,
+nós sempre vamos escolher esse.
+
+699
+00:34:44,869 --> 00:34:48,159
+Por que ele simplesmente não
+escolhe esse por padrão no Xcode?
+
+700
+00:34:48,179 --> 00:34:51,150
+Eu... eu realmente não sei, 
+mas você vai sempre escolher
+
+701
+00:34:51,170 --> 00:34:54,049
+esse último desse menuzinho preto,
+que é viewControllers,
+
+702
+00:34:54,069 --> 00:34:56,619
+o que basicamente está dizendo:
+"você vai adicionar esse view controller...
+
+703
+00:34:56,639 --> 00:34:59,569
+para a lista de view controllers
+da tabbar. Sua property que
+
+704
+00:34:59,589 --> 00:35:02,809
+são os view controlelrs.
+Então fazemos isso,
+
+705
+00:35:02,829 --> 00:35:07,309
+ele coloca a linha ali.
+Essas linhas, vocês verão, elas tem
+
+706
+00:35:07,329 --> 00:35:10,499
+essas bolinhas no meio delas.
+Você pode clicar nelas e
+
+707
+00:35:10,519 --> 00:35:13,579
+inspecioná-las como em um botão
+ou algo assim.
+
+708
+00:35:13,599 --> 00:35:17,150
+Só que, nessa altura do curso,
+vocês não sabem...
+
+709
+00:35:17,170 --> 00:35:19,809
+o que vocês fariam nesse inspector,
+porque ainda não foi ensinado
+
+710
+00:35:19,829 --> 00:35:22,289
+alguns dos tipos mais avançados
+de "segue"
+
+711
+00:35:22,309 --> 00:35:25,449
+entre view controllers,
+e para o TabBarController é totalmente
+
+712
+00:35:25,469 --> 00:35:28,559
+desinteressante. Mas eu apenas queria
+que vocês entendessem que eles são
+
+713
+00:35:28,579 --> 00:35:31,110
+entidades selecionávels, essas linhas.
+Então vamos CTRL + arrastar
+
+714
+00:35:31,130 --> 00:35:34,610
+para o outro.
+Para criar uma segunda tab, a propósito,
+
+715
+00:35:34,630 --> 00:35:37,860
+vocês podem ver que ele criou
+a primeira tab no TabBarController,
+
+716
+00:35:37,880 --> 00:35:40,610
+vejam ali embaixo. Agora, eu estou
+CTRL + arrastando para fazer uma segunda.
+
+717
+00:35:40,630 --> 00:35:43,610
+Novamente, estou sempre
+escolhendo o último.
+
+718
+00:35:43,630 --> 00:35:46,860
+Agora eu tenho duas tabs, ok?
+E eu posso ver as duas coisas.
+
+719
+00:35:46,880 --> 00:35:49,860
+Eu ainda tenho meu warning, a propósito.
+Vocês vêem aquele warning no topo?
+
+720
+00:35:49,880 --> 00:35:52,610
+Ele ainda está ali,
+mesmo que eu já tenha adicionado o
+
+721
+00:35:52,630 --> 00:35:55,099
+TabBarController. Por que isso?
+Nós vamos dar uma olhada.
+
+722
+00:35:55,119 --> 00:35:57,940
+A propósito, você pode arrastar
+essas coisas por aí e ele vai manter
+
+723
+00:35:57,960 --> 00:36:01,210
+as linhas. Apontando para a coisa certa
+o tempo todo, não importa
+
+724
+00:36:01,230 --> 00:36:04,460
+para onde você o arraste.
+As vezes você pode arrastar tipo
+
+725
+00:36:04,480 --> 00:36:06,960
+pro lado direito, e ela volta
+pro outro lado, meio bagunçado,
+
+726
+00:36:06,980 --> 00:36:09,960
+mas enquanto você as move
+pela tela, essas linhas 
+
+727
+00:36:09,980 --> 00:36:15,659
+se ajustam, ok?
+O que é divertido. Então, vamos olhar
+
+728
+00:36:15,679 --> 00:36:19,199
+para esse warning. O warning é
+por causa da pequena seta
+
+729
+00:36:19,219 --> 00:36:21,599
+que está apontando para o lado esquerdo
+do CardGameViewController.
+
+730
+00:36:21,619 --> 00:36:23,809
+Vocês vêem essa pequena seta?
+Não essa
+
+731
+00:36:23,829 --> 00:36:24,809
+que está vindo
+
+732
+00:36:24,829 --> 00:36:27,809
+do tabbar,
+mas essa acima dela.
+
+733
+00:36:27,829 --> 00:36:30,409
+Essa pequena seta significa que,
+quando essa aplicação for lançada,
+
+734
+00:36:30,429 --> 00:36:34,230
+essa é a view do MVC que será mostrada,
+ok? Esse é o ponto de início
+
+735
+00:36:34,250 --> 00:36:37,860
+da nossa aplicação e
+não é isso que queremos. Nós queremos
+
+736
+00:36:37,880 --> 00:36:40,860
+que o ponto de início seja
+o TabBarController. Então nós
+
+737
+00:36:40,880 --> 00:36:43,110
+precisamos mover essa seta
+para o TabBarController
+
+738
+00:36:43,130 --> 00:36:44,110
+e, acredite ou não,
+
+
+739
+00:36:44,130 --> 00:36:47,110
+você faz isso simplesmente
+pegando a seta e arrastando ela
+
+740
+00:36:47,130 --> 00:36:49,569
+e quando você chegar perto do
+TabBarController, ele vai
+
+741
+00:36:49,589 --> 00:36:53,029
+se destacar, vejam como fica
+meio azulado. E então
+
+742
+00:36:53,049 --> 00:36:56,059
+você pode soltar e ela vai
+se conectar a ele. E então,
+
+743
+00:36:56,079 --> 00:37:00,049
+subitamente, o warning se foi.
+Ok? e o TabBarController vai ser
+
+744
+00:37:00,069 --> 00:37:02,389
+a coisa que aparecerá
+quando nosso app for lançado.
+
+745
+00:37:02,409 --> 00:37:05,849
+Agora, o que isso está fazendo de verdade
+é setar esse
+
+746
+00:37:05,869 --> 00:37:08,539
+pequeno checkbox aqui,
+vocês vêem onde ele diz
+
+747
+00:37:08,559 --> 00:37:12,319
+"Is Initial View Controller" e ele
+está desligado, ok? Movendo a seta
+
+748
+00:37:12,339 --> 00:37:14,980
+desativa esse checkbox no nosso
+CardGameViewController, que, a propósito,
+
+749
+00:37:15,000 --> 00:37:17,769
+ainda está selecionado.
+Vocês podem ver que ele tem
+
+750
+00:37:17,789 --> 00:37:20,519
+a borda azul ao redor dele,
+então o Inspector que estamos olhando
+
+751
+00:37:20,539 --> 00:37:23,269
+aqui na direita está inspecionando
+o CardGameViewController. E, de fato,
+
+752
+00:37:23,289 --> 00:37:26,269
+se eu clicar no TabBarController
+que é o que eu vou fazer agora,
+
+753
+00:37:26,289 --> 00:37:29,019
+vocês podem ver que ele tem esse
+checkbox de "Initial View Controller"
+
+754
+00:37:29,039 --> 00:37:31,519
+selecionado.
+E você não tem que mover a seta.
+
+755
+00:37:31,539 --> 00:37:34,019
+Você pode apenas clicar no checkbox
+de qualquer view controller que
+
+756
+00:37:34,039 --> 00:37:37,019
+você queira começar,
+mas a seta é divertida, ok?
+
+757
+00:37:37,039 --> 00:37:40,319
+Então nós movemos a seta.
+Você pode... e, novamente, se você
+
+758
+00:37:40,339 --> 00:37:43,019
+ativar esse checkbox, ele vai desligá-lo
+de quaisquer outros lugares.
+
+759
+00:37:43,039 --> 00:37:46,089
+Ele só pode estar em um view controller
+de um Storyboard por vez.
+
+760
+00:37:46,109 --> 00:37:47,089
+Obviamente...
+
+
+761
+00:37:47,109 --> 00:37:51,199
+Ok? Então agora nós meio que
+temos tudo pronto do jeito
+
+762
+00:37:51,219 --> 00:37:54,509
+que queremos. Nós podemos
+editar as tabs do nosso TabBarController.
+
+763
+00:37:54,529 --> 00:37:55,509
+Vamos primeiro
+
+
+764
+00:37:55,529 --> 00:37:57,009
+ouvir as perguntas lá no fundo.
+
+
+765
+00:37:57,029 --> 00:37:59,559
+>> [Estudante perguntando]
+
+
+766
+00:37:59,579 --> 00:37:59,759
+[estudante perguntando]
+
+
+767
+00:37:59,779 --> 00:38:00,759
+[estudante perguntando]
+
+
+768
+00:38:00,779 --> 00:38:02,759
+>> A pergunta é: como ele sabe
+qual é a tab default
+
+769
+00:38:02,779 --> 00:38:05,509
+que está selecionada quando
+você inicia? E a pergunta é:
+
+770
+00:38:05,529 --> 00:38:07,659
+é a tab que estiver mais à esquerda.
+E essas tabs no TabBarController
+
+771
+00:38:07,679 --> 00:38:08,659
+podem
+
+
+772
+00:38:08,679 --> 00:38:09,659
+ser movidas.
+
+
+773
+00:38:09,679 --> 00:38:11,099
+Você pode trocá-las de lugar,
+a que você quiser para ser
+
+774
+00:38:11,119 --> 00:38:13,999
+a tab da esquerda.
+Então, quando o app inicia,
+
+775
+00:38:14,019 --> 00:38:16,139
+é a tab que estiver mais a esquerda, ok?
+Pergunta.
+
+776
+00:38:16,159 --> 00:38:18,889
+>> [Estudante perguntando]
+
+
+777
+00:38:18,909 --> 00:38:21,389
+[estudante perguntando]
+
+
+778
+00:38:21,409 --> 00:38:24,819
+>> Ok, boa pergunta.
+Ele disse... a pergunta é:
+
+779
+00:38:24,839 --> 00:38:27,420
+olhe par ao TabBarController.
+Vocês vêem que existem duas tabs
+
+780
+00:38:27,440 --> 00:38:30,110
+embaixo, logo ali? Agora
+olhem para os dois view controllers.
+
+781
+00:38:30,130 --> 00:38:33,369
+Existe apenas uma tab neles.
+Vêem? Embaixo delas,
+
+782
+00:38:33,389 --> 00:38:37,839
+tem uma pequena tab ali.
+E isso me lembra que,
+
+783
+00:38:37,859 --> 00:38:41,210
+eu passei por cima
+de uma outra coisa. Mas, as razões
+
+784
+00:38:41,230 --> 00:38:44,210
+pelas quais só tem uma tab em cada
+view controller na direita,
+
+785
+00:38:44,230 --> 00:38:47,429
+é que essas são as tabs deles.
+E existem duas tabs
+
+786
+00:38:47,449 --> 00:38:49,929
+no UITabBarController porque
+essas são todas as tabs.
+
+787
+00:38:49,949 --> 00:38:56,920
+Faz sentido? A outra coisa
+que eu passei por cima foi...
+
+788
+00:38:56,940 --> 00:38:59,589
+Quando nós CTRL + arrastamos
+isso, vamos voltar para isso...
+
+789
+00:38:59,609 --> 00:39:00,589
+vêem? Quando nós
+
+
+790
+00:39:00,609 --> 00:39:04,639
+fizemos esse CTRL + arrastar? Ok?
+Nós perdemos os nossos "flips" e "score".
+
+791
+00:39:04,659 --> 00:39:07,889
+Vocês vêem os flips e score
+lá embaixo? Certo? Nós os tínhamos
+
+792
+00:39:07,909 --> 00:39:10,889
+bem aqui. E então oops, nós os perdemos.
+Eles ficaram escondidos
+
+793
+00:39:10,909 --> 00:39:14,960
+atrás da tabbar, ok?
+Existe uma maneira de fazer com que
+
+794
+00:39:14,980 --> 00:39:17,139
+eles não se escondam com o auto-layout,
+mas nós não sabemos isso ainda.
+
+795
+00:39:17,159 --> 00:39:18,139
+Então vocês terão que,
+
+
+796
+00:39:18,159 --> 00:39:22,059
+por enquanto, ajustar manualmente
+se você colocar uma view
+
+797
+00:39:22,079 --> 00:39:26,449
+em uma tab como aqui,
+você terá que mover manualmente
+
+798
+00:39:26,469 --> 00:39:33,139
+o "flips" e o "score" do caminho, ok?
+Então, voltando para onde estávamos.
+
+799
+00:39:33,159 --> 00:39:36,610
+Ok? Então se você der um zoom
+em qualquer um dos view controllers,
+
+800
+00:39:36,630 --> 00:39:38,539
+vocês verão que tem uma tab
+ali embaixo,
+
+801
+00:39:38,559 --> 00:39:41,579
+essa é a tab deles.
+Se você qusier mudar o título,
+
+802
+00:39:41,599 --> 00:39:44,749
+você pode simplesmente dar um
+duplo clique nela e digitar a palavra
+
+803
+00:39:44,769 --> 00:39:48,940
+que você quiser para o título. Ok?
+A mesma coisa para o ícone, você pode
+
+804
+00:39:48,960 --> 00:39:51,980
+arrastar um arquivo de imagem, do mesmo modo
+que vocês fizeram com o verso da carta, ok?
+
+805
+00:39:52,000 --> 00:39:54,659
+No homework de vocês. Eu tenho uma aqui
+chamada "spade.png".
+
+806
+00:39:54,679 --> 00:39:55,659
+Apenas a arrasto,
+
+
+807
+00:39:55,679 --> 00:39:59,029
+e então,
+no Inspector correspondente,
+
+808
+00:39:59,049 --> 00:40:02,769
+eu cliquei no TabBar Item, certo?
+E eu... o Inspector tem algo aqui
+
+809
+00:40:02,789 --> 00:40:05,650
+chamado "image".
+E eu apenas digitei
+
+810
+00:40:05,670 --> 00:40:08,909
+ou selecionei do popup,
+"spade.png". Essa imagem
+
+811
+00:40:08,929 --> 00:40:09,909
+é uma imagem especial.
+
+
+812
+00:40:09,929 --> 00:40:13,880
+É uma image 30x30, com alpha, ok?
+Lembram-se que eu falei pra vocês
+
+813
+00:40:13,900 --> 00:40:14,880
+o que é alpha, certo?
+
+
+814
+00:40:14,900 --> 00:40:18,269
+É a transparência.
+Bom, ícones, imagens,
+
+815
+00:40:18,289 --> 00:40:21,999
+tem alpha neles. Alguns tem.
+E ele... isso apenas presta atenção
+
+816
+00:40:22,019 --> 00:40:24,499
+no alpha. E ele basicamente
+ilumina essa luz azul
+
+817
+00:40:24,519 --> 00:40:29,940
+por ele, ok? Então ele fica
+com essa cara quando você roda, ok?
+
+818
+00:40:29,960 --> 00:40:34,579
+Vocês vêem minha pequena espada,
+ela está tipo brilhando azul?
+
+819
+00:40:34,599 --> 00:40:37,670
+Vocês já viram isso
+em todas as tabBars. É a mesma
+
+820
+00:40:37,690 --> 00:40:41,249
+em qualquer lugar. Eu coloquei
+um crédito extra para criar
+
+821
+00:40:41,269 --> 00:40:44,170
+um ícone no homework de vocês
+para as suas tabs, porque vocês
+
+822
+00:40:44,190 --> 00:40:49,539
+terão que descobrir como
+fazer uma imagem "alpha-only",
+
+823
+00:40:49,559 --> 00:40:52,969
+mas eu recomendo fazer. É uma coisa
+divertida de saber como se fazer.
+
+824
+00:40:52,989 --> 00:40:55,969
+Quando eu rodo essa aplicação,
+ela se parece com isso
+
+825
+00:40:55,989 --> 00:40:59,079
+e eu tenho meu CardGameController
+na primeira tab, certo?
+
+826
+00:40:59,099 --> 00:41:02,269
+Equando eu clico na outra tab,
+eu vou para o meu outro,
+
+827
+00:41:02,289 --> 00:41:05,639
+o qual eu ainda não construí uma UI,
+mas eu vou fazer isso na demo, ok?
+
+828
+00:41:05,659 --> 00:41:11,039
+É isso. É assim que você adiciona
+um outro MVC e é assim que
+
+829
+00:41:11,059 --> 00:41:14,019
+você os amarra no TabBarController.
+Perguntas antes
+
+830
+00:41:14,039 --> 00:41:19,589
+de eu fazer a demo para isso tudo?
+Ok, então a demo é...
+
+831
+00:41:19,609 --> 00:41:25,440
+nós vamos adicionar a tab "scores"
+para o Matchismo, ok? Então Matchismo
+
+832
+00:41:25,460 --> 00:41:30,329
+joga esse jogo de cartas e você, quando joga,
+você tem uma certa pontuação,
+
+833
+00:41:30,349 --> 00:41:33,839
+e nós vamos adicionar uma segunda
+tab, uma TabBarController,
+
+834
+00:41:33,859 --> 00:41:36,900
+um segundo MVC. E esse
+segundo MVC vai mostrar toda
+
+835
+00:41:36,920 --> 00:41:40,059
+a pontuação de todos os jogos
+que eu já joguei, ok?
+
+836
+00:41:40,079 --> 00:41:43,699
+Eu decidi que eu vou gravar
+quando o jogo começou,
+
+837
+00:41:43,719 --> 00:41:46,579
+quando o jogo terminou e
+quando foi a pontuação. E é isso.
+
+838
+00:41:46,599 --> 00:41:49,219
+Mas vocês poderiam imaginar
+gravarmos outras coisas
+
+839
+00:41:49,239 --> 00:41:53,989
+ou informações do jogo,
+quantas partidas, blá, blá, blá.
+
+840
+00:41:54,009 --> 00:41:56,989
+Mas eu vou apenas gravar
+essas três coisas.
+
+841
+00:41:57,009 --> 00:42:00,049
+Eu também vou mostrar
+outras coisas nessa demo
+
+842
+00:42:00,069 --> 00:42:02,549
+além de fazer o MVC
+e o TabBarController.
+
+843
+00:42:02,569 --> 00:42:05,199
+Especificamente, Property List.
+Eu disse a vocês que property list era tipo
+
+844
+00:42:05,219 --> 00:42:08,409
+algo importante, então eu vou mostrar
+para vocês como nós vamos...
+
+845
+00:42:08,429 --> 00:42:11,699
+eu vou criar um objeto
+que representa um resultado de jogo,
+
+846
+00:42:11,719 --> 00:42:14,309
+o tempo de início
+e o tempo de fim e a pontuação,
+
+847
+00:42:14,329 --> 00:42:17,900
+e eu vou gravar isso
+no NSUserDefaults.
+
+848
+00:42:17,920 --> 00:42:21,360
+Exceto pelo fato de que
+esse objeto não é uma property list,
+
+849
+00:42:21,380 --> 00:42:24,159
+ele é chamado GameResult, algo que inventei.
+Eu preciso transformá-lo 
+
+850
+00:42:24,179 --> 00:42:27,819
+em uma property list para
+colocá-lo no User Defaults
+
+851
+00:42:27,839 --> 00:42:31,069
+e quando eu ler de volta
+do user defaults, eu preciso
+
+852
+00:42:31,089 --> 00:42:34,319
+transformá-lo de volta
+no meu objeto, ok? Então mostrarei a vocês
+
+853
+00:42:34,339 --> 00:42:37,319
+um pouco de como vocês fariam isso,
+pegar um objeto que não é
+
+854
+00:42:37,339 --> 00:42:40,569
+uma property list,
+transformá-lo em uma property list,
+
+855
+00:42:40,589 --> 00:42:42,819
+colocá-lo no user defaults, ok?
+Porque colocar suas pontuações
+
+856
+00:42:42,839 --> 00:42:45,319
+no user defaults...
+isso faz sentido, certo?
+
+857
+00:42:45,339 --> 00:42:47,819
+Quero dizer... é pequeno,
+é algo tipo uma preferência do usuário.
+
+858
+00:42:47,839 --> 00:42:50,319
+Assumindo que vocês não tenham
+muitos, tipo milhares de pontuações.
+
+859
+00:42:50,339 --> 00:42:53,069
+Se vocês tiverem apenas algumas dúzias
+de pontuações apenas,
+
+860
+00:42:53,089 --> 00:42:55,569
+talvez mantermos apenas
+os top 20 scores ou algo assim.
+
+861
+00:42:55,589 --> 00:42:58,569
+Isso faria sentido. Então
+quando fizermos isso, também vou mostrar
+
+862
+00:42:58,589 --> 00:43:01,069
+a solução do homework 1,
+da tarefa obrigatória número 4,
+
+863
+00:43:01,089 --> 00:43:04,319
+que é adicionar um botão "deal",
+e isso é apenas porque eu quero
+
+864
+00:43:04,339 --> 00:43:07,069
+conseguir demonstrar o negócio
+de pontuações para vocês. Então nós
+
+865
+00:43:07,089 --> 00:43:10,319
+temos que conseguir redistribuir as cartas.
+Eu provavelmente não vou
+
+866
+00:43:10,339 --> 00:43:14,190
+formatar o NSDate ou ordenar
+usando NSArray, mas eu vou
+
+867
+00:43:14,210 --> 00:43:16,449
+postar código que faz isso também, ok?
+Basicamente
+
+868
+00:43:16,469 --> 00:43:17,449
+nós vamos ordernar
+
+
+869
+00:43:17,469 --> 00:43:22,460
+as pontuações por "highscores".
+E então nós podemos ordenar
+
+870
+00:43:22,480 --> 00:43:25,199
+as pontuações por quando o jogo aconteceu.
+E talvez ordenar as pontuações
+
+871
+00:43:25,219 --> 00:43:27,519
+pela duração do jogo,
+já que eu sei o início
+
+872
+00:43:27,539 --> 00:43:35,480
+e o fim do jogo. Eu sei a duração, ok?
+Então é isso que eu vou fazer.
+
+873
+00:43:35,500 --> 00:43:39,650
+Aqui vamos nós.
+Então estou começando com
+
+874
+00:43:39,670 --> 00:43:44,119
+o Matchismo aqui,
+no mesmo estado e eu espero que
+
+875
+00:43:44,139 --> 00:43:45,609
+isso esteja visível aqui.
+
+
+876
+00:43:45,629 --> 00:43:50,670
+Vejam se isso está visível
+pra vocês.
+
+877
+00:43:50,690 --> 00:43:53,420
+Vocês conseguem ver isso? ok?
+Está legível? Certo.
+
+878
+00:43:53,440 --> 00:43:56,170
+Então, estou começando,
+lembram-se da ultima coisa que fizemos
+
+879
+00:43:56,190 --> 00:44:00,299
+no Matchismo, nós estávamos fazendo
+esse negócio de instrospection.
+
+880
+00:44:00,319 --> 00:44:03,049
+Apenas para dar uma base a vocês
+sobre o que nós vamos fazer,
+
+881
+00:44:03,069 --> 00:44:06,049
+vamos seguir em frente
+e fazer toda a UI primeiro.
+
+882
+00:44:06,069 --> 00:44:08,549
+A TabBarController e todas essas coisas.
+Eu vou clicar aqui
+
+883
+00:44:08,569 --> 00:44:12,449
+para acessar nosso Storyboard.
+Aqui está nosso Storyboard.
+
+884
+00:44:12,469 --> 00:44:15,929
+E eu vou tentar deixar essa tela
+o mais visível que eu conseguir.
+
+885
+00:44:15,949 --> 00:44:21,009
+E apenas para ficar claro
+o que está acontecendo aqui,
+
+886
+00:44:21,029 --> 00:44:23,690
+vocês vêem? Se eu clicar nesse Storyboard
+e eu for ali
+
+887
+00:44:23,710 --> 00:44:26,579
+no Identity Inspector,
+de fato é um CardGameViewController.
+
+888
+00:44:26,599 --> 00:44:31,789
+Oops, CardGameViewController.
+E tudo que vamos fazer é
+
+889
+00:44:31,809 --> 00:44:34,789
+arrastar mais um e setar
+sua classe para ser outra coisa,
+
+890
+00:44:34,809 --> 00:44:37,289
+ok? Então deixe-me fazer isso.
+Aqui está o ViewController
+
+891
+00:44:37,309 --> 00:44:40,289
+bem aqui embaixo, vêem?
+Eu vou arrastá-lo,
+
+892
+00:44:40,309 --> 00:44:43,469
+colocá-lo aqui, já está
+me mostrando a classe aqui,
+
+893
+00:44:43,489 --> 00:44:44,469
+esse é o Identity Inspector,
+
+
+894
+00:44:44,489 --> 00:44:47,670
+e está me mostrando a classe.
+Eu vou chamar minha classe
+
+895
+00:44:47,690 --> 00:44:56,859
+GameResultViewController.
+...
+
+896
+00:44:56,879 --> 00:44:59,609
+[...]
+
+
+897
+00:44:59,629 --> 00:45:04,069
+É assim que vou chamar
+minha subclasse
+
+898
+00:45:04,089 --> 00:45:06,489
+de ViewController,
+ela vai controlar essa scene,
+
+899
+00:45:06,509 --> 00:45:11,719
+ok? Agora, vamos criar
+essa classe. File, New File.
+
+900
+00:45:11,739 --> 00:45:16,170
+É uma classe em Objective-C,
+exatamente igual
+
+901
+00:45:16,190 --> 00:45:21,029
+as outras classes em Objective-C
+que vocês criaram. Vamos chamá-la de
+
+902
+00:45:21,049 --> 00:45:26,659
+GameResultViewController.
+Porém, não é um NSObject.
+
+903
+00:45:26,679 --> 00:45:30,630
+Ok? Ela herda de UIViewController
+e eu posso apenas digitar
+
+904
+00:45:30,650 --> 00:45:33,170
+UIViewController,
+mas vocês podem ver as coisas comuns
+
+905
+00:45:33,190 --> 00:45:34,170
+listadas aqui em cima,
+
+906
+00:45:34,190 --> 00:45:37,049
+as classes que você poderia
+querer fazer uma subclasse.
+
+907
+00:45:37,069 --> 00:45:40,349
+Eu vou fazer uma subclasse
+de UIViewController aqui. Não esqueçam dessa parte.
+
+908
+00:45:40,369 --> 00:45:42,940
+Se você fizer de um NSObject,
+não vai funcionar.
+
+909
+00:45:42,960 --> 00:45:43,940
+Isso não é parte do meu model
+
+
+910
+00:45:43,960 --> 00:45:47,690
+então eu quero deixá-lo
+nesse lugar aqui
+
+911
+00:45:47,710 --> 00:45:50,940
+e igualmente, eu não quero
+colocá-lo aqui, eu quero deixá-lo
+
+912
+00:45:50,960 --> 00:45:54,440
+no top level, então eu clico "create".
+E aqui está
+
+913
+00:45:54,460 --> 00:45:57,190
+GameResultViewController.
+Vocês podem ver além de alguns stubs
+
+914
+00:45:57,210 --> 00:45:59,190
+de viewDidLoad
+e didReceiveMemoryWarning,
+
+915
+00:45:59,210 --> 00:46:00,190
+e agora vocês sabem
+
+
+916
+00:46:00,210 --> 00:46:02,949
+o que eles fazem,
+ele também adicionou esse "initWithNibName:"
+
+917
+00:46:02,969 --> 00:46:06,519
+que é o designated initializer
+e eu disse a vocês
+
+918
+00:46:06,539 --> 00:46:11,009
+que nós nunca devemos fazer
+nada nele, sem fazer isso antes.
+
+919
+00:46:11,029 --> 00:46:14,880
+Ok? Então vou colocar
+isso aqui...
+
+920
+00:46:14,900 --> 00:46:21,289
+"inicialização que não pode
+esperar até o viewDidLoad", ok?
+
+921
+00:46:21,309 --> 00:46:25,679
+E eu não vou ter nada disso.
+E então, awakeFromNib.
+
+922
+00:46:25,699 --> 00:46:35,999
+Ele vai fazer [self setup],
+e esse carinha, logo aqui,
+
+923
+00:46:36,019 --> 00:46:39,429
+[self setup]. E obviamente nós não
+precisamos desse "if (self)" aqui
+
+924
+00:46:39,449 --> 00:46:42,429
+porque se for nil, ele simplesmente
+não vai fazer nada de qualquer maneira.
+
+925
+00:46:42,449 --> 00:46:44,929
+Porque sabemos que em Objective-C
+enviar uma mensagem pra nil
+
+926
+00:46:44,949 --> 00:46:45,929
+não faz nada, ok?
+
+
+927
+00:46:45,949 --> 00:46:49,650
+Se eu fosse fazer alguma coisa,
+é assim que eu faria.
+
+928
+00:46:49,670 --> 00:46:52,900
+Eu vou deixar isso aqui
+para que vocês tenham esse stub,
+
+929
+00:46:52,920 --> 00:46:55,829
+"stub" quando vocês baixarem,
+mas é muito raro.
+
+930
+00:46:55,849 --> 00:46:58,980
+Geralmente vocês podem colocar
+as coisas no viewDidLoad
+
+931
+00:46:59,000 --> 00:47:01,799
+ou viewWillAppear ou algo assim.
+Então eu não vou deixar o viewDidLoad,
+
+932
+00:47:01,819 --> 00:47:04,619
+e eu não uso muita memória,
+então eu não preciso
+
+933
+00:47:04,639 --> 00:47:05,619
+desse negócio de memória também.
+
+
+934
+00:47:05,639 --> 00:47:11,519
+Eu posso seguir em frente
+e voltar para o Storyboard aqui.
+
+935
+00:47:11,539 --> 00:47:18,309
+E arrumar mais espaço.
+E... eu posso constuir uma UI
+
+936
+00:47:18,329 --> 00:47:23,829
+para isso. Fazer isso rapidamente.
+Então eu vou trazer isso aqui.
+
+937
+00:47:23,849 --> 00:47:27,909
+Clicar aqui. Esse é
+o modo manual, então vamos voltar
+
+938
+00:47:27,929 --> 00:47:30,920
+ao modo automático e vocês podem ver
+no modo automático ele agora sabe
+
+939
+00:47:30,940 --> 00:47:33,670
+que isso era pra ser
+um GameResultViewController.
+
+940
+00:47:33,690 --> 00:47:36,219
+Então, no modo automático,
+ele não está me mostrando
+
+941
+00:47:36,239 --> 00:47:39,409
+o CardGame. Ele está me mostrando
+o GameResult, ok?
+
+942
+00:47:39,429 --> 00:47:42,739
+Aqui está nosso GameResultViewController.
+Então como que é a UI dele?
+
+943
+00:47:42,759 --> 00:47:44,909
+Ele vai ter apenas
+essa TextView,
+
+944
+00:47:44,929 --> 00:47:45,909
+então eu vou aqui embaixo
+
+
+945
+00:47:45,929 --> 00:47:49,210
+e pegar uma TextView.
+Está lá embaixo...
+
+946
+00:47:49,230 --> 00:47:52,999
+Aqui está.
+Uma TextView é tipo uma Label.
+
+947
+00:47:53,019 --> 00:47:59,179
+Exceto pelo fato do texto
+que ele quebra e scrolla, ok?
+
+948
+00:47:59,199 --> 00:48:02,710
+Um label é mais para
+um texto pequeno.
+
+949
+00:48:02,730 --> 00:48:06,130
+Geralmente uma
+ou duas linhas.
+
+950
+00:48:06,150 --> 00:48:09,389
+TextView quebra o texto e scrolla.
+E ele também é editável
+
+951
+00:48:09,409 --> 00:48:12,089
+se você quiser.
+Nós não queremos. Nós vamos por nossas
+
+952
+00:48:12,109 --> 00:48:15,099
+pontuações nele. Eu só quero
+um TextView porque é fácil de colocar
+
+953
+00:48:15,119 --> 00:48:18,349
+texto que vai scrollar para baixo
+se tivermos várias pontuações.
+
+954
+00:48:18,369 --> 00:48:21,349
+Mas eu não quero que ele
+seja editável, então eu vou
+
+955
+00:48:21,369 --> 00:48:24,099
+no inspector bem aqui
+e clico para desligar o "Editable".
+
+956
+00:48:24,119 --> 00:48:27,719
+Então faz com que esse texto
+não seja editável e, sabe,
+
+957
+00:48:27,739 --> 00:48:30,719
+ele coloca esse texto padrão aqui,
+mas eu posso dizer... isso vai ser
+
+958
+00:48:30,739 --> 00:48:36,380
+algo como "Score 25" e isso foi
+no dia 1/22/13,
+
+959
+00:48:36,400 --> 00:48:37,380
+as 4pm
+
+
+960
+00:48:37,400 --> 00:48:42,449
+e talvez ele durou 35 segundos,
+ou algo desse tipo.
+
+961
+00:48:42,469 --> 00:48:45,699
+Ok? Então eu vou ter
+um monte de linhas parecidas com essa.
+
+962
+00:48:45,719 --> 00:48:48,449
+E esse poderia ser
+um "attributed text". Eu não vou
+
+963
+00:48:48,469 --> 00:48:50,949
+fazer isso por questão de tempo,
+mas poderai ser, você poderia
+
+964
+00:48:50,969 --> 00:48:53,699
+destacar e colorir os highscores
+e coisas assim.
+
+965
+00:48:53,719 --> 00:48:56,699
+Agora, além disso, eu vou ter
+alguns botões aqui,
+
+966
+00:48:56,719 --> 00:49:01,420
+embaixo, para ordenar isso.
+Ok? Ordernar essa lista
+
+967
+00:49:01,440 --> 00:49:07,380
+de... coisas. Então nós teremos...
+você pode ordená-la por data,
+
+968
+00:49:07,400 --> 00:49:13,749
+e talvez nós podemos ordernar
+por pontuação, os highscores no topo.
+
+969
+00:49:13,769 --> 00:49:16,789
+E então talvez pudéssemos ordenar
+por duração, os jogos mais rápidos.
+
+970
+00:49:16,809 --> 00:49:22,599
+ok? Nós poderíamos também,
+guardar o número de viradas,
+
+971
+00:49:22,619 --> 00:49:29,259
+e coisas assim.
+Então, essa é toda minha interface de usuário
+
+972
+00:49:29,279 --> 00:49:31,799
+para essa coisa. Vamos seguir
+em frente e criar um outlet aqui.
+
+973
+00:49:31,819 --> 00:49:35,519
+Para isso, eu vou chamá-lo
+de "display". Esse é meu display.
+
+974
+00:49:35,539 --> 00:49:42,130
+Ok? É isso.
+Essa é minha UI. Agora, como eu vou
+
+975
+00:49:42,150 --> 00:49:45,179
+implementar esse--
+bom, vamos aproveitar
+
+976
+00:49:45,199 --> 00:49:47,929
+e fazer o TabBarController agora.
+Apenas porque se acabar nosso tempo,
+
+977
+00:49:47,949 --> 00:49:50,929
+eu definitivamente quero mostrar isso.
+Aqui está meu
+
+978
+00:49:50,949 --> 00:49:53,429
+TabBarController, logo aqui.
+Eu estou apenas escolhendo e
+
+979
+00:49:53,449 --> 00:49:57,019
+arrastando ele aqui, no meu Storyboard.
+Eu estou dando um clique-duplo
+
+980
+00:49:57,039 --> 00:50:02,529
+no background, ok? Vou
+tirar essas coisas do caminho.
+
+981
+00:50:02,549 --> 00:50:05,809
+Ok? Eu não quero esses dois,
+então eu vou selecioná-los
+
+982
+00:50:05,829 --> 00:50:10,119
+e deletá-los. Seleciono esse, deleto.
+Agora eu tenho esses dois caras.
+
+983
+00:50:10,139 --> 00:50:13,130
+Os coloco em posição.
+Eu estou segurando 
+
+984
+00:50:13,150 --> 00:50:14,130
+a tecla CTRL agora,
+
+
+985
+00:50:14,150 --> 00:50:19,210
+e arrastando. Soltei.
+Aqui está perguntando sobre
+
+986
+00:50:19,230 --> 00:50:22,119
+o "segue". Nós vamos fazer esse
+"Relationship Segue" sempre para
+
+987
+00:50:22,139 --> 00:50:26,730
+TabBarControllers.
+Oops, perdi minha UI aqui.
+
+988
+00:50:26,750 --> 00:50:31,409
+Eu posso vir aqui
+e selecionar tudo, movê-los para cima,
+
+989
+00:50:31,429 --> 00:50:39,269
+reselecionar apenas os botões,
+oops, mover isso para baixo.
+
+990
+00:50:39,289 --> 00:50:42,019
+Algo assim, apenas para
+mostrar os flips e o score.
+
+991
+00:50:42,039 --> 00:50:45,670
+Voltandoa qui,
+CTRL + arrasto para cá.
+
+992
+00:50:45,690 --> 00:50:48,420
+Estou segurando o CTRL e arrastando, ok?
+View Controllers.
+
+993
+00:50:48,440 --> 00:50:49,420
+Agora eu tenho isso.
+
+994
+00:50:49,440 --> 00:50:52,690
+Novamente, eu não quero esse
+carinha aqui, eu não quero ele
+
+995
+00:50:52,710 --> 00:50:57,460
+aqui embaixo. Eu quero ele aqui,
+ok? Agora nosso warning
+
+996
+00:50:57,480 --> 00:51:00,989
+vai embora e nossa UI está construída.
+E, de fato, nós poderíamos
+
+997
+00:51:01,009 --> 00:51:08,379
+rodar o projeto agora.
+Vamos fazer isso. Deixe-me fazer assim.
+
+998
+00:51:08,399 --> 00:51:17,480
+Lanço o simulador. Ok? Então
+vocês podem ver aqui está
+
+999
+00:51:17,500 --> 00:51:20,960
+meu jogo de cartas.
+Ainda funciona porque eu apenas coloquei em um
+
+1000
+00:51:20,980 --> 00:51:23,460
+TabBarController, não significa que não funciona.
+E aqui está isso, logo aqui.
+
+1001
+00:51:23,480 --> 00:51:26,210
+Eu deveria ajustar esses botões,
+porque eles ficaram cortados,
+
+1002
+00:51:26,230 --> 00:51:29,230
+certo? E não está mantendo
+a pontuação ainda, porque nós não fizemos
+
+1003
+00:51:29,250 --> 00:51:32,699
+nenhum código para isso.
+Vamos seguir em frente e corrigir isso.
+
+1004
+00:51:32,719 --> 00:51:40,059
+Venho aqui e seleciono esses. Oops.
+E novamente, nós vamos mostrar
+
+1005
+00:51:40,079 --> 00:51:42,809
+um jeito de fazer isso acontecer
+automaticamente.
+
+1006
+00:51:42,829 --> 00:51:45,559
+Esse reajuste das coisas,
+mas, por enquanto, nós temos que fazer manualmente.
+
+1007
+00:51:45,579 --> 00:51:48,829
+Certo, então é isso.
+Nós acabamos a nossa UI.
+
+1008
+00:51:48,849 --> 00:51:52,809
+Ok? Agora, eu quero fazer
+o código que vai
+
+1009
+00:51:52,829 --> 00:51:53,809
+fazer o update
+
+1010
+00:51:53,829 --> 00:51:57,049
+dessa coisa e para fazer isso
+eu vou criar outra classe
+
+1011
+00:51:57,069 --> 00:52:00,749
+chamada GameResult, vou em
+New File e crio uma classe
+
+1012
+00:52:00,769 --> 00:52:03,249
+chamada GameResult
+e GameResult será apenas
+
+1013
+00:52:03,269 --> 00:52:04,249
+uma subclasse de NSObject,
+
+
+1014
+00:52:04,269 --> 00:52:07,999
+e tudo que ela vai fazer
+é guardar
+
+1015
+00:52:08,019 --> 00:52:11,629
+o resultado de um jogo.
+Agora, isso também não é
+
+1016
+00:52:11,649 --> 00:52:15,379
+parte do meu model. Ele poderia ser.
+Realmente poderia ser.
+
+1017
+00:52:15,399 --> 00:52:18,759
+Eu poderia desenhá-lo
+para ser parte do meu model, onde
+
+1018
+00:52:18,779 --> 00:52:22,629
+o jogo da memória retornaria para você,
+a qualquer momento,
+
+1019
+00:52:22,649 --> 00:52:23,629
+o resultado do jogo.
+
+
+1020
+00:52:23,649 --> 00:52:29,029
+Mas pela velocidade...
+e para fazer essa demo fluir,
+
+1021
+00:52:29,049 --> 00:52:32,029
+eu vou fazer tudo
+no lado da interface de usuário.
+
+1022
+00:52:32,049 --> 00:52:35,279
+Mas ele poderia facilmente
+ser feito no model. Vocês teria que ser,
+
+1023
+00:52:35,299 --> 00:52:38,029
+sabe, cuidadoso sobre
+o que e onde colocar, mas provavelmente
+
+1024
+00:52:38,049 --> 00:52:41,029
+o modo que eu estou fazendo isso
+poderia ser feito no model também.
+
+1025
+00:52:41,049 --> 00:52:43,779
+Ok? Ele apenas provê algo aqui.
+Mas eu não estou
+
+1026
+00:52:43,799 --> 00:52:46,779
+pensando desse jeito,
+mas poderia ser. Então,
+
+1027
+00:52:46,799 --> 00:52:49,279
+isso faz o GameResults
+parte do meu Controller. Está no campo
+
+1028
+00:52:49,299 --> 00:52:52,779
+"controller". É uma classe "helper"
+para o meu controller, ok?
+
+1029
+00:52:52,799 --> 00:52:57,999
+Aqui está GameResult e vamos prosseguir
+[...]
+
+1030
+00:52:58,019 --> 00:53:01,769
+Ok, então aqui está
+o GameResult e sua implementação.
+
+1031
+00:53:01,789 --> 00:53:04,369
+Aqui está como a API
+GameResults será.
+
+1032
+00:53:04,389 --> 00:53:05,369
+Eu decidi que
+
+
+1033
+00:53:05,389 --> 00:53:09,710
+eu vou ter uma property
+read-only que é um NSDate,
+
+1034
+00:53:09,730 --> 00:53:13,129
+eu mostrei a vocês,
+eu disse que eu iria mostrar o NSDate,
+
+1035
+00:53:13,149 --> 00:53:16,129
+que é o começo do jogo
+e então terei uma outra property
+
+1036
+00:53:16,149 --> 00:53:19,129
+read-only que será
+o fim do jogo
+
+1037
+00:53:19,149 --> 00:53:22,339
+e eu vou setá-las internamente.
+Tão logo você crie um GameResult,
+
+1038
+00:53:22,359 --> 00:53:25,089
+eu vou assumir que o jogo começou.
+E cada vez que você
+
+1039
+00:53:25,109 --> 00:53:27,839
+fizer um update na pontuação,
+eu vou assumir: ok, o jogo acabou.
+
+1040
+00:53:27,859 --> 00:53:31,299
+Ok? Esse é o fim do jogo.
+Então vou assumir
+
+1041
+00:53:31,319 --> 00:53:34,539
+que cada jogo se encerra
+com a pontuação, ok? Agora isso
+
+1042
+00:53:34,559 --> 00:53:37,359
+pode não ser verdade, mas, novamente,
+estamos tentando fazer isso
+
+1043
+00:53:37,379 --> 00:53:42,009
+o mais simples possível.
+Então o score não é read-only,
+
+1044
+00:53:42,029 --> 00:53:44,599
+porque você pode mudar o score
+do GameResult a qualquer momento,
+
+1045
+00:53:44,619 --> 00:53:49,799
+ok? E isso vai fazer up update...
+Oops, isso era para estar
+
+1046
+00:53:49,819 --> 00:53:53,029
+no automático, desculpe.
+Você pode fazer update no score
+
+1047
+00:53:53,049 --> 00:53:56,719
+a qualquer momento e isso vai mudar
+o encerramento e eu posso ter até
+
+1048
+00:53:56,739 --> 00:54:02,789
+propriedades derivadas aqui como,
+oops, read-only, non-atomic,
+
+1049
+00:54:02,809 --> 00:54:08,460
+"NSTimeInterval duration".
+Então, diferenças entre tempos
+
+1050
+00:54:08,480 --> 00:54:12,759
+são chamadas
+de NSTimeIntervals em iOS,
+
+1051
+00:54:12,779 --> 00:54:16,129
+ok? Então eu posso calcular facilmente
+se eu tiver um início e um fim,
+
+1052
+00:54:16,149 --> 00:54:19,379
+qual foi a duração do jogo,
+quando tempo demorou para você
+
+1053
+00:54:19,399 --> 00:54:22,629
+jogar esse jogo, ok? Então mostrarei
+a vocês como fazer isso bem rápido também.
+
+1054
+00:54:22,649 --> 00:54:25,129
+Então, como que vai ser
+a implementação disso?
+
+1055
+00:54:25,149 --> 00:54:28,379
+Bom, a primeira coisa que farei é...
+eu vou fazer
+
+1056
+00:54:28,399 --> 00:54:34,119
+essas duas coisas aqui
+serem read-write na implementação,
+
+1057
+00:54:34,139 --> 00:54:37,679
+ok? Porque obviamente
+internamente eu quero
+
+1058
+00:54:37,699 --> 00:54:38,679
+ser capaz de setar
+
+
+1059
+00:54:38,699 --> 00:54:42,499
+essas coisas.
+Eu não vou fazer isso read-write,
+
+1060
+00:54:42,519 --> 00:54:44,249
+porque eu vou apenas
+calculá-lo cada vez que
+
+1061
+00:54:44,269 --> 00:54:45,249
+você perguntar.
+
+
+1062
+00:54:45,269 --> 00:54:50,509
+Eu vou ter o
+designated initializer para esse negócio.
+
+1063
+00:54:50,529 --> 00:54:53,509
+É realmente simples,
+eu posso apenas fazer "self = [super init]",
+
+1064
+00:54:53,529 --> 00:54:59,679
+e claro, "if (self)", "return self"
+e aqui dentro eu vou
+
+1065
+00:54:59,699 --> 00:55:00,679
+fazer isso:
+
+
+1066
+00:55:00,699 --> 00:55:05,179
+Eu vou dizer "start = [NSDate ...",
+ok? Esse método em NSDate
+
+1067
+00:55:05,199 --> 00:55:08,499
+é um método de classe.
+Ele retorna a data e o tempo
+
+1068
+00:55:08,519 --> 00:55:12,499
+exatamente agora. É tipo "agora", ok?
+Eu acho que eles deveriam ter chamado
+
+1069
+00:55:12,519 --> 00:55:16,409
+isso de "now", mas eles não chamaram.
+E eu também vou
+
+1070
+00:55:16,429 --> 00:55:19,659
+setar o "end" igual ao "start",
+apenas para dizer que o "end" é
+
+1071
+00:55:19,679 --> 00:55:22,409
+sempre setado. Agora,
+uma coisa para notar sobre isso,
+
+1072
+00:55:22,429 --> 00:55:26,099
+percebam que eu não estou falando
+"self.start = ...", ok?
+
+1073
+00:55:26,119 --> 00:55:30,599
+Eu não estou chamando o setter.
+E existe uma filosofia de design
+
+1074
+00:55:30,619 --> 00:55:35,460
+no iOS que eu normalmente sigo,
+que é que se você está dentro
+
+1075
+00:55:35,480 --> 00:55:39,219
+do inicializador, o seu objeto,
+como ele não está completamente
+
+1076
+00:55:39,239 --> 00:55:43,579
+inicializado, não deveria
+estar chamando setters e getters.
+
+1077
+00:55:43,599 --> 00:55:46,539
+Ok? Desse mogo, quando você escreve
+setters e getters, você pode
+
+1078
+00:55:46,559 --> 00:55:49,059
+assumir que o objeto que
+você está setando e recebendo
+
+1079
+00:55:49,079 --> 00:55:53,089
+as propriedades está completamente incializado.
+Vocês vêem essa idéia conceitual?
+
+1080
+00:55:53,109 --> 00:55:57,460
+Várias pessoas seguem essa idéia,
+não chamem setters e getters,
+
+1081
+00:55:57,480 --> 00:56:01,329
+especialmente setters,
+no seu init.
+
+1082
+00:56:01,349 --> 00:56:02,329
+então eu não vou fazer isso aqui
+
+
+1083
+00:56:02,349 --> 00:56:05,400
+apenas para mostrar
+isso a vocês, o que é
+
+1084
+00:56:05,420 --> 00:56:08,420
+feito frequentemente. Então esse
+seria o segundo lugar que
+
+1085
+00:56:08,440 --> 00:56:11,359
+você vai algum dia acessar uma
+variável de instância, que é no inicializador,
+
+1086
+00:56:11,379 --> 00:56:18,739
+especialmente no seu
+designated initializer. Ok? 
+
+1087
+00:56:18,759 --> 00:56:21,199
+Você poderia argumentar
+que em um inicializador conveniente [???]
+
+1088
+00:56:21,219 --> 00:56:23,059
+você poderia chamar
+os setters e os getters porque
+
+1089
+00:56:23,079 --> 00:56:24,059
+aí você já teria
+
+
+1090
+00:56:24,079 --> 00:56:25,940
+chamado o seu designated initializer,
+então você estaria pelo menos
+
+1091
+00:56:25,960 --> 00:56:29,199
+esse tanto inicializado.
+Entretanto, algumas pessoas poderiam
+
+1092
+00:56:29,219 --> 00:56:33,379
+dizer que essa não é uma boa idéia.
+Certo, então vamos dar uma olhada
+
+1093
+00:56:33,399 --> 00:56:36,480
+no "NSTimeInterval duration" aqui,
+essa property,
+
+1094
+00:56:36,500 --> 00:56:41,929
+esse é o seu getter,
+e eu vou apenas retornar "[self.end ..."
+
+1095
+00:56:41,949 --> 00:56:48,999
+um método chamado
+"timeIntervalSinceDate: self.start]", ok?
+
+1096
+00:56:49,019 --> 00:56:52,559
+Esse é um método no NSDate
+que recebe qualquer outra data
+
+1097
+00:56:52,579 --> 00:56:55,389
+e te diz o intervalo de tempo
+entre os dois. Então agora
+
+1098
+00:56:55,409 --> 00:56:59,679
+eu implementei completamente
+essa property logo aqui. Todo mundo
+
+1099
+00:56:59,699 --> 00:57:04,079
+bem com isso? Perguntas?
+E então, a última coisa que preciso fazer
+
+1100
+00:57:04,099 --> 00:57:07,409
+é apenas, no setter para "score",
+eu vou setar meu score,
+
+1101
+00:57:07,429 --> 00:57:12,519
+e eu também vou setar
+meu tempo final para ser agora.
+
+1102
+00:57:12,539 --> 00:57:17,079
+Oops, "[NSDate date]".
+E esse [???] oops, esse não é
+
+1103
+00:57:17,099 --> 00:57:19,699
+[???], era pra ser "self.end", ok?
+
+
+1104
+00:57:19,719 --> 00:57:24,239
+Esse é o setter do score,
+[???]
+
+1105
+00:57:24,259 --> 00:57:26,739
+mas eu provavelmente
+não deveria estar
+
+1106
+00:57:26,759 --> 00:57:29,239
+acessando o "_end",
+embora existam momentos que isso
+
+1107
+00:57:29,259 --> 00:57:31,739
+faria sentido também.
+Mas, geralmente, você vai querer
+
+1108
+00:57:31,759 --> 00:57:34,489
+usar o setter
+de outra property
+
+1109
+00:57:34,509 --> 00:57:37,779
+no setter dessa daqui.
+Vêem o que estou dizendo?
+
+1110
+00:57:37,799 --> 00:57:41,199
+Então é isso. Essa é minha
+implementação inteira de GameResult
+
+1111
+00:57:41,219 --> 00:57:46,699
+para realmente criarmos um jogo.
+Mas, agora eu preciso pensar sobre
+
+1112
+00:57:46,719 --> 00:57:51,609
+como esses GameResults serão gravados
+e, e vocês sabem,
+
+1113
+00:57:51,629 --> 00:57:54,249
+conseguir ser visto
+pela minha aplicação.
+
+1114
+00:57:54,269 --> 00:57:57,279
+E eu decidi algo,
+eu vou colocar tudo no NSUserDefaults.
+
+1115
+00:57:57,299 --> 00:58:00,199
+Mesmo que a pontuação atual mude,
+eu vou fazer um update
+
+1116
+00:58:00,219 --> 00:58:03,289
+no NSUserDefaults, ok?
+Então esses resultados dos jogos vão ser
+
+1117
+00:58:03,309 --> 00:58:06,809
+meio que permanentes, o tempo todo.
+Agora, novamente, talvez isso não seja
+
+1118
+00:58:06,829 --> 00:58:09,559
+um bom design.
+Talvez vocês queiram ter algo onde
+
+1119
+00:58:09,579 --> 00:58:12,980
+os resultados do jogo
+tenham que ser salvos, ou outra coisa,
+
+1120
+00:58:13,000 --> 00:58:16,409
+mas, bem, esse não é necessariamente
+um design irracional também.
+
+1121
+00:58:16,429 --> 00:58:19,739
+Desse modo, mesmo que meu app crashe,
+aquele jogo ainda contaria.
+
+1122
+00:58:19,759 --> 00:58:22,960
+Ele teria acabado
+da última vez que alguém fez ponto.
+
+1123
+00:58:22,980 --> 00:58:26,569
+Mas ainda estaria na memória.
+Então, eu vou fazer assim.
+
+1124
+00:58:26,589 --> 00:58:27,569
+I estou fazendo isso
+
+1125
+00:58:27,589 --> 00:58:30,569
+mais porque isso me permite
+mostrar pra vocês como fazer
+
+1126
+00:58:30,589 --> 00:58:33,069
+esse negócio de property list
+e tudo isso. Então vamos
+
+1127
+00:58:33,089 --> 00:58:35,069
+dar uma olhada na property list.
+É realmente simples.
+
+1128
+00:58:35,089 --> 00:58:37,569
+Cada vez que o score mudar...
+eu vou criar esse método...
+
+1129
+00:58:37,589 --> 00:58:41,949
+eu vou chamar esse método
+"[self synchronize]", ok?
+
+1130
+00:58:41,969 --> 00:58:45,589
+Vou colocá-lo aqui em cima
+por razões de scroll, ok?
+
+1131
+00:58:45,609 --> 00:58:46,589
+Então "synchronize" vai apenas
+
+
+1132
+00:58:46,609 --> 00:58:49,710
+escrever esse GameResult
+no nosso NSUserDefaults.
+
+1133
+00:58:49,730 --> 00:58:53,929
+Agora, esse GameResult
+não é uma property list.
+
+1134
+00:58:53,949 --> 00:58:58,589
+Ok? e-e-ele tem algo
+como um int nele, que não é
+
+1135
+00:58:58,609 --> 00:59:01,460
+uma property list.
+Esses são parte de uma property list,
+
+1136
+00:59:01,480 --> 00:59:04,210
+mas esse não é.
+E GameResult por si só não é.
+
+1137
+00:59:04,230 --> 00:59:07,079
+Ele é um NSObject. Não é um array,
+uma string ou qualquer coisa assim.
+
+1138
+00:59:07,099 --> 00:59:10,329
+Então nós temos que transformá-lo
+em uma property list. Mas primeiro vamos
+
+1139
+00:59:10,349 --> 00:59:14,719
+falar sobre como nós acessamos
+o NSUserDefaults. E eu vou deixar
+
+1140
+00:59:14,739 --> 00:59:17,239
+isso mais amplo, então aqui está o Results.
+Então o synchronize...
+
+1141
+00:59:17,259 --> 00:59:22,420
+eu vou apenas pegar um NSMutableDictionary.
+Eu decidi que o modo
+
+1142
+00:59:22,440 --> 00:59:25,249
+como eu vou fazer isso é:
+eu vou gravar esses GameResults 
+
+1143
+00:59:25,269 --> 00:59:29,469
+em um dicionário, onde a chave
+é um identificador único para o GameResult
+
+1144
+00:59:29,489 --> 00:59:32,719
+que é quando ele começou.
+Eu não posso começar dois jogos
+
+1145
+00:59:32,739 --> 00:59:36,649
+ao mesmo tempo, certo?
+Então um identificdor único para um GameResult
+
+1146
+00:59:36,669 --> 00:59:39,619
+é quando ele começou,
+então isso será a chave
+
+1147
+00:59:39,639 --> 00:59:42,869
+e o valor será alguma property list
+que eu posso usar para recriar
+
+1148
+00:59:42,889 --> 00:59:45,129
+o GameResult, ok?
+Vai ser outro dicionário,
+
+1149
+00:59:45,149 --> 00:59:48,579
+por acaso. Veremos isso
+em um momento.
+
+1150
+00:59:48,599 --> 00:59:51,819
+Então, agora,
+eu vou pegar o dicionário que tem
+
+1151
+00:59:51,839 --> 00:59:56,319
+todos os jogos nele ok?
+Porque eu vou gravar todos os jogos
+
+1152
+00:59:56,339 --> 00:59:59,069
+em um grande dicionário
+no NSUserDefaults. E vou chamar
+
+1153
+00:59:59,089 --> 01:00:06,269
+ele de mutableGameResultsFromUserDefaults.
+Legal,
+
+1154
+01:00:06,289 --> 01:00:09,849
+um nome curto, do jeito que sempre usamos.
+E para fazer isso, eu vou
+
+1155
+01:00:09,869 --> 01:00:12,889
+pegar o standardUserDefaults.
+Lembrem0se, é assim que
+
+1156
+01:00:12,909 --> 01:00:16,569
+pegamos o UserDefaults.
+Vou chamar o "dictionaryForKey"
+
+1157
+01:00:16,589 --> 01:00:22,049
+e eu vou chamar isso de
+ALL_RESULTS_KEY, que eu vou definir
+
+1158
+01:00:22,069 --> 01:00:25,079
+em um instante.
+E então, muito importantemente aqui,
+
+1159
+01:00:25,099 --> 01:00:29,710
+eu vou dizer mutableCopy,
+porque quando você tira algo
+
+1160
+01:00:29,730 --> 01:00:33,989
+do UserDefaults, é imutável.
+Mesmo que quando você tenha colocado
+
+1161
+01:00:34,009 --> 01:00:36,739
+ele era mutável.
+Quando você pega ele de volta, ele é imutável.
+
+1162
+01:00:36,759 --> 01:00:40,230
+Todo mundo entende isso?
+Eu tenho que fazer uma mutableCopy
+
+1163
+01:00:40,250 --> 01:00:43,759
+aqui, já que eu quero
+fazer update nisso. Certo?
+
+1164
+01:00:43,779 --> 01:00:47,379
+Eu também quero ter certeza
+que se não houver mutableGameResults
+
+1165
+01:00:47,399 --> 01:00:50,379
+from the UserDefaults,
+em outras palavras, se nós nunca salvamos antes,
+
+1166
+01:00:50,399 --> 01:00:52,629
+então eu vou criar
+um NSMutableDictionary
+
+1167
+01:00:52,649 --> 01:00:57,969
+alloc, init. Ok?
+Agora eu tenho um dicionário.
+
+1168
+01:00:57,989 --> 01:01:01,980
+Vou apenas setar o dicionário...
+essa chave única, que será
+
+1169
+01:01:02,000 --> 01:01:08,349
+"self.start.description".
+NSDataes não podem ser chaves
+
+1170
+01:01:08,369 --> 01:01:10,819
+de um NSDictionary.
+Vocês poderiam achar que elas podem, mas não podem.
+
+1171
+01:01:10,839 --> 01:01:13,670
+Mas strings podem, e NSDate
+implementa description,
+
+1172
+01:01:13,690 --> 01:01:14,670
+e vocês já sabem o que é
+
+
+1173
+01:01:14,690 --> 01:01:17,659
+esse método, certo?
+NSObject o implementa
+
+1174
+01:01:17,679 --> 01:01:20,159
+e ele retorna uma
+string que o descreve e o NSDate
+
+1175
+01:01:20,179 --> 01:01:22,909
+também implementa,
+então eu vou usar a descrição
+
+1176
+01:01:22,929 --> 01:01:27,649
+do tempo de início como chave
+e eu vou igualá-lo a
+
+1177
+01:01:27,669 --> 01:01:31,429
+"self.asPropertyList", ok?
+Agora, esse é um método que
+
+1178
+01:01:31,449 --> 01:01:34,440
+eu tenho que implementar
+para transformar meu GameResult em uma
+
+1179
+01:01:34,460 --> 01:01:37,869
+property list. E daí eu vou poder
+colocar no NSUserDefaults,
+
+1180
+01:01:37,889 --> 01:01:38,869
+porque eu não posso
+colocar eu mesmo...
+
+1181
+01:01:38,889 --> 01:01:39,869
+>> [Estudante perguntando]
+
+
+1182
+01:01:39,889 --> 01:01:47,049
+>> Essa é uma boa pergunta,
+vamos descobrir. Essa é uma
+
+1183
+01:01:47,069 --> 01:01:50,319
+pergunta muito boa. Vamos ver aqui...
+description... não é uma property,
+
+1184
+01:01:50,339 --> 01:01:54,349
+pegou muito bem. Fico feliz que você
+tenha visto isso, então isso
+
+1185
+01:01:54,369 --> 01:01:59,489
+deveria ser assim. Vocês podem ver
+que eu tenho esse defeito,
+
+1186
+01:01:59,509 --> 01:02:03,329
+é algo pessoal, que eu as vezes
+uso a notação de getter, a "dot notation"
+
+1187
+01:02:03,349 --> 01:02:06,369
+para coisas que eu acho que
+são propriedades, eu esqueci
+
+1188
+01:02:06,389 --> 01:02:09,489
+que são apenas métodos. Ok?
+Todo mundo viu
+
+1189
+01:02:09,509 --> 01:02:13,940
+o que ele estava falando?
+Agora eu setei essa coisa
+
+1190
+01:02:13,960 --> 01:02:18,549
+naquela coisa então agora
+eu preciso colocar de volta
+
+1191
+01:02:18,569 --> 01:02:21,199
+no UserDefaults. [ditando o código]
+
+1192
+01:02:21,219 --> 01:02:27,299
+[ditando o código]
+
+
+1193
+01:02:27,319 --> 01:02:31,960
+E esse é o modo
+que as coisas tem que funcionar
+
+1194
+01:02:31,980 --> 01:02:34,460
+no NSUserDefaults. Se você quiser
+modificar algo
+
+1195
+01:02:34,480 --> 01:02:37,960
+que já está lá, você tira ele de lá,
+faz uma cópia dele,
+
+1196
+01:02:37,980 --> 01:02:41,409
+uma cópia mutável, você modifica
+e então você coloca de novo
+
+1197
+01:02:41,429 --> 01:02:45,259
+e então você sincroniza. Ok?
+É isso. Todo mundo entendeu
+
+1198
+01:02:45,279 --> 01:02:48,690
+o que eu fiz aqui com esse
+pequeno método? Ok? Então nós ainda
+
+1199
+01:02:48,710 --> 01:02:52,879
+temos que implementar
+esse "asPropertyList", muito fácil, ok?
+
+1200
+01:02:52,899 --> 01:02:57,059
+"asPropertyList". Estou fazendo
+ele retornar um "id", porque algum dia
+
+1201
+01:02:57,079 --> 01:02:59,579
+no futuro eu posso mudar
+a representação para isso.
+
+1202
+01:02:59,599 --> 01:03:02,339
+Agora, eu tenho que ser cuidadoso,
+eu tenho que versioná-lo
+
+1203
+01:03:02,359 --> 01:03:04,839
+ou algo assim,
+mas eu posso usar
+
+1204
+01:03:04,859 --> 01:03:07,589
+introspecção para descobrir
+o que ele é. Mas por enquanto,
+
+1205
+01:03:07,609 --> 01:03:12,119
+eu vou apenas retornar um dicionário
+que tem START_KEY...
+
+1206
+01:03:12,139 --> 01:03:13,119
+"self.start"...
+
+
+1207
+01:03:13,139 --> 01:03:20,029
+"END_KEY : self.end"
+E o que mais...
+
+1208
+01:03:20,049 --> 01:03:21,029
+que eu tenho...
+
+
+1209
+01:03:21,049 --> 01:03:26,349
+é, "SCORE_KEY : self.score",
+então eu estou apenas criando
+
+1210
+01:03:26,369 --> 01:03:29,730
+um dicionário aqui
+e retornando ele. Eu preciso
+
+1211
+01:03:29,750 --> 01:03:30,730
+usar #define
+
+1212
+01:03:30,750 --> 01:03:35,049
+nessas coisas,
+então o START_KEY, vou chamá-lo de @"StartDate"
+
+1213
+01:03:35,069 --> 01:03:36,049
+E eu vou usar #define
+
+1214
+01:03:36,069 --> 01:03:41,489
+para o END_KEY sendo @"EndDate",
+e vamos também usar #define
+
+1215
+01:03:41,509 --> 01:03:46,669
+para o SCORE_KEY ser @"Score", digamos.
+Eu também preciso usar o #define
+
+1216
+01:03:46,689 --> 01:03:50,829
+para esse carinha aqui,
+ALL_RESULTS_KEY e esse é
+
+1217
+01:03:50,849 --> 01:03:55,059
+um tanto interessante, porque
+eu estou armazenando no "top level"
+
+1218
+01:03:55,079 --> 01:03:59,149
+do UserDefaults. Ok?
+Agora outros objetos podem
+
+1219
+01:03:59,169 --> 01:04:02,069
+querer guardar coisas no "top level" também.
+Então eu tenho que dar
+
+1220
+01:04:02,089 --> 01:04:04,759
+um nome para essa coisa
+que não vai conflitar com
+
+1221
+01:04:04,779 --> 01:04:08,329
+outra classe... então eu não posso
+chamá-lo de algo como "all".
+
+1222
+01:04:08,349 --> 01:04:10,839
+Isso seria ruim, ok? Porque
+uma outra classe poderia
+
+1223
+01:04:10,859 --> 01:04:11,839
+fazer o mesmo.
+
+
+1224
+01:04:11,859 --> 01:04:14,589
+Então um bom nome poderia ser
+algo como @"GameResult_All".
+
+1225
+01:04:14,609 --> 01:04:18,289
+Desse jeito eu meio que
+usei um namespace para esse negócio,
+
+1226
+01:04:18,309 --> 01:04:21,039
+certo? Então essa é a única chave
+que eu vou guardar diretamente
+
+1227
+01:04:21,059 --> 01:04:25,049
+no NSUserDefaults, "GameResult_All".
+
+
+1228
+01:04:25,069 --> 01:04:26,809
+Agora o valor 
+é um dicionário que tem
+
+1229
+01:04:26,829 --> 01:04:30,029
+outros dicionários nele.
+Espero que vocês consigam ver isso,
+
+1230
+01:04:30,049 --> 01:04:34,789
+é isso...
+o que que eu errei aqui?...
+
+1231
+01:04:34,809 --> 01:04:37,940
+Ah, desculpem.
+Eu não posso colocar o int
+
+1232
+01:04:37,960 --> 01:04:41,009
+aqui diretamente, é uma pontuação,
+então eu tenho que fazer um Number dele.
+
+1233
+01:04:41,029 --> 01:04:44,989
+Todo mundo entendeu isso?
+Sim, pergunta?
+
+1234
+01:04:45,009 --> 01:04:51,049
+>> NSUserDefaults é somente
+para o seu app. Você não terá
+
+1235
+01:04:51,069 --> 01:04:52,049
+nada de outros apps.
+
+
+1236
+01:04:52,069 --> 01:04:54,599
+Apenas o seu app.
+Boa pergunta.
+
+1237
+01:04:54,619 --> 01:04:59,399
+Certo, a última coisa que
+eu quero fazer é
+
+1238
+01:04:59,419 --> 01:05:00,399
+eu vou adicionar
+
+
+1239
+01:05:00,419 --> 01:05:08,609
+um método de classe ao GameResult
+chamado... "+ (NSArray *)allGameResult".
+
+1240
+01:05:08,629 --> 01:05:12,989
+Ele vai apenas retornar um array
+de GameResult, não uma property list,
+
+1241
+01:05:13,009 --> 01:05:17,159
+mas de GameResult.
+Todos os GameResults que
+
+1242
+01:05:17,179 --> 01:05:20,789
+já aconteceram. Ok?
+Então eu preciso implementar esse método.
+
+1243
+01:05:20,809 --> 01:05:26,819
+Vamos fazer isso aqui em cima.
+"array... allGameResults"
+
+1244
+01:05:26,839 --> 01:05:28,449
+e esse é, na verdade,
+bem direto de implementar.
+
+1245
+01:05:28,469 --> 01:05:29,449
+Eu vou apenas
+
+
+1246
+01:05:29,469 --> 01:05:31,980
+fazer um mutable array
+para guardar o resultado.
+
+1247
+01:05:32,000 --> 01:05:39,129
+[ditando código]
+
+
+1248
+01:05:39,149 --> 01:05:42,379
+ok? Esse será meu return value, ok?
+E tudo que eu vou fazer
+
+1249
+01:05:42,399 --> 01:05:48,609
+será pegar essa coisa
+do UserDefaults
+
+1250
+01:05:48,629 --> 01:05:53,079
+e iterar sobre todos
+os valores daquele dicionário.
+
+1251
+01:05:53,099 --> 01:05:56,399
+Então vai ser assim...
+[ditando código]
+
+1252
+01:05:56,419 --> 01:06:02,799
+[ditando código]
+
+
+1253
+01:06:02,819 --> 01:06:04,819
+[ditando código]
+
+1254
+01:06:04,839 --> 01:06:08,940
+e então isso vai me dar
+o dicionário e existe um método
+
+1255
+01:06:08,960 --> 01:06:12,259
+no dicionário chamado
+"allValues". Que vai retornar
+
+1256
+01:06:12,279 --> 01:06:15,460
+todos os valores, não as chaves,
+mas todos os valores. Ok?
+
+1257
+01:06:15,480 --> 01:06:18,480
+Eu não vou percorrê-lo por chave,
+eu vou apenas pegar
+
+1258
+01:06:18,500 --> 01:06:23,399
+todos os valores aqui.
+E então eu vou dizer...
+
+1259
+01:06:23,419 --> 01:06:31,179
+[ditando código]
+
+
+1260
+01:06:31,199 --> 01:06:36,239
+Então eu tenho que ser capaz
+de desfazer isso para criar um GameResult, ok?
+
+1261
+01:06:36,259 --> 01:06:41,529
+E então eu vou apenas
+[ditando código]
+
+1262
+01:06:41,549 --> 01:06:48,279
+Ok? É isso.
+Agora eu preciso fazer isso:
+
+1263
+01:06:48,299 --> 01:06:55,179
+"initFromPropertyList", ok?
+Agora, esse é um "convenience initializer".
+
+1264
+01:06:55,199 --> 01:06:59,539
+Ok? "Convenience initializer".
+Esse não é o "designated initializer"
+
+1265
+01:06:59,559 --> 01:07:04,559
+para essa classe.
+Então eu preciso dizer
+
+1266
+01:07:04,579 --> 01:07:09,369
+"self = [self init]"
+não "[super init]", mas "[self init]", porque
+
+1267
+01:07:09,389 --> 01:07:11,369
+esse não é o designated initializer,
+esse é um convenience initializer.
+
+1268
+01:07:11,389 --> 01:07:18,609
+E a mesma coisa aqui.
+Ok? Mas aqui eu preciso
+
+1269
+01:07:18,629 --> 01:07:22,049
+olhar nessa plist
+e setar meu start
+
+1270
+01:07:22,069 --> 01:07:23,049
+e o end e o score
+
+
+1271
+01:07:23,069 --> 01:07:29,219
+baseado nisso.
+Então primeiro eu vou ver se a plist
+
+1272
+01:07:29,239 --> 01:07:32,109
+é um dicionário, porque se não for,
+então eu nem sei
+
+1273
+01:07:32,129 --> 01:07:33,109
+como lidar
+
+
+1274
+01:07:33,129 --> 01:07:35,730
+com essa coisa.
+Ok? Que foi passada pra mim.
+
+1275
+01:07:35,750 --> 01:07:36,730
+E se for,
+
+
+1276
+01:07:36,750 --> 01:07:39,759
+então eu vou criar
+um dicionário local aqui,
+
+1277
+01:07:39,779 --> 01:07:46,199
+resultsDictionary.
+Posso apenas dizer plist,
+
+1278
+01:07:46,219 --> 01:07:49,409
+ou eu poderia fazer um cast aqui,
+apenas para deixar claro que eu sei
+
+1279
+01:07:49,429 --> 01:07:52,809
+o que eu estou fazendo,
+para o leitor do código, quem quer que
+
+1280
+01:07:52,829 --> 01:07:56,809
+esteja lendo o código.
+E então, posso dizer... [ditando código]
+
+1281
+01:07:56,829 --> 01:08:01,259
+[ditando código]
+
+
+1282
+01:08:01,279 --> 01:08:06,399
+[ditando código]
+
+
+1283
+01:08:06,419 --> 01:08:12,969
+[ditando código]
+
+
+1284
+01:08:12,989 --> 01:08:19,450
+Ok? E eu também vou fazer
+um pequeno double check aqui.
+
+1285
+01:08:19,470 --> 01:08:27,179
+Eu vou dizer:
+se não tiver início ou não tiver fim,
+
+1286
+01:08:27,199 --> 01:08:31,849
+então eu vou fazer o self set nil.
+Provavelmente, isso aqui
+
+1287
+01:08:31,869 --> 01:08:39,570
+tem que ser definido mais pra cima.
+Ok? E isso precisa ser transformado
+
+1288
+01:08:39,590 --> 01:08:43,440
+de volta em um valor "int",
+porque é um NSNumber, ok?
+
+1289
+01:08:43,460 --> 01:08:48,730
+Todo mundo vê o que eu fiz aqui?
+Eu apenas peguei aquela
+
+1290
+01:08:48,750 --> 01:08:51,360
+property list do NSUserDefaults
+e transformei de volta
+
+1291
+01:08:51,380 --> 01:08:52,360
+em um GameResult.
+
+
+1292
+01:08:52,380 --> 01:08:54,780
+Ok? Criando um
+convenience initializer.
+
+1293
+01:08:54,800 --> 01:08:56,809
+Eu fiz isso desse modo
+porque eu queria mostrar pra vocês
+
+1294
+01:08:56,829 --> 01:09:00,249
+como é termos
+um convenience initializer. Ok?
+
+1295
+01:09:00,269 --> 01:09:02,809
+É isso que temos para game results.
+Eu tenho esse GameResult, eu preciso
+
+1296
+01:09:02,829 --> 01:09:05,849
+fazer duas coisas.
+Temos uns dois minutos para fazer,
+
+1297
+01:09:05,869 --> 01:09:09,379
+mas eu acho que nós conseguiremos.
+Uma é que eu preciso criar esse
+
+1298
+01:09:09,399 --> 01:09:13,509
+GameResult no meu CardGameViewController.
+Então vamos voltar para
+
+1299
+01:09:13,529 --> 01:09:14,799
+nosso CardGameViewController aqui.
+
+
+1300
+01:09:14,819 --> 01:09:18,599
+E eu vou adicionar
+uma property que é uma
+
+1301
+01:09:18,619 --> 01:09:24,179
+propertu strong, nonatomic.
+É uma GameResult, ok?
+
+1302
+01:09:24,199 --> 01:09:28,799
+Isso vai ser o GameResult
+do jogo atual.
+
+1303
+01:09:28,819 --> 01:09:32,829
+GameResult. E nós vamos fazer
+lazy instantiation. Claro,
+
+1304
+01:09:32,849 --> 01:09:48,959
+nós amamos isso.
+[ditando código]
+
+1305
+01:09:48,979 --> 01:09:49,959
+Ok, então,
+
+1306
+01:09:49,979 --> 01:09:54,799
+a única outra coisa que precisamos fazer
+é ir aqui embaixo e
+
+1307
+01:09:54,819 --> 01:09:59,780
+sempre que nós virarmos,
+nós vamos dizer 
+
+1308
+01:09:59,800 --> 01:10:00,980
+"self.gameResult.score = ...
+
+
+1309
+01:10:01,000 --> 01:10:05,320
+self.game.score", ok?
+Então isso vai fazer o update.
+
+1310
+01:10:05,340 --> 01:10:07,809
+Eu vou fazer mais uma coisa
+bem rápido, que é a solução
+
+1311
+01:10:07,829 --> 01:10:12,110
+pro homework um, tarefa quatro,
+que é colocar um botão para dar as cartas.
+
+1312
+01:10:12,130 --> 01:10:18,549
+Então eu vou voltar aqui,
+para nossa UI. Vamos nos livrar disso.
+
+1313
+01:10:18,569 --> 01:10:22,599
+Vamos fazer isso.
+Vamos scrollar pra cá. Vamos voltar
+
+1314
+01:10:22,619 --> 01:10:25,820
+para automático. Oops.
+Vamos vir aqui. Desculpem, nós queremos
+
+1315
+01:10:25,840 --> 01:10:28,549
+a implementação. Então, eu vou apenas
+colocar o botão "Deal"
+
+1316
+01:10:28,569 --> 01:10:29,549
+bem aqui.
+
+
+1317
+01:10:29,569 --> 01:10:34,329
+Novamente, desculpem pelo espaço apertado.
+Aqui está o botão "Deal".
+
+1318
+01:10:34,349 --> 01:10:35,329
+Nós vamos colocá-lo
+
+
+1319
+01:10:35,349 --> 01:10:39,419
+aqui n o meio.
+Nós vamos chamá-lo de "deal".
+
+1320
+01:10:39,439 --> 01:10:43,419
+Nós vamos CTRL + arrastá-lo para cá,
+colocar aqui no fim,
+
+1321
+01:10:43,439 --> 01:10:47,719
+é, colocá-lo bem aqui,
+chamaremos "deal",
+
+1322
+01:10:47,739 --> 01:10:51,299
+não precisa de argumentos,
+a implementação disso, espero que
+
+1323
+01:10:51,319 --> 01:10:54,639
+vocês tenham entendido isso,
+é realmente, realmente, realmente fácil. Eu vou apenas
+
+1324
+01:10:54,659 --> 01:10:58,799
+setar meu "game" igual a nil.
+Eu também vou dizer agora
+
+1325
+01:10:58,819 --> 01:11:03,039
+meu "gameResult" igual a nil.
+Eu também preciso setar meu flipCount pra zero,
+
+1326
+01:11:03,059 --> 01:11:07,570
+e então fazer o update da minha UI
+e é isso, ok? Espero que o
+
+1327
+01:11:07,590 --> 01:11:10,369
+"deal" de vocês tenha sido tão simples
+quanto esse ou similarmente simples.
+
+1328
+01:11:10,389 --> 01:11:13,369
+Vocês podem ter mais elementos
+de UI, vocês tem que ter o reset,
+
+1329
+01:11:13,389 --> 01:11:17,509
+mas esse é o "deal" básico.
+Certo, então esse isso é o CardGame.
+
+1330
+01:11:17,529 --> 01:11:21,320
+E agora vamos fazer o outro carinha,
+que é nosso outro view controller.
+
+1331
+01:11:21,340 --> 01:11:24,019
+É esse aqui embaixo.
+Então vamos para a sua implementação
+
+1332
+01:11:24,039 --> 01:11:27,440
+e arrumar um pouco mais de espaço,
+na verdade vamos
+
+1333
+01:11:27,460 --> 01:11:34,780
+usar a tela inteira aqui...
+é esse aqui... Então esse aqui
+
+1334
+01:11:34,800 --> 01:11:39,200
+também é muito muito fácil de implementar.
+Tudo que nós precisamos fazer
+
+1335
+01:11:39,220 --> 01:11:47,799
+é implementar o viewWillAppear, ok?
+Eu vou chamar
+
+1336
+01:11:47,819 --> 01:11:53,190
+["super viewWillAppear:animated]",
+e então eu vou chamar o
+
+1337
+01:11:53,210 --> 01:11:58,839
+updateUI, ok? Então eu também terei
+um updateUI nessa classe
+
+1338
+01:11:58,859 --> 01:12:04,129
+e tudo que eu vou fazer para
+fazer o update da UI é adicionar
+
+1339
+01:12:04,149 --> 01:12:07,469
+todos os resultados de jogos.
+Lembrem-se eu tenho esse GameResult.
+
+1340
+01:12:07,489 --> 01:12:10,219
+Todos os GameResults.
+Eu vou pegar todos eles. E eu vou apenas
+
+1341
+01:12:10,239 --> 01:12:13,150
+adicioná-los para aquele display TextField.
+Que é, acredite ou não,
+
+1342
+01:12:13,170 --> 01:12:17,049
+muito fácil de fazer.
+Nós vamos apenas dizer:
+
+1343
+01:12:17,069 --> 01:12:18,049
+nosso display será uma
+
+
+1344
+01:12:18,069 --> 01:12:20,740
+string em branco para começar,
+e então vou dizer:
+
+
+1345
+01:12:20,760 --> 01:12:30,450
+"for (GameResult...", preciso importá-lo.
+GameResult, oops, ok?
+
+1346
+01:12:30,470 --> 01:12:37,519
+[ditando código]
+
+
+1347
+01:12:37,539 --> 01:12:40,639
+Todo mundo vê o que eu estou
+fazendo com isso? Estou apenas pegando todos
+
+1348
+01:12:40,659 --> 01:12:44,700
+os game results e fazendo um loop for
+dentro de todos eles. E então,
+
+1349
+01:12:44,720 --> 01:12:48,570
+eu vou dizer que o texto do display
+é igual a 
+
+1350
+01:12:48,590 --> 01:12:54,409
+"[display.text stringByAppendingFormat:"...
+e digamos "Score: %d"...
+
+1351
+01:12:54,429 --> 01:12:58,289
+e então nós vamos dizer a data de início
+e também qual foi a duração
+
+1352
+01:12:58,309 --> 01:13:04,169
+em segundos. E isso é "result.score"
+e "result.end".
+
+1353
+01:13:04,189 --> 01:13:05,169
+Ok então nós vamos colocar...
+
+
+1354
+01:13:05,189 --> 01:13:08,419
+o tempo de jogo
+nós vamos dizer que é
+
+1355
+01:13:08,439 --> 01:13:11,419
+quando o jogo acabou.
+[???]
+
+1356
+01:13:11,439 --> 01:13:14,169
+E então eu também vou arredondar
+o "result.duration".
+
+1357
+01:13:14,189 --> 01:13:16,059
+E é isso.
+
+
+1358
+01:13:16,079 --> 01:13:21,929
+ok? Então... oops, o que eu fiz?
+Isso não deveria ser "s", deveria ser "g",
+
+1359
+01:13:21,949 --> 01:13:27,190
+o "0g" é tipo
+um ponto flutuante sem formatação
+
+1360
+01:13:27,210 --> 01:13:31,780
+e agora nós vamos apenas dizer
+"self.display.text = displayText",
+
+1361
+01:13:31,800 --> 01:13:36,539
+certo? "self.display" é
+
+
+1362
+01:13:36,559 --> 01:13:40,769
+esse outlet logo aqui,
+esse que nós amarramos ao nosso display text,
+
+1363
+01:13:40,789 --> 01:13:46,190
+ok? Vamos ver se isso funciona.
+Deixe-me ir aqui,
+
+1364
+01:13:46,210 --> 01:13:52,709
+para que possamos manter
+na mesma página aqui. Aqui está. Certo.
+
+1365
+01:13:52,729 --> 01:13:56,619
+Então isso, espero, ainda está funcionando.
+Nós temos uma partida aqui.
+
+1366
+01:13:56,639 --> 01:13:59,780
+Ok? Nós podemos redistribuir as cartas,
+isso é bom. Agora nós deveríamos
+
+1367
+01:13:59,800 --> 01:14:03,780
+ter dois scores quando nós formos
+para cá, certo? Porque eu comecei
+
+1368
+01:14:03,800 --> 01:14:06,530
+dois jogos. Eu iniciei o primeiro,
+e então eu redistribuí as cartas.
+
+1369
+01:14:06,550 --> 01:14:09,280
+E, com certeza, nós temos
+dois scores aqui. Agora, isso não está
+
+1370
+01:14:09,300 --> 01:14:11,929
+muito bonito. Talvez nós podemos ajudar
+colocando isso aqui
+
+1371
+01:14:11,949 --> 01:14:16,269
+no final. E então,
+nós podemos ver um pouco melhor cada score.
+
+1372
+01:14:16,289 --> 01:14:19,959
+Percebam que eu reiniciei meu app.
+O score continua lá, ok?
+
+1373
+01:14:19,979 --> 01:14:23,299
+Se eu começar um jogo e jogar, ok?
+Esse é o jogo de score zero.
+
+1374
+01:14:23,319 --> 01:14:27,650
+É esse bem aqui. Se eu fizer
+mais algumas coisas, ele se updateia,
+
+1375
+01:14:27,670 --> 01:14:32,289
+é -2 agora.
+Vamos fazer -9, ok?
+
+1376
+01:14:32,309 --> 01:14:33,289
+Agora esses botões
+
+
+1377
+01:14:33,309 --> 01:14:38,619
+não funcionam. Eu vou postar
+o código para fazer isso
+
+1378
+01:14:38,639 --> 01:14:41,940
+mas eu cobri muito brevemente
+como eu vou fazer isso. O que eu vou fazer é
+
+1379
+01:14:41,960 --> 01:14:46,159
+voltar para o GameResult,
+e adicionar alguns métodos aqui,
+
+1380
+01:14:46,179 --> 01:14:50,459
+para comparar um GameResult com outro,
+ok? E então eu vou usar
+
+1381
+01:14:50,479 --> 01:14:53,070
+esse método do NSArray
+chamado "sortItemsUsingSelector:".
+
+1382
+01:14:53,090 --> 01:14:57,240
+E eu vou passar para ele outro selector,
+que é o método no GameResult
+
+1383
+01:14:57,260 --> 01:15:01,409
+para compará-los, ok?
+Então,
+
+1384
+01:15:01,429 --> 01:15:04,509
+super simples. É algo como
+seis, sete linhas de código para
+
+1385
+01:15:04,529 --> 01:15:07,509
+implementar todos os três botões.
+Então, vou fazer isso.
+
+1386
+01:15:07,529 --> 01:15:11,570
+Eu também vou colocar algo
+para formatar essa data
+
+1387
+01:15:11,590 --> 01:15:13,809
+um pouco melhor. Se vocÊ olhar
+para as datas aqui, elas estão
+
+1388
+01:15:13,829 --> 01:15:17,119
+tipo bem feias, 201 blá blá.
+Então eu vou mostrar para vocês
+
+1389
+01:15:17,139 --> 01:15:20,619
+o DateFormatter, serão apenas
+quatro linhas de código também e
+
+1390
+01:15:20,639 --> 01:15:25,129
+eu vou postar esse código
+depois da aula e, espero que
+
+1391
+01:15:25,149 --> 01:15:29,299
+vocês tenham algo
+fora desse mundo adicionando um MVC
+
+1392
+01:15:29,319 --> 01:15:31,299
+e se tiverem algume pergunta,
+eu estarei aqui.
+
+
+1393
+01:15:31,319 --> 01:15:36,299
+Visite nosso site:
+www.centraldosapps.com
+

@@ -1,0 +1,7199 @@
+1
+00:00:00,506 --> 00:00:08,656
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:08,656 --> 00:00:08,706
+
+3
+00:00:08,716 --> 00:00:12,916
+Ok, vamos começar com
+a aula 17
+
+4
+00:00:12,916 --> 00:00:16,616
+do CS193P, inverno de 2013.
+
+
+5
+00:00:17,086 --> 00:00:19,806
+Hoje nós vamos falar
+sobre três assuntos.
+
+6
+00:00:19,806 --> 00:00:24,716
+Um é View Animation, que éu m
+sub-sistema da hora dentro do iOS,
+
+7
+00:00:24,716 --> 00:00:26,536
+uma API bem simples.
+
+
+8
+00:00:26,776 --> 00:00:28,366
+Te permite usar
+umas coisas bem poderosas.
+
+9
+00:00:28,366 --> 00:00:31,936
+E nós vamos falar sobre
+agendar as coisas dentro do seu app
+
+10
+00:00:31,936 --> 00:00:33,856
+com NSTimer e com
+
+11
+00:00:33,856 --> 00:00:35,266
+performSelector:withObjetct:afterDelay:
+
+
+12
+00:00:35,696 --> 00:00:38,726
+E finalmente nós vamos fazer
+Alerts e Action Sheets.
+
+13
+00:00:38,816 --> 00:00:40,196
+E nós vamos usar 
+o KitchenSink
+
+14
+00:00:40,196 --> 00:00:42,766
+para demonstrar
+todas essas coisas.
+
+15
+00:00:43,576 --> 00:00:45,966
+Então vamos começar
+com UIViewAnimation.
+
+16
+00:00:45,966 --> 00:00:49,996
+UIViewAnimation, na sua alma,
+mesmo que ele possa ter o efeito
+
+17
+00:00:49,996 --> 00:00:53,056
+de provocar uma aparência
+bem incrível no seu app,
+
+18
+00:00:53,296 --> 00:00:54,406
+é na verdade bem simples.
+
+19
+00:00:54,956 --> 00:00:56,856
+Todo o truque de
+UIViewAnimation é que
+
+20
+00:00:56,856 --> 00:00:59,476
+existem certar propriedades
+em um UIView
+
+21
+00:00:59,476 --> 00:01:01,536
+que você pode setar, ok?
+
+22
+00:01:01,796 --> 00:01:03,726
+E você as configura
+de um certo modo tal que
+
+23
+00:01:03,836 --> 00:01:06,886
+elas são setadas imediatamente,
+assim como você as setaria
+
+24
+00:01:06,886 --> 00:01:08,556
+se você estivesse
+atribuindo propriedades.
+
+25
+00:01:08,876 --> 00:01:13,266
+Entretanto, a aparência muda.
+Como resultado de setar
+
+26
+00:01:13,266 --> 00:01:16,096
+essa propriedade,
+ela vai se animar no decorrer do tempo, ok?
+
+27
+00:01:16,266 --> 00:01:18,876
+É apenas a aparência dela
+que é animada no tempo,
+
+28
+00:01:18,876 --> 00:01:20,926
+não a configuração atual
+da coisa.
+
+29
+00:01:21,686 --> 00:01:26,256
+Então aqui estão algumas das coisas
+que vocês podem setar.
+
+30
+00:01:26,256 --> 00:01:27,516
+Hidden, que vocês sabem o que é,
+
+31
+00:01:27,516 --> 00:01:30,066
+é basicamente se o seu app
+está respondendo por
+
+32
+00:01:30,066 --> 00:01:31,776
+gestures e drawings.
+
+33
+00:01:32,216 --> 00:01:35,996
+O frame - o tamanho
+e a posição da sua view.
+
+34
+00:01:36,436 --> 00:01:40,076
+O transform, que nós falamos
+algumas vezes até agora nesse
+
+35
+00:01:40,076 --> 00:01:42,126
+trimestre,
+mas o transform é um
+
+36
+00:01:42,126 --> 00:01:43,136
+affineTransform.
+
+37
+00:01:43,136 --> 00:01:47,946
+Então isso é a translação
+e rotação e scaling - 
+
+38
+00:01:48,256 --> 00:01:52,546
+scaling de uma forma
+bitwise, ok - da sua view,
+
+39
+00:01:52,546 --> 00:01:54,656
+então isso pode ser animado.
+
+
+40
+00:01:54,996 --> 00:01:59,146
+E o alpha, então você pode ter
+fade in e out, certo?
+
+41
+00:01:59,296 --> 00:02:01,266
+na medida que o alpha é mudado, ok?
+
+42
+00:02:01,266 --> 00:02:04,156
+Então essas são as propriedades
+principais que podem ser animadas.
+
+43
+00:02:04,516 --> 00:02:08,196
+E você faz isso tudo com um 
+método de classe em UIView.
+
+44
+00:02:08,346 --> 00:02:11,376
+E na verdade, existem dois ou três
+deles, mas nós vamos falar sobre
+
+45
+00:02:11,376 --> 00:02:14,116
+aquele que meio que tem
+todos os argumentos nele.
+
+46
+00:02:14,436 --> 00:02:18,166
+E sse método de classe tem um
+block de código,
+
+47
+00:02:18,166 --> 00:02:19,296
+e dentro desse block de código,
+você vai
+
+48
+00:02:19,296 --> 00:02:22,226
+modificar essas propriedades,
+ok?
+
+49
+00:02:22,566 --> 00:02:25,296
+E ele vai executar esse
+block de código imediatamente.
+
+50
+00:02:25,756 --> 00:02:27,856
+Ele não vai fazer isso
+no decorrer do tempo.
+
+51
+00:02:27,936 --> 00:02:29,826
+Ele vai executar imediatamente
+esse block de código
+
+52
+00:02:29,826 --> 00:02:32,296
+que você proveu e ele vai setar
+todas as propriedades,
+
+53
+00:02:32,556 --> 00:02:35,296
+mas daí, dependendo de quais
+foram os parâmetros que você deu,
+
+54
+00:02:35,296 --> 00:02:36,796
+ele vai animar
+essas mudanças
+
+55
+00:02:36,796 --> 00:02:39,026
+na tela no decorrer do tempo, ok?
+
+56
+00:02:39,836 --> 00:02:43,716
+Então isso tudo está construído
+em cima de um framework no iOS,
+
+57
+00:02:43,996 --> 00:02:45,866
+que nós não temos tempo
+para falar sobre ele,
+
+58
+00:02:45,866 --> 00:02:48,286
+infelizmente, mas é
+bem da hora,
+
+59
+00:02:48,286 --> 00:02:49,206
+chamado Core Animation.
+
+60
+00:02:49,496 --> 00:02:52,376
+E o Cora Animation te permite
+animar não só essas propriedades,
+
+61
+00:02:52,406 --> 00:02:53,996
+mas algumas outras propriedades
+
+62
+00:02:53,996 --> 00:02:57,566
+que ficam mais por baixo
+do drawing da sua UIView.
+
+63
+00:02:57,866 --> 00:03:00,736
+E também, você pode animar até
+suas próprias propriedades, ok?
+
+64
+00:03:00,736 --> 00:03:03,436
+Você pode criar suas próprias
+propriedades e tê-las animadas
+
+65
+00:03:03,436 --> 00:03:05,876
+no decorrer do tempo em sync
+com outras coisas sendo animadas.
+
+66
+00:03:05,876 --> 00:03:07,616
+Infelizmente não temos
+tempo para falar
+
+67
+00:03:07,616 --> 00:03:09,006
+sobre Core Animation.
+
+68
+00:03:09,896 --> 00:03:13,496
+Se você olhar no UIView, tem uma
+property ali chamada layer.
+
+69
+00:03:13,496 --> 00:03:16,516
+É um CALayer,
+classe Core Animation, CALayer.
+
+70
+00:03:16,936 --> 00:03:20,166
+Esse é um lugar para começar
+e daí a documentação.
+
+71
+00:03:20,166 --> 00:03:22,676
+Se você quiser realmente se
+aprofundar em Core Animation,
+
+72
+00:03:23,076 --> 00:03:26,796
+é uma API muito poderosa,
+mas nós vamos falar
+
+73
+00:03:26,796 --> 00:03:29,036
+no nível de UIView, que é
+um pouco mais alto nível
+
+74
+00:03:29,076 --> 00:03:30,456
+e um pouco mais simples.
+
+75
+00:03:31,216 --> 00:03:34,076
+Então esse é o método,
+o método de classe no UIView,
+
+76
+00:03:34,076 --> 00:03:35,816
+ok? É um
+método de classe, certo?
+
+77
+00:03:36,116 --> 00:03:37,906
+Não é um método de instância na view,
+
+78
+00:03:37,906 --> 00:03:39,226
+é um método de classe no UIView.
+
+79
+00:03:39,836 --> 00:03:43,416
+E os argumentos, o primeiro
+é a duração
+
+80
+00:03:43,416 --> 00:03:45,016
+e o segundo é o delay.
+
+81
+00:03:45,236 --> 00:03:47,616
+A duração é quanto tempo
+ele vai levar
+
+82
+00:03:47,966 --> 00:03:51,576
+para animar as mudanças
+que você fez, ok?
+
+83
+00:03:51,576 --> 00:03:55,336
+E a animation significa que ele
+vai mostrar os passos intermediários
+
+84
+00:03:55,566 --> 00:03:58,506
+de onde você estava antes
+de chamar esse método
+
+85
+00:03:58,506 --> 00:04:00,886
+para onde você está
+logo depois de chamar esse método.
+
+86
+00:04:00,886 --> 00:04:02,256
+Ele vai animar a diferença.
+
+87
+00:04:02,256 --> 00:04:03,846
+E o delay é apenas
+quando ele vai esperar
+
+88
+00:04:03,846 --> 00:04:06,466
+antes de começar
+a animar essa mudança.
+
+89
+00:04:07,206 --> 00:04:07,716
+Faz sentido?
+
+90
+00:04:08,236 --> 00:04:10,936
+As options nós vamos falar sobre isso,
+muitas e muitas options
+
+91
+00:04:10,936 --> 00:04:12,416
+de como fazer essa animação.
+
+92
+00:04:12,896 --> 00:04:15,346
+O próximo argumento
+é um block de animation.
+
+93
+00:04:15,626 --> 00:04:18,516
+Esse é o block, percebam
+que o block não recebe argumentos
+
+94
+00:04:18,516 --> 00:04:19,256
+e não retorna nada.
+
+95
+00:04:19,676 --> 00:04:20,746
+Esse é o block onde
+você vai
+
+96
+00:04:20,746 --> 00:04:23,866
+setar essas propriedades
+que eu falei, transform,
+
+97
+00:04:23,866 --> 00:04:24,856
+e o frame, etc.
+
+98
+00:04:25,536 --> 00:04:27,526
+E daí o completion
+é outro block.
+
+99
+00:04:27,966 --> 00:04:29,706
+Esse block recebe um Boolean
+
+100
+00:04:29,866 --> 00:04:32,726
+que é se a animation
+acabou ou não, ok?
+
+101
+00:04:32,726 --> 00:04:34,086
+A animation pode não ter acabado
+
+102
+00:04:34,116 --> 00:04:35,986
+porque outra animation
+pode ter entrado
+
+103
+00:04:35,986 --> 00:04:39,856
+e mudado essas properties,
+ok? Enquanto a primeira está
+
+104
+00:04:39,856 --> 00:04:43,216
+executando, daí uma outra
+pode entrar e mudar,
+
+105
+00:04:43,216 --> 00:04:45,786
+e então a primeira
+não vai ter acabado, certo?
+
+106
+00:04:45,786 --> 00:04:47,176
+Porque a segunda
+tomou o lugar.
+
+107
+00:04:47,686 --> 00:04:51,966
+Mas esse block é chamado
+depois que a animação acabou.
+
+108
+00:04:52,296 --> 00:04:55,226
+Então isso é essencialmente
+uma API assíncrona, certo?
+
+109
+00:04:55,226 --> 00:04:57,856
+Porque você chama esse método
+e ele retorna imediatamente,
+
+110
+00:04:58,196 --> 00:05:00,596
+faz todas as mudanças no block
+imediatamente,
+
+111
+00:05:00,896 --> 00:05:04,306
+e daí alguma hora no futuro,
+essa animação está acontecendo,
+
+112
+00:05:04,306 --> 00:05:06,246
+pode levar dois segundos
+e daí, no final,
+
+113
+00:05:06,496 --> 00:05:09,546
+esse outro block é chamado,
+o completion block, ok?
+
+114
+00:05:10,156 --> 00:05:13,056
+E ele vai ser chamado na mesma thread
+que você o chamou.
+
+115
+00:05:13,056 --> 00:05:15,136
+E como isso é um método 
+do UIKit, você pode chamar isso
+
+116
+00:05:15,136 --> 00:05:16,416
+somente da main thread, ok?
+
+117
+00:05:16,916 --> 00:05:19,626
+Então aqui está um exemplo
+de como chamamos.
+
+118
+00:05:19,626 --> 00:05:25,096
+Aqui temos um método que recebe
+uma view, myView, e a faz
+
+119
+00:05:25,096 --> 00:05:28,566
+fade out e daí a remove
+da supervier.
+
+120
+00:05:29,066 --> 00:05:32,286
+Então essa é a animação
+de desaparecer a view.
+
+121
+00:05:32,616 --> 00:05:35,286
+E vocês podem ver que a
+primeira coisa é um 3, ok?
+
+122
+00:05:35,286 --> 00:05:36,536
+animationWithDuration: 3.0.
+
+123
+00:05:36,536 --> 00:05:38,246
+Isso significa que vai
+levar três segundos
+
+124
+00:05:38,406 --> 00:05:40,386
+para essa view desaparecer.
+
+125
+00:05:41,046 --> 00:05:45,776
+E ele tem essa option
+UIViewAnimationOptionBegins...
+
+126
+00:05:45,776 --> 00:05:48,596
+FromCurrentState, essa é
+uma option interessante que
+
+127
+00:05:48,596 --> 00:05:50,606
+basicamente diz:
+se existirem quaisquer outras
+
+128
+00:05:50,606 --> 00:05:54,326
+animações ocorrendo
+envolvendo o alpha,
+
+129
+00:05:54,856 --> 00:05:58,426
+então qualquer que seja
+o estado que estiver, comece daí
+
+130
+00:05:58,486 --> 00:06:00,406
+e vá até onde eu estou setando, ok?
+
+131
+00:06:00,756 --> 00:06:02,576
+Se você tiver alguma outra
+animação que já começou
+
+132
+00:06:02,576 --> 00:06:04,776
+a fazer o fade out ou está
+começando a fazer um fade in,
+
+133
+00:06:05,276 --> 00:06:07,086
+então essa aqui vai começar
+a partir de onde--
+
+134
+00:06:07,086 --> 00:06:11,046
+quão longe ele já fez o fade in
+e agora vai para zero, que é pra onde ele vai.
+
+135
+00:06:11,046 --> 00:06:12,746
+Vocês vêem no block de animação,
+
+136
+00:06:12,746 --> 00:06:15,886
+ele diz
+myView.alpha = 0.0, ok?
+
+137
+00:06:16,426 --> 00:06:17,836
+Então ele está fadeando para 0.
+
+138
+00:06:17,886 --> 00:06:20,166
+E daí vocês podem como tem
+o completion block também
+
+139
+00:06:20,166 --> 00:06:24,426
+que diz que se a animation
+terminou, então remova
+
+140
+00:06:24,426 --> 00:06:26,626
+essa view da superview, ok?
+
+141
+00:06:26,626 --> 00:06:27,866
+E eu coloquei isso aí
+para mostrar para vocês
+
+142
+00:06:27,866 --> 00:06:29,626
+que vocês podem fazer
+algo interessante
+
+143
+00:06:30,036 --> 00:06:31,996
+quando a animation está
+completa e isso vai ser
+
+144
+00:06:31,996 --> 00:06:34,656
+3 segundos a partir
+de agora, ok?
+
+145
+00:06:35,126 --> 00:06:36,646
+Mas uma coisa que é realmente
+importante de se entender é:
+
+146
+00:06:36,646 --> 00:06:41,196
+quando esse método é chamado
+A) ele retorna imediatamente
+
+147
+00:06:41,686 --> 00:06:46,136
+e B) o alpha vai ser 0, não 1,
+e então 3 segundos depois
+
+148
+00:06:46,136 --> 00:06:49,616
+ele vai virar 0, não 1,
+e daí um segundo e meio depois
+
+149
+00:06:49,616 --> 00:06:51,436
+ele vai estár a 0.5,
+
+150
+00:06:51,566 --> 00:06:53,836
+ele é zero, ok. Instantaneamente zero.
+(não entendi nada...)
+
+151
+00:06:54,326 --> 00:06:59,096
+Então chamando esses métodos de classe
+mudam as coisas imediatamente
+
+152
+00:06:59,396 --> 00:07:02,396
+e isso é algo difícil
+das pessoas engulirem as vezes.
+
+153
+00:07:02,686 --> 00:07:05,406
+Tudo que está acontecendo aqui
+é que ele está enfileirando--
+
+154
+00:07:05,406 --> 00:07:08,086
+e você pode pensar nisso como
+se estivesse acontecendo em outra thread.
+
+155
+00:07:08,296 --> 00:07:11,846
+Alguma outra thread está
+desenhando essa animação, ok?
+
+156
+00:07:12,546 --> 00:07:14,136
+Mas isso não é relacionado
+com o fato
+
+157
+00:07:14,136 --> 00:07:17,136
+que você já setou
+esse myView.alpha para zero.
+
+158
+00:07:17,946 --> 00:07:18,306
+Pergunta?
+
+
+159
+00:07:19,456 --> 00:07:24,986
+A pergunta é: eu posso colocar
+outra animação dentro
+
+160
+00:07:24,986 --> 00:07:25,836
+do completion block?
+
+161
+00:07:26,196 --> 00:07:28,236
+Absolutamente e nós fazemos
+isso o tempo todo.
+
+162
+00:07:28,476 --> 00:07:31,136
+É assim que nós construímos
+umas movimentações sofisticadas
+
+163
+00:07:31,136 --> 00:07:32,946
+ao redor da tela,
+e mudando as coisas.
+
+164
+00:07:32,946 --> 00:07:35,106
+E na verdade nós vamos até
+fazer isso na demo, ok?
+
+165
+00:07:35,516 --> 00:07:37,706
+Então aqui está outro exemplo.
+
+166
+00:07:37,706 --> 00:07:39,516
+Esse é um pouco diferente.
+
+167
+00:07:39,516 --> 00:07:41,876
+Esse aqui, percebam que ele
+tem if alpha == 1.0.
+
+168
+00:07:41,876 --> 00:07:44,086
+Então essa animação só vai
+ser disparada
+
+169
+00:07:44,126 --> 00:07:46,606
+se a view estiver totalmente opaca.
+
+170
+00:07:47,266 --> 00:07:49,806
+E se estiver, ela vai demorar
+três segundos--
+
+171
+00:07:49,806 --> 00:07:51,746
+mas ela vai esperar 2 segundos
+para começar.
+
+172
+00:07:51,746 --> 00:07:53,336
+Então vais er um
+total de 5 segundos
+
+173
+00:07:53,336 --> 00:07:54,516
+da hora que eu chamei isso
+
+174
+00:07:54,766 --> 00:07:57,756
+até essa animação
+estar completa na tela.
+
+175
+00:07:58,056 --> 00:08:01,876
+E eu tirei o completion block,
+então ele não vai remover
+
+176
+00:08:01,876 --> 00:08:04,106
+essa coisa da superview
+no final.
+
+177
+00:08:04,106 --> 00:08:05,306
+Ela ainda vai estar lá.
+
+178
+00:08:05,306 --> 00:08:08,536
+E eu também coloquei
+um NSLog ali
+
+179
+00:08:08,866 --> 00:08:12,906
+e ele diz
+[ditando código], ok?
+
+180
+00:08:13,376 --> 00:08:18,446
+Isso vai logar "alpha is 0.0",
+não alpha is 1.0,
+
+181
+00:08:18,446 --> 00:08:18,716
+etc.
+
+182
+00:08:18,716 --> 00:08:20,806
+E eu estou enfatizando isso
+para que vocês entendam
+
+183
+00:08:20,806 --> 00:08:23,386
+que essas mudanças nesse block
+acontecem imediatamente.
+
+184
+00:08:24,066 --> 00:08:26,346
+Isso não é um modo
+de fazer um delay nas mudanças.
+
+185
+00:08:26,346 --> 00:08:29,436
+Se você quiser fazer isso,
+use NSTimer ou performAfterDelay
+
+186
+00:08:29,436 --> 00:08:30,186
+ou algo assim.
+
+187
+00:08:30,186 --> 00:08:30,986
+Isso é uma coisa diferente.
+
+188
+00:08:31,256 --> 00:08:35,146
+Esse é um modo para ter
+as mudanças animadas depois
+
+189
+00:08:35,346 --> 00:08:37,946
+que você as alterou,
+daí a animação vai acontecer.
+
+190
+00:08:37,946 --> 00:08:40,696
+E aqui estão algumas das options,
+
+191
+00:08:40,696 --> 00:08:42,556
+eu não consigo passar por todas aqui.
+
+192
+00:08:42,556 --> 00:08:44,676
+Mas nós falamos sobre
+BeginFromCurrentState,
+
+193
+00:08:44,676 --> 00:08:47,686
+que basicamente significa
+se eu postei--
+
+194
+00:08:47,686 --> 00:08:49,896
+sabe, eu chamei essa
+rotina de animação
+
+195
+00:08:50,166 --> 00:08:52,486
+e eu estou afetando uma property
+que já tem uma animação
+
+196
+00:08:52,486 --> 00:08:54,876
+em execução, então pegue
+a partir de onde ela está.
+
+197
+00:08:54,876 --> 00:08:58,776
+Não pule para o currentState
+e daí vá.
+
+198
+00:08:58,776 --> 00:09:01,016
+Então essa é uma
+que você usa um monte
+
+199
+00:09:01,016 --> 00:09:04,466
+se você tem múltiplas animações
+que podem estar se sobrepondo.
+
+200
+00:09:05,226 --> 00:09:06,476
+Nós vamos fazer isso na demo.
+
+201
+00:09:07,086 --> 00:09:08,716
+AllowsUserInteraction,
+
+202
+00:09:08,716 --> 00:09:10,286
+normalmente quando
+as coisas estão executando,
+
+203
+00:09:10,286 --> 00:09:13,266
+nós não podemos receber tap gestures,
+qualquer coisa assim.
+
+204
+00:09:13,266 --> 00:09:15,186
+Na nossa demo nós vamos
+nós vamos colocar o tap gesture
+
+205
+00:09:15,186 --> 00:09:16,516
+na nossa grande KitchenSinkView
+
+206
+00:09:16,516 --> 00:09:17,976
+então isso não vai ser
+um problema.
+
+207
+00:09:18,246 --> 00:09:20,796
+Mas se vocÊ tem uma view que
+você está animando e você quer
+
+208
+00:09:20,796 --> 00:09:22,756
+que seja capaz de receber
+interação do usuário,
+
+209
+00:09:22,756 --> 00:09:24,806
+você tem que incluir essa option.
+
+210
+00:09:24,806 --> 00:09:28,516
+Você pode fazer coisas como repetição
+a animação,
+
+211
+00:09:28,516 --> 00:09:30,096
+onde ela fica voltando
+para o começo.
+
+212
+00:09:30,096 --> 00:09:31,936
+Novamente, o valor por baixo
+não está mudando.
+
+213
+00:09:31,936 --> 00:09:34,346
+Ele apenas mantém animando
+de novo e de novo.
+
+214
+00:09:34,966 --> 00:09:38,296
+AutoReverse, ele vai e faz
+e depois ele desfaz.
+
+215
+00:09:38,296 --> 00:09:41,066
+E daí ele faz e desfaz, 
+se ele tiver repetindo, ok?
+
+216
+00:09:41,636 --> 00:09:45,586
+O curve, ali, vocês vêem
+CurveEaseIn, CurveEaseOut,
+
+217
+00:09:45,736 --> 00:09:50,296
+CurveLinear. Isso diz como
+essa coisa fazer fazer
+
+218
+00:09:50,296 --> 00:09:52,406
+em termos de velocidade, ok?
+
+219
+00:09:52,766 --> 00:09:55,656
+O CurveEaseIn e EaseOut
+significa que ele vai
+
+220
+00:09:55,656 --> 00:09:58,316
+começar fazendo a animação
+meio que devagar e daí ele vai
+
+221
+00:09:58,316 --> 00:10:00,696
+acelerar e daí quando
+ele tiver quase acabado,
+
+222
+00:10:00,696 --> 00:10:02,926
+ele vai diminuit a velocidade
+de novo, ok?
+
+223
+00:10:02,926 --> 00:10:05,546
+Por que nós iríamos querer
+essa aceleração e depois
+
+224
+00:10:05,546 --> 00:10:06,636
+desacelerando?
+
+
+225
+00:10:07,066 --> 00:10:09,656
+Bom, porque nós não queremos
+que nossas animações sejam abruptas.
+
+226
+00:10:09,936 --> 00:10:11,356
+Nós as queremos
+belas e suaves.
+
+227
+00:10:11,596 --> 00:10:13,356
+Então se ela começa
+a se mover bem devagar,
+
+228
+00:10:13,356 --> 00:10:14,806
+elas vão obter
+a atenção do usuário,
+
+229
+00:10:14,806 --> 00:10:16,946
+mas eles não vai ser
+incomodados: oh, o que aconteceu?
+
+230
+00:10:17,296 --> 00:10:18,476
+Eles vai ficar tipo:
+oh, algo está se movendo.
+
+231
+00:10:18,476 --> 00:10:20,646
+OOHH YEEEAAAH,
+e daí eles não querem esperar,
+
+232
+00:10:20,646 --> 00:10:21,996
+então começa a ir mais rápido.
+
+233
+00:10:22,336 --> 00:10:24,146
+E daí quando está perto do fim,
+eles ficam tipo:
+
+234
+00:10:24,146 --> 00:10:25,026
+ah, vai parar agora.
+
+235
+00:10:25,026 --> 00:10:25,626
+Vêem o que estou dizendo?
+
+236
+00:10:25,746 --> 00:10:28,226
+E isso tudo está acontecendo
+em microsegundos no cérebro deles
+
+237
+00:10:28,516 --> 00:10:30,366
+mas dá a sensação de ser
+bem mais suave.
+
+238
+00:10:30,366 --> 00:10:33,136
+E então, na verdade,
+CurveEaseIn e o EaseOut
+
+239
+00:10:33,136 --> 00:10:36,436
+eu acho que são default,
+ou pelo menos o CurveEaseIn é.
+
+240
+00:10:36,886 --> 00:10:39,956
+Mas as vezes, você quer linear,
+que é fazer começar
+
+241
+00:10:39,956 --> 00:10:42,936
+e ir até o fim na mesma
+velocidade, ok?
+
+242
+00:10:42,936 --> 00:10:43,806
+Então você pode controlar isso.
+
+243
+00:10:44,096 --> 00:10:47,146
+E daí nós já vimos
+lá atrás no CardDemo que eu fiz
+
+244
+00:10:47,146 --> 00:10:50,386
+sobre transições, FlipFromLeft
+e FlipFromRight, certo?
+
+245
+00:10:50,386 --> 00:10:51,986
+Então isso tem a ver
+com transições de view.
+
+246
+00:10:51,986 --> 00:10:53,006
+Então vamos falar sobre isso.
+
+247
+00:10:53,216 --> 00:10:56,196
+Se você está fazendo uma alteração
+que está mudando a
+
+248
+00:10:56,196 --> 00:10:58,996
+hierarquia da view,
+não uma mudança na view
+
+249
+00:10:58,996 --> 00:11:00,896
+como mudar o seu alha
+ou o seu frame,
+
+250
+00:11:01,136 --> 00:11:03,366
+mas você está mudando a hierarquia
+da view tipo você está removendo
+
+251
+00:11:03,366 --> 00:11:06,016
+de uma subview ou adicionando
+uma subview, ok?
+
+252
+00:11:06,016 --> 00:11:08,016
+Como nós fizemos no CardDemo.
+
+253
+00:11:08,016 --> 00:11:10,346
+Ou você está hiding, ok?
+
+254
+00:11:10,696 --> 00:11:13,946
+Você está fazendo
+ou hidden ou !hidden.
+
+255
+00:11:13,946 --> 00:11:15,956
+Daí você pode usar esse
+transitionFromView...
+
+256
+00:11:15,956 --> 00:11:18,066
+toView:duration:options:completion.
+
+257
+00:11:18,156 --> 00:11:21,676
+E o que isso basicamente
+faz é: "fromView" vai ser
+
+258
+00:11:21,676 --> 00:11:24,916
+removida da superview
+ou hidden se você
+
+259
+00:11:24,916 --> 00:11:27,086
+usar essa
+UIViewAnimationOption...
+
+260
+00:11:27,086 --> 00:11:28,456
+ShowHideTransitionViews.
+
+261
+00:11:28,456 --> 00:11:29,396
+Está escrito aí.
+
+262
+00:11:29,486 --> 00:11:31,306
+Então ela vai ser
+removida ou escondida.
+
+263
+00:11:31,436 --> 00:11:36,536
+E "toView", ela vai ser
+addSubviewed ou unhidded, ok?
+
+264
+00:11:36,536 --> 00:11:37,636
+E se isso vai--
+
+265
+00:11:37,636 --> 00:11:39,886
+E essa mudança, essas duas views
+sendo alternadas
+
+266
+00:11:39,886 --> 00:11:41,766
+na hierarquia das views
+vai acontecer
+
+267
+00:11:41,766 --> 00:11:44,926
+no decorrer da duração
+especificada com certas options
+
+268
+00:11:44,926 --> 00:11:48,006
+tipo se vai flipar elas
+ou dissolver uma na outra.
+
+269
+00:11:48,406 --> 00:11:49,966
+E daí o completion block,
+novamente,
+
+270
+00:11:49,966 --> 00:11:51,646
+vai ser chamado
+quando ele finalmente acabar.
+
+271
+00:11:51,906 --> 00:11:55,296
+Então o que fizemos no jogo de
+visualizar cartas foi apenas
+
+272
+00:11:55,296 --> 00:11:59,426
+nós fizemos uma transição onde
+nós mudamos a view
+
+273
+00:11:59,776 --> 00:12:01,396
+e nós fizemos uma 
+flip transition.
+
+274
+00:12:01,396 --> 00:12:03,776
+É por isso que a carta
+pareceu que tinha sido virada, ok?
+
+275
+00:12:03,776 --> 00:12:05,386
+Mas na verdade ele estava
+apenas mostrando o estado da view
+
+276
+00:12:05,386 --> 00:12:08,116
+antes de nós fazermos
+a alteração e daí o estado
+
+277
+00:12:08,116 --> 00:12:10,526
+da view depois da mudança,
+e ele apenas usou um flip
+
+278
+00:12:11,026 --> 00:12:14,386
+para animar a diferença
+entre os dois estados, ok?
+
+279
+00:12:14,716 --> 00:12:15,386
+Uma coisa uqe você pode pensar
+
+280
+00:12:15,386 --> 00:12:17,726
+sobre o modo que esse sistema
+inteiro de animação está funcionando
+
+281
+00:12:18,066 --> 00:12:22,166
+é pensar nele como: você faz
+uma mudnça, ele redesenha a view,
+
+282
+00:12:22,486 --> 00:12:23,956
+ok? Ou a hierarquia
+inteira da view,
+
+283
+00:12:23,956 --> 00:12:26,916
+e agora ele tem uma imagem
+de antes depois
+
+284
+00:12:27,056 --> 00:12:28,816
+e o que ele vai fazer
+é animar
+
+285
+00:12:28,816 --> 00:12:30,666
+de uma para a outra, ok?
+
+286
+00:12:30,666 --> 00:12:32,066
+Com passos incrementais.
+
+287
+00:12:32,496 --> 00:12:34,666
+Agora, claro,
+em algumas animações,
+
+288
+00:12:34,666 --> 00:12:36,486
+Ele tem que desenhar cada passo.
+
+289
+00:12:36,486 --> 00:12:38,616
+Tipo se você tiver mudando
+o frame e movendo
+
+290
+00:12:38,616 --> 00:12:42,196
+ao mesmo tempo, ele tem que,
+sabe,
+
+291
+00:12:42,436 --> 00:12:44,516
+desenhar cada passo do caminho.
+
+292
+00:12:44,886 --> 00:12:47,646
+Mas algumas animações,
+ele não pode mostrar a coisa movendo.
+
+293
+00:12:47,716 --> 00:12:53,236
+Mas isso é tudo sobre
+"tirar fotos" em vários momentos.
+
+294
+00:12:53,236 --> 00:12:56,196
+A segunda transitionWithView
+aqui, a mesma coisa.
+
+295
+00:12:56,196 --> 00:12:57,766
+Você vai fazer
+algumas alterações em uma view,
+
+296
+00:12:57,766 --> 00:13:01,616
+geralmente na hierarquia de views
+de algum modo, ou desenhar,
+
+297
+00:13:01,866 --> 00:13:05,256
+e você vai-- mas ao invés de
+fazer o fromView e o toView,
+
+298
+00:13:05,256 --> 00:13:07,166
+onde você especifica duas views
+que vão ser alternadas,
+
+299
+00:13:07,406 --> 00:13:09,446
+você pode na verdade
+especificar um block tipo
+
+300
+00:13:09,446 --> 00:13:11,076
+como você fez no anterior, ok?
+
+301
+00:13:11,546 --> 00:13:13,026
+E a transitionWithView,
+
+302
+00:13:13,026 --> 00:13:15,806
+o primeiro argumento é
+a superview em que
+
+303
+00:13:15,806 --> 00:13:18,816
+todas essas manipulações de view
+vão acontecer, ok?
+
+304
+00:13:19,006 --> 00:13:19,946
+Então é similar.
+
+305
+00:13:20,386 --> 00:13:23,116
+Então é meio que uma interseção
+entre o que tinhamos no slide anterior
+
+306
+00:13:23,116 --> 00:13:25,366
+e a coisa aqui no topo, onde
+você está fazendo algumas mudanças
+
+307
+00:13:25,366 --> 00:13:26,346
+na sua hierarquia de view
+
+308
+00:13:26,346 --> 00:13:28,056
+e você está especificando
+quais são essas mudanças
+
+309
+00:13:28,536 --> 00:13:30,616
+com esse block de animação, ok?
+
+310
+00:13:30,886 --> 00:13:33,256
+Agora, existem versões mais simples
+de tudo isso que pulam alguns
+
+311
+00:13:33,256 --> 00:13:37,956
+dos argumentos como delay
+e options, eles apenas não estão lá,
+
+312
+00:13:38,576 --> 00:13:41,826
+mas eles estão todos fazendo
+exatamente a mesma coisa.
+
+313
+00:13:41,976 --> 00:13:45,356
+Certo, vamos fazer uma demo
+para mostrar isso acontecendo.
+
+314
+00:13:45,456 --> 00:13:51,686
+Primeiro eu vou terminar
+o que nós fizemos da última vez,
+
+315
+00:13:51,756 --> 00:13:53,676
+porque nós meio que tivemos que parar
+um pouco no meio
+
+316
+00:13:54,066 --> 00:13:55,686
+daquela demo da última vez.
+
+317
+00:13:56,136 --> 00:14:00,486
+Então nós vamos continuar isso
+e daí nós vamos fazer umas animações.
+
+318
+00:14:02,626 --> 00:14:04,976
+Alguma pergunta sobre os slides
+que nós tivemos até agora?
+
+319
+00:14:06,416 --> 00:14:07,776
+Então nós vamos
+voltar para o KitchenSink.
+
+320
+00:14:11,586 --> 00:14:12,676
+Está tudo linkado, ok.
+
+321
+00:14:12,906 --> 00:14:16,146
+E se você se lembrar
+onde estávamos da última vez,
+
+322
+00:14:16,776 --> 00:14:19,446
+nós adicionamos esse pequeno--
+nós temos esse esse KitchenSink bem aqui
+
+323
+00:14:19,446 --> 00:14:20,836
+que nós vamos linká-lo
+em um momento.
+
+324
+00:14:21,216 --> 00:14:23,976
+E nós temos esse botãozinho
+aqui em cima e quando nós clicamos nele,
+
+325
+00:14:23,976 --> 00:14:26,326
+ele apresentou essa coisa
+modalmente,
+
+326
+00:14:26,416 --> 00:14:27,776
+e ele fez uma pergunta.
+
+327
+00:14:27,776 --> 00:14:29,486
+A pergunta é que comida
+você quer adicionar
+
+328
+00:14:29,886 --> 00:14:32,486
+e eu digitei, acho que foi broccoli
+ali e eu disse done
+
+329
+00:14:32,886 --> 00:14:35,116
+e daí ele apenas
+NSLogou broccoli.
+
+330
+00:14:35,256 --> 00:14:37,726
+Ok, agora nós queremos
+colocar a palavra broccoli aqui
+
+331
+00:14:38,126 --> 00:14:40,676
+no nosso KitchenSink, ok?
+
+332
+00:14:40,676 --> 00:14:41,796
+Então esse é o próximo passo
+que nós vamos fazer
+
+333
+00:14:41,796 --> 00:14:43,116
+antes de fazer a animação.
+
+334
+00:14:43,656 --> 00:14:44,146
+Nós vamos fazer isso.
+
+335
+00:14:44,816 --> 00:14:48,906
+Para fazer isso, nós precisamos
+linkar essa view bem aqui.
+
+336
+00:14:48,906 --> 00:14:49,986
+Nós temos essa view genérica.
+
+337
+00:14:49,986 --> 00:14:50,936
+É apenas uma UIView.
+
+338
+00:14:50,936 --> 00:14:54,446
+Nós precisamos linká-la
+para nosso KitchenSinkController.
+
+339
+00:14:54,446 --> 00:14:56,586
+Então eu vou fazer isso
+primeiro aqui, certo,
+
+340
+00:14:57,616 --> 00:15:00,886
+vamos fazer isso...
+vamos CTRL + arrastar...
+
+341
+00:15:01,546 --> 00:15:05,266
+Vamos chamar isso
+de KitchenSink, certo?
+
+342
+00:15:05,266 --> 00:15:06,416
+Agora eu tenho essa UIView.
+
+343
+00:15:06,416 --> 00:15:08,506
+Eu preciso apenas
+de um ponteiro para essa UIView
+
+344
+00:15:08,506 --> 00:15:11,726
+para que eu possa
+adicionar coisas nela, adicionar comida.
+
+345
+00:15:12,476 --> 00:15:18,866
+Então, vamos voltar para cá...
+
+346
+00:15:19,246 --> 00:15:23,016
+Ok, agora, como eu disse,
+nós apenas NSLog
+
+347
+00:15:23,156 --> 00:15:25,776
+quando o unwind segue
+aconteceu, certo?
+
+348
+00:15:26,036 --> 00:15:30,336
+Quando esse unwind segue doneAsking,
+nós apenas logamos a resposta.
+
+349
+00:15:30,336 --> 00:15:33,276
+Mas o que queremos fazer aqui
+é dizer alguma coisa
+
+350
+00:15:33,336 --> 00:15:38,776
+tipo addFood,
+como asker.answer, ok?
+
+351
+00:15:39,826 --> 00:15:41,296
+Então vamos fazer o addFood.
+
+352
+00:15:41,296 --> 00:15:43,916
+Vamos colocar aqui em cima.
+
+353
+00:15:44,136 --> 00:15:45,186
+[ditando código]
+
+354
+00:15:45,186 --> 00:15:51,496
+Certo, agora como eu
+vou adicionar essa comida?
+
+355
+00:15:51,496 --> 00:15:53,316
+Bom, eu vou fazer
+com um UILabel.
+
+356
+00:15:53,316 --> 00:15:55,066
+Então vou ter
+um foodLabel aqui.
+
+357
+00:15:55,636 --> 00:15:58,416
+E esse UILabel,
+eu vou criá-lo no código.
+
+358
+00:15:58,546 --> 00:16:01,346
+Nós não fizemos isso ainda,
+criar views em código,
+
+359
+00:16:01,346 --> 00:16:05,536
+então eu queria
+fazer isso nessa demo.
+
+360
+00:16:05,576 --> 00:16:08,726
+E normalmente, isso seria
+com initWithFrame, certo?
+
+361
+00:16:08,766 --> 00:16:10,606
+Esse é o
+designated initializer.
+
+362
+00:16:10,906 --> 00:16:12,526
+Mas eu vou na verdade
+dizer init.
+
+363
+00:16:12,926 --> 00:16:16,586
+o init chama o initWithFrame
+com um retângulo 0, 0, 0, 0.
+
+364
+00:16:16,856 --> 00:16:19,506
+Um retângulo com 0 de largura,
+0 de altura e que está em (0, 0).
+
+365
+00:16:20,046 --> 00:16:21,766
+Daí nós seremos responsáveis
+por setar
+
+366
+00:16:21,766 --> 00:16:24,556
+o frame desse label
+em algum momento,
+
+367
+00:16:24,696 --> 00:16:25,786
+e claro que vamos fazer isso.
+
+368
+00:16:26,316 --> 00:16:29,426
+E vamos setar o texto do foodLabel
+para ser a comida
+
+369
+00:16:29,426 --> 00:16:32,436
+que queremos adicionar
+e nós vamos setar sua fonte.
+
+370
+00:16:32,436 --> 00:16:35,216
+Eu vou usar uma fonte de sistema,
+
+371
+00:16:35,476 --> 00:16:38,296
+digamos 46 pontos
+ou algo assim.
+
+372
+00:16:39,066 --> 00:16:41,356
+E daí um interessante--
+
+373
+00:16:41,356 --> 00:16:42,986
+eu vou setar
+o backgroundColor
+
+374
+00:16:42,986 --> 00:16:46,926
+desse label para ser clear, ok?
+
+375
+00:16:47,596 --> 00:16:50,796
+E isso é para que se eu tiver
+dois labels que se sobrepõe,
+
+376
+00:16:50,956 --> 00:16:53,176
+eu posso ver através
+da palavra pro que estiver atrás.
+
+377
+00:16:53,246 --> 00:16:56,246
+Ok? Eu não quero um bloco branco
+no background aqui.
+
+378
+00:16:57,046 --> 00:16:59,906
+E daí eu também vou
+setar sua localização.
+
+379
+00:16:59,906 --> 00:17:04,386
+Eu vou setar para alguma
+localização aleatória para essa view,
+
+380
+00:17:05,216 --> 00:17:07,426
+nosso foodLabel... 
+então temos que implementar esse método,
+
+381
+00:17:07,426 --> 00:17:09,286
+randomLocation.
+
+382
+00:17:09,746 --> 00:17:12,856
+E finalmente eu vou adicioná-lo
+ao KitchenSink.
+
+383
+00:17:16,486 --> 00:17:18,806
+Ok? Todo mundo bem com isso?
+
+384
+00:17:19,666 --> 00:17:22,036
+E setRandomLocationForView,
+
+385
+00:17:22,036 --> 00:17:23,816
+eu tenho um snippet
+para isso. Aqui está.
+
+386
+00:17:24,296 --> 00:17:26,986
+E algumas coisas interesssantes
+estão acontecendo aqui,
+
+387
+00:17:27,256 --> 00:17:31,096
+Primeiro é que ele dimensiona
+essa view que nós estamos tentando
+
+388
+00:17:31,096 --> 00:17:34,306
+setar uma localização aleatória
+para fit, ok?
+
+389
+00:17:34,676 --> 00:17:37,306
+E alguams views podem fazer isso.
+
+390
+00:17:37,366 --> 00:17:39,086
+Views que tem
+um tamanho intrínseco,
+
+391
+00:17:39,086 --> 00:17:40,496
+nós falamos sobre isso
+em auto-layout.
+
+392
+00:17:40,906 --> 00:17:41,556
+Elas podem fazer isso.
+
+393
+00:17:41,556 --> 00:17:43,416
+Então UILabel é uma delas
+e ele está apenas
+
+394
+00:17:43,416 --> 00:17:44,746
+fazendo o UILabel
+acomodar o texto.
+
+395
+00:17:44,816 --> 00:17:46,376
+Botões tamém podem sizeToFit.
+
+396
+00:17:46,706 --> 00:17:47,896
+Outras views, você não pode
+
+397
+00:17:47,896 --> 00:17:50,576
+sizeToFit porque elas não
+tem um tamanho intrínseco.
+
+398
+00:17:51,256 --> 00:17:54,126
+Daí tudo que estou fazendo
+é apenas pegar os bounds
+
+399
+00:17:54,126 --> 00:17:55,346
+do KitchenSink e meio que
+
+400
+00:17:55,346 --> 00:17:58,256
+"inseting" ele um pouco, porque
+eu não quero que nenhuma dessas comidas
+
+401
+00:17:58,426 --> 00:18:00,216
+que eu estou adicionando
+fiquem pra fora da borda.
+
+402
+00:18:00,586 --> 00:18:03,366
+E daí eu estou escolhendo
+um X aleatório e um Y aleatório
+
+403
+00:18:03,366 --> 00:18:06,596
+e daí setando
+o centro da view para isso.
+
+404
+00:18:06,756 --> 00:18:08,476
+Então view.center =,
+isso é a mesma coisa
+
+405
+00:18:08,476 --> 00:18:10,546
+que setar
+o frame da view, certo?
+
+406
+00:18:11,106 --> 00:18:15,336
+Lembram0se? Ok, então agora,
+se nós rodarmos isso--
+
+407
+00:18:16,436 --> 00:18:20,556
+É bom checarmos se nosso
+device aqui está funcionando.
+
+408
+00:18:23,056 --> 00:18:26,346
+Então vamos nós e então
+eu vou clicar em Add Food
+
+409
+00:18:27,036 --> 00:18:29,796
+e nós temos "Que comida você quer?"
+e vamos fazer algo como
+
+410
+00:18:29,796 --> 00:18:33,766
+pizza dessa vez. Pronto.
+E aí está, temos pizza.
+
+411
+00:18:34,436 --> 00:18:35,906
+Certo? Nós poderíamos
+adicionar outra coisa,
+
+412
+00:18:35,906 --> 00:18:40,566
+talvez "cookie"
+e nós temos um cookie.
+
+413
+00:18:40,566 --> 00:18:42,816
+Ok? Então ele está apenas
+colocando em um lugar aleatório.
+
+414
+00:18:43,716 --> 00:18:46,486
+Agora, o que eu vou fazer:
+eu vou fazer de um modo que
+
+415
+00:18:46,486 --> 00:18:50,066
+se eu clicar em um deles,
+eles se movem, ok?
+
+416
+00:18:50,266 --> 00:18:51,056
+Esse é meu próximo passo.
+
+417
+00:18:51,056 --> 00:18:52,806
+Nós vamos adicionar
+um tapGesture.
+
+418
+00:18:53,166 --> 00:18:56,736
+Agora, por simplicidade do 
+meu código aqui, eu vou fazer
+
+419
+00:18:56,736 --> 00:18:59,496
+na verdade um tapGesture
+no KitchenSink.
+
+420
+00:18:59,976 --> 00:19:01,816
+Eu não vou ter um tapGesture
+
+421
+00:19:01,816 --> 00:19:03,656
+em cada uma das coisas
+que eu adiciono.
+
+422
+00:19:03,656 --> 00:19:05,326
+Eu estou apenas colocando
+um tapGesture
+
+423
+00:19:05,326 --> 00:19:07,166
+no próprio KitchenSink.
+
+424
+00:19:07,166 --> 00:19:07,996
+Então vamos fazer isso.
+
+425
+00:19:08,886 --> 00:19:10,106
+Mas espaço aqui...
+
+426
+00:19:11,076 --> 00:19:12,246
+Estou ficando melhor
+em descobrir como
+
+427
+00:19:12,606 --> 00:19:14,506
+arrumar espaço suficiente
+para tudo.
+
+428
+00:19:15,586 --> 00:19:18,646
+Ok, então eu vou aqui embaixo
+para um tapGesture.
+
+429
+00:19:18,646 --> 00:19:22,376
+Vamos colocar um tapGesture
+no KitchenSink, ok?
+
+430
+00:19:22,376 --> 00:19:23,856
+Vocês podem ver
+que ele adiconou bem aqui.
+
+431
+00:19:24,496 --> 00:19:30,326
+Agora, vamos seguir e
+arrastar o recognizer.
+
+432
+00:19:30,686 --> 00:19:33,696
+Então eu vou, a partir desse
+tapGesture, eu esto apenas
+
+433
+00:19:33,696 --> 00:19:37,236
+arrastando-o aqui, coloco-o bem aqui.
+Nós chamaremos de tap.
+
+434
+00:19:38,436 --> 00:19:40,856
+Certificando que ele tem
+um tapGesture como argumento.
+
+435
+00:19:41,406 --> 00:19:42,006
+Aqui está.
+
+436
+00:19:42,716 --> 00:19:44,246
+Ok, então isso vai
+
+437
+00:19:44,246 --> 00:19:47,366
+ser chamado cada vez que
+nós tocarmos no KitchenSink.
+
+438
+00:19:47,366 --> 00:19:49,516
+Então o que eu vou fazer é
+eu vou apenas passar
+
+439
+00:19:49,516 --> 00:19:53,166
+por todas as subviews do
+KitchenSink e tentar achar um
+
+440
+00:19:53,316 --> 00:19:56,286
+que esse tap está nela, ok?
+
+441
+00:19:56,676 --> 00:19:57,836
+Isso é bem fácil de fazer.
+
+442
+00:19:58,116 --> 00:20:00,696
+Nós vamos apenas dizer
+For UIView...
+
+443
+00:20:01,146 --> 00:20:06,666
+desculpem, deixa eu vir aqui,
+e aqui e aqui, ok?
+
+444
+00:20:06,816 --> 00:20:13,796
+[ditando código]
+ok?
+
+445
+00:20:14,256 --> 00:20:16,776
+Daí preciso saber
+onde o tap está
+
+446
+00:20:16,776 --> 00:20:20,186
+no sistema de coordenadas
+
+447
+00:20:20,306 --> 00:20:22,766
+da KitchenSink.
+
+448
+00:20:23,086 --> 00:20:28,606
+Então vamos fazer
+[ditando código]
+
+449
+00:20:28,796 --> 00:20:32,146
+[ditando código]
+Ok?
+
+450
+00:20:32,146 --> 00:20:35,086
+Agora sabemos onde esse tap
+foi no KitchenSink.
+
+451
+00:20:35,756 --> 00:20:39,906
+Agora nós vamos dizer
+[ditando código]
+
+452
+00:20:40,786 --> 00:20:44,176
+e nós vamos usar o frame da view,
+porque isso também está
+
+453
+00:20:44,176 --> 00:20:46,396
+no sistema de coordenadas
+do KitchenSink.
+
+454
+00:20:46,816 --> 00:20:49,346
+Todo mundo entende por que
+eu não estou usando view.bounds aqui?
+
+455
+00:20:49,346 --> 00:20:52,636
+Porque o bounds estariam
+no sistema de coordenadas da view,
+
+456
+00:20:52,636 --> 00:20:53,716
+o sistema de coordenadas
+dessa subview.
+
+457
+00:20:53,716 --> 00:20:55,616
+Eu quero o sistema de coordenadas
+do KitchenSink.
+
+458
+00:20:56,326 --> 00:20:58,716
+E daí tapLocation.
+Certo?
+
+459
+00:20:58,716 --> 00:21:03,186
+Então isso-- se esse rect contém
+esse ponto, então eu vou apenas
+
+460
+00:21:03,186 --> 00:21:07,376
+setar uma location aleatória
+para essa view, ok?
+
+461
+00:21:07,956 --> 00:21:10,206
+Vamos seguir e ter certeza
+que esse tapGestureRecognizer
+
+462
+00:21:10,206 --> 00:21:10,686
+está funcionando.
+
+463
+00:21:12,976 --> 00:21:16,076
+Ok, então nós adicionamos uma comida
+
+
+464
+00:21:17,166 --> 00:21:21,516
+Dessa vez vamos adicionar uma laranja.
+Uma comida mais saudável.
+
+465
+00:21:22,546 --> 00:21:24,966
+Ok? agora se eu tocar nela,
+vocês podem ver que ela se moveu.
+
+466
+00:21:25,536 --> 00:21:29,166
+Mas é muito incomodador,
+porque ela está pulando, ok?
+
+467
+00:21:29,466 --> 00:21:31,486
+E é aqui que entraria
+a viewAnimation.
+
+468
+00:21:31,486 --> 00:21:33,666
+Nós gostaríamos,
+cada vez que eu tocar nisso,
+
+469
+00:21:33,836 --> 00:21:36,776
+que o movimento fosse animado, ok?
+
+470
+00:21:36,776 --> 00:21:37,826
+Como nós fazemos isso?
+
+471
+00:21:38,466 --> 00:21:41,646
+Isso é uma linha de código
+bem aqui.
+
+472
+00:21:41,646 --> 00:21:45,936
+Nós vamos só dizer
+UIView animateWithDuration...
+
+473
+00:21:46,766 --> 00:21:51,416
+Nós teremos uma MOVE_DURATION
+definida aqui.
+
+474
+00:21:51,966 --> 00:21:56,986
+E daí  nós queremos nosso
+block de animação que vai ser esse.
+
+475
+00:21:56,986 --> 00:21:59,216
+Eu deixei de fora
+alguns dos outros argumentos.
+
+476
+00:21:59,216 --> 00:22:02,696
+Esse aqui é uma das animações
+do UIView mais simples.
+
+477
+00:22:03,216 --> 00:22:07,156
+E vamos fazer
+animdar por 3 segundos.
+
+478
+00:22:07,266 --> 00:22:09,796
+Ok? Vai levar três segundos
+para se mover.
+
+479
+00:22:10,106 --> 00:22:15,646
+Então é isso...
+vamos ver se isso funciona.
+
+480
+00:22:16,836 --> 00:22:21,286
+Ok. Que tal uma berinjela? (eu ein)
+
+
+481
+00:22:21,836 --> 00:22:25,946
+Ok? Agora eu vou clicar em 
+Eggplant e vocês podem ver
+
+482
+00:22:25,946 --> 00:22:27,746
+como ele anima.
+Demora 3 segundos,
+
+483
+00:22:28,066 --> 00:22:29,796
+e ele também está fazendo
+o EaseIn
+
+484
+00:22:29,796 --> 00:22:31,386
+e o EaseOut, vocês podem perceber.
+
+
+485
+00:22:31,386 --> 00:22:32,156
+(...)
+
+486
+00:22:32,156 --> 00:22:34,266
+Não é um bom exemplo,
+mas vamos tentar de novo.
+
+487
+00:22:34,596 --> 00:22:36,476
+Ele "Eases out" e agora ele
+
+
+488
+00:22:36,476 --> 00:22:38,816
+desacelera quando chega
+no fim, ok?
+
+489
+00:22:39,816 --> 00:22:40,466
+Faz sentido?
+
+490
+00:22:41,696 --> 00:22:43,736
+Isso foi incrivelmente fácil.
+
+491
+00:22:43,736 --> 00:22:46,736
+Vamos fazer uma animação
+muito mais sofisticadas.
+
+492
+00:22:46,736 --> 00:22:47,156
+Vamos?
+
+493
+00:22:47,636 --> 00:22:51,066
+Então, esse é o KitchenSink,
+vamos fazer nossa comida,
+
+494
+00:22:51,066 --> 00:22:54,526
+quando nós vamos no KitchenSink,
+ir ralo a baixo, ok?
+
+495
+00:22:54,526 --> 00:22:57,116
+Bom, quando as coisas vão
+ralo a baixo, elas meio que
+
+496
+00:22:57,116 --> 00:22:58,806
+giram e se tornam menor, ok?
+
+497
+00:22:59,076 --> 00:23:03,026
+Então nós vamos fazer nossa comida
+aqui girar e ir ralo abaixo,
+
+498
+00:23:03,026 --> 00:23:04,806
+e menor e menor,
+e daí removê-la
+
+499
+00:23:04,806 --> 00:23:07,606
+da superview, porque elas estarão
+fora da pia da cozinha, ok?
+
+500
+00:23:08,126 --> 00:23:08,706
+Vamos fazer isso.
+
+
+501
+00:23:09,806 --> 00:23:12,796
+E eu vou ter um método aqui
+chamado drain.
+
+502
+00:23:13,296 --> 00:23:16,776
+O drain vai pegar
+todas as comidas e
+
+503
+00:23:16,776 --> 00:23:19,106
+começar
+a drená-las, ok?
+
+504
+00:23:19,106 --> 00:23:20,716
+Na verdade ele vai
+colocar tudo no ralo,
+
+505
+00:23:21,156 --> 00:23:23,386
+mas ele vai fazer isso
+com essa animação "stepwise".
+
+506
+00:23:23,756 --> 00:23:27,136
+Então, fazer com que essas coisas
+aconteçam completamente vai na verdade
+
+507
+00:23:27,136 --> 00:23:30,556
+demorar algum tempo, porque eu
+não vou fazer o próximo passo
+
+508
+00:23:30,556 --> 00:23:32,886
+da animação até que
+o anterior termine.
+
+509
+00:23:33,356 --> 00:23:37,566
+Então esse é um modo onde
+eu vou lentamente remover as coisas.
+
+510
+00:23:37,566 --> 00:23:42,046
+Agora, você pode dizer: bom,
+isso deve ser uma linha ou duas.
+
+511
+00:23:42,046 --> 00:23:43,276
+Não posso dizer algo como
+
+512
+00:23:43,276 --> 00:23:47,726
+"anime o transform
+mudando a rotação"?
+
+513
+00:23:48,396 --> 00:23:50,466
+E é assim que eu vou
+rodar,
+
+514
+00:23:50,856 --> 00:23:53,976
+animadamente mudando
+o transform da view, certo?
+
+515
+00:23:53,976 --> 00:23:55,566
+Porque lembram-se que o 
+transform faz o scale,
+
+516
+00:23:55,566 --> 00:23:57,626
+rotação e translação?
+
+517
+00:23:58,176 --> 00:24:01,866
+Mas, acontece que eu vou
+ter que fazer isso em três passos.
+
+518
+00:24:02,356 --> 00:24:05,836
+Eu tenho que animá-lo um terço
+do caminho, daí mais um terço do
+
+519
+00:24:05,836 --> 00:24:08,386
+caminho e daí o último terço
+do caminho.
+
+520
+00:24:08,966 --> 00:24:10,146
+Por que eu tenho que fazer isso?
+
+521
+00:24:10,876 --> 00:24:14,186
+Bom, porque, lembram-se que a
+animação, você tem que--
+
+522
+00:24:14,186 --> 00:24:15,316
+você tem um block de animation
+
+523
+00:24:15,316 --> 00:24:17,506
+onde você diz "sete isso
+para ser o novo valor".
+
+524
+00:24:17,806 --> 00:24:19,586
+Bom, se eu setar o novo valor
+
+525
+00:24:19,586 --> 00:24:23,376
+para ser uma volta de
+2 pi radianos, eu já estou lá.
+
+526
+00:24:23,996 --> 00:24:25,576
+Então não levaria tempo nenhum
+para animar
+
+527
+00:24:25,576 --> 00:24:27,726
+essa mudança, porque eu
+já estou no lugar.
+
+528
+00:24:27,726 --> 00:24:28,436
+Vêem o que estou dizendo?
+
+529
+00:24:28,926 --> 00:24:31,126
+E se eu fizesse apenas
+dois passos? Tivesse dito:
+
+530
+00:24:31,126 --> 00:24:34,196
+ok, anime metade do caminho
+e depois volte"?
+
+531
+00:24:34,836 --> 00:24:37,696
+O problema aqui é que ele
+sempre escolhe o menor ponto--
+
+532
+00:24:37,936 --> 00:24:39,946
+a menor rota entre duas coisas.
+
+533
+00:24:40,276 --> 00:24:41,966
+E então, ele poderia ir
+metade do caminho lá
+
+534
+00:24:41,966 --> 00:24:44,886
+e daí voltar pelo
+caminho que ele veio, ok?
+
+535
+00:24:45,216 --> 00:24:47,256
+Nós não podemos garantir
+que caminho ele iria.
+
+536
+00:24:47,676 --> 00:24:50,936
+Então, fazendo esses três passos,
+nós garantimos que nós vamos
+
+537
+00:24:50,936 --> 00:24:54,446
+ir na direção que queremos,
+a volta inteira, ok?
+
+538
+00:24:54,446 --> 00:24:56,796
+Isso também me dá uma chance
+de mostrar para vocês como fazer
+
+539
+00:24:56,796 --> 00:24:59,986
+uma animação em passos,
+então é bom para a demo também.
+
+540
+00:25:00,676 --> 00:25:02,326
+Certo, como nós vamos
+fazer isso?
+
+541
+00:25:02,326 --> 00:25:04,916
+Eu vou-- novamente, eu vou olhar
+por cada view
+
+542
+00:25:05,156 --> 00:25:06,996
+na KitchenSink, ok?
+
+543
+00:25:09,916 --> 00:25:14,546
+E eu vou colocá-las
+todas no "drain".
+
+544
+00:25:14,546 --> 00:25:19,586
+Primeiro, eu vou apenas olhar
+por comida que está 
+
+545
+00:25:19,776 --> 00:25:23,876
+no KitchenSink que ainda
+não está no processo
+
+546
+00:25:23,876 --> 00:25:24,896
+de ir para o ralo.
+
+547
+00:25:25,286 --> 00:25:31,076
+Então eu vou procurar para ver
+se o transform da view
+
+548
+00:25:31,076 --> 00:25:34,656
+em questão é a identidade.
+
+549
+00:25:34,946 --> 00:25:37,956
+Então vamos fazer isso--
+oops, é transform...
+
+550
+00:25:38,616 --> 00:25:43,596
+Vamos ter uma variável local aqui
+CGAffineTransform
+
+551
+00:25:46,646 --> 00:25:49,416
+que é o transform
+da view, ok?
+
+552
+00:25:49,936 --> 00:25:52,846
+E aqui eu vou dizer
+se for a identidade.
+
+553
+00:25:52,846 --> 00:25:55,246
+Então se não for a identidade,
+daí eu não vou fazer
+
+554
+00:25:55,246 --> 00:25:56,406
+nada com ela.
+
+555
+00:25:56,406 --> 00:25:57,546
+Eu vou apenas ignorá-la,
+porque eu vou assumir
+
+556
+00:25:57,546 --> 00:26:00,566
+que ela já está no meio
+de ir ralo a baixo.
+
+557
+00:26:00,726 --> 00:26:01,826
+Então não preciso
+fazer nada com ela.
+
+558
+00:26:01,826 --> 00:26:05,446
+São só aquelas que
+ainda estão com a transform "full"
+
+559
+00:26:05,446 --> 00:26:07,406
+que precisam ser animadas aqui.
+
+560
+00:26:08,036 --> 00:26:12,246
+Daí eu posso simplesmente
+animateWithDuration:options.
+
+561
+00:26:12,246 --> 00:26:16,326
+E nós vamos fazer a duração
+de DRAIN_DURATION e nós temos
+
+562
+00:26:16,326 --> 00:26:19,136
+que dividir em três passos,
+então eu vou dividir por 3,
+
+563
+00:26:19,136 --> 00:26:21,456
+e essa vai ser a duração
+da drenagem.
+
+564
+00:26:21,456 --> 00:26:23,926
+Então vamos fazer
+levar 3 segundos para
+
+565
+00:26:23,926 --> 00:26:25,606
+ir ralo a baixo também, ok?
+
+
+566
+00:26:25,606 --> 00:26:28,346
+Então vai levar três segundos
+no total para ele ir
+
+567
+00:26:28,346 --> 00:26:30,826
+rola a baixo. Um terço
+de segundo para cada um.
+
+568
+00:26:31,426 --> 00:26:34,976
+E daí nós temos algumas
+opções aqui--
+
+569
+00:26:35,116 --> 00:26:37,906
+Na verdade precisamos do Delay,
+desculpem. Delay.
+
+570
+00:26:37,906 --> 00:26:39,676
+E eu não vou ter delay.
+
+571
+00:26:39,946 --> 00:26:41,466
+Nós vamos fazer
+que seja imediatam--
+
+572
+00:26:41,466 --> 00:26:42,516
+na verdade, retiro o que disse.
+
+573
+00:26:42,516 --> 00:26:49,906
+Vamos ter pelo menos
+um DRAIN_DELAY que nós possamos setar.
+
+574
+00:26:49,906 --> 00:26:52,686
+[ditando código]
+
+575
+00:26:53,706 --> 00:26:54,736
+Então vamos ter o delay do drain,
+
+576
+00:26:54,736 --> 00:26:55,836
+vai ser 1.0 apenas para
+
+577
+00:26:55,836 --> 00:26:57,486
+vocês verem como é o delay.
+
+578
+00:26:58,126 --> 00:26:59,386
+E daí as options.
+
+579
+00:26:59,876 --> 00:27:02,016
+As options que eu vou usar
+
+580
+00:27:02,016 --> 00:27:09,546
+aqui é
+UIViewAnimationOptionsLinear,
+
+581
+00:27:10,546 --> 00:27:12,206
+que está bem aqui, ok?
+
+582
+00:27:12,206 --> 00:27:13,666
+Porque eu vou fazer linear?
+
+583
+00:27:14,426 --> 00:27:16,616
+Porque lembrem-se, eu estou
+fazendo passo a passo.
+
+584
+00:27:16,846 --> 00:27:18,876
+Então eu não quero
+que ele acelere,
+
+585
+00:27:18,876 --> 00:27:21,566
+desacelere em um terço,
+daí acelere,
+
+586
+00:27:21,566 --> 00:27:23,926
+(...)
+desacelere no terc--
+
+587
+00:27:23,926 --> 00:27:24,566
+vêem o que estou dizendo?
+
+
+588
+00:27:24,816 --> 00:27:27,946
+Eu quero que ele vá linearmente
+por todos os três passos.
+
+589
+00:27:27,946 --> 00:27:30,226
+Então eu vou ter cada passo
+ser linear ao invés de
+
+590
+00:27:30,226 --> 00:27:31,156
+easing in e out.
+
+591
+00:27:31,446 --> 00:27:33,146
+Agora, eu poderia na verdade
+fazer esse primeiro passo ser ease in.
+
+592
+00:27:33,146 --> 00:27:36,476
+Vocês podem querer fazer
+esse primeiro CurveEaseIn.
+
+593
+00:27:37,166 --> 00:27:38,356
+Ok, vamos tentar isso.
+
+594
+00:27:38,356 --> 00:27:40,456
+Ok, vamos ter
+esse primeiro ser ease in,
+
+595
+00:27:40,456 --> 00:27:41,816
+mas os outros vão ter
+que ser lineares.
+
+596
+00:27:42,496 --> 00:27:45,506
+E daí aqui estão as animações
+que nós vamos fazer.
+
+597
+00:27:45,796 --> 00:27:48,056
+E então, tudo que queremos
+animar aqui
+
+598
+00:27:48,766 --> 00:27:52,696
+nesse primeiro passo
+é um terço do caminho inteiro.
+
+599
+00:27:53,326 --> 00:27:55,746
+E também, como ele está
+indo pro ralo, não somente rodá-lo,
+
+600
+00:27:55,746 --> 00:27:58,846
+mas eu vou diminuir a escala
+também, ok?
+
+601
+00:27:58,846 --> 00:28:01,366
+Porque ele vai lentamente
+desaparecer enquanto ele roda.
+
+602
+00:28:01,686 --> 00:28:03,616
+Então vamos mudar
+ambas essas coisas.
+
+603
+00:28:03,656 --> 00:28:05,786
+Eu vou apenas setar
+a transform da view
+
+604
+00:28:06,366 --> 00:28:11,256
+para ser um affine transform
+a rotacionando
+
+605
+00:28:11,696 --> 00:28:15,026
+e outra affine transform
+escalando.
+
+606
+00:28:15,026 --> 00:28:17,036
+Então eu vou escalar
+a transform.
+
+607
+00:28:17,136 --> 00:28:20,866
+Vamos fazer 70% no
+primeiro terço, ok?
+
+608
+00:28:20,866 --> 00:28:22,876
+Então nós vamos ficar
+70% menores no primeiro terço.
+
+609
+00:28:22,876 --> 00:28:25,746
+Nós vamos diminuir 40%,
+10% e então desaparecer
+
+610
+00:28:25,746 --> 00:28:27,376
+no fim do nosso completion.
+
+611
+00:28:27,916 --> 00:28:31,126
+E daí o ângulo está em radianos,
+então eu vou fazer
+
+612
+00:28:31,126 --> 00:28:37,376
+isso ser 2 vezes pi
+dividido por três, ok?
+
+613
+00:28:38,466 --> 00:28:41,956
+Todo mundo entende isso?
+
+614
+00:28:43,166 --> 00:28:47,456
+2 pi sobre 3 é
+1/3 do caminho inteiro.
+
+615
+00:28:47,456 --> 00:28:49,216
+2 pi é o caminho inteiro, certo?
+
+616
+00:28:49,216 --> 00:28:51,516
+Então, bom, dividido por 3,
+é um terço do caminho inteiro.
+
+617
+00:28:52,016 --> 00:28:54,496
+Então aqui eu modifiquei
+isso para fazer isso.
+
+618
+00:28:54,746 --> 00:28:56,586
+Qual é o nosso problema aqui?
+
+619
+00:28:56,906 --> 00:29:00,746
+Ah, e o completion,
+
+620
+00:29:00,816 --> 00:29:04,096
+nosso completion handler,
+BOOL finished.
+
+621
+00:29:07,826 --> 00:29:11,646
+Ok? O que nós vamos fazer
+no nosso completion?
+
+622
+00:29:11,796 --> 00:29:14,346
+Bom, no completion,
+assim como foi perguntando anteriormente,
+
+623
+00:29:14,506 --> 00:29:17,656
+nós vamos animar
+o próximo terço, ok?
+
+624
+00:29:18,126 --> 00:29:20,816
+Então vamos animar
+o próximo terço
+
+625
+00:29:21,996 --> 00:29:23,376
+copiando e colando isso aqui.
+
+626
+00:29:23,376 --> 00:29:27,916
+Novamente, nós queremos
+linear aqui. Linear.
+
+627
+00:29:27,916 --> 00:29:32,006
+Nós também queremos 40% do tamanho
+ao invés disso
+
+628
+00:29:32,006 --> 00:29:35,086
+e nós queremos -2pi sobre 3
+que é
+
+629
+00:29:35,506 --> 00:29:37,356
+até o outro lado, certo?
+
+630
+00:29:37,356 --> 00:29:40,196
+Nós vamos rodar
+nesse sentido, então nós vamos
+
+631
+00:29:40,196 --> 00:29:42,316
+até -2 pi sobre 3
+que é, na verdade, nesse sentido.
+
+632
+00:29:42,916 --> 00:29:45,106
+E daí ele nesse
+completion handler,
+
+633
+00:29:45,266 --> 00:29:46,996
+nós vamos fazer isso de novo, ok?
+
+
+634
+00:29:47,966 --> 00:29:50,636
+Então aqui eu vou para 0.1.
+
+635
+00:29:50,636 --> 00:29:54,646
+E nós vamos estar
+não rotacionados.
+
+636
+00:29:54,646 --> 00:29:58,326
+Então nós nem precisamos
+desse rotate,
+
+637
+00:29:59,026 --> 00:30:01,026
+voltando para 
+o transform original.
+
+638
+00:30:01,026 --> 00:30:03,426
+Lembrem-se, esse transform,
+nós pegamos no começo.
+
+639
+00:30:03,426 --> 00:30:05,296
+Então esse é o transform view
+original.
+
+640
+00:30:05,296 --> 00:30:09,186
+Então nós vamos para 10% do tamanho
+
+641
+00:30:09,186 --> 00:30:11,796
+do transform original, ok?
+
+642
+00:30:12,256 --> 00:30:14,046
+Agora, embora tenhamos
+chegamos no fim,
+
+643
+00:30:14,426 --> 00:30:17,936
+se isso aqui acabaou,
+que vai ser verdade,
+
+644
+00:30:17,936 --> 00:30:20,566
+porque nós não temos
+outras coisas que estão
+
+645
+00:30:20,566 --> 00:30:25,386
+animando o transform.
+Então ele vai acabar,
+
+646
+00:30:25,386 --> 00:30:30,026
+e nós vamos remover essa view
+da superview, ok?
+
+647
+00:30:31,036 --> 00:30:36,286
+Pergunta.
+>> [Estudante perguntando]
+
+648
+00:30:36,326 --> 00:30:37,636
+Se ele não acabar, ele vai rodar
+o completion handler?
+
+649
+00:30:37,636 --> 00:30:42,506
+Sim, mas daí o finisehd vai ser NO,
+ok? E daí você poderia decidir.
+
+650
+00:30:42,666 --> 00:30:47,336
+Bom, essa animação foi abortada
+em algum lugar no caminho
+
+651
+00:30:47,336 --> 00:30:49,826
+por outra animação tomando
+o seu lugar, ainda faz
+
+652
+00:30:50,016 --> 00:30:50,886
+sentido fazer isso?
+
+653
+00:30:50,886 --> 00:30:53,816
+Agora aqui, claramente,
+não faria sentido removê-lo
+
+654
+00:30:53,886 --> 00:30:56,846
+da superview se outra animação
+está levando esse transform
+
+655
+00:30:56,846 --> 00:30:59,886
+em uma direção diferente. Sim?
+
+656
+00:31:00,956 --> 00:31:02,066
+Sim! Existe outra.
+
+657
+00:31:02,096 --> 00:31:07,666
+Tem um ease out, eu acho,
+provavelmente é ease out.
+
+658
+00:31:08,616 --> 00:31:09,536
+Certo, muito bom.
+
+659
+00:31:10,196 --> 00:31:12,836
+Ok? Então nós vamos ease in,
+nós vamos lineares para o terço
+
+660
+00:31:12,836 --> 00:31:15,436
+do meio e daí nos vamos
+ease out no final, ok?
+
+661
+00:31:15,786 --> 00:31:18,826
+Agora, nós precisamos chamar esse
+drain e eu vou
+
+662
+00:31:18,826 --> 00:31:21,496
+chamar o drain sempre que
+eu adicionar uma comida.
+
+663
+00:31:21,566 --> 00:31:22,936
+Então cada vez que você
+jogar uma comida aí
+
+664
+00:31:22,936 --> 00:31:25,366
+ele vai imediatamente
+começar a drená-la, ok?
+
+665
+00:31:26,356 --> 00:31:27,076
+Apenas para demo.
+
+666
+00:31:27,266 --> 00:31:30,206
+Bom, em um minuto nós vamos
+fazer de um modo diferente,
+
+667
+00:31:30,206 --> 00:31:32,156
+mas vamos ver se isso funciona.
+
+668
+00:31:32,476 --> 00:31:37,846
+Ok? Então vamos adicionar uma comida.
+
+669
+00:31:38,876 --> 00:31:41,516
+Que tal um pouco de espinafre?
+
+670
+00:31:42,016 --> 00:31:46,666
+Ok, então eu coloquei aqui
+e vocês podem ver...
+
+671
+00:31:46,836 --> 00:31:50,236
+oh, por que está fazendo isso?
+
+672
+00:31:50,326 --> 00:31:51,726
+Porque tem um delay, exatamente.
+
+673
+00:31:51,726 --> 00:31:55,846
+Nós temos esse delay
+de 1.0 bem aqui em cada passo.
+
+674
+00:31:56,426 --> 00:31:57,396
+Nós não queremos isso.
+
+675
+00:31:57,396 --> 00:32:00,986
+Então isso quer ser zero
+e esse quer ser zero, ok?
+
+676
+00:32:01,556 --> 00:32:06,466
+Os riscos
+de copy + paste aí!
+
+677
+00:32:06,646 --> 00:32:09,346
+Eu tenho que ficar pensando
+em mais e mais comidas aqui.
+
+678
+00:32:09,796 --> 00:32:12,636
+Que tal hamburger?
+
+679
+00:32:14,506 --> 00:32:20,936
+Ok? Agora...
+não funcionou exatamente do jeito
+
+680
+00:32:20,936 --> 00:32:24,236
+que eu queria em termos de
+velocidade, porque ele está com
+
+681
+00:32:24,236 --> 00:32:26,796
+esse ease in, mas foi até
+a metade do próximo,
+
+682
+00:32:26,796 --> 00:32:28,486
+daí ele ficou rápido,
+daí foi ficando devagar...
+
+683
+00:32:28,486 --> 00:32:30,886
+Não tenho muita certeza que podemos
+
+684
+00:32:30,886 --> 00:32:32,206
+fazer isso usando esse Ease In e Out.
+
+685
+00:32:32,206 --> 00:32:35,206
+Então talvez tenhamos que
+fazer ser linear o caminho inteiro
+
+686
+00:32:35,636 --> 00:32:36,876
+para que fique realmente suave.
+
+687
+00:32:37,856 --> 00:32:41,926
+>> [Estudante perguntando]
+Por que o dois pi ali em cima
+
+688
+00:32:41,926 --> 00:32:43,626
+está negativo? Porque
+isso sugere que é um terço
+
+689
+00:32:43,626 --> 00:32:44,826
+do círculo, ao contrário.
+
+690
+00:32:45,426 --> 00:32:48,656
+Então eu tenho o círculo,
+-2pi/3 é aqui,
+
+691
+00:32:48,776 --> 00:32:51,436
++2pi/3 é aqui.
+Então eu estou indo daqui
+
+692
+00:32:51,656 --> 00:32:53,846
+pra até aqui, mas ele vai
+pegar o caminho mais curto
+
+693
+00:32:54,456 --> 00:32:57,156
+e daí aqui, certo?
+
+694
+00:32:58,236 --> 00:32:59,316
+Certo, o que nós temos aqui?
+
+695
+00:32:59,316 --> 00:33:01,176
+Que tal frango?
+
+696
+00:33:01,756 --> 00:33:08,816
+Ok? Agora nós temos
+uma drenagem suave acontecendo. Ok?
+
+697
+00:33:09,476 --> 00:33:12,676
+Agora, o único problema com isso
+é que é realmente um saco
+
+698
+00:33:12,676 --> 00:33:14,286
+ter que ficar constantemente
+digitando algo novo.
+
+699
+00:33:14,486 --> 00:33:16,416
+Então vamos fazer
+outra coisa legal.
+
+700
+00:33:16,776 --> 00:33:20,546
+Vamos fazer o tap salvar
+o negócio do ralo.
+
+701
+00:33:21,146 --> 00:33:23,976
+Então quando eu clicar, ele vai
+movê-lo, mas ele também vai
+
+702
+00:33:23,976 --> 00:33:26,456
+salvá-lo do ralo, ok?
+
+703
+00:33:26,776 --> 00:33:30,346
+Isso significa que nós precisamos
+ser capazes de pegar aquela coisa,
+
+704
+00:33:30,346 --> 00:33:32,536
+aquela animação
+enquanto ela acontece, certo?
+
+705
+00:33:32,586 --> 00:33:34,586
+e mudar aquele transform.
+
+706
+00:33:34,586 --> 00:33:37,356
+E então,
+como nós vamos fazer isso?
+
+707
+00:33:37,356 --> 00:33:38,776
+E isso vai ser fácil também.
+
+708
+00:33:38,776 --> 00:33:41,226
+Nós vamos aqui embaixo
+para o nosso animateWithDuration
+
+709
+00:33:41,226 --> 00:33:44,006
+e nós vamos usar um mais complicado
+
+710
+00:33:44,006 --> 00:33:47,916
+que é delay: 0, options.
+
+711
+00:33:47,996 --> 00:33:51,816
+E agora, eu preciso dessa opção
+
+712
+00:33:52,286 --> 00:33:55,016
+UIViewAnimationOptionBeginFromCurrentState,
+ok?
+
+713
+00:33:55,316 --> 00:33:57,896
+Isso signfica se tiver
+uma animação acontecendo,
+
+714
+00:33:58,006 --> 00:34:01,346
+ele vai começar de onde
+essa animação está e mudá-la.
+
+715
+00:34:01,346 --> 00:34:06,436
+E nós ainda vamos setar a
+randomLocationForView aqui,
+
+716
+00:34:06,716 --> 00:34:11,026
+mas eu também vou setar
+o transform da view
+
+717
+00:34:11,026 --> 00:34:14,246
+igual à identidade.
+
+718
+00:34:14,796 --> 00:34:19,096
+Na verdade, eu vou scale...
+CGAffineTransformIdentity. 
+
+719
+00:34:19,096 --> 00:34:20,806
+Eu vou pegar 
+o transform identidade
+
+720
+00:34:20,846 --> 00:34:23,636
+e escalá-lo para 99%.
+
+
+721
+00:34:24,376 --> 00:34:25,916
+Okr? Por que 
+eu vou fazer isso?
+
+722
+00:34:26,126 --> 00:34:30,336
+Isso é porque enquanto eu
+estou interceptando essa animação
+
+723
+00:34:30,496 --> 00:34:33,216
+e salvando essa coisa, ok?
+Que vai causar que ele
+
+724
+00:34:33,216 --> 00:34:35,526
+desrotacione e cresça
+de volta,
+
+725
+00:34:35,526 --> 00:34:38,196
+porque eu estou setando ele
+de volta para ser 99% 
+
+726
+00:34:38,196 --> 00:34:40,356
+do transform identidade,
+
+727
+00:34:40,816 --> 00:34:43,566
+o transform identity 
+é não-rotacionado, certo?
+
+728
+00:34:43,566 --> 00:34:44,736
+e 99% é grande.
+
+729
+00:34:45,306 --> 00:34:47,546
+Enquanto isso está acontecendo,
+eu não quero que o drain o pegue novamente.
+
+730
+00:34:48,446 --> 00:34:51,106
+O drain só pega coisas
+
+731
+00:34:51,266 --> 00:34:52,806
+que tem o transform identidade.
+
+732
+00:34:53,176 --> 00:34:56,596
+Então, como essa coisa vai ter
+99% do tamanho, ele não vai ser pegado.
+
+733
+00:34:57,436 --> 00:35:02,916
+Entretanto, uma vez que ele acaba,
+eu quero que ele seja elegível
+
+734
+00:35:02,916 --> 00:35:04,576
+para ir ralo a baixo novamente, ok?
+
+735
+00:35:05,436 --> 00:35:09,036
+E daí, eu vou...
+uma vez que ele acabar,
+
+736
+00:35:09,036 --> 00:35:13,276
+vou setá-lo seu transform
+para ser elegível...
+
+737
+00:35:14,236 --> 00:35:17,576
+para ser o transform
+identidade, ok?
+
+738
+00:35:19,296 --> 00:35:21,036
+Todo mundo viu o que eu fiz aqui,
+esse pequeno truque?
+
+739
+00:35:21,226 --> 00:35:22,346
+Então esse é tipo um pequeno
+
+740
+00:35:22,346 --> 00:35:25,536
+truque de animação aqui
+fazê-lo 99%
+
+741
+00:35:25,536 --> 00:35:28,356
+para que ele não seja
+elegível para ser rotacionado.
+
+742
+00:35:28,646 --> 00:35:29,626
+Mas quando ele acabar,
+
+743
+00:35:29,626 --> 00:35:31,426
+vou fazê-lo elegível novamente, certo?
+
+744
+00:35:31,426 --> 00:35:32,586
+Vamos ver se isso funciona.
+
+745
+00:35:38,256 --> 00:35:41,796
+Ok, que tal sushi?
+
+746
+00:35:42,356 --> 00:35:44,546
+Ok, lá vai ele.
+
+747
+00:35:44,546 --> 00:35:47,446
+Eu vou tocar nele
+e não funcionou.
+
+748
+00:35:47,446 --> 00:35:48,446
+Por que não funcionou?
+
+749
+00:35:49,156 --> 00:35:54,826
+Ok. Hm, oh. Desculpem.
+Que tal isso?
+
+750
+00:35:55,386 --> 00:35:56,676
+Ok, aqui vamos nós.
+
+751
+00:35:56,956 --> 00:35:57,826
+Aqui está o problema, certo.
+
+752
+00:35:58,276 --> 00:36:00,626
+É uma experiência de aprendizado
+para todos nós.
+
+753
+00:36:00,796 --> 00:36:04,006
+Aqui, nesses completion handlers
+subsequentes,
+
+754
+00:36:04,486 --> 00:36:08,776
+eu estou indo em frente
+animando aqui mesmo se ele não acabou.
+
+755
+00:36:10,036 --> 00:36:11,876
+Vêem o problema?
+
+756
+00:36:12,486 --> 00:36:15,636
+E fui em frente e dei
+o próximo passo mesmo
+
+757
+00:36:15,826 --> 00:36:17,086
+se ele foi interrompido.
+
+758
+00:36:17,086 --> 00:36:19,456
+O que aconteceu é que
+essa coisa foi interrompida,
+
+759
+00:36:19,536 --> 00:36:23,216
+mas daí o próximo passo
+teve seu completion handler chamado
+
+760
+00:36:23,646 --> 00:36:25,056
+mas essa coisa foi interrompida
+
+761
+00:36:25,056 --> 00:36:26,466
+e eu não prestei
+atenção para isso.
+
+762
+00:36:26,466 --> 00:36:29,076
+Então nós precisamos dizer
+if (finished), ok?
+
+763
+00:36:30,026 --> 00:36:31,026
+Agora, nós devemos--
+
+764
+00:36:31,426 --> 00:36:35,786
+Isso é debugging on-the-fly aqui.
+
+765
+00:36:36,186 --> 00:36:44,696
+Certo, agora... que tal...
+que tal uns feijões verdes?
+
+766
+00:36:46,656 --> 00:36:49,726
+Ok? Agora nós o salvamos, ok?
+
+767
+00:36:49,726 --> 00:36:52,166
+Porque o transform
+tomou o lugar.
+
+768
+00:36:52,166 --> 00:36:55,426
+Ele interrompeu as
+outras animações.
+
+769
+00:36:55,426 --> 00:36:58,146
+E como nós checamos o "if finished"
+agora, eles não terminaram,
+
+770
+00:36:58,146 --> 00:37:00,476
+então eles não continuaram, ok?
+
+771
+00:37:00,566 --> 00:37:04,156
+Agora, um problema aqui é:
+agora essa coisa está salva
+
+772
+00:37:04,156 --> 00:37:07,176
+do ralo para sempre, ok?
+Porque nós apenas adicionamos o drain
+
+773
+00:37:07,176 --> 00:37:08,726
+quando nós adicionamos
+algo novo, na verdade, não está
+
+774
+00:37:08,726 --> 00:37:11,086
+salvo para sempre porque
+se eu for aqui e disser...
+
+775
+00:37:11,566 --> 00:37:15,336
+eu não sei... vamos com torta.
+
+776
+00:37:15,906 --> 00:37:16,906
+Um pouco de torta aqui.
+
+777
+00:37:16,906 --> 00:37:18,416
+Agora ambos vão
+descer o ralo.
+
+778
+00:37:18,416 --> 00:37:20,806
+E eu posso salvar ambos, ok?
+
+779
+00:37:20,806 --> 00:37:22,556
+Faz sentido?
+
+780
+00:37:23,456 --> 00:37:27,496
+A próxima coisa que precisamos
+fazer é ter algo que está constantemente
+
+781
+00:37:27,496 --> 00:37:29,076
+fazendo o drain, certo?
+
+782
+00:37:29,076 --> 00:37:30,856
+constantemente fazendo 
+com que o drain continue.
+
+783
+00:37:30,856 --> 00:37:32,386
+E é isso que vamos fazer
+com o Timer.
+
+784
+00:37:32,386 --> 00:37:34,846
+Então vamos dar uma olhada
+nos slides disso.
+
+785
+00:37:40,036 --> 00:37:41,456
+Ok? Vejam o NSTimer.
+
+786
+00:37:41,456 --> 00:37:44,636
+As vezes temos algo como
+o drain acontecendo
+
+787
+00:37:44,896 --> 00:37:46,956
+que você meio que quer
+que aconteça constantemente
+
+788
+00:37:46,956 --> 00:37:48,686
+na sua aplicação, ok?
+
+789
+00:37:48,936 --> 00:37:51,716
+E nós fazemos isso
+de uma ou duas maneiras, geralmente.
+
+790
+00:37:52,106 --> 00:37:53,396
+Uma é com um NSTimer.
+
+791
+00:37:53,396 --> 00:37:55,946
+NSTimer, uma classe super simples.
+
+792
+00:37:56,196 --> 00:37:59,166
+Ok? Existe esse método de classe
+scheduleTimerWithTimeInterval. 
+
+793
+00:37:59,486 --> 00:38:01,456
+VocÊ passa
+uma certa quantidade de tempo
+
+794
+00:38:01,736 --> 00:38:03,996
+e daí você passa um objeto
+e um método para
+
+795
+00:38:03,996 --> 00:38:05,176
+chamar nesse objeto.
+
+796
+00:38:05,456 --> 00:38:07,536
+O método vai ter sempre
+um argumento
+
+797
+00:38:07,626 --> 00:38:10,416
+e o argumento vai ser
+o NSTimer, ok?
+
+798
+00:38:11,546 --> 00:38:15,586
+Daí você também pode
+prover esse userInfo.
+
+799
+00:38:15,586 --> 00:38:18,246
+userInfo é uma property do NSTimer.
+
+800
+00:38:18,436 --> 00:38:21,266
+O NSTimer que é passado pra você
+vai ter esse objeto,
+
+801
+00:38:21,266 --> 00:38:22,336
+qualquer que seja o objeto que você passou.
+
+802
+00:38:22,336 --> 00:38:25,276
+É como se fosse um context
+sendo passado. Qualquer coisa que você quiser.
+
+803
+00:38:25,276 --> 00:38:25,986
+Pode até ser nil.
+
+804
+00:38:26,656 --> 00:38:29,686
+E daí o repeat é se esse timer
+vai continuar disparando
+
+805
+00:38:29,686 --> 00:38:33,226
+a cada intervalo de segundos,
+o primeiro argumento,
+
+806
+00:38:33,416 --> 00:38:36,006
+ou se ele vai apenas,
+X segundos a partir de agora,
+
+807
+00:38:36,456 --> 00:38:38,516
+disparar e daí ele acabou, ok?
+
+808
+00:38:38,516 --> 00:38:40,736
+Então, se ele é um
+timer que se repete ou não.
+
+809
+00:38:41,276 --> 00:38:44,176
+Uma coisa sobre essa coisa
+que vai ser chamada,
+
+810
+00:38:44,176 --> 00:38:46,946
+esse método que vai ser chamado,
+isso não é tempo real.
+
+811
+00:38:46,946 --> 00:38:49,666
+quero dizer, iOS não é um
+sistema operacional de tempo real, certo?
+
+812
+00:38:49,666 --> 00:38:51,736
+Ele é um sistema operacional
+multi-tarefas.
+
+813
+00:38:52,096 --> 00:38:54,806
+E o que está acontecendo
+de verdade aqui é que--
+
+814
+00:38:54,806 --> 00:38:57,606
+nós nem tivemos uma chance de
+falar sobre isso,
+
+815
+00:38:57,606 --> 00:39:00,036
+mas existe um run loop
+que é esse processo
+
+816
+00:39:00,036 --> 00:39:03,006
+que está agarrando
+os eventos como touches
+
+817
+00:39:03,286 --> 00:39:06,136
+e fazendo um monte de execuções
+acontecerem em resposta
+
+818
+00:39:06,136 --> 00:39:09,216
+ao touch e daí voltando
+e esperando por mais, ok?
+
+819
+00:39:09,466 --> 00:39:11,076
+Outro touch vem,
+daí ele vai e
+
+820
+00:39:11,076 --> 00:39:12,616
+faz um monte de coisa
+e daí ele espera por mais.
+
+821
+00:39:12,946 --> 00:39:14,516
+Uma das coisas que acontece,
+
+822
+00:39:14,516 --> 00:39:17,136
+quando ele volta para esperar
+por mais, ele vai olhar para
+
+823
+00:39:17,136 --> 00:39:18,826
+ver se tem algum timer
+que está quase indo--
+
+824
+00:39:18,826 --> 00:39:21,286
+sabe? pronto para disparar,
+ok?
+
+825
+00:39:21,286 --> 00:39:24,056
+Ou teria sido disparado enquanto
+nós estávamos fora
+
+826
+00:39:24,056 --> 00:39:24,686
+tratando o último evento.
+
+827
+00:39:25,086 --> 00:39:27,246
+Então ele não vai ser disparado
+exatamente quando você quer.
+
+828
+00:39:27,246 --> 00:39:29,826
+Ele vai ser disparado
+o mais próximo que ele puder,
+
+829
+00:39:29,826 --> 00:39:34,036
+quando ele estiver de volta
+para aquele estado quieto no run loop, ok?
+
+830
+00:39:34,146 --> 00:39:36,126
+Isso faz sentido? Certo?
+
+831
+00:39:36,326 --> 00:39:39,346
+Essa é a versão simplificada
+do run loop.
+
+832
+00:39:39,886 --> 00:39:44,246
+Como resultado disso, você tem 
+que lembrar que isso tudo 
+
+833
+00:39:44,246 --> 00:39:46,736
+vai estar acontecendo na main
+thread, então você não quer
+
+834
+00:39:46,736 --> 00:39:50,246
+estar setando a duração desse
+timer tão curta que
+
+835
+00:39:50,426 --> 00:39:52,086
+cada vez que ele voltar
+
+836
+00:39:52,216 --> 00:39:53,656
+ele está pronto
+para rodar outro.
+
+837
+00:39:53,656 --> 00:39:55,806
+E basicamente constantemente
+chamando seu método, ok?
+
+838
+00:39:56,026 --> 00:39:58,446
+Isso vai essencialmente
+bloquear o run loop,
+
+839
+00:39:58,816 --> 00:40:00,766
+o main loop, a main queue, 
+
+840
+00:40:00,766 --> 00:40:01,656
+porque ele está
+constantemente chamando
+
+841
+00:40:01,656 --> 00:40:03,016
+seu método o tempo todo.
+
+842
+00:40:03,016 --> 00:40:05,426
+Cada vez que ele não estiver
+tratando um evento,
+
+843
+00:40:05,426 --> 00:40:06,906
+ele vai estar chamando
+o seu negócio.
+
+844
+00:40:07,136 --> 00:40:09,926
+Você também, definitivamente, 
+não quer-- o que quer que seja
+
+845
+00:40:09,926 --> 00:40:11,876
+que esse timer faça - demorar
+muito tempo, porque ele vai
+
+846
+00:40:11,876 --> 00:40:12,906
+acontecer na main thread,
+então você não quer
+
+847
+00:40:12,906 --> 00:40:14,136
+bloquear a main thread, ok?
+
+848
+00:40:14,496 --> 00:40:18,406
+Sério, timers são para
+fazer coisas rápidas e pequenas, ok?
+
+849
+00:40:18,746 --> 00:40:21,336
+Setar um estado,
+talvez disparar uma thread
+
+850
+00:40:21,336 --> 00:40:22,956
+possivelmente,
+esse tipo de coisas.
+
+851
+00:40:22,956 --> 00:40:24,046
+Timers não são para
+
+852
+00:40:24,046 --> 00:40:25,776
+fazer operações pesadas.
+
+853
+00:40:26,086 --> 00:40:28,376
+E eles não são para "polling",
+geralmente.
+
+854
+00:40:28,636 --> 00:40:32,546
+Embora, polling... bom isso é algo
+meio ruim na ciência da computação--
+
+855
+00:40:32,546 --> 00:40:34,876
+tem uma reputação ruim o polling...
+e é bem ruim.
+
+856
+00:40:35,216 --> 00:40:36,646
+Tem alguns momentos
+que vcoê quer poll
+
+857
+00:40:36,646 --> 00:40:38,216
+se o tempo de poll
+for razoavelmente longo.
+
+858
+00:40:38,446 --> 00:40:39,686
+Tipo se você quer
+checar algo
+
+859
+00:40:39,686 --> 00:40:42,356
+na rede a cada minuto
+para ver se algo foi updateado,
+
+860
+00:40:42,876 --> 00:40:43,946
+isso pode não ser tão ruim.
+
+861
+00:40:44,006 --> 00:40:46,036
+Talvez elhor se você
+puder ter uma API melhor
+
+862
+00:40:46,036 --> 00:40:48,636
+onde você recebe uma interrupção
+ou uma mensagem enviada a você
+
+863
+00:40:48,636 --> 00:40:50,446
+quando alguma coisa mudar,
+mas você poderia fazer
+
+864
+00:40:50,446 --> 00:40:51,556
+isso com um timer também.
+
+865
+00:40:51,686 --> 00:40:53,716
+Mas você não quer estar checando
+a cada segundo para ver
+
+866
+00:40:53,716 --> 00:40:56,586
+se alguma coisa mudou,
+isso seria bem pesado
+
+867
+00:40:56,586 --> 00:40:59,176
+para a bateria do device
+e também,
+
+868
+00:40:59,216 --> 00:41:02,246
+sabe, no limite de rede
+que a a pessoa tem, seja qual for.
+
+869
+00:41:02,926 --> 00:41:05,426
+Certo, então você quer começar
+esse timer-- ops desculpe, pergunta.
+
+870
+00:41:05,886 --> 00:41:09,396
+>> [Estudante perguntando]
+
+871
+00:41:09,396 --> 00:41:10,926
+>> Eu vou falar sobre isso
+no próximo slide.
+
+872
+00:41:11,366 --> 00:41:13,316
+A pergunta é: vocÊ pode ter
+timers em outras threads?
+
+873
+00:41:13,316 --> 00:41:15,516
+Vamos falar sobre isso em um segundo.
+
+874
+00:41:15,996 --> 00:41:17,146
+Parando o timer.
+
+875
+00:41:17,146 --> 00:41:19,036
+Ok? Então esse timer,
+se ele for um que se repete,
+
+876
+00:41:19,036 --> 00:41:20,366
+você precisa ser capaz
+de pará-lo e você
+
+877
+00:41:20,366 --> 00:41:22,516
+faz isso simplesmente enviando
+"invalidade" para o timer.
+
+878
+00:41:22,516 --> 00:41:24,816
+Você também pode enviar isso
+antes de dispará-lo pela primeira
+
+879
+00:41:24,816 --> 00:41:25,996
+vez e ele não vai nem
+disparar da primeira vez.
+
+880
+00:41:26,426 --> 00:41:29,206
+Então "invalidade"
+pára o timer.
+
+881
+00:41:29,986 --> 00:41:32,066
+Depois de você invalidar
+o timer, você provavelmente quer
+
+882
+00:41:32,066 --> 00:41:33,986
+setar quaisquer ponteiros
+que você tem para ele para nil,
+
+883
+00:41:34,286 --> 00:41:37,346
+porque eles não são bons mais.
+
+884
+00:41:38,456 --> 00:41:39,896
+Na verdade...
+
+885
+00:41:39,896 --> 00:41:41,036
+talvez eu não tenha um slide sobre isso,
+
+886
+00:41:41,096 --> 00:41:42,236
+então deixe-me responder aquela pergunta.
+
+887
+00:41:42,546 --> 00:41:46,946
+VocÊ pode ter essas coisas
+em outras threads?
+
+888
+00:41:47,236 --> 00:41:49,766
+E a respostá é: você pode,
+
+889
+00:41:50,076 --> 00:41:52,186
+mas você tem que ler a documentação
+
+890
+00:41:52,186 --> 00:41:53,116
+para entender como fazer isso.
+
+891
+00:41:53,236 --> 00:41:57,466
+Não é uma operação direta
+para fazer isso, ok?
+
+892
+00:41:57,466 --> 00:41:58,916
+Depende de que tipo
+de thread é
+
+893
+00:41:58,916 --> 00:42:00,966
+e se ele tem um run loop,
+coisas assim.
+
+894
+00:42:00,966 --> 00:42:02,476
+Várias threads
+não tem run loops.
+
+895
+00:42:02,476 --> 00:42:03,986
+Threads que você cria
+geralmente não vão ter
+
+896
+00:42:03,986 --> 00:42:04,996
+seus próprios run loops.
+
+897
+00:42:05,646 --> 00:42:07,626
+E talvez eu vá falar mais
+
+898
+00:42:07,626 --> 00:42:09,156
+quando eu falar sobre isso.
+
+
+899
+00:42:09,196 --> 00:42:09,986
+É, eu vou.
+
+900
+00:42:10,206 --> 00:42:15,026
+O performAfterDelay é outra
+alternativa para usar NSTimer.
+
+901
+00:42:15,026 --> 00:42:17,286
+Isso é uma coisa diferente
+do que o NSTimer.
+
+902
+00:42:17,636 --> 00:42:20,976
+É apenas um método
+no NSObject chamado performSelector:
+
+903
+00:42:20,976 --> 00:42:22,366
+withObject:afterDelay.
+
+904
+00:42:22,616 --> 00:42:24,816
+E ele vai performar
+o selector
+
+905
+00:42:25,026 --> 00:42:28,226
+no objeto que você está
+enviando isso com o argumento,
+
+906
+00:42:28,226 --> 00:42:31,636
+opcionalmente, depois
+de um certo delay, ok?
+
+907
+00:42:32,376 --> 00:42:34,706
+Agora, isso é a mesma coisa.
+
+908
+00:42:34,706 --> 00:42:37,046
+Ele vai estar rodando
+nesse run loop.
+
+909
+00:42:37,046 --> 00:42:39,456
+Então esse aqui, 
+você definitivamente vai querer
+
+910
+00:42:39,456 --> 00:42:41,006
+chamá-lo na main thread, ok?
+
+
+911
+00:42:41,396 --> 00:42:44,806
+Se você vai usar isso em
+outra thread, você vai realmente
+
+912
+00:42:44,806 --> 00:42:47,076
+precisar saber o que 
+você está fazendo, ok?
+
+913
+00:42:47,606 --> 00:42:49,766
+E eu acho que é 
+bem verdade para Timer também,
+
+914
+00:42:49,766 --> 00:42:52,756
+se eu lembro como ele é configurado.
+
+915
+00:42:52,976 --> 00:42:55,156
+Então pensem nisso
+como coisas de main thread.
+
+916
+00:42:55,186 --> 00:42:57,186
+Mas isso é OK, porque
+eles poderiam estar rodando
+
+917
+00:42:57,186 --> 00:42:59,676
+na main thread e daí simplesmente
+disparando coisas em outras threads
+
+918
+00:42:59,676 --> 00:43:00,266
+para fazer coisas.
+
+919
+00:43:00,946 --> 00:43:04,686
+O que é interessante sobre esse
+performSelector é mesmo
+
+920
+00:43:04,686 --> 00:43:08,076
+que você diga
+performSelector:withObject:afterDelay:0
+
+921
+00:43:08,656 --> 00:43:10,616
+isso não significa
+que ele vai executar agora.
+
+922
+00:43:11,416 --> 00:43:13,546
+Isso signfica: coloque-o
+no run loop.
+
+923
+00:43:13,916 --> 00:43:16,586
+A próxima vez que o run loop
+voltar e estiver calmo novamente,
+
+924
+00:43:16,586 --> 00:43:21,116
+assim como com o timer, daí
+ele vai performAfterDelay:0,
+
+925
+00:43:21,116 --> 00:43:22,886
+será hora de rodar,
+daí ele vai rodar.
+
+926
+00:43:23,566 --> 00:43:25,316
+Então você pode na verdade
+fazer um
+
+927
+00:43:25,316 --> 00:43:28,566
+performSelector:withObject:afterDelay:0
+para que algo aconteça
+
+928
+00:43:28,566 --> 00:43:31,786
+depois do caos que está acontecendo
+atualmente com os eventos,
+
+929
+00:43:32,346 --> 00:43:33,736
+sabe, depois que os touch events
+acabarem.
+
+930
+00:43:34,606 --> 00:43:39,096
+Digamos que você tenha
+uma tableview e o user toca
+
+931
+00:43:39,096 --> 00:43:41,956
+em alguma coisa que causa
+uma mudança completa na table
+
+932
+00:43:42,226 --> 00:43:44,726
+e você não quer recarregar
+os dados da table, bem no meio
+
+933
+00:43:44,726 --> 00:43:47,946
+do tratamento daquele touch,
+ok? Mas você quer
+
+934
+00:43:47,946 --> 00:43:51,336
+fazer isso logo depois,
+então você poderia fazer
+
+935
+00:43:51,766 --> 00:43:54,086
+por exemplo, perform reloadData
+afterDelay:0.
+
+936
+00:43:55,166 --> 00:43:57,816
+Ok? Agora isso poderia ser
+um pouco ofensivo em relação a
+
+937
+00:43:57,816 --> 00:43:59,376
+outras coisas que falamos
+nesse curso, porque
+
+938
+00:43:59,746 --> 00:44:02,566
+as vezes é difícil para
+leitores do seu código
+
+939
+00:44:02,566 --> 00:44:03,846
+entender o que está
+acontecendo.
+
+940
+00:44:04,216 --> 00:44:07,506
+Mas isso pode ser também,
+se você usar corretamente,
+
+941
+00:44:07,506 --> 00:44:09,406
+ser uma maneira 
+de adiar alguma coisa
+
+942
+00:44:09,616 --> 00:44:12,086
+para depois que o evento atual
+acabar de ser tratado.
+
+943
+00:44:12,086 --> 00:44:13,806
+Isso faz sentido?
+
+944
+00:44:14,286 --> 00:44:15,506
+Vocês vêem o que eu
+estou dizendo com isso?
+
+945
+00:44:15,506 --> 00:44:17,426
+Então performAfterDelay:0
+não é uma coisa ruim.
+
+946
+00:44:17,916 --> 00:44:20,486
+Mas na demo aqui, o que
+nós vmaos fazer é: nós vamos
+
+947
+00:44:20,486 --> 00:44:23,856
+usar o performAfterDelay
+com um valor não-zero
+
+948
+00:44:23,856 --> 00:44:25,746
+e vocês vão ver onde nós
+o usamos para fazer algo similar
+
+949
+00:44:25,746 --> 00:44:26,616
+como que fazemos com o timer.
+
+950
+00:44:27,336 --> 00:44:28,996
+Certo? Cancelamento.
+
+951
+00:44:29,256 --> 00:44:33,136
+Não há como, se você enviou
+a um objeto o
+
+952
+00:44:33,136 --> 00:44:35,946
+performSelector:withObject:afterDelay, 
+
+953
+00:44:36,306 --> 00:44:41,316
+não há como descobrir
+o que está agendado, ok?
+
+954
+00:44:41,486 --> 00:44:42,246
+Simplesmente não há como.
+
+955
+00:44:42,716 --> 00:44:44,626
+Você tem duas opções.
+
+956
+00:44:44,626 --> 00:44:47,086
+Você pode performá-la
+e deixar iniciar,
+
+957
+00:44:47,276 --> 00:44:49,706
+ou você pode cancelá-la, ok?
+
+958
+00:44:49,986 --> 00:44:53,336
+Então cancelamento é feito
+com um método ed classe do NSObject.
+
+959
+00:44:53,416 --> 00:44:54,686
+É um pouco confuso, ok?
+
+960
+00:44:54,686 --> 00:44:57,256
+Você não envia o cancel
+para o mesmo objeto que
+
+961
+00:44:57,476 --> 00:44:59,316
+você enviou o pedido para performar, ok?
+
+962
+00:44:59,556 --> 00:45:03,116
+O métod de classe do NSObject,
+você especifica qual objeto
+
+963
+00:45:03,116 --> 00:45:06,646
+você enviou o perform afterDelay
+e, opcionalmente,
+
+964
+00:45:06,646 --> 00:45:08,626
+você pode especificar
+qual o selector que você enviou
+
+965
+00:45:08,626 --> 00:45:12,106
+e qual foi o argumento
+e ele vai cancelar, ok?
+
+966
+00:45:12,106 --> 00:45:14,246
+Ele vai fazer com que
+aquilo não seja executado
+
+967
+00:45:14,246 --> 00:45:18,276
+se ele ainda não foi
+executado, ok?
+
+968
+00:45:18,706 --> 00:45:21,256
+É uma pena que não
+tem como dizermos, tipo,
+
+969
+00:45:21,526 --> 00:45:23,356
+me mostra todos os
+performAfterDelays
+
+970
+00:45:23,356 --> 00:45:26,356
+que estão atualmente esperando
+para rodar nesse objeto,
+
+971
+00:45:26,356 --> 00:45:30,426
+mas você simplemente
+não pode fazer isso, ok?
+
+972
+00:45:31,236 --> 00:45:32,436
+De volta para a demo.
+
+973
+00:45:32,436 --> 00:45:35,526
+Então, o que nós vamos fazer agora
+é: nós vamos fazer um NSTimer
+
+974
+00:45:36,046 --> 00:45:38,646
+para fazer o drain... esse drain
+
+975
+00:45:39,046 --> 00:45:40,836
+estar acontecendo
+o tempo todo, ok?
+
+976
+00:45:40,836 --> 00:45:42,966
+Então ele vai
+constantemente drenar aqui.
+
+977
+00:45:43,476 --> 00:45:47,396
+Para fazer isso, eu vou criar
+uma propery aqui
+
+978
+00:45:48,096 --> 00:45:53,016
+que é vai ser
+[ditando código]
+
+979
+00:45:53,296 --> 00:45:54,706
+Agora, estou fazendo
+essa coisa weak
+
+980
+00:45:55,196 --> 00:45:57,866
+porque uma vez que você
+agendou um timer,
+
+981
+00:45:58,326 --> 00:46:01,726
+ele vai ter um ponteiro forte
+para ele pelo sistema, ok?
+
+982
+00:46:01,756 --> 00:46:02,876
+Até que ele seja invalidado
+
+983
+00:46:02,876 --> 00:46:05,216
+e daí ele não vai ter
+um ponteiro strong
+
+984
+00:46:05,216 --> 00:46:07,946
+e daí nós não vamos ter
+um ponteiro para ele também, ok?
+
+985
+00:46:08,006 --> 00:46:10,706
+Então essa é uma feature legal.
+
+986
+00:46:10,976 --> 00:46:12,826
+E então, como fazemos isso?
+
+987
+00:46:13,026 --> 00:46:18,356
+Vamos prosseguir e ter um método
+chamado startDrainTimer, ok?
+
+988
+00:46:18,356 --> 00:46:20,846
+Isso vai iniciar
+nosso drainTimer.
+
+989
+00:46:21,336 --> 00:46:23,196
+E tudo que isso precisa fazer
+é, digamos
+
+990
+00:46:23,196 --> 00:46:28,286
+[ditando código]
+
+991
+00:46:28,286 --> 00:46:29,526
+e percebam que existem
+dois deles aqui,
+
+992
+00:46:29,526 --> 00:46:31,686
+um é com esse NSInvocation
+que é tipo
+
+993
+00:46:31,686 --> 00:46:34,576
+uma maneira chique
+de fazer taget-selector.
+
+994
+00:46:34,796 --> 00:46:37,006
+Nós vamos fazer
+do modo simples.
+
+995
+00:46:38,416 --> 00:46:43,716
+E vamos fazer o drain
+acontecer, pelo menos,
+
+996
+00:46:44,106 --> 00:46:46,896
+a cada DRAIN_DURATION
+dividido por 3.
+
+997
+00:46:46,896 --> 00:46:48,556
+Então vamos colocar isso aqui em cima.
+
+998
+00:46:49,776 --> 00:46:52,166
+Ok? Então o drain vai
+acontecer fequentemente,
+
+999
+00:46:52,166 --> 00:46:54,276
+mas ele não precisa acontecer
+com mais frequencia que isso.
+
+1000
+00:46:55,026 --> 00:46:57,276
+E nós vamos enviar
+uma mensagem para nós mesmos
+
+1001
+00:46:57,906 --> 00:47:00,876
+e a mensagem que nós vamos
+enviar é: drain:
+
+1002
+00:47:01,026 --> 00:47:04,386
+e nós não precisamos de context,
+
+1003
+00:47:04,676 --> 00:47:08,686
+e isso vai se repetir, ok?
+
+1004
+00:47:09,366 --> 00:47:13,646
+Então aqui, nós temos
+esse timer e... - obrigado Xcode
+
+1005
+00:47:13,726 --> 00:47:16,346
+por colocar alguns colchetes
+a mais para mim.
+
+1006
+00:47:17,446 --> 00:47:18,626
+Pronto.
+
+1007
+00:47:18,986 --> 00:47:23,076
+E ese método drain, lembram-se
+que eu disse que o NSTimer,
+
+1008
+00:47:23,306 --> 00:47:26,396
+a mensagem que ele vai enviar
+sempre tem um argumento
+
+1009
+00:47:26,786 --> 00:47:28,946
+e vai ser sempre o NSTimer.
+
+1010
+00:47:29,376 --> 00:47:34,036
+Então nós vamos ter
+um drain:(NSTimer *)timer, ok?
+
+1011
+00:47:34,516 --> 00:47:36,206
+É sempre nesse formato.
+
+1012
+00:47:37,086 --> 00:47:39,176
+Não há como termos
+o timer chamar algo diferente
+
+1013
+00:47:39,176 --> 00:47:41,716
+onde esse argumento é algo
+diferente ou sem argumento.
+
+1014
+00:47:41,716 --> 00:47:42,766
+Você tem que ter um argumento.
+
+1015
+00:47:43,296 --> 00:47:46,996
+Então quando isso acontecer, eu vou
+apenas chamar nosso drain, ok?
+
+1016
+00:47:46,996 --> 00:47:49,406
+Eu vou chamar isso,
+vou olhar pelas coisas
+
+1017
+00:47:49,406 --> 00:47:50,416
+que você precisa
+que desçam ralo a baixo.
+
+1018
+00:47:50,896 --> 00:47:52,846
+Faz sentido?
+
+1019
+00:47:53,556 --> 00:47:56,296
+Daí vamos ter também
+um stopDrainTimer.
+
+1020
+00:47:57,536 --> 00:47:58,976
+E para fazer isso,
+eu vou apenas dizer
+
+1021
+00:47:58,976 --> 00:48:02,696
+meu drainTimer invalidade, ok?
+
+1022
+00:48:03,156 --> 00:48:06,996
+Eu tenho um ponteiro fraco para ele,
+então depois de eu invalidá-lo,
+
+1023
+00:48:06,996 --> 00:48:10,376
+ele vai ser setado pra nil,
+então eu não preciso realmente
+
+1024
+00:48:10,376 --> 00:48:12,706
+setá-lo para nil, mas não seria
+totalmente terrível dizer isso.
+
+1025
+00:48:13,166 --> 00:48:16,986
+Talvez alguém lendo o código
+que não percebeu que isso era weak
+
+1026
+00:48:16,986 --> 00:48:18,466
+ou algo assim,
+ou eles não tem certeza
+
+1027
+00:48:18,466 --> 00:48:20,666
+se o invalidating...
+mas isso pelo menos deixa mais claro.
+
+1028
+00:48:20,806 --> 00:48:22,486
+Então não machuca
+colocar alguma coisa assim.
+
+1029
+00:48:23,056 --> 00:48:26,026
+E dai essa é uma parte
+realmente importante de timers
+
+1030
+00:48:26,266 --> 00:48:28,006
+que é quando nós
+os ligamos e desligamos.
+
+1031
+00:48:28,466 --> 00:48:32,346
+E uma hora boa para ligar
+e desligar as coisas
+
+1032
+00:48:32,346 --> 00:48:38,446
+é na verdade no viewDidAppear
+e viewWillDisappear.
+
+1033
+00:48:38,536 --> 00:48:43,226
+Vamos colocar no viewDidAppear,
+nós vamos iniciá-lo.
+
+1034
+00:48:45,056 --> 00:48:52,266
+E no viewWillDisappear,
+nós vamos pará-lo.
+
+1035
+00:48:53,486 --> 00:48:55,146
+E por que eu estou fazendo
+nesses lugares em particular?
+
+1036
+00:48:55,146 --> 00:48:58,136
+Porque eu quero que ele esteja parado
+o máximo possível.
+
+1037
+00:48:58,136 --> 00:49:03,196
+Então eu vou tirá-lo
+do caminho cedo, ok?
+
+1038
+00:49:03,196 --> 00:49:05,096
+Eu vou esperar até o último segundo
+para iniciá-lo
+
+1039
+00:49:05,096 --> 00:49:10,096
+e daí eu vou desligá-lo
+o mais cedo possível, ok?
+
+1040
+00:49:10,096 --> 00:49:11,566
+Agora nós não precisamos desse drain
+
+1041
+00:49:11,566 --> 00:49:14,726
+aqui embaixo, porque
+nós temos esse timer acontecendo.
+
+1042
+00:49:14,726 --> 00:49:18,126
+Então vamos ver
+como isso funcionaria.
+
+1043
+00:49:18,286 --> 00:49:21,936
+Certo, vamos
+no Add Food aqui.
+
+1044
+00:49:21,936 --> 00:49:25,126
+Vamos dizer tacos.
+
+1045
+00:49:27,136 --> 00:49:29,866
+Ok? Agora, nós
+adicionamos tacos e vocês podem ver,
+
+1046
+00:49:29,866 --> 00:49:33,006
+ele vai começar a fazer--
+eu vou salvá-lo mas esse drain vai
+
+1047
+00:49:33,006 --> 00:49:36,516
+voltar e jogá-lo no ralo
+novamente, ok?
+
+1048
+00:49:36,516 --> 00:49:37,386
+Vou salvá-lo de novo.
+
+1049
+00:49:38,126 --> 00:49:40,536
+Ok, lembrem-se, nós temos
+um segundo de delay no drain,
+
+1050
+00:49:40,636 --> 00:49:44,806
+então ele vem, um segundo depois
+ele começa, ok?
+
+1051
+00:49:45,626 --> 00:49:46,646
+Então eu posso salvá-lo.
+
+1052
+00:49:46,866 --> 00:49:48,706
+E se eu não salvar os tacos--
+
+1053
+00:49:49,816 --> 00:49:53,496
+em geral eu gosto de tacos...
+mas vou deixá-lo ir...
+
+1054
+00:49:53,866 --> 00:49:55,506
+e esse é o fim dos tacos, ok?
+
+1055
+00:49:56,246 --> 00:49:56,876
+Então é isso.
+
+1056
+00:49:57,616 --> 00:50:00,796
+Agora, vamos fazer
+outra coisa de timer
+
+1057
+00:50:00,796 --> 00:50:02,016
+com performAfterDelay.
+
+1058
+00:50:02,636 --> 00:50:06,076
+E o que eu vou fazer nesse é:
+vamos adicionar mais comida.
+
+1059
+00:50:06,186 --> 00:50:06,906
+E isso vai--
+
+1060
+00:50:06,906 --> 00:50:08,976
+Eu vou chamar esse
+de cleanDish.
+
+1061
+00:50:09,046 --> 00:50:11,926
+Então eu estou limpando os pratos
+na pia e esse aqui vai
+
+1062
+00:50:11,926 --> 00:50:14,256
+estar constantemente jogando
+comida ali, ok?
+
+1063
+00:50:14,326 --> 00:50:15,486
+Então é isso
+que vamos fazer em seguida.
+
+1064
+00:50:15,906 --> 00:50:17,936
+E ao invés de usar um timer
+para jogar a comida ali,
+
+1065
+00:50:17,936 --> 00:50:19,706
+eu vou fazer
+o performAfterDelay apenas
+
+1066
+00:50:19,706 --> 00:50:21,986
+para vocês verem
+como ambos funcionam.
+
+1067
+00:50:22,586 --> 00:50:28,956
+Então para esse, eu vou
+ter um método chamado cleanDish
+
+1068
+00:50:29,056 --> 00:50:31,556
+que limpa um prato de comida.
+
+1069
+00:50:32,016 --> 00:50:36,116
+E enquanto o KitchenSink
+estiver na tela,
+
+1070
+00:50:36,116 --> 00:50:37,986
+todo mundo sabe
+como nós testamos isso,
+
+1071
+00:50:38,366 --> 00:50:39,696
+eu vou adicionar comida.
+
+1072
+00:50:39,826 --> 00:50:41,856
+E eu vou apenas
+addFood:nil e eu vou mudar
+
+1073
+00:50:41,856 --> 00:50:45,146
+o addFood para funcionar
+se você passar nil aqui.
+
+1074
+00:50:45,836 --> 00:50:51,916
+E daí eu vou
+performSelector... cleanDish,
+
+1075
+00:50:51,916 --> 00:50:55,186
+isso é onde eu estou bem agora,
+withObject:nil
+
+1076
+00:50:55,186 --> 00:50:58,036
+porque o cleanDish não recebe
+argumento, bem aqui.
+
+1077
+00:50:58,706 --> 00:51:00,236
+after delay...
+
+1078
+00:51:00,506 --> 00:51:05,956
+e vamos ter um
+DISH_CLEANING_INTERVAL, ok?
+
+1079
+00:51:07,086 --> 00:51:10,506
+deixe-me colocar isso aqui em cima.
+
+1080
+00:51:11,176 --> 00:51:14,816
+Oops, pronto.
+
+1081
+00:51:14,816 --> 00:51:16,686
+E agora, vamos ter--
+isso vai ser dois segundos.
+
+1082
+00:51:16,786 --> 00:51:19,976
+Então a cada dois segundos
+ele vai jogar mais comida
+
+1083
+00:51:19,976 --> 00:51:21,576
+na pia, certo?
+
+1084
+00:51:21,966 --> 00:51:28,636
+E vamos seguir e consertar--
+
+1085
+00:51:28,696 --> 00:51:33,156
+Vamos seguir e
+consertar nosso addFood.
+
+1086
+00:51:33,156 --> 00:51:34,176
+Onde está o addFood?
+
+1087
+00:51:34,976 --> 00:51:35,466
+Aqui está.
+
+1088
+00:51:35,466 --> 00:51:41,146
+Eu vou consertar o addFood
+para fazê-lo adicionar comidas aleatórias.
+
+1089
+00:51:41,146 --> 00:51:42,936
+Então eu coloquei esse
+pequeno snipper aqui.
+
+1090
+00:51:43,316 --> 00:51:45,256
+Então eu tenho uma comida azul,
+uma comida verde,
+
+1091
+00:51:45,256 --> 00:51:47,176
+uma comida laranja, comida vermelha,
+roxa, marrom,
+
+1092
+00:51:47,176 --> 00:51:49,396
+e eu vou na verdade fazer 
+essas comidas terem cores diferentes.
+
+1093
+00:51:49,816 --> 00:51:52,586
+Então eu vou ter um pequeno
+dictionary bem aqui
+
+1094
+00:51:52,586 --> 00:51:57,056
+e eu vou ter as chaves
+e escolho uma aleatória, ok?
+
+1095
+00:51:57,056 --> 00:51:59,616
+E daí eu também seto
+o textColor do label
+
+1096
+00:51:59,656 --> 00:52:01,926
+para ser essa cor, ok?
+
+
+1097
+00:52:01,926 --> 00:52:05,546
+E eu geralmente não gosto
+dos meus defines aqui dentro assim.
+
+1098
+00:52:05,676 --> 00:52:08,976
+É perfeitamente ok,
+mas não é meu estilo.
+
+1099
+00:52:10,416 --> 00:52:13,206
+Ok? Então todo mundo
+viu como nós arrumamos o addFood?
+
+1100
+00:52:13,776 --> 00:52:18,146
+vocês podem ver que fazer
+essa coisa foi fácil,
+
+1101
+00:52:19,036 --> 00:52:19,306
+certo?
+
+1102
+00:52:20,076 --> 00:52:22,756
+E tudo que ele está fazendo
+é se reagendando.
+
+1103
+00:52:23,156 --> 00:52:26,066
+Agora, claro, nós temos
+que limpar o primeiro prato.
+
+1104
+00:52:26,436 --> 00:52:27,926
+Então, quando devemos fazer isso?
+
+1105
+00:52:27,926 --> 00:52:32,146
+Bom, provavelmente bem aqui
+no viewDidAppear, ok?
+
+1106
+00:52:32,146 --> 00:52:34,446
+E uma vez que limpamos
+o primeiro prato, daí ele vai
+
+1107
+00:52:34,446 --> 00:52:37,106
+começar a se agendar
+para limpar mais
+
+1108
+00:52:37,106 --> 00:52:39,096
+e mais pratos, certo?
+
+1109
+00:52:39,096 --> 00:52:42,506
+Então vamos ver como issi ficou.
+
+1110
+00:52:44,276 --> 00:52:47,526
+Ok? Aqui está,
+ele está adicionando coisas.
+
+1111
+00:52:47,586 --> 00:52:48,916
+Percebem que eles estão
+indo ralo a baixo?
+
+1112
+00:52:48,916 --> 00:52:50,256
+Eu posso salvá-los,
+
+1113
+00:52:50,856 --> 00:52:54,376
+ok? Isso é praticamente
+virou um video game.
+
+1114
+00:52:54,546 --> 00:52:57,796
+Tipo: quantas dessas coisas
+você consegue manter
+
+1115
+00:52:57,796 --> 00:53:00,686
+na tela ao mesmo--
+oh, perdi um. Ã!
+
+1116
+00:53:01,506 --> 00:53:05,336
+Ok? Agora nós temos
+os pratos sendo limpos
+
+1117
+00:53:05,336 --> 00:53:09,116
+e o drain acontecendo-- oh,
+r, r, r- ao mesmo tempo, ok?
+
+1118
+00:53:09,436 --> 00:53:12,036
+Então você pode imaginar
+colocar uma pontuação aqui.
+
+1119
+00:53:12,036 --> 00:53:14,446
+E quando mais você mantém
+ao mesmo tempo, melhor.
+
+1120
+00:53:14,446 --> 00:53:17,256
+Vamos ver... ok?
+
+1121
+00:53:18,346 --> 00:53:18,846
+Faz sentido?
+
+1122
+00:53:18,896 --> 00:53:24,086
+Pergunta.
+Bom, a pergunta é,
+
+1123
+00:53:24,156 --> 00:53:26,766
+e é uma boa pergunta,
+o que acontece se eu
+
+1124
+00:53:26,766 --> 00:53:30,366
+apresentar um modal view controller
+bem aqui, ok?
+
+1125
+00:53:30,786 --> 00:53:34,426
+Agora, a resposta é que
+depente do tipo de
+
+1126
+00:53:34,426 --> 00:53:36,206
+apresentação modal que você usar.
+
+1127
+00:53:36,736 --> 00:53:40,266
+Nós usamos uma curl presentation.
+
+1128
+00:53:40,386 --> 00:53:44,476
+Então quando eu aperto isso
+e vem esse modal, curl,
+
+1129
+00:53:44,476 --> 00:53:49,806
+esse partial curl, ele não
+causa que o view controller
+
+1130
+00:53:49,806 --> 00:53:51,426
+que está se virando sobre,
+
+1131
+00:53:51,886 --> 00:53:56,006
+chame seu método de lifecycle
+didDisappear, ok?
+
+1132
+00:53:56,196 --> 00:53:57,566
+Então ele ainda está rodando.
+
+1133
+00:53:58,196 --> 00:53:59,266
+Essa coisa ainda está rodando.
+
+1134
+00:53:59,266 --> 00:54:03,476
+Outras apresentações modal,
+entretando, causariam isso, ok?
+
+1135
+00:54:03,776 --> 00:54:06,016
+Então se você tem uma que,
+por exemplo, vem com um slide
+
+1136
+00:54:06,016 --> 00:54:08,656
+e cobre a tela inteira,
+daí ele saberia
+
+1137
+00:54:08,656 --> 00:54:10,146
+que essa coisa está
+completamente coberta
+
+1138
+00:54:10,236 --> 00:54:12,056
+e ele iria chamar o
+viewDidDisappear.
+
+1139
+00:54:12,056 --> 00:54:14,016
+E daí quando o negócio
+modal for embora,
+
+1140
+00:54:14,016 --> 00:54:16,316
+ele vai receber o viewDidAppear, ok?
+
+1141
+00:54:16,316 --> 00:54:17,526
+Essa é uma pergunta excelente.
+
+1142
+00:54:18,016 --> 00:54:21,856
+Mas o partial curl, esse
+em particular, não faz isso.
+
+1143
+00:54:21,856 --> 00:54:24,936
+Então você pode ver,
+ele estava rodando em background, ok?
+
+1144
+00:54:25,366 --> 00:54:25,746
+Pergunta.
+
+1145
+00:54:26,516 --> 00:54:30,516
+>> [Estudante perguntando]
+
+1146
+00:54:31,016 --> 00:54:33,076
+>> A pergunta é:
+eu posso fazer de um jeito
+
+1147
+00:54:33,076 --> 00:54:35,876
+que esse curl para que eu
+possa olhar aqui em cima no topo,
+
+1148
+00:54:35,876 --> 00:54:38,396
+a parte que está dobrada
+e mostrar o que está
+
+1149
+00:54:38,396 --> 00:54:39,866
+acontecendo lá?
+E a resposta é: você não pode.
+
+1150
+00:54:40,066 --> 00:54:41,196
+Você teria que fazer isso
+você mesma.
+
+1151
+00:54:41,526 --> 00:54:43,596
+Embora, surpreendentemente
+não seria tão difícil
+
+1152
+00:54:43,596 --> 00:54:45,046
+quanto você possa pensar,
+mas você teria que entrar
+
+1153
+00:54:45,046 --> 00:54:48,706
+no Core Animation Layer e,
+sabe, você teria que descobrir
+
+1154
+00:54:48,706 --> 00:54:51,126
+como desenhar o curl,
+a view... poderia ser feito,
+
+1155
+00:54:51,256 --> 00:54:52,836
+mas não faz isso por default.
+
+1156
+00:54:52,836 --> 00:54:54,356
+Como você pode ver,
+se você olhar mais de perto,
+
+1157
+00:54:54,356 --> 00:54:56,716
+você pode ver a "cenoura" ali,
+está congelada.
+
+1158
+00:54:56,716 --> 00:54:58,326
+Mas se eu voltar,
+aquela cenoura nem está mais lá.
+
+1159
+00:54:58,996 --> 00:55:01,266
+Ele tirou uma foto
+da view e a dobrou.
+
+1160
+00:55:01,766 --> 00:55:02,106
+Pergunta.
+
+1161
+00:55:02,286 --> 00:55:05,536
+>> [Estudante perguntando]
+
+1162
+00:55:05,536 --> 00:55:08,186
+[estudante perguntando]
+
+1163
+00:55:08,186 --> 00:55:08,956
+>> A pergunta é:
+
+1164
+00:55:08,956 --> 00:55:11,406
+o NSTimer está fazendo algo mais
+chique do que apenas estar
+
+1165
+00:55:11,406 --> 00:55:13,746
+em outra thread e tipo
+chamando de volta na main thread?
+
+1166
+00:55:13,746 --> 00:55:16,056
+E a resposta é: é...
+ele não está fazendo isso, ok?
+
+1167
+00:55:16,316 --> 00:55:18,966
+O run loop, NSRunLoop.
+se você está realmente interessado,
+
+1168
+00:55:18,966 --> 00:55:20,126
+vai dar uma olhada
+na documentação.
+
+1169
+00:55:20,126 --> 00:55:23,106
+Você vai ver que ele tem um
+mecanismo para colocar coisas
+
+1170
+00:55:23,246 --> 00:55:25,646
+nele mesmo, ok? Sem
+fazer isso em outra thread,
+
+1171
+00:55:25,966 --> 00:55:27,696
+essa é sua resposta.
+
+1172
+00:55:29,006 --> 00:55:32,256
+Ok, agora, a próxima coisa
+que nós queremos fazer que nós
+
+1173
+00:55:32,256 --> 00:55:34,876
+vamos ver nos slides aqui,
+mas nós provavelmente vamos
+
+1174
+00:55:34,876 --> 00:55:36,996
+fazer a demo no começo
+da próxima aula,
+
+1175
+00:55:37,866 --> 00:55:44,106
+é colocar um pequeno
+action sheet
+
+1176
+00:55:44,106 --> 00:55:46,246
+na nossa view que nos
+desligar o drain
+
+1177
+00:55:46,566 --> 00:55:49,156
+e parar de lavar os pratos, ok?
+
+1178
+00:55:49,566 --> 00:55:52,626
+E se eu quisesse ter
+alguma maneira de controlar isso?
+
+1179
+00:55:53,466 --> 00:55:56,136
+E eu vou fazer isso
+usando um action sheet.
+
+1180
+00:55:56,616 --> 00:55:59,076
+Então, primeiro, nós vamos
+olhar os slides aqui.
+
+1181
+00:55:59,076 --> 00:56:00,116
+Nós talvez tenhamos tempo
+para fazer isso.
+
+1182
+00:56:00,116 --> 00:56:01,496
+Vai ser apertado, mas talvez...
+
+1183
+00:56:01,786 --> 00:56:04,806
+Alerts e Action sheets
+são muito similares
+
+1184
+00:56:04,806 --> 00:56:07,456
+mas suas aparências são
+levemente diferentes.
+
+1185
+00:56:07,546 --> 00:56:10,866
+Uma action sheet
+"slide" de baixo
+
+1186
+00:56:10,866 --> 00:56:12,176
+da tela no iPhone.
+
+1187
+00:56:12,356 --> 00:56:15,176
+É geralmente apresentada
+em um popover,
+
+1188
+00:56:15,176 --> 00:56:18,926
+na verdade é sempre
+apresentada em um popover no iPad, ok?
+
+1189
+00:56:19,516 --> 00:56:23,026
+Mas a programação da interface
+para elas é exatamente igual.
+
+1190
+00:56:23,276 --> 00:56:24,606
+Elas só aparecem
+de modo diferente.
+
+1191
+00:56:24,986 --> 00:56:29,556
+e uma action sheet é geralmente
+usada quando você quer que o user
+
+1192
+00:56:29,556 --> 00:56:31,876
+faça uma escolha
+entre múltiplos itens.
+
+1193
+00:56:31,876 --> 00:56:33,306
+E isso não é uma emergência.
+
+1194
+00:56:33,656 --> 00:56:36,006
+E geralmente é uma resposta
+a alguma coisa que eles fizeram.
+
+1195
+00:56:36,006 --> 00:56:39,516
+Eles apertaram um botão que dizia
+"me dê essa escolha", ok?
+
+1196
+00:56:39,966 --> 00:56:42,386
+E alerts, que nós vamos
+falar em um segundo,
+
+1197
+00:56:42,386 --> 00:56:44,466
+é mais tipo:
+uma emergência aconteceu.
+
+1198
+00:56:44,466 --> 00:56:47,226
+Alguma coisa ruim aconteceu e você--
+agora você precisa de alguma
+
+1199
+00:56:47,226 --> 00:56:48,986
+informação deles ou você precisa
+dizer alguma coisa para eles.
+
+1200
+00:56:48,986 --> 00:56:50,796
+Então, eles são apresentados
+diferentemente
+
+1201
+00:56:50,796 --> 00:56:52,736
+e eles tem propósitos
+realmente diferentes.
+
+1202
+00:56:53,326 --> 00:56:57,626
+Alerts também são um pouco mais
+para coisas assíncronas, ok?
+
+1203
+00:56:57,626 --> 00:57:01,216
+Uma action sheet provê algumas
+opções sincronamente
+
+1204
+00:57:01,216 --> 00:57:03,746
+com o que o user
+está usando na interface de usuário.
+
+1205
+00:57:03,776 --> 00:57:06,946
+Mas um alert pode aparecer:
+"FlickrFecther falhou",
+
+1206
+00:57:07,356 --> 00:57:08,096
+ou algo assim.
+
+1207
+00:57:08,096 --> 00:57:09,296
+Alguma coisa que aconteceu em uma thread.
+
+1208
+00:57:09,926 --> 00:57:11,496
+Então essa é a cara deles.
+
+1209
+00:57:11,916 --> 00:57:13,706
+Uma action sheet
+na esquerda aqui.
+
+1210
+00:57:13,706 --> 00:57:16,566
+Vocês podem ver essa action sheet
+tem um título "Choose Photo"
+
+1211
+00:57:16,856 --> 00:57:19,086
+e ela tem um destructive button.
+
+1212
+00:57:19,086 --> 00:57:20,206
+É isso que o botão vermelho é.
+
+1213
+00:57:20,206 --> 00:57:21,636
+Ele é chamado destructive button.
+
+1214
+00:57:21,636 --> 00:57:23,426
+Isso vai fazer alguma coisa
+realmente ruim.
+
+1215
+00:57:23,896 --> 00:57:27,356
+Obviamente, porque ele diz
+"auto destruir" aqui, mas nós vamos ver
+
+1216
+00:57:27,356 --> 00:57:28,796
+na nossa demo, ele vai ser
+um "limpar a pia".
+
+1217
+00:57:28,796 --> 00:57:30,906
+Nós vamos ter nosso botão
+vermelho ser "esvaziar a pia",
+
+1218
+00:57:30,906 --> 00:57:31,916
+ok? Que é, sabe, uma modificação
+
+1219
+00:57:31,916 --> 00:57:34,066
+meio catastrófica na pia.
+
+1220
+00:57:34,496 --> 00:57:36,756
+E daí tem o cancel button
+que tem uma cor mais escura.
+
+1221
+00:57:36,756 --> 00:57:39,916
+E ele tem qualquer número
+de outros botões
+
+1222
+00:57:40,146 --> 00:57:42,086
+que podem fazer
+o que você quiser, ok?
+
+1223
+00:57:42,086 --> 00:57:43,026
+Então isso é um action sheet.
+
+1224
+00:57:43,206 --> 00:57:44,796
+E daí, na direita,
+você vê um alert.
+
+1225
+00:57:44,796 --> 00:57:46,676
+Vocês vêem um alert
+toma a tela inteira.
+
+1226
+00:57:46,946 --> 00:57:48,126
+Oh, ambos são modal.
+
+1227
+00:57:48,356 --> 00:57:49,506
+Então ambos, sabe,
+
+1228
+00:57:50,026 --> 00:57:51,616
+tomar a tela inteira
+de um certo modo.
+
+1229
+00:57:51,666 --> 00:57:53,146
+Mas o alert aparece no meio.
+
+1230
+00:57:53,546 --> 00:57:56,306
+Geralmente, ele tem
+um ou dois botões, talvez três.
+
+1231
+00:57:56,346 --> 00:57:58,436
+Ele pode na verdade
+ter um text field nele
+
+1232
+00:57:58,636 --> 00:58:00,626
+no caso de você estar perguntando
+algo que diz tipo
+
+1233
+00:58:00,666 --> 00:58:01,746
+"Não consigo acessar o recurso.
+
+1234
+00:58:01,806 --> 00:58:02,946
+Por favor entre sua senha".
+
+1235
+00:58:03,396 --> 00:58:05,086
+Você pode fazer isso
+com um alert.
+
+1236
+00:58:05,086 --> 00:58:06,656
+Então é assim que é a cara deles.
+
+1237
+00:58:07,166 --> 00:58:09,256
+Como que é a cara da
+interface de programação para eles?
+
+1238
+00:58:09,516 --> 00:58:12,786
+O designated initializer
+para um action sheet é
+
+1239
+00:58:12,786 --> 00:58:14,526
+initWithTitle:delegate:
+cancelButton:
+
+1240
+00:58:14,526 --> 00:58:17,116
+destructiveButton:otherButtons:
+ok?
+
+1241
+00:58:17,766 --> 00:58:20,196
+E ele é bem auto-explicativo aqui.
+
+1242
+00:58:20,316 --> 00:58:21,916
+O título é esse pequeno
+"Choose Photo"
+
+1243
+00:58:21,916 --> 00:58:23,066
+que nós vimos no slide anterior.
+
+1244
+00:58:23,336 --> 00:58:27,176
+O delegate é necessário porque
+quando um usário escolhe algo,
+
+1245
+00:58:27,656 --> 00:58:30,956
+o delegate do action sheet vai
+ser notificado, ok?
+
+1246
+00:58:31,306 --> 00:58:33,406
+Então é por isso que temos
+um delegate aqui.
+
+1247
+00:58:33,406 --> 00:58:37,036
+Você pode adicionar botões
+programaticamente também.
+
+1248
+00:58:37,096 --> 00:58:39,456
+Em outras palavras, não
+apenas especificar otherButtons
+
+1249
+00:58:39,826 --> 00:58:40,236
+lá em cima.
+
+1250
+00:58:40,236 --> 00:58:42,286
+Você pode chamar
+addButonWithTitle.
+
+1251
+00:58:42,836 --> 00:58:44,316
+Você mostra uma
+action sheet
+
+1252
+00:58:44,316 --> 00:58:46,386
+depois de você construí-la
+com o designated initializer
+
+1253
+00:58:46,386 --> 00:58:47,586
+e talvez addButtonWithTitle.
+
+1254
+00:58:47,796 --> 00:58:53,156
+Você pode mostrá-la usando
+showInView que é tipo
+
+1255
+00:58:53,156 --> 00:58:57,256
+um modo de dizer genericamente
+"mostre em um action sheet que está
+
+1256
+00:58:57,256 --> 00:58:57,996
+associadaa com essa view".
+
+1257
+00:58:57,996 --> 00:58:59,846
+No iPhone, isso é OK,
+porque ela
+
+1258
+00:58:59,846 --> 00:59:00,586
+aparece de baixo.
+
+1259
+00:59:00,956 --> 00:59:04,656
+Você provavelmente nunca usa
+o showInView no iPad
+
+1260
+00:59:04,656 --> 00:59:07,696
+porque você está mostrando
+no iPad em um popover
+
+1261
+00:59:07,796 --> 00:59:11,176
+e você realmente quer aquela
+setinha no popover para apontar
+
+1262
+00:59:11,176 --> 00:59:14,536
+para algo que fez
+ele aparecer, ok?
+
+1263
+00:59:14,536 --> 00:59:16,676
+Tipo um bar button item
+ou um pequeno
+
+1264
+00:59:16,676 --> 00:59:18,546
+pedaço de texto no iBook, ok?
+
+1265
+00:59:18,976 --> 00:59:20,746
+E então, no iPad,
+você vai usar
+
+1266
+00:59:20,746 --> 00:59:24,096
+ou showFromRect:inView:
+
+1267
+00:59:24,096 --> 00:59:26,186
+ou showFromBarButton, ok?
+
+1268
+00:59:26,516 --> 00:59:29,056
+E tudo que isso vai fazer
+é colocar o action sheet
+
+1269
+00:59:29,056 --> 00:59:30,736
+em um popover
+e fazer aquela setinha
+
+1270
+00:59:30,736 --> 00:59:34,006
+do popover apontar para
+qualquer que seja a coisa
+
+1271
+00:59:34,926 --> 00:59:35,306
+que você está falando aqui.
+
+1272
+00:59:35,306 --> 00:59:36,516
+Quando você está fazendo
+um app universal,
+
+1273
+00:59:36,516 --> 00:59:38,236
+você tem que ser
+cuidadoso aqui.
+
+1274
+00:59:38,236 --> 00:59:41,636
+showFromRect é geralmente
+um bom que funciona
+
+1275
+00:59:41,636 --> 00:59:45,406
+em ambas as plataformas, mas 
+pode não ser a sua UI no iPhone
+
+1276
+00:59:45,516 --> 00:59:47,356
+mostrá-lo de um rect. Então...
+
+1277
+00:59:48,346 --> 00:59:49,446
+De qualquer modo, é isso.
+
+1278
+00:59:49,446 --> 00:59:50,036
+Você mostra.
+
+1279
+00:59:50,386 --> 00:59:52,916
+Daí o user interage com ele
+e quando eles acabarem,
+
+1280
+00:59:52,916 --> 00:59:54,696
+você vai ter esse
+método de delegate enviado
+
+1281
+00:59:54,696 --> 00:59:56,236
+para o delegate do seu
+action sheet, chamado
+
+1282
+00:59:56,236 --> 00:59:58,526
+didDismissWithButtonIndex.
+
+
+1283
+00:59:58,806 --> 01:00:00,896
+E você pode olhar para o 
+índice do botão e, por exemplo,
+
+1284
+01:00:00,896 --> 01:00:02,866
+compará-lo com o
+índice do botão cancel
+
+1285
+01:00:02,866 --> 01:00:04,456
+ou o índice do destructive button.
+
+1286
+01:00:04,456 --> 01:00:06,886
+Essas são propriedades do
+UIActionSheet, certo?
+
+1287
+01:00:06,886 --> 01:00:09,316
+Para ver se o user tocou
+o cancel ou destruction.
+
+1288
+01:00:10,236 --> 01:00:13,966
+Você pode também checar
+o firstOtherButtonIndex
+
+1289
+01:00:14,106 --> 01:00:15,826
+e você pode descobrir
+quantos botões existem.
+
+1290
+01:00:15,826 --> 01:00:16,876
+Você pode descobrir desse modo.
+
+1291
+01:00:17,136 --> 01:00:20,756
+Você também pode obter
+o título de um botão naquele índice
+
+1292
+01:00:21,066 --> 01:00:24,086
+e daí comparar o título
+com o título que você colocou lá
+
+1293
+01:00:24,346 --> 01:00:25,556
+no começo, para descobrir.
+
+1294
+01:00:25,556 --> 01:00:27,176
+Basicamente com todas essas coisas,
+você pode descobrir
+
+1295
+01:00:27,176 --> 01:00:28,726
+o que o usuário fez.
+
+1296
+01:00:28,796 --> 01:00:34,256
+Você pode também programaticamente
+dismiss o action sheet usando
+
+1297
+01:00:34,256 --> 01:00:36,166
+dismissWithClickedButtonIndex.
+
+
+1298
+01:00:36,166 --> 01:00:37,966
+E isso é como se o user
+tivesse clicado nesse button.
+
+1299
+01:00:37,966 --> 01:00:40,586
+Você geralmente não vai
+fazer isso, embora
+
+1300
+01:00:40,586 --> 01:00:42,206
+exista um lugar interessante
+onde você vai fazer
+
+1301
+01:00:42,206 --> 01:00:45,026
+isso que é quando o seu app--
+quando alguém
+
+1302
+01:00:45,026 --> 01:00:47,206
+está rodando o seu app
+e um action sheet aparece
+
+1303
+01:00:47,346 --> 01:00:49,516
+e daí eles vão e clicam
+em outro app, ok?
+
+1304
+01:00:49,736 --> 01:00:52,726
+Seu app vai receber
+um notification center,
+
+1305
+01:00:52,726 --> 01:00:55,366
+um negócio do NSNotificationCenter
+chamado
+
+1306
+01:00:55,366 --> 01:00:58,466
+UIApplicationDidEnterBackgroundNotification,
+ok? 
+
+1307
+01:00:58,726 --> 01:00:59,736
+Isso vai te dizer: oh
+
+1308
+01:00:59,736 --> 01:01:02,256
+você parou de ser
+a aplicação em foreground.
+
+1309
+01:01:02,256 --> 01:01:04,306
+E, de novo, nós não falamos
+muito sobre multitasking
+
+1310
+01:01:04,306 --> 01:01:06,186
+mas você pode imaginar
+que é algo bem direto.
+
+1311
+01:01:06,646 --> 01:01:09,666
+Quando a pessoa
+volta pro seu ap,
+
+1312
+01:01:09,776 --> 01:01:12,526
+você não quer que o
+action sheet esteja ali, ok?
+
+1313
+01:01:12,916 --> 01:01:14,306
+Você quer dismiss
+o action sheet,
+
+1314
+01:01:14,406 --> 01:01:16,006
+geralmente pressionando
+o cancelButton,
+
+1315
+01:01:16,006 --> 01:01:18,506
+dismissWithButtonIndex
+cancel index. 
+
+1316
+01:01:19,086 --> 01:01:21,496
+e daí fazê-los clicar
+no que eles tinham clicado
+
+1317
+01:01:21,496 --> 01:01:23,656
+para fazer aparecer novamente,
+porque, isso é interessante.
+
+1318
+01:01:23,656 --> 01:01:26,616
+Poderia fazer dois dias desde que
+eles trouxeram aquele action sheet
+
+1319
+01:01:26,616 --> 01:01:28,466
+e eles esqueceram completamente
+porque eles trouxeram aquilo.
+
+1320
+01:01:28,466 --> 01:01:30,616
+Ok? Então essa é uma hora
+que você pode querer
+
+1321
+01:01:30,616 --> 01:01:32,026
+dismiss ele programaticamente.
+
+1322
+01:01:33,116 --> 01:01:40,306
+Certo, um action sheet em um
+iPad não tem botão de cancel, ok?
+
+1323
+01:01:40,516 --> 01:01:43,006
+O modo que você cancela
+um action sheet no iPad,
+
+1324
+01:01:43,076 --> 01:01:46,026
+como é um popover, você
+apenas toca em qualquer outro lugar.
+
+1325
+01:01:46,446 --> 01:01:48,236
+É assim que você cancela
+um popover, certo?
+
+1326
+01:01:49,036 --> 01:01:50,486
+Então, não vai ter
+botão de cancelar.
+
+1327
+01:01:50,486 --> 01:01:54,566
+Não se apavorem quando
+não houver botão de cancel lá.
+
+1328
+01:01:54,826 --> 01:01:57,766
+Lembrem-se também que como está
+vindo em um popover,
+
+1329
+01:01:57,766 --> 01:02:00,276
+você ainda tem exatamente esse mesmo
+problema que tivemos com o popover
+
+1330
+01:02:00,276 --> 01:02:02,526
+view antes, onde você pressiona um
+botão e você tem mais e mais
+
+1331
+01:02:02,526 --> 01:02:03,436
+e mais e mais e mais e mais
+e mais e mais e mais deles.
+
+1332
+01:02:03,436 --> 01:02:04,496
+Lembram-se dessa demo?
+
+1333
+01:02:04,856 --> 01:02:07,476
+Então você ainda tem que
+fazer a mesma coisa. Você
+
+1334
+01:02:07,476 --> 01:02:09,476
+previne essas coisas de aparecerem
+mais e mais e mais e mais e mais
+
+1335
+01:02:09,476 --> 01:02:12,396
+fazendo a mesma coisa
+que fizemos antes.
+
+1336
+01:02:12,396 --> 01:02:13,146
+Nós vamos fazer isso na demo.
+
+1337
+01:02:13,176 --> 01:02:16,626
+É, nós vamos falar sobre isso.
+
+1338
+01:02:17,096 --> 01:02:20,386
+Ok, alert é quase a mesma coisa
+que action sheet exceto
+
+1339
+01:02:20,386 --> 01:02:22,866
+pelo fato de que ele tem
+um título--
+
+1340
+01:02:22,866 --> 01:02:23,956
+desculpem, ele tem uma mensagem.
+
+1341
+01:02:24,316 --> 01:02:26,436
+Então
+"FlickrFecther falhou" ou algum
+
+1342
+01:02:26,436 --> 01:02:28,126
+tipo de mensagem que ele tem.
+
+
+1343
+01:02:28,126 --> 01:02:30,346
+E ele não tem
+botão de destruição.
+
+1344
+01:02:30,666 --> 01:02:32,426
+Ele tem apenas cancel
+e outros botões.
+
+1345
+01:02:33,096 --> 01:02:34,806
+E a mesma coisa, você pode
+adicionar mais.
+
+1346
+01:02:35,236 --> 01:02:37,756
+Como alerts aparecem
+no meio da tela,
+
+1347
+01:02:38,066 --> 01:02:39,306
+ele não tem nenhum popover
+
+1348
+01:02:39,306 --> 01:02:40,536
+ou nada assim apontando
+para lugar nenhum.
+
+1349
+01:02:40,776 --> 01:02:44,406
+Você apenas o traz
+com um [alert show], ok?
+
+1350
+01:02:44,406 --> 01:02:45,826
+E ele vai aparecer na tela.
+
+1351
+01:02:46,326 --> 01:02:48,436
+E daí você tem os métodos
+de delegate, mesma coisa que temos
+
+1352
+01:02:48,436 --> 01:02:49,216
+com o action sheet.
+
+1353
+01:02:49,576 --> 01:02:52,386
+E daí aqui é como você pode
+colocar um text field ali
+
+1354
+01:02:52,556 --> 01:02:54,666
+e vocês podem olhar a documentação
+para mais detalhes.
+
+1355
+01:02:55,296 --> 01:02:57,626
+Bom, tenho 6 minutos
+para a demo aqui.
+
+1356
+01:02:57,626 --> 01:02:58,686
+Não vou conseguir passar por tudo,
+
+1357
+01:02:58,686 --> 01:03:00,136
+mas vamo ver alguma coisa.
+
+1358
+01:03:00,626 --> 01:03:10,056
+O que eu vou fazer é: aqui no meu
+storyboard eu vou adicionar
+
+1359
+01:03:10,056 --> 01:03:13,706
+um toolbar button
+bem aqui, que vai
+
+1360
+01:03:13,706 --> 01:03:15,706
+controlar a pia, certo?
+
+1361
+01:03:16,076 --> 01:03:22,666
+Então vamos pegar um bar button
+item aqui, colocar isso aqui
+
+1362
+01:03:22,666 --> 01:03:24,376
+em cima e eu vou fazê-lo
+ficar na direita
+
+1363
+01:03:24,376 --> 01:03:27,066
+colocando esse flexible
+space aqui. Lembram-se disso?
+
+1364
+01:03:27,986 --> 01:03:33,366
+E eu vou chamar essa coisa
+de "Control Sink", ok?
+
+1365
+01:03:33,456 --> 01:03:36,186
+Então quando esse
+bar button for pressionado,
+
+1366
+01:03:36,186 --> 01:03:39,786
+eu vou fazer um target-action
+para o meu KitchenSinkController
+
+1367
+01:03:39,996 --> 01:03:41,566
+e eu vou mostrar
+uma action sheet.
+
+1368
+01:03:41,566 --> 01:03:42,546
+E nessa action sheet
+
+1369
+01:03:42,546 --> 01:03:44,826
+eu vou deixar você controlar
+se a drain está ligado ou não,
+
+1370
+01:03:45,056 --> 01:03:46,396
+eu vou deixar você
+limpar a pia inteira
+
+1371
+01:03:46,646 --> 01:03:49,266
+e eu vou deixar você controlar
+se os pratos estão sendo
+
+1372
+01:03:49,436 --> 01:03:49,876
+limpos lá.
+
+1373
+01:03:50,436 --> 01:03:53,686
+Certo, então vamos fazer
+o target-action aqui.
+
+1374
+01:03:54,236 --> 01:03:55,136
+Vou aqui embaixo.
+
+1375
+01:03:55,886 --> 01:03:56,686
+Bem aqui.
+
+1376
+01:03:57,006 --> 01:03:58,556
+Vamos chamá-lo de...
+como vamos chamar?
+
+1377
+01:03:58,556 --> 01:03:59,826
+controlSink, eu acho.
+
+1378
+01:04:00,966 --> 01:04:03,096
+E UIBarButtonItem.
+
+1379
+01:04:04,466 --> 01:04:08,046
+(...)
+Ok.
+
+1380
+01:04:08,046 --> 01:04:09,586
+E na verdade vamos colocar isso
+
+1381
+01:04:09,586 --> 01:04:12,656
+aqui por causa do scroll.
+Aqui no topo.
+
+1382
+01:04:13,236 --> 01:04:15,016
+Certo.
+
+1383
+01:04:15,676 --> 01:04:18,406
+Aqui está o controlSink.
+
+1384
+01:04:18,406 --> 01:04:21,176
+No controlSink eu vou
+mostrar uma action sheet
+
+1385
+01:04:21,176 --> 01:04:24,056
+e então vais er algo assim
+[ditando código]
+
+1386
+01:04:25,576 --> 01:04:27,246
+[ditando código]
+oops, desculpe.
+
+1387
+01:04:27,246 --> 01:04:28,606
+Quase esqueci de fazer isso.
+
+1388
+01:04:28,606 --> 01:04:30,736
+Vamos voltar aqui.
+
+1389
+01:04:30,736 --> 01:04:32,486
+Arrumar mais espaço...
+
+1390
+01:04:33,156 --> 01:04:34,326
+(...)
+
+1391
+01:04:35,646 --> 01:04:41,616
+[ditando código]
+
+1392
+01:04:41,616 --> 01:04:43,146
+Nós vamos chamar de--
+na verdade,
+
+1393
+01:04:43,656 --> 01:04:46,996
+eu tenho uma coisa
+bem legal pra gente aqui.
+
+1394
+01:04:47,716 --> 01:04:49,176
+Strings de SINK_CONTROL
+
+
+1395
+01:04:49,176 --> 01:04:52,826
+Eu coloquei as strings aqui, ok?
+
+1396
+01:04:52,996 --> 01:04:55,516
+Então o título vai ser
+"Sink Control"
+
+1397
+01:04:55,586 --> 01:04:56,876
+que é o controle da pia.
+
+
+1398
+01:04:57,136 --> 01:04:58,596
+O delegate vai ser self.
+
+1399
+01:04:59,046 --> 01:05:02,986
+O cancel button vai ser
+o botão SINK_CONTROL_CANCEL.
+
+1400
+01:05:02,986 --> 01:05:05,036
+Vocês podem perguntar por que
+eu estou colocando isso aqui,
+
+1401
+01:05:05,036 --> 01:05:07,196
+porque você disse que no iPad
+nem vai aparecer.
+
+1402
+01:05:07,196 --> 01:05:10,216
+Bom, eu quero que meu código seja
+possível de um dia rodar
+
+1403
+01:05:10,216 --> 01:05:13,066
+no iPhone, então eu vou colocar
+um título ali para isso.
+
+1404
+01:05:13,696 --> 01:05:18,716
+E daí SINK_CONTROL_EMPTY,
+que esvazia a pia.
+
+1405
+01:05:18,716 --> 01:05:20,856
+Esse vai ser o meu
+título destrutivo.
+
+1406
+01:05:21,296 --> 01:05:24,166
+E daí eu vou fazer
+outro botão em um segundo aqui.
+
+1407
+01:05:24,776 --> 01:05:27,796
+Oops, desculpe.
+Ok?
+
+1408
+01:05:27,956 --> 01:05:31,296
+Vou deixar um pouco mais
+legível aqui
+
+1409
+01:05:31,296 --> 01:05:35,106
+para vocês, assim, ok?
+
+1410
+01:05:35,896 --> 01:05:37,636
+Então aqui criamos
+nossa action sheet.
+
+1411
+01:05:37,976 --> 01:05:42,016
+Agora nós vamos mostrar
+nossa action sheet usando
+
+1412
+01:05:42,016 --> 01:05:45,856
+showFromBarButtonItem:sender
+que é esse carinha bem aqui.
+
+1413
+01:05:46,946 --> 01:05:49,956
+E animate, absolutamente.
+Ok?
+
+1414
+01:05:51,286 --> 01:05:52,386
+Assim... ok?
+
+1415
+01:05:52,486 --> 01:05:53,656
+Isso é o action sheet.
+
+1416
+01:05:53,996 --> 01:05:56,256
+Mas temos que colocar
+nosso drain button
+
+1417
+01:05:56,256 --> 01:05:59,236
+ali, porque no momento
+nós podemos apenas cancelar e esvaziar.
+
+1418
+01:05:59,576 --> 01:06:00,756
+Então para fazer nosso drain button,
+
+1419
+01:06:00,756 --> 01:06:06,176
+vou dizer
+[ditando código]
+
+1420
+01:06:06,176 --> 01:06:08,536
+Então se o drainTimer está rodando,
+então ele vai ser
+
+1421
+01:06:08,536 --> 01:06:12,706
+SINK_CONTROL_STOP_DRAIN,
+caso contrário,
+
+1422
+01:06:12,706 --> 01:06:16,726
+ele vai ser
+SINK_CONTROL_UNSTOP_DRAIN, ok?
+
+1423
+01:06:16,916 --> 01:06:19,576
+E daí vou aqui embaixo,
+coloco esse drain...
+
+1424
+01:06:19,576 --> 01:06:25,026
+[ditando código]
+
+1425
+01:06:26,246 --> 01:06:27,836
+Aqui vamos nós, ok?
+
+1426
+01:06:28,516 --> 01:06:31,356
+Agora, nós temos todos
+nossos botões no nosso action sheet.
+
+1427
+01:06:32,096 --> 01:06:35,066
+Nós podemos rodar isso
+e provavelmente funcionará...
+
+1428
+01:06:35,066 --> 01:06:37,566
+Mas ainda não acabamos,
+como vocês verão.
+
+1429
+01:06:39,166 --> 01:06:42,266
+Oops, o que é? Ah, desculpem.
+
+1430
+01:06:42,916 --> 01:06:44,996
+Vou resolver isso em um segundo.
+
+1431
+01:06:45,236 --> 01:06:47,016
+Certo, então aqui está
+o "Control Sink".
+
+1432
+01:06:47,506 --> 01:06:50,576
+E aqui está, temos o
+Empty e o Stopper Drain.
+
+1433
+01:06:50,816 --> 01:06:52,486
+Infelizmente eu tenho
+esse problema, certo?
+
+1434
+01:06:52,606 --> 01:06:53,816
+Quando mais eu aperto...
+
+1435
+01:06:53,996 --> 01:06:55,906
+E claro, quando eu clico nele
+ele não faz nada
+
+1436
+01:06:55,906 --> 01:06:58,406
+porque eu não implementei
+o método de delegate
+
+1437
+01:06:58,686 --> 01:07:00,586
+que o action sheet envia
+quando ele termina.
+
+1438
+01:07:00,586 --> 01:07:02,146
+Então temos algumas coisas
+para consertar aqui.
+
+1439
+01:07:02,656 --> 01:07:04,686
+Vamos consertar isso, ok?
+
+1440
+01:07:04,686 --> 01:07:07,016
+Nós queremos ser o delegate,
+então precisamos dizer
+
+1441
+01:07:07,016 --> 01:07:10,906
+que nós somos um
+UIActionSheetDelegate 
+
+1442
+01:07:11,026 --> 01:07:13,906
+e daí nós precisamos implementar
+o método de delegate que queremos
+
+1443
+01:07:13,906 --> 01:07:19,546
+que é o
+actionSheetDidDismissWithButtonIndex, okay? 
+
+1444
+01:07:19,826 --> 01:07:21,896
+Então isso vai nos dar o índice
+
+1445
+01:07:21,896 --> 01:07:23,906
+do botão que foi clicado.
+
+1446
+01:07:23,906 --> 01:07:26,536
+E eu vou arrumar rapidamente
+o problema
+
+1447
+01:07:26,536 --> 01:07:29,606
+dos múltiplos popovers,
+
+1448
+01:07:29,646 --> 01:07:31,436
+criando uma perquena property aqui.
+
+1449
+01:07:31,976 --> 01:07:35,826
+Eu vou criar uma weak, nonatomic,
+
+1450
+01:07:35,946 --> 01:07:39,786
+vai ser uma UIActionSheet,
+vamos chamar de
+
+1451
+01:07:39,786 --> 01:07:42,386
+sinkControlActionSheet.
+
+
+1452
+01:07:42,386 --> 01:07:44,926
+Então eu vou manter
+um ponteiro para ele.
+
+1453
+01:07:45,266 --> 01:07:48,316
+Eu vou apenas colocar isso
+se já não estiver lá.
+
+1454
+01:07:49,836 --> 01:07:54,776
+E daí eu vou setar
+meu sinkControlActionSheet
+
+1455
+01:07:54,816 --> 01:07:56,686
+para ser essa action sheet
+que eu mostrei.
+
+1456
+01:07:56,686 --> 01:07:58,846
+Você tem que ser cuidadoso aqui.
+
+1457
+01:07:59,336 --> 01:08:01,896
+Você pode ter uma tentação de dizer
+
+1458
+01:08:01,896 --> 01:08:05,926
+self.SinkControlActionSheet
+igual a isso.
+
+1459
+01:08:06,396 --> 01:08:09,136
+Mas isso não vai funcionar
+porque isso é weak, ok?
+
+1460
+01:08:09,136 --> 01:08:10,936
+porque daí ninguém vai ter
+um ponteiro forte para ela
+
+1461
+01:08:11,016 --> 01:08:12,236
+quando você chegar nessa linha.
+
+1462
+01:08:13,246 --> 01:08:15,346
+Então aqui nós temos
+um ponteiro forte local para ela
+
+1463
+01:08:15,806 --> 01:08:18,646
+e quando nós mostrarmos,
+agora alguém tem um ponteiro forte
+
+1464
+01:08:18,646 --> 01:08:20,946
+para ela e então agora
+nós podemos atribuir o weak pointer.
+
+1465
+01:08:21,616 --> 01:08:24,416
+(???)
+
+1466
+01:08:24,876 --> 01:08:27,476
+Então isso resolve aquele problema.
+
+1467
+01:08:27,476 --> 01:08:30,026
+E daí, no nosso
+didDismissButtonWithIndex, 
+
+1468
+01:08:30,256 --> 01:08:35,436
+eu vou dizer:
+[ditando código]
+
+1469
+01:08:35,436 --> 01:08:39,016
+daí eu quero apenas remover
+todas as views.
+
+1470
+01:08:39,016 --> 01:08:40,016
+E tem um modo fácil de fazer isso
+
+
+1471
+01:08:40,016 --> 01:08:43,656
+que é com o
+[ditando código]
+
+1472
+01:08:43,996 --> 01:08:50,226
+[ditando código]
+ok?
+
+1473
+01:08:50,226 --> 01:08:52,596
+Para vocês que fizeram
+suas tarefas(?)
+
+1474
+01:08:52,596 --> 01:08:55,146
+sobre a classe NSArray sabem
+
+1475
+01:08:55,146 --> 01:08:57,806
+que existe esse método
+makeObjectsPerformSelector, 
+
+1476
+01:08:57,806 --> 01:08:59,306
+então eu vou fazer todos eles
+
+1477
+01:08:59,496 --> 01:09:00,906
+se removerem da superview.
+
+1478
+01:09:01,816 --> 01:09:06,586
+Caso contrário, eu vou olhar 
+para a escolha que eles fizeram aqui
+
+1479
+01:09:06,976 --> 01:09:12,136
+pegando o buttonTitleAtIndex
+do action sheet,
+
+1480
+01:09:12,136 --> 01:09:14,796
+que foi escolhido que é
+esse índice bem aqui.
+
+1481
+01:09:14,796 --> 01:09:16,716
+Então eu sei que string
+está ali.
+
+1482
+01:09:16,716 --> 01:09:22,156
+E eu vou dizer
+[ditando código]
+
+1483
+01:09:22,156 --> 01:09:31,576
+daí nós paramos o drainTimer,
+
+1484
+01:09:32,866 --> 01:09:38,186
+caso contrário,
+[ditando código]
+
+1485
+01:09:38,186 --> 01:09:46,996
+então nós ligamos o drain
+
+1486
+01:09:46,996 --> 01:09:49,536
+e iniciamos o timer, ok?
+
+1487
+01:09:50,316 --> 01:09:52,596
+Então é isso.
+
+1488
+01:09:52,766 --> 01:09:59,886
+Acho que isso 
+deve funcionar, certo?
+
+1489
+01:10:00,116 --> 01:10:04,496
+Então agora, nós temos--
+o drain está funcionando, ok?
+
+1490
+01:10:04,946 --> 01:10:07,936
+Agora, se eu for aqui
+e disser: Stopper Drain,
+
+1491
+01:10:07,936 --> 01:10:09,656
+pare o drain,
+agora esses carinhas vão parar
+
+1492
+01:10:09,656 --> 01:10:12,276
+de descer ralo a baixo, ok?
+
+1493
+01:10:13,406 --> 01:10:15,646
+E se eu reiniciá-lo,
+
+1494
+01:10:15,716 --> 01:10:19,226
+eles vão todos
+ralo a baixo, ok?
+
+1495
+01:10:19,846 --> 01:10:20,196
+FAz sentido?
+
+1496
+01:10:20,466 --> 01:10:22,966
+E eu poderia também
+limpar a pia inteira.
+
+1497
+01:10:23,446 --> 01:10:26,336
+Faz sentido?
+
+1498
+01:10:27,766 --> 01:10:31,766
+Ok, na próxima aula o que nós
+vamos fazer é: nós vamos
+
+1499
+01:10:31,766 --> 01:10:34,986
+usar-- nós vamos
+
+1500
+01:10:35,546 --> 01:10:38,476
+talvez nós vamos fazer um pouco
+mais de action sheet aqui
+
+1501
+01:10:38,476 --> 01:10:41,216
+e fazer algo que pára
+as novas comidas
+
+1502
+01:10:41,216 --> 01:10:42,706
+de serem colocadas, ok?
+
+1503
+01:10:43,236 --> 01:10:47,396
+E daí uma coisa a mais
+que eu vou mostrar aqui é
+
+1504
+01:10:47,396 --> 01:10:50,036
+(...)
+
+1505
+01:10:50,636 --> 01:10:55,726
+O que nós vamos fazer
+na próxima aula...
+
+1506
+01:10:56,096 --> 01:11:01,166
+na quinta depois que acabarmos
+com essa demo,
+
+1507
+01:11:01,166 --> 01:11:05,836
+nós vamos fazer
+Core Motion talvez.
+
+1508
+01:11:05,996 --> 01:11:10,116
+É, Core Motion. Settings,
+Localization e Câmera.
+
+1509
+01:11:10,456 --> 01:11:12,076
+Três desses quatro nós vamos fazer.
+
+1510
+01:11:12,076 --> 01:11:14,146
+Não tenho certeza quais
+três desses quatro.
+
+1511
+01:11:14,146 --> 01:11:15,106
+Se vocês tiverem uma preferência,
+
+1512
+01:11:15,106 --> 01:11:16,686
+me digam quais três
+desses quatro.
+
+1513
+01:11:17,216 --> 01:11:20,396
+Localization tem
+coisas novas no iOS 6.
+
+1514
+01:11:20,396 --> 01:11:21,896
+Então esse talvez
+valha a pena mostrar pra vocês.
+
+1515
+01:11:22,206 --> 01:11:23,486
+E Core Motion é tipo divertido.
+
+1516
+01:11:23,486 --> 01:11:25,346
+O Core Motion vai fazer com que
+
+1517
+01:11:25,346 --> 01:11:26,846
+se nós virarmos o iPad,
+
+1518
+01:11:27,156 --> 01:11:30,646
+as comidas escorregam na pia, ok?
+
+1519
+01:11:30,746 --> 01:11:33,686
+Então esse é um divertido, ok?
+
+1520
+01:11:34,386 --> 01:11:36,816
+É isso. E eu vejo vocês.
+Estarei aqui.
+
+1521
+01:11:36,976 --> 01:11:42,216
+Visite nosso site:
+www.centraldosapps.com

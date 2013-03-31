@@ -1,0 +1,6328 @@
+1
+00:00:00,819 --> 00:00:08,800
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:08,820 --> 00:00:12,699
+>> Bem vindos ao CS193P,
+inverno de 2013. Essa é
+
+3
+00:00:12,719 --> 00:00:18,339
+a aula número três. E hoje
+nós vamos basicamente fazer
+
+4
+00:00:18,359 --> 00:00:21,539
+a demo, ok? Eu vou continuar
+a demo que começamos
+
+5
+00:00:21,559 --> 00:00:24,890
+da última vez e se eu tiver
+tempo suficiente, essa demo
+
+6
+00:00:24,910 --> 00:00:28,439
+deve tomar aproximadamente uma hora,
+então nos últimos 15 minutos,
+
+7
+00:00:28,459 --> 00:00:31,929
+vou tentar fazre uma pequena revisão
+de toas as coisas que vocês
+
+8
+00:00:31,949 --> 00:00:35,719
+deveriam saber até agora, ok? Porque
+um monte do que vocês aprenderam
+
+9
+00:00:35,739 --> 00:00:38,469
+até agora fui eu mostrando código
+e fazendo demos, então as coisas
+
+10
+00:00:38,489 --> 00:00:41,219
+podem não estar tão claras,
+"o que é isso, o que devo fazer agora?"
+
+11
+00:00:41,239 --> 00:00:43,969
+Se eu não conseguir usar os últimos
+15 minutos, sem problemas. Está
+
+12
+00:00:43,989 --> 00:00:46,969
+tudo nos slides que vocês podem
+baixar e vocês podem ler
+
+13
+00:00:46,989 --> 00:00:49,719
+os slides e... E perguntem
+a vocês mesmos: eu sei isso?
+
+14
+00:00:49,739 --> 00:00:53,699
+E se você não souber, então,
+vocês sabem como conseguir ajuda.
+
+15
+00:00:53,719 --> 00:00:59,129
+Ok? Então, os slides que eu postei
+vão ter slides detalhados
+
+16
+00:00:59,149 --> 00:01:02,489
+como esse daqui. Da mesma maneira
+que era da última vez.
+
+17
+00:01:02,509 --> 00:01:05,489
+Então vou mostrando passo a passo
+o que eu estiver fazendo hoje.
+
+18
+00:01:05,509 --> 00:01:08,489
+Vocês não precisam anotar
+detalhadamente cada
+
+19
+00:01:08,509 --> 00:01:11,959
+clique do mouse e coisas assim,
+vocês podem apenas assistir,
+
+20
+00:01:11,979 --> 00:01:15,639
+ver o que eu estou fazendo,
+pegar um feeling do fluxo de como
+
+21
+00:01:15,659 --> 00:01:18,049
+as coisas acontecem e qualquer coisa
+que vocês não entenderem, vocês vão
+
+22
+00:01:18,069 --> 00:01:21,049
+poder voltar nos slides
+e lá estará tudo anotado,
+
+23
+00:01:21,069 --> 00:01:23,549
+estará tudo lá. Vocês já
+passaram por isso na última aula.
+
+24
+00:01:23,569 --> 00:01:29,639
+Vai ser do mesmo modo hoje.
+Ok, vou voltar então
+
+25
+00:01:29,659 --> 00:01:33,639
+para o Xcode. A propósito,
+quando eu estiver fazendo
+
+26
+00:01:33,659 --> 00:01:36,480
+demos, eu estarei sentado aqui,
+obviamente olhando para a tela,
+
+27
+00:01:36,500 --> 00:01:39,969
+então as vezes vocês precisam
+chamar minha atenção,
+
+28
+00:01:39,989 --> 00:01:43,489
+talvez meus assistentes aqui me ajudem
+se alguém estiver "hey, hey",
+
+29
+00:01:43,509 --> 00:01:46,400
+sabe, "alguém está te fazendo
+uma pergunta". As vezes é
+
+30
+00:01:46,420 --> 00:01:52,419
+difícil para mim também, detectar
+o que está acontecendo. Bom,
+
+31
+00:01:52,439 --> 00:01:57,099
+aqui está o Xcode, estamos de volta
+para onde estávamos. Percebam que
+
+32
+00:01:57,119 --> 00:02:00,929
+quando eu rodei a splash screen
+dessa vez, nós temos
+
+33
+00:02:00,949 --> 00:02:04,370
+Matchismo, que é no que estávamos
+trabalhando da última vez. Está ali
+
+34
+00:02:04,390 --> 00:02:09,119
+nos projetos recentes. Eu vou
+dar um double-click nele.
+
+35
+00:02:09,139 --> 00:02:14,019
+Abrir Matchismo de novo.
+Aqui está ele. Espero que vocês
+
+36
+00:02:14,039 --> 00:02:18,010
+reconheçam isso. Na verdade,
+eu adicionei os arquivos model,
+
+37
+00:02:18,030 --> 00:02:21,010
+essa foi a única coisa que eu fiz.
+Isso é o que vocês supostamente
+
+38
+00:02:21,030 --> 00:02:23,510
+fizeram de homework. Na verdade,
+eu não fiz o homework aqui.
+
+39
+00:02:23,530 --> 00:02:26,760
+Eu coloquei os arquivos model,
+mas eu não fiz o homework zero.
+
+40
+00:02:26,780 --> 00:02:29,510
+Nós vamos fazer o equivalente ao
+que tínhamos no homework zero
+
+41
+00:02:29,530 --> 00:02:33,519
+durante essa demo. Não exatamente
+a mesma coisa,
+
+42
+00:02:33,539 --> 00:02:36,709
+mas um equivalente conceitual,
+e assim vocês poderão ver
+
+43
+00:02:36,729 --> 00:02:39,709
+como fazer isso tudo. Se você
+ainda não fez seu homework
+
+44
+00:02:39,729 --> 00:02:42,959
+você vai tipo ver as respostas hoje.
+Não é um grande problema 
+
+45
+00:02:42,979 --> 00:02:45,959
+com o homework zero, o que não vai
+ser o caso dos homeworks futuros.
+
+46
+00:02:45,979 --> 00:02:48,459
+Eu não vou passar
+pelas soluções dos homeworks
+
+47
+00:02:48,479 --> 00:02:51,209
+na sala de aula, porque
+alguns de vocês, sei que é
+
+48
+00:02:51,229 --> 00:02:53,959
+difícil de acreditar, mas vocês
+atrasam os seus deveres um pouco,
+
+49
+00:02:53,979 --> 00:02:56,959
+as vezes. Então eu não quero
+dar as soluções
+
+50
+00:02:56,979 --> 00:02:59,709
+durante as aulas para as pessoas
+que não fizeram. Mas não é
+
+51
+00:02:59,729 --> 00:03:02,709
+um grande problema pro
+homework zero. Espero que todos vocês
+
+52
+00:03:02,729 --> 00:03:05,709
+tenham feito o homework zero.
+Deixa eu falar um pouco sobre
+
+53
+00:03:05,729 --> 00:03:08,709
+o que nós vamos fazer hoje.
+O que nós vamos fazer no Matchismo.
+
+54
+00:03:08,729 --> 00:03:11,459
+Nesse momento, Matchismo é
+um jogo de cartas muito fraco.
+
+55
+00:03:11,479 --> 00:03:14,459
+Ele só tem essa única carta
+que fica virando frente e verso.
+
+56
+00:03:14,479 --> 00:03:17,459
+E vocês deixaram ele
+um pouco melhor, deixando ele
+
+57
+00:03:17,479 --> 00:03:19,959
+folheando por um maço de cartas.
+Isso é bom, mas o que queríamos
+
+58
+00:03:19,979 --> 00:03:23,459
+de verdade era ter um monte
+de cartas e queríamos poder
+
+59
+00:03:23,479 --> 00:03:26,709
+escolher duas cartas, ok?
+Nós poderíamos virar as cartas
+
+60
+00:03:26,729 --> 00:03:29,709
+e então virá-las de volta.
+Tentem lembrar quais são elas
+
+61
+00:03:29,729 --> 00:03:32,959
+e eventualmente nós queremos virar
+duas cartas ao mesmo tempo
+
+62
+00:03:32,979 --> 00:03:36,209
+e queremos que elas façam um par.
+Então, esse é um jogo da
+
+63
+00:03:36,229 --> 00:03:39,209
+memória. Agora, o que é um par,
+é determinado pelo tipo da carta
+
+64
+00:03:39,229 --> 00:03:42,209
+Nós conhecemos essa carta, a classe
+Card tem um método "match"
+
+65
+00:03:42,229 --> 00:03:45,459
+que te dá tipo um score para
+quão bom o par é
+
+66
+00:03:45,479 --> 00:03:48,999
+entre duas cartas. E isso vai ser
+o que determina, sabe,
+
+67
+00:03:49,019 --> 00:03:53,079
+como que duas cartas fazem par.
+O que nós vamos construir aqui
+
+68
+00:03:53,099 --> 00:03:56,669
+é a infraestrutura para esse
+jogo da memória. A primeira coisa
+
+69
+00:03:56,689 --> 00:03:59,649
+que nós queremos fazer aqui
+é ter mais cartas.
+
+70
+00:03:59,669 --> 00:04:02,799
+Porque uma carta, nós não podemos
+fazer um par com uma carta só,
+
+71
+00:04:02,819 --> 00:04:07,099
+então precisamos de mais cartas.
+E é muito fácil fazer um
+
+72
+00:04:07,119 --> 00:04:10,099
+monte de cartas. Vou arrumar um
+espaço maior aqui, vou esconder
+
+73
+00:04:10,119 --> 00:04:13,669
+o Navigator. Logo aqui,
+nesse botão. E então
+
+74
+00:04:13,689 --> 00:04:17,749
+eu vou fazer mais cartas
+copiando e colando
+
+75
+00:04:17,769 --> 00:04:20,290
+essa cartinha aqui. Certo, então
+tenho minha cartinha aqui
+
+76
+00:04:20,310 --> 00:04:23,900
+e eu vou movê-la para o conto,
+bem aqui,
+
+77
+00:04:23,920 --> 00:04:28,309
+e eu vou apenas fazer um copy.
+E paste, para fazer uma segunda.
+
+78
+00:04:28,329 --> 00:04:31,730
+Uma coisa que é interessante,
+perceba que enquanto
+
+79
+00:04:31,750 --> 00:04:34,009
+eu movo ela, as linhas azuis
+me ajudam a alinhá-la
+
+80
+00:04:34,029 --> 00:04:36,889
+perfeitamente com a outra carta.
+Outra coisa que é
+
+81
+00:04:36,909 --> 00:04:39,470
+interessante, se eu clicar com o
+botão direito nessa carta, lembram-se
+
+82
+00:04:39,490 --> 00:04:41,449
+o que faz o botão direito?
+Ele mostra todos os outlets e
+
+83
+00:04:41,469 --> 00:04:44,709
+actions desse botão. Então se
+eu clicar com o botão direito para
+
+84
+00:04:44,729 --> 00:04:48,090
+pegar todas as listas, podem ver que
+essa carta também faz o "flipCard",
+
+85
+00:04:48,110 --> 00:04:51,889
+exatamente como essa que eu copiei.
+Então, quando você faz copy+paste
+
+86
+00:04:51,909 --> 00:04:56,559
+em um objeto na sua view,
+suas ações são
+
+87
+00:04:56,579 --> 00:05:00,489
+continuadas, or são mantidas ali.
+Agora, os outlets não serão,
+
+88
+00:05:00,509 --> 00:05:03,879
+mas as actions sim. Então se
+o seu botão envia uma ação e
+
+89
+00:05:03,899 --> 00:05:06,879
+você copy+paste ele, o novo
+botão também vai enviar
+
+90
+00:05:06,899 --> 00:05:09,629
+uma ação. Se você não quer isso,
+ou você não faz copy+paste
+
+91
+00:05:09,649 --> 00:05:12,629
+ou podemos clicar nesse
+pequeno "x" logo aqui,
+
+92
+00:05:12,649 --> 00:05:15,129
+para fazer esse botão não enviar
+a ação flipCard,
+
+93
+00:05:15,149 --> 00:05:18,129
+ok? Agora, nós temos dois botões
+e eles vão cada um
+
+94
+00:05:18,149 --> 00:05:22,410
+enviar esse "flipCard". Então,
+cada um deles vai individualmente
+
+95
+00:05:22,430 --> 00:05:25,879
+quando clicados, tornar-se "selected".
+Certo, e eu vou ter um
+
+96
+00:05:25,899 --> 00:05:28,629
+flip count, não importa qual
+que foi clicado. Isso é exatamente
+
+97
+00:05:28,649 --> 00:05:31,899
+o que queremos. Mas nós queremos
+mais cartas, então vou precisar
+
+98
+00:05:31,919 --> 00:05:34,889
+de outro paste, outro paste.
+Eu posso até selecionar um monte
+
+99
+00:05:34,909 --> 00:05:38,589
+de cartas simplesmente arrastando
+o mouse, copy e paste, certo,
+
+100
+00:05:38,609 --> 00:05:44,530
+e paste. Então eu posso rapidamente
+construir as cartas que eu vou
+
+101
+00:05:44,550 --> 00:05:47,280
+usar para jogar. Vou ter apenas
+doze cartas,
+
+102
+00:05:47,300 --> 00:05:50,030
+parte do seu homework é fazer
+mais cartas do que doze,
+
+103
+00:05:50,050 --> 00:05:53,339
+apenas para vocês entenderem
+o que eu estou fazendo agora,
+
+104
+00:05:53,359 --> 00:05:54,709
+mas vamos começar com 12.
+
+
+105
+00:05:54,729 --> 00:05:58,410
+Agora que nós temos 12 cartas,
+essas 12 cartas estão falando
+
+106
+00:05:58,430 --> 00:06:01,709
+com o meu controller perfeitamente.
+Todas elas estão enviando
+
+107
+00:06:01,729 --> 00:06:06,030
+o "flipCard", mas agora como nós
+estamos fazendo coisas
+
+108
+00:06:06,050 --> 00:06:08,889
+como "match" e "flipCard",
+queremos elas fiquem viradas quando
+
+109
+00:06:08,909 --> 00:06:12,379
+fizer o par. Queremos que
+nosso controller seja capaz de
+
+110
+00:06:12,399 --> 00:06:15,009
+falar com as cartas. Em outras palavras,
+na outra direção. E é para isso
+
+111
+00:06:15,029 --> 00:06:18,259
+que servem os "outlets". Certo,
+então temos actions, que são as cartas
+
+112
+00:06:18,279 --> 00:06:21,230
+falando com a gente, view falando
+com controller. E outlets são
+
+113
+00:06:21,250 --> 00:06:25,350
+o controller falando de volta
+com a view. Agora, isso é uma
+
+114
+00:06:25,370 --> 00:06:27,439
+situação interessante, já que
+temos 12 cartas. Nós vamos criar
+
+115
+00:06:27,459 --> 00:06:30,939
+12 outlets aqui? Ok, isso seria
+meio que insustentável,
+
+116
+00:06:30,959 --> 00:06:33,019
+ter esses 12 outlets, especialmente
+se você quiser adicionar
+
+117
+00:06:33,039 --> 00:06:35,399
+outras quatro cartas, agora você
+vai ter 16 outlets e quando
+
+118
+00:06:35,419 --> 00:06:39,589
+você quiser adicionar mais cartas...
+Bom, na verdade o iOS tem uma
+
+119
+00:06:39,609 --> 00:06:43,100
+funcionalidade bem legal, chamada
+Outlet Collections, que é uma forma
+
+120
+00:06:43,120 --> 00:06:46,100
+de você ter um único outlet,
+que é um array, e os membros
+
+121
+00:06:46,120 --> 00:06:49,350
+desse array são todos
+essas coisas na view. Então
+
+122
+00:06:49,370 --> 00:06:51,850
+nós vamos criar um
+Outlet Collection e ele vai ser
+
+123
+00:06:51,870 --> 00:06:55,100
+um array que aponta para
+todas as cartas, ok? Então vamos
+
+124
+00:06:55,120 --> 00:06:57,850
+fazer isso. Fazemos isso,
+criamos um outlet collection
+
+125
+00:06:57,870 --> 00:07:00,850
+da mesma maneira que criaríamos
+um outlet, que é segurando
+
+126
+00:07:00,870 --> 00:07:03,600
+a tecla CTRL. É isso
+que estou fazendo agora,
+
+127
+00:07:03,620 --> 00:07:06,100
+segurando CTRL e arrastando
+de um dos botões.
+
+128
+00:07:06,120 --> 00:07:08,850
+Não importa de qual.
+E, como vocês podem ver,
+
+129
+00:07:08,870 --> 00:07:12,100
+eu arrasto e ele até diz
+"insert outlet action" ou
+
+130
+00:07:12,120 --> 00:07:14,469
+"outlet collection". Então é
+isso que eu quero. Eu vou
+
+131
+00:07:14,489 --> 00:07:19,989
+colocar isso, hm, vamos por
+aqui embaixo, ok/ Agora nós
+
+132
+00:07:20,009 --> 00:07:22,949
+temos a mesma caixinha que tivemos
+quando criamos o outlet para
+
+133
+00:07:22,969 --> 00:07:27,600
+o flipsLabel, para que pudéssemos
+updatear as viradas. E...
+
+134
+00:07:27,620 --> 00:07:30,839
+desta vez nós vamos vir aqui
+em cima, onde diz "connection".
+
+135
+00:07:30,859 --> 00:07:33,089
+Ao invés de pegar um Outlet,
+nós vamos escolher
+
+136
+00:07:33,109 --> 00:07:36,219
+Outlet Collection. Certo, agora
+sabemos essas três coisas.
+
+137
+00:07:36,239 --> 00:07:38,969
+Conhecemos outlets. Conhecemos
+actions, como flipCard, e 
+
+138
+00:07:38,989 --> 00:07:41,969
+agora nós temos Outlet Collection.
+Outra coisa, quando eu escolho
+
+139
+00:07:41,989 --> 00:07:44,969
+Collection, antes de eu fazer isso,
+quero que vocÊs percebam isso.
+
+140
+00:07:44,989 --> 00:07:47,660
+Vocês vêem esse "storage" aqui
+embaixo que diz "Weak"? Lembrem-se
+
+141
+00:07:47,680 --> 00:07:51,169
+do Outlet que criamos para
+flipsLabel, que está logo aqui?
+
+142
+00:07:51,189 --> 00:07:55,279
+É weak. Ok, por que ele era
+um ponteiro fraco para o
+
+143
+00:07:55,299 --> 00:07:58,839
+flipsLabel? Porque o flipsLabel
+é apontado fortemente
+
+144
+00:07:58,859 --> 00:08:02,069
+pela view. Ele fica nessa view
+e que aponta fortemente
+
+145
+00:08:02,089 --> 00:08:05,319
+para ele, então nós não precisamos
+de um ponteiro forte para ele.
+
+146
+00:08:05,339 --> 00:08:08,319
+Se você algum dia se livrar
+daquele flipsLabel, nós não
+
+147
+00:08:08,339 --> 00:08:11,569
+precisaremos updateá-lo mesmo,
+então nós queremos que nosso
+
+148
+00:08:11,589 --> 00:08:14,319
+ponteiro seja setado pra nil.
+Nós estamos fracamente interessados
+
+149
+00:08:14,339 --> 00:08:16,819
+no flipsLabel. Mas para um Outlet
+Collection, vocês verão, nós não
+
+150
+00:08:16,839 --> 00:08:19,569
+vamos sequer ter essa opção.
+Uma Outlet Collection tem que
+
+151
+00:08:19,589 --> 00:08:22,569
+ser forte. Então ele some com
+essa opção. E isso é porque
+
+152
+00:08:22,589 --> 00:08:25,429
+o Outlet Collection é um array.
+De coisas na view.
+
+153
+00:08:25,449 --> 00:08:28,499
+Ele não está apontando diretamente
+para todos os botões. Ele está
+
+154
+00:08:28,519 --> 00:08:31,749
+apontando para um array desses
+botões. E nós precisamos que
+
+155
+00:08:31,769 --> 00:08:34,499
+o array fique fortemente na memória
+para que todos os botões que estão
+
+156
+00:08:34,519 --> 00:08:37,499
+sendo apontados...
+Porque a view, em outras palavras,
+
+157
+00:08:37,519 --> 00:08:40,499
+não está apontando para o array.
+A view está apontando para todos
+
+158
+00:08:40,519 --> 00:08:43,249
+os botões, mas não para o array.
+Agora, uma coisa sobre arrays
+
+159
+00:08:43,269 --> 00:08:45,749
+que é interessante em relação
+a weak e strong é que um array
+
+160
+00:08:45,769 --> 00:08:49,749
+aponta fortemente para todas
+nele, dentro dele, ok?
+
+161
+00:08:49,769 --> 00:08:52,759
+Isso é algo para realmente
+se lembrar nesse curso.
+
+162
+00:08:52,779 --> 00:08:56,539
+Um array tem um ponteiro forte
+para todas as coisas no array.
+
+163
+00:08:56,559 --> 00:08:59,720
+Então, se você criar um array,
+enquanto esse array estiver
+
+164
+00:08:59,740 --> 00:09:02,470
+na memória, certo? Então eu vou
+manter esse ponteiro forte
+
+165
+00:09:02,490 --> 00:09:05,220
+para ele. Todas essas coisas
+também vão permanecer na memória.
+
+166
+00:09:05,240 --> 00:09:07,720
+Ok, ponteiro forte de arrays.
+Certo, então aqui está nosso
+
+167
+00:09:07,740 --> 00:09:10,220
+Outlet Collection. Eu vou chamá-lo
+de cardButtons, porque é
+
+168
+00:09:10,240 --> 00:09:12,970
+isso que ele é. Esses são
+os botões que representam
+
+169
+00:09:12,990 --> 00:09:15,720
+minha carta, então vou chamá-lo
+de cardButtons. E, na verdade,
+
+170
+00:09:15,740 --> 00:09:18,470
+todos eles são UIButtons. E quando
+eu clicar "connect", e vocês
+
+171
+00:09:18,490 --> 00:09:21,720
+verão aqui, eu vou fazer mais
+um espacinho para que
+
+172
+00:09:21,740 --> 00:09:24,720
+não precisemos empacotar o
+código aqui. Vocês podem ver
+
+173
+00:09:24,740 --> 00:09:28,389
+isso é o que foi criado. E é
+uma propriedade, é strong,
+
+174
+00:09:28,409 --> 00:09:32,100
+nós sempre fazemos esse negócio
+de nonatomic. É um array chamado
+
+175
+00:09:32,120 --> 00:09:35,340
+cardButtons e então tem esse
+negocinho bem aqui,
+
+176
+00:09:35,360 --> 00:09:39,419
+novamente, isso é ignorado pelo
+compilador. É só usado 
+
+177
+00:09:39,439 --> 00:09:43,249
+pelo Xcode, pois assim o Xcode
+sabe que particularmente 
+
+178
+00:09:43,269 --> 00:09:45,629
+essa propriedade do array é
+um Outlet Collection, ok?
+
+179
+00:09:45,649 --> 00:09:48,909
+Que na verdade aponta pra botões.
+Isso é coisa do Xode,
+
+180
+00:09:48,929 --> 00:09:52,069
+isso no fim é "typedef"
+para nada, basicamente nada.
+
+181
+00:09:52,089 --> 00:09:55,739
+Para nada, exatamente como
+foi aqui. Lembram-se
+
+182
+00:09:55,759 --> 00:09:59,269
+dessa coisinha? É a mesma coisa
+com esse. São apenas palavras
+
+183
+00:09:59,289 --> 00:10:02,480
+que o Xcode está usando
+para saber o que está
+
+184
+00:10:02,500 --> 00:10:06,299
+acontecendo, mesma coisa com esse.
+Certo? É apenas algo
+
+185
+00:10:06,319 --> 00:10:11,049
+que o Xcode usa. Tirando isso,
+esse é apenas um array
+
+186
+00:10:11,069 --> 00:10:13,710
+de botões de cartas. Agora,
+incrivelmente, nós podemos passar
+
+187
+00:10:13,730 --> 00:10:17,259
+o mouse por cima dessa coisinha
+bem aqui, igual como podíamos
+here when we saw the flips 
+
+188
+00:10:17,279 --> 00:10:20,259
+aqui em cima, quando vimos o flipsLabel,
+e ele nos mostrará todos os botões
+
+189
+00:10:20,279 --> 00:10:23,259
+que estão nesse array. E é
+somente esse por enquanto.
+
+190
+00:10:23,279 --> 00:10:26,759
+Eu queria que tivesse um jeito
+de selecionar todos de uma vez
+
+191
+00:10:26,779 --> 00:10:29,470
+e linká-los, mas infelizmente
+não dá pra fazer isso, ok?
+
+192
+00:10:29,490 --> 00:10:32,470
+Então temos que setá-los um por um
+com CTRL + arrastar. Ainda bem
+
+193
+00:10:32,490 --> 00:10:35,470
+que é realmente fácil. Então vou
+CTRL + arrastar cada um deles.
+
+194
+00:10:35,490 --> 00:10:38,970
+Pervebam que, quando eu chego perto,
+ele sabe que é um botão e
+
+195
+00:10:38,990 --> 00:10:41,970
+então ele sabe que ele poderia
+ir nessa Collection, então ele
+
+196
+00:10:41,990 --> 00:10:44,970
+fica highlited. E então,
+se eu soltar, ele conecta.
+
+197
+00:10:44,990 --> 00:10:47,720
+Agora tenho dois deles conectados,
+certo? Agora vou conectar
+
+198
+00:10:47,740 --> 00:10:52,799
+todos eles aqui. Ia ser ótimo
+se eu pudesse
+
+199
+00:10:52,819 --> 00:10:55,799
+selecionar todos e fazer isso.
+Mesmo assim, não é realmente
+
+200
+00:10:55,819 --> 00:10:58,299
+um grande problema não podermos.
+Porque nós estamos
+
+201
+00:10:58,319 --> 00:11:01,049
+falando de uma tela de iPhone.
+Você não poderia ter tantos
+
+202
+00:11:01,069 --> 00:11:04,049
+botões assim de qualquer jeito.
+E vocês podem ver que eu posso
+
+203
+00:11:04,069 --> 00:11:07,049
+linkar tudo em uns 10 segundos.
+Então não me custa
+
+204
+00:11:07,069 --> 00:11:09,799
+tanto tempo assim, mas...
+Aqui estão os botões. Agora,
+
+205
+00:11:09,819 --> 00:11:12,549
+outra coisa a perceber no
+Outlet Collection. A ordem
+
+206
+00:11:12,569 --> 00:11:16,279
+botões no array é indeterminada.
+Então você não pode depender
+
+207
+00:11:16,299 --> 00:11:19,119
+que a ordem dos botões no array
+seja a mesma da ordem que você
+
+208
+00:11:19,139 --> 00:11:22,239
+CTRL + arrasou eles. Agora,
+isso não vai importar
+
+209
+00:11:22,259 --> 00:11:25,919
+na sua aplicação porque nosso
+jogo de memória não tem
+
+210
+00:11:25,939 --> 00:11:29,519
+nenhum conceito onde as cartas
+estão em um espaço físico.
+
+211
+00:11:29,539 --> 00:11:33,039
+Só que tem essas tantas cartas
+e elas podem fazer par.
+
+212
+00:11:33,059 --> 00:11:36,039
+Então, enquanto a posição
+no array não é modificada,
+
+213
+00:11:36,059 --> 00:11:38,289
+e, de fato, não vai ser,
+uma vez que a aplicação inicia,
+
+214
+00:11:38,309 --> 00:11:42,039
+os objetos vão estar
+no mesmo lugar. Então
+
+215
+00:11:42,059 --> 00:11:47,059
+estamos bem aqui. Todos entendem
+o que nós fizemos até agora,
+
+216
+00:11:47,079 --> 00:11:51,689
+criamos 12 botões e criamos
+o cardButtons para
+
+217
+00:11:51,709 --> 00:11:54,600
+conectá-los. Se nós
+rodarmos nossa aplicação
+
+218
+00:11:54,620 --> 00:11:57,600
+agora. Na verdade, vamos fazer isso,
+para que eu possa mostrar
+
+219
+00:11:57,620 --> 00:12:00,509
+o que isso faz. Não vai ser
+muito divertido porque
+
+220
+00:12:00,529 --> 00:12:03,759
+ainda vai ser o ás de paus
+o tempo todo, ok?
+
+221
+00:12:03,779 --> 00:12:06,679
+Aqui está nosso simulador e
+se clicarmos nele, teremos
+
+222
+00:12:06,699 --> 00:12:10,259
+um monte de ás de paus, certo?
+Eu ainda não fiz o homework,
+
+223
+00:12:10,279 --> 00:12:14,439
+não fiz o negócio onde
+nós usamos o model para
+
+224
+00:12:14,459 --> 00:12:19,210
+setar as cartas diferentemente,
+ok? Então, vamos caminhando e
+
+225
+00:12:19,230 --> 00:12:26,919
+fazer isso, para ver no que que dá.
+Clicamos aqui...
+
+226
+00:12:26,939 --> 00:12:30,399
+Como nós vamos fazer isso?
+Como nós vamos setar o título,
+
+227
+00:12:30,419 --> 00:12:33,149
+o "selected title"? de basicamente
+todos os botões? Eu vou fazer isso
+
+228
+00:12:33,169 --> 00:12:37,449
+em um método chamado
+setCardButtons. Agora,
+
+229
+00:12:37,469 --> 00:12:40,689
+todo mundo sabe que método é esse?
+Alguem pode me dizer que método
+
+230
+00:12:40,709 --> 00:12:49,689
+é esse? É o setter para
+essa property. Todo mundo
+
+231
+00:12:49,709 --> 00:12:53,309
+entende isso? É somente o setter
+para essa property.
+
+232
+00:12:53,329 --> 00:12:56,279
+Essa property, mesmo que seja
+um Outlet Collection criado
+
+233
+00:12:56,299 --> 00:12:59,439
+pelo CTRL + arraste, continua
+sendo uma property. Tem um
+
+234
+00:12:59,459 --> 00:13:03,019
+setter e um getter e o sistema
+vai chamar o setter quando
+
+235
+00:13:03,039 --> 00:13:06,480
+todos esses botões estiverem sido
+"descongelados", quando a
+
+236
+00:13:06,500 --> 00:13:10,079
+aplicação rodar, ele vai chamar
+esse setCardButtons.
+
+237
+00:13:10,099 --> 00:13:13,329
+Então esse é o lugar perfeito
+se eu quiser fazer algo
+
+238
+00:13:13,349 --> 00:13:16,720
+com os botões, tipo setar
+os títulos deles, ok? Então
+
+239
+00:13:16,740 --> 00:13:21,439
+eu vou fazer aqui "card..", desculpe,
+_cardButtons = cardButtons,
+
+240
+00:13:21,459 --> 00:13:24,749
+pois esse é o setter, eu preciso
+garantir que
+
+241
+00:13:24,769 --> 00:13:27,999
+ele faça o papel dele. E entao
+eu vou simplesmente iterar
+
+242
+00:13:28,019 --> 00:13:33,779
+por todos esses botões, ok?
+E eu vou chamar o getter aqui,
+
+243
+00:13:33,799 --> 00:13:36,629
+e posso chamar o getter aqui,
+porque eu já o setei,
+
+244
+00:13:36,649 --> 00:13:39,529
+então quando eu chamar ele aqui
+ele vai funcionar, ok?
+
+245
+00:13:39,549 --> 00:13:43,549
+Algumas pessoas iriam preferir
+que fosse "cardButtons"
+
+246
+00:13:43,569 --> 00:13:46,129
+ou talvez "_cardButtons",
+mas eu vou chamar o
+
+247
+00:13:46,149 --> 00:13:50,689
+getter aqui.
+E eu vou dizer
+
+248
+00:13:50,709 --> 00:13:57,739
+"Card *card = [self.deckDrawRandomCard]"
+
+249
+00:13:57,759 --> 00:14:02,059
+Ok? Eu preciso do self.deck, ok?
+Essa property. Então
+
+250
+00:14:02,079 --> 00:14:05,359
+aqui está a solução do seu homework.
+Nós criamos uma property para
+
+251
+00:14:05,379 --> 00:14:10,239
+o deck. Vai ser strong e nonatomic.
+É um Deck, ok?
+
+252
+00:14:10,259 --> 00:14:19,100
+Precisamos ter certeza que
+importamos Deck.
+
+253
+00:14:19,120 --> 00:14:22,100
+Ok? Agora temos nosso deck.
+Nós obviamente queremos
+
+254
+00:14:22,120 --> 00:14:28,809
+alguma instanciação lazy pro
+nosso deck. Somente "if (!_deck)
+
+255
+00:14:28,829 --> 00:14:35,029
+deck ="... e vamos usar um
+PlayingCardDeck. Certo,
+
+256
+00:14:35,049 --> 00:14:38,859
+"return _deck", ok? Nós estamos
+usando PlayingCardDecka qui
+
+257
+00:14:38,879 --> 00:14:43,519
+então vamos fazer isso,
+ao invés de Deck... PlayingCardDeck,
+
+258
+00:14:43,539 --> 00:14:46,649
+ok? Agora temos o deck.
+Espero que vocês tenham feito isso
+
+259
+00:14:46,669 --> 00:14:47,649
+no homework de vocês... pergunta?
+
+
+260
+00:14:47,669 --> 00:14:50,399
+>> [estudante perguntando]
+
+261
+00:14:50,419 --> 00:14:52,399
+[estudante perguntando]
+
+262
+00:14:52,419 --> 00:14:56,059
+>> Tem alguma razão, você está
+perguntando, porque eu fiz
+
+263
+00:14:56,079 --> 00:14:57,329
+ele ser "deck"?
+that be deck? 
+
+
+264
+00:14:57,349 --> 00:14:59,279
+>> [estudante falando]
+
+
+265
+00:14:59,299 --> 00:15:01,779
+>> Ao invés de PlayingCardDeck.
+Ótima pergunta. Então eu fiz
+
+266
+00:15:01,799 --> 00:15:04,779
+minha property aqui ser um deck,
+ao invés de PlayingCardDeck,
+
+267
+00:15:04,799 --> 00:15:07,949
+porque essa clase não vai
+usar nada de Playing Card, ok?
+
+268
+00:15:07,969 --> 00:15:11,259
+Eu não vou chamar suit
+ou rank ou nada assim.
+
+269
+00:15:11,279 --> 00:15:14,199
+Então não há razão para que
+essa property seja algo
+
+270
+00:15:14,219 --> 00:15:17,709
+mais específico sobre que
+tipo de classe ela é em relação
+
+271
+00:15:17,729 --> 00:15:20,709
+ao que ela precisa ser. Isso faz
+essa classe mais genérica, é somente
+
+272
+00:15:20,729 --> 00:15:23,279
+bom uso de orientação a objetos, ok?
+Usar classes mais genéricas e
+
+273
+00:15:23,299 --> 00:15:25,799
+como PlayingCardDeck herda
+de Deck, é um deck.
+
+274
+00:15:25,819 --> 00:15:29,319
+É perfeitamente legal para nós
+fazermos isso. Certo, e
+
+275
+00:15:29,339 --> 00:15:32,519
+digamos que essa property
+deck igual a PlayingCardDeck.
+
+276
+00:15:32,539 --> 00:15:35,879
+Ok, espero que todo mundo
+entenda isso, vocês tiveram
+
+277
+00:15:35,899 --> 00:15:38,399
+bastante orientação a objetos
+na faculdade para entender o porquê.
+
+278
+00:15:38,419 --> 00:15:41,509
+Esse é o porquê. Porque um
+PlayingCardDeck é um Deck, ele
+
+279
+00:15:41,529 --> 00:15:46,279
+herda de Deck, ok? Mas eu não vou
+enviar nenhuma mensagem para self.deck
+
+280
+00:15:46,299 --> 00:15:50,029
+que não é entendida pela
+classe base Deck. Na verdade,
+
+281
+00:15:50,049 --> 00:15:53,029
+única mensagem qye ey vou enviar
+é "drawRandomCard", que não é
+
+282
+00:15:53,049 --> 00:15:55,779
+um método de PlayingCardDeck,
+é um método de Deck. Então,
+
+283
+00:15:55,799 --> 00:15:59,029
+isso é tudo que preciso fazer aqui.
+Então agora eu tenho essa
+
+284
+00:15:59,049 --> 00:16:03,009
+carta aleatória e agora eu posso
+simplesmente setar o título
+
+285
+00:16:03,029 --> 00:16:08,319
+do "cardButton" para o card.contents
+para o estado "UIControlStateSelected",
+
+286
+00:16:08,339 --> 00:16:11,179
+ok? Essa era a segunda parte
+do homework de vocês,
+
+287
+00:16:11,199 --> 00:16:14,319
+Espero que vocês tenham entendido
+que "setTitle:forState:" era
+
+288
+00:16:14,339 --> 00:16:17,779
+aquilo que estávamos trocando
+no "attribute inspector"
+
+289
+00:16:17,799 --> 00:16:19,779
+e espero que vocês tenham
+descoberto isso na documentação.
+
+290
+00:16:19,799 --> 00:16:22,529
+Eu meio que guiei vocês aí.
+Na última demo,
+
+291
+00:16:22,549 --> 00:16:25,970
+esse foi o método que mostrei
+a vocês na demo,
+
+292
+00:16:25,990 --> 00:16:29,859
+"setTitle:forState:". Então
+isso é tudo que é necessário.
+
+293
+00:16:29,879 --> 00:16:35,379
+Agora, se rodarmos, nós devemos
+ter cartas diferentes. Temos o
+
+294
+00:16:35,399 --> 00:16:39,720
+nove de paus, ok? Cartas diferentes.
+Todos vêem o que está acontecendo
+
+295
+00:16:39,740 --> 00:16:42,899
+aqui? Agora está bem melhor.
+Agora nós estamos já progredindo
+
+296
+00:16:42,919 --> 00:16:46,009
+significantemente. Nós temos
+múltiplas cartas e elas não são
+
+297
+00:16:46,029 --> 00:16:53,439
+todas o ás de paus, ok? Tudo bem
+até aqui? Ok, então
+
+298
+00:16:53,459 --> 00:16:57,459
+o que vem a seguir? Bom, agora
+nós realmente queremos pensar
+
+299
+00:16:57,479 --> 00:17:00,779
+sobre a lógica do nosso jogo
+de memória, ok? Como nosso jogo
+
+300
+00:17:00,799 --> 00:17:04,029
+de memória vai funcionar? E eu vou
+tentar descrever com que ele
+
+301
+00:17:04,049 --> 00:17:08,779
+vai funcionar. A idéia aqui é
+que você possa começar com 
+
+302
+00:17:08,799 --> 00:17:11,889
+todas as suas cartas viradas
+para baixo no jogo. Então, você
+
+303
+00:17:11,909 --> 00:17:15,869
+pode virar a carta e olhar para ela
+e colcoar ela de volta virada
+
+304
+00:17:15,889 --> 00:17:18,809
+pra baixo se você qusier. Abrir
+outra carta, virar para baixo.
+
+305
+00:17:18,829 --> 00:17:22,299
+Ver outra carta, virar novamente.
+E uma vez que você achar que
+
+306
+00:17:22,319 --> 00:17:26,509
+duas cartas fazer par, certo?
+Dois 9s ou nós também vamos
+
+307
+00:17:26,529 --> 00:17:29,819
+permitir pares de naipes, então
+duas Copas... então você pode
+
+308
+00:17:29,839 --> 00:17:33,279
+virar ambos de face pra cima, um
+depois do outro, e você faz um ponto.
+
+309
+00:17:33,299 --> 00:17:36,279
+Então nós podemos fazer pontos
+aqui, fazendo um par de 9s.
+
+310
+00:17:36,299 --> 00:17:39,029
+Uma quantidade maior de pontos
+porque fazer par de 9s é mais
+
+311
+00:17:39,049 --> 00:17:41,779
+difícil do que fazer um par de copas,
+ok? Ou par de paus. É isso.
+
+312
+00:17:41,799 --> 00:17:44,529
+É assim que nosso jogo de memória
+funciona. Ele guarda os pontos.
+
+313
+00:17:44,549 --> 00:17:48,049
+É a diferença entre, sabe,
+o jogo da memória e "concentration".
+
+314
+00:17:48,069 --> 00:17:50,579
+Vocês conhecem o jogo
+concentration? Aquele onde
+
+315
+00:17:50,599 --> 00:17:53,579
+você tem todas as cartas
+e você tem que virá-las
+
+316
+00:17:53,599 --> 00:17:56,579
+e tentar lembrar onde elas estão?
+Então, é tipo isso
+
+317
+00:17:56,599 --> 00:17:59,329
+porque vocês vão virar
+essas cartas para cima e
+
+318
+00:17:59,349 --> 00:18:02,079
+para baixo e tentar lembrar
+onde elas estão.
+
+319
+00:18:02,099 --> 00:18:04,829
+Você não quer acidentalmente
+virar, sabe, se você estiver
+
+320
+00:18:04,849 --> 00:18:07,079
+tentando fazer o par de 9, você não
+quer acidentalmente virar esses
+
+321
+00:18:07,099 --> 00:18:09,829
+para cima, porque aqui as Copas
+vão fazer par e essas cartas
+
+322
+00:18:09,849 --> 00:18:13,079
+são retiradas do jogo, agora
+você não pode usar esse 9
+
+323
+00:18:13,099 --> 00:18:15,829
+para fazer par com esse, ok?
+Sempre que duas cartas fizerem par
+
+324
+00:18:15,849 --> 00:18:19,079
+nós vamos tirar as cartas de jogo,
+desabilitá-las. Certo, então
+
+325
+00:18:19,099 --> 00:18:22,079
+queremos ser cuidadosos para ter
+certeza que, quando estivermos
+
+326
+00:18:22,099 --> 00:18:24,579
+procurando que nós não viremos
+duas copas sem querer, que no caso
+
+327
+00:18:24,599 --> 00:18:27,329
+vão fazer um par de pontuação menor
+do que se tivéssemos virado essas duas.
+
+328
+00:18:27,349 --> 00:18:29,579
+Alguém tem alguma pergunta
+sobre como o jogo 
+
+329
+00:18:29,599 --> 00:18:32,579
+será jogado? Ok, então é isso.
+O que nós precisamos agora
+
+330
+00:18:32,599 --> 00:18:35,329
+é a lógica para esse jogo.
+Todos esses "matchings".
+
+331
+00:18:35,349 --> 00:18:39,319
+E eu disse a vocês na aula
+de MVC, que o "o que" do
+
+332
+00:18:39,339 --> 00:18:43,359
+nosso jogo iria no model. E
+o que é esse jogo? É um jogo
+
+333
+00:18:43,379 --> 00:18:47,009
+de cartas de "match". Então toda
+a lógica para os pares precisa
+
+334
+00:18:47,029 --> 00:18:51,239
+estar no model, ok? O mesmo lugar
+que o seu deck e cartas estão,
+
+335
+00:18:51,259 --> 00:18:54,619
+toda essa lógica precisa ir lá.
+Nós precisamos criar uma nova classe
+
+336
+00:18:54,639 --> 00:18:57,369
+que irá encapsular a lógica
+do nosso jogo da memória,
+
+337
+00:18:57,389 --> 00:19:00,839
+e o controller irá usá-la, ok?
+Ele vai falar com o model
+
+338
+00:19:00,859 --> 00:19:04,409
+e interpretar o que está
+acontecendo no model e 
+
+339
+00:19:04,429 --> 00:19:09,249
+por na tela. Então ele vai, quando
+a carta for virada pra cima, ele
+
+340
+00:19:09,269 --> 00:19:12,970
+vai colocá-la no estado "selected"
+na UI. Se a carta está desabilitada,
+
+341
+00:19:12,990 --> 00:19:16,019
+sabe, é injogável, poruqe ela já
+foi pareada, então ele vai
+
+342
+00:19:16,039 --> 00:19:19,129
+fazer o botão ficar desabilitado
+na UI. Vêem como o controller
+
+343
+00:19:19,149 --> 00:19:21,379
+está se tornando
+o interpretador do que tem
+
+344
+00:19:21,399 --> 00:19:25,739
+no model para a UI? Ok, então
+tudo isso é MVC. Essa é o porque
+
+345
+00:19:25,759 --> 00:19:28,619
+de tudo que estamos fazendo aqui.
+Então precisamos criar essa
+
+346
+00:19:28,639 --> 00:19:32,619
+classe model. Então vamos fazer
+isso em seguida. Vocês sabem
+
+347
+00:19:32,639 --> 00:19:36,319
+criar uma nova classe. Vai em
+"File, new" ok? É uma
+
+348
+00:19:36,339 --> 00:19:39,299
+classe em Objective-C, igual
+as que vocês criaram
+
+349
+00:19:39,319 --> 00:19:43,239
+da última vez. E eu vou chamar
+essa coisa, CardMatchingGame.
+
+350
+00:19:43,259 --> 00:19:47,769
+Ok, esse vai ser o nome
+da minha... CardMatchingGame
+
+351
+00:19:47,789 --> 00:19:51,970
+no model. Eu vou
+escrever apenas CardMatchingGame
+
+352
+00:19:51,990 --> 00:19:54,470
+porque é exatamente isso
+que ele faz. E ele vai
+
+353
+00:19:54,490 --> 00:19:57,779
+herdar de NSObject e eu vou
+colocá-lo naquele diretório
+
+354
+00:19:57,799 --> 00:20:01,129
+de model com todo o resto
+do meu model. É tão parte
+
+355
+00:20:01,149 --> 00:20:04,629
+do model como as cartas e os
+decks são. E também vou
+
+356
+00:20:04,649 --> 00:20:07,629
+colocá-lo no grupo
+de model, no navigator.
+
+357
+00:20:07,649 --> 00:20:10,129
+Lembrem-se, esse é o navigator,
+esse é o sistema de arquivos, ok?
+
+358
+00:20:10,149 --> 00:20:12,249
+Infelimente, como eu disse
+nos slides, eles não são linkados
+
+359
+00:20:12,269 --> 00:20:14,989
+como nós gostaríamos que
+eles fossem, então temos que
+
+360
+00:20:15,009 --> 00:20:18,829
+fazer isso nos dois, ok?
+Certo, agora eu criei essa
+
+361
+00:20:18,849 --> 00:20:23,759
+classe, aqui está, eu vou
+mostrar que eu tenho o
+
+362
+00:20:23,779 --> 00:20:27,579
+.h e o .m aqui, ok? Aqui estão,
+no model. Eu vou esconder
+
+363
+00:20:27,599 --> 00:20:30,079
+o navigator. Todo mundo
+entendeu o que nós fizemos?
+
+364
+00:20:30,099 --> 00:20:35,119
+Nós acabamos de criar essa
+nova classe. Aqui do lado está
+
+365
+00:20:35,139 --> 00:20:37,539
+nosso .h e aqui nosso .m. Eles
+estão em branco, certo?
+
+366
+00:20:37,559 --> 00:20:40,529
+Claro, nós não fizemos nada ainda.
+Quando eu projeto uma nova classe,
+
+367
+00:20:40,549 --> 00:20:43,129
+como um projetista orientado a
+objetos, geralmente a primeira coisa
+
+368
+00:20:43,149 --> 00:20:46,799
+que eu faço é escrever minha
+interface. Pensar quais
+
+369
+00:20:46,819 --> 00:20:51,359
+APIs públicas existirão para
+o meu objeto. Eu posso me preocupar
+
+370
+00:20:51,379 --> 00:20:55,359
+com a implementação privada
+um pouco mais tarde. Mas, para,
+
+371
+00:20:55,379 --> 00:20:59,200
+digamos, clareza de pensamento,
+eu realmente preciso pensar sobre...
+
+372
+00:20:59,220 --> 00:21:02,259
+o que meu objeto pode fazer?
+Quais são suas capacidades? E isso
+
+373
+00:21:02,279 --> 00:21:05,339
+geralmente é expressado através
+das suas APIs públicas. Então vamos
+
+374
+00:21:05,359 --> 00:21:08,579
+pensar sobre algumas das coisas
+que um jogo da memória pode fazer.
+
+375
+00:21:08,599 --> 00:21:13,200
+Uma das coisas mais importantes
+que ele pode fazer é que
+
+376
+00:21:13,220 --> 00:21:16,909
+você pode virar cartas e
+fazer pares. Então eu, depois pensar
+
+377
+00:21:16,929 --> 00:21:19,799
+sobre isso, eu decidi que eu
+vou ter um método chamado
+
+378
+00:21:19,819 --> 00:21:27,319
+"flipCardAtIndex". Eu vou fazer
+um NSUInteger index. Então eu
+
+379
+00:21:27,339 --> 00:21:30,980
+decidi ter pessoas externas
+que vão usar meu jogo. Usar
+
+380
+00:21:31,000 --> 00:21:36,749
+um índice na minha lista de cartas
+para acessar minhas cartas.
+
+381
+00:21:36,769 --> 00:21:40,299
+Ok, apenas para simplicidade,
+eu poderia ter feito de várias
+
+382
+00:21:40,319 --> 00:21:43,049
+outras maneiras. Eu poderia ter
+"flipCard" aqui, onde o argumento
+
+383
+00:21:43,069 --> 00:21:46,299
+talvez fosse uma carta e eu pensei
+sobre isso,mas eu pensei que seria
+
+384
+00:21:46,319 --> 00:21:49,299
+um pouco mais fácil fazer com índice.
+Eu ainda vou permitir que
+
+385
+00:21:49,319 --> 00:21:52,049
+pessas acessem minhas cartas,
+eu vou criar outro método
+
+386
+00:21:52,069 --> 00:21:54,549
+que retorna uma carta,
+será chamado cardAtIndex
+
+387
+00:21:54,569 --> 00:21:57,799
+Ok, e não há razão para
+ser tão meticuloso nos detalhes
+
+388
+00:21:57,819 --> 00:22:01,359
+de por que decidimos fazer isso
+desse ou daquele jeito.
+
+389
+00:22:01,379 --> 00:22:05,389
+O fato é que, eu estou construindo
+uma classe aqui. Ela tem uma API
+
+390
+00:22:05,409 --> 00:22:08,419
+pública com alguns métodos nela.
+Esses são os métodos que eu escolhi.
+
+391
+00:22:08,439 --> 00:22:11,379
+Esse erro logo aqui é, porque,
+claro, nós precisamos
+
+392
+00:22:11,399 --> 00:22:17,919
+importar Card. Ok, para fazer
+isso funcionar. Então,
+
+393
+00:22:17,939 --> 00:22:21,119
+"flipCardAtIndex" é o método
+que faz todo o trabalho.
+
+394
+00:22:21,139 --> 00:22:23,999
+Vira as cartas ao contrário,
+checa se fez par e as vira
+
+395
+00:22:24,019 --> 00:22:27,139
+novamente caso não façam par,
+calcula os pontos, tudo isso.
+
+396
+00:22:27,159 --> 00:22:31,220
+E então "cardAtIndex" apenas
+me permite pegar a carta para que,
+
+397
+00:22:31,240 --> 00:22:34,220
+por exemplo, eu possa fazer
+o update na UP ou qualquer coisa que
+
+398
+00:22:34,240 --> 00:22:38,019
+eu queira fazer com ela. Eu decidi
+que precisava de uma property,
+
+399
+00:22:38,039 --> 00:22:42,299
+para a pontuação. Ok, obviamente
+meu jogo da memória mantém uma
+
+400
+00:22:42,319 --> 00:22:45,559
+pontuação e eu quero permitir
+que as pessoas saibam qual a pontuação.
+
+401
+00:22:45,579 --> 00:22:48,309
+Uma coisa interessante sobre
+essa property é que ela será
+
+402
+00:22:48,329 --> 00:22:51,749
+read-only. Ok, eu não lembro se...
+Nós falamos sobre isso de
+
+403
+00:22:51,769 --> 00:22:55,009
+read-only em propriedades?
+Eu não consigo lembrar se
+
+404
+00:22:55,029 --> 00:22:58,069
+nós já cobrimos isso, mas
+read-only significa que,
+
+405
+00:22:58,089 --> 00:23:01,589
+da perspectiva da API pública,
+só existe o getter. Não há o setter.
+
+406
+00:23:01,609 --> 00:23:05,279
+Ok, então as pessoas não podem
+setar a pontuação do
+
+407
+00:23:05,299 --> 00:23:07,569
+jogo da memória, o que faz sentido.
+Um jogo da memória mantém
+
+408
+00:23:07,589 --> 00:23:10,569
+uma pontuação. Isso é parte
+do que ele faz. Assim como ele vira
+
+409
+00:23:10,589 --> 00:23:13,069
+as cartas, ele mantém pontuação.
+O que é interessante sobre
+
+410
+00:23:13,089 --> 00:23:16,069
+essa property é que eu, na verdade,
+vou fazer ela ser não-read-only
+
+411
+00:23:16,089 --> 00:23:19,629
+na minha implementação privada.
+Então, logo aqui, no meu
+
+412
+00:23:19,649 --> 00:23:24,480
+CardMatchingGame privado, eu vou
+ter a mesma property,
+
+413
+00:23:24,500 --> 00:23:27,079
+mas eu não vou, eu poderia apenas
+dizer "non-atomic int score".
+
+414
+00:23:27,099 --> 00:23:31,859
+Isso estaria certo, ok?
+Eu acabei de fazer o "score"
+
+415
+00:23:31,879 --> 00:23:35,499
+ter um setter, mas somente para
+ser usado... Só pode ser usado...
+
+416
+00:23:35,519 --> 00:23:38,249
+o compilador vai checar para
+ter certeza de que está sendo chamado
+
+417
+00:23:38,269 --> 00:23:40,849
+só na minha implementação. Na verdade,
+vou por outra palavra aqui
+
+418
+00:23:40,869 --> 00:23:46,299
+"readwrite", o que é o default
+e não é necessário, mas a razão
+
+419
+00:23:46,319 --> 00:23:48,639
+que eu coloquei isso aqui
+é porque eu estou fazendo
+
+420
+00:23:48,659 --> 00:23:52,700
+essa coisa não usual de fazer
+a property que publicamente é
+
+421
+00:23:52,720 --> 00:23:56,049
+read-only ser read-write privadamente.
+Isso é apenas para se alguém
+
+422
+00:23:56,069 --> 00:23:59,049
+ler meu código e ver esse readwrite
+e se perguntarem "por que ele
+
+423
+00:23:59,069 --> 00:24:01,549
+colocou readwrite se é o default",
+elas vão tipo "oh, porque
+
+424
+00:24:01,569 --> 00:24:04,049
+ela é publicamente read-only".
+Vêem? Eu estou apenas tentando
+
+425
+00:24:04,069 --> 00:24:06,299
+ajudar alguém que está lendo
+meu código a talvez entender melhor
+
+426
+00:24:06,319 --> 00:24:09,480
+o que está acontecendo. 
+E o outro método que eu vou ter
+
+427
+00:24:09,500 --> 00:24:13,220
+no meu CardMatchingGame é o seu
+inicializador. Vamos falar
+
+428
+00:24:13,240 --> 00:24:15,589
+um pouco mais sobre inicializadores
+hoje. Nós vimos inicializadores
+
+429
+00:24:15,609 --> 00:24:19,210
+apenas para PlayingCardDeck.
+Ele era só um init "liso".
+
+430
+00:24:19,230 --> 00:24:23,259
+Meu inicializador para o
+CardGame precisa de mais informação.
+
+431
+00:24:23,279 --> 00:24:26,869
+Eu não posso apenas dizer "init".
+Por que, para jogar o jogo, eu preciso
+
+432
+00:24:26,889 --> 00:24:30,309
+de algumas informações a mais.
+Uma coisa que preciso é
+
+433
+00:24:30,329 --> 00:24:33,839
+com quantas cartas você vai
+querer jogar? Ok? Você está jogando
+
+434
+00:24:33,859 --> 00:24:36,460
+com 12 cartas, como aqui,
+ou você está jogando com 52 cartas?
+
+435
+00:24:36,480 --> 00:24:39,759
+Certo, eu preciso saber isso.
+Então eu vou dizer
+
+436
+00:24:39,779 --> 00:24:46,489
+"initWithCardCount:(NSUInteget)count"
+
+
+437
+00:24:46,509 --> 00:24:50,759
+Então meu init, vêem? Tem um
+argumento aqui. Eu também preciso
+
+438
+00:24:50,779 --> 00:24:53,589
+de um maço de cartas para jogar.
+Eu não posso jogar esse jogo de cartas
+
+439
+00:24:53,609 --> 00:24:56,589
+sem um maço de cartas,
+então vou dizer:
+
+440
+00:24:56,609 --> 00:24:59,720
+"usingDeck:(Deck *)deck".
+
+
+441
+00:24:59,740 --> 00:25:04,039
+Ok? Uma coisa que farei aqui,
+até para mostrar pra vocês,
+
+442
+00:25:04,059 --> 00:25:08,269
+bom, vamos colocar Deck aqui em cima,
+para podermos falar isso legalmente,
+
+443
+00:25:08,289 --> 00:25:11,879
+uma coisa que vou fazer, vêem
+como ficou quebrado aqui? Se eu
+
+444
+00:25:11,899 --> 00:25:16,239
+deixar isso maior, ele desquebra.
+Se você colocar um enter aqui
+
+445
+00:25:16,259 --> 00:25:20,200
+ele vai alinhar pelos dois pontos.
+Vêem como ele alinhou
+
+446
+00:25:20,220 --> 00:25:23,539
+pelos dois pontos aqui? Esses
+dois pontos foram alinhados com esse,
+
+447
+00:25:23,559 --> 00:25:26,440
+que é realmente legal. Então
+se você tiver nomes de métodos
+
+448
+00:25:26,460 --> 00:25:29,239
+longos, eu recomendo talvez
+colocar alguns enters,
+
+449
+00:25:29,259 --> 00:25:32,379
+sabe, tecla o return aqui
+apenas para alinhas os
+
+450
+00:25:32,399 --> 00:25:34,769
+dois pontos. Fica mais fácil
+para as pessoas lerem seu código.
+
+451
+00:25:34,789 --> 00:25:39,129
+Ok, você pode fazer isso na
+implementação e interface, ok?
+
+452
+00:25:39,149 --> 00:25:42,789
+Alguém vê porque meu init
+não pode ser simplesmente init
+
+453
+00:25:42,809 --> 00:25:46,609
+para essa classe? Eu não posso fazer
+isso, porque eu não sei quantas
+
+454
+00:25:46,629 --> 00:25:50,359
+cartas ou que deck você quer que
+eu use. Tenho que ter um init
+
+455
+00:25:50,379 --> 00:25:53,609
+para isso e, na verdade, quando
+eu tenho um init que você tem
+
+456
+00:25:53,629 --> 00:25:58,169
+que chamar para fazer sua classe
+funcionar, é requerido, então nós
+
+457
+00:25:58,189 --> 00:26:05,029
+chamamos isso de "designated
+initializer", ok? E não há como
+
+458
+00:26:05,049 --> 00:26:08,470
+falar pro Objective-C que esse
+é seu "designated initializer".
+
+459
+00:26:08,490 --> 00:26:10,769
+Você pode apenas avisar isso para
+as pessoas que vão usar sua classe,
+
+460
+00:26:10,789 --> 00:26:13,289
+usando seu comentário. Então
+você quer ter esse comentário,
+
+461
+00:26:13,309 --> 00:26:16,489
+"designated initializer", para
+ser o seu inicializador
+
+462
+00:26:16,509 --> 00:26:21,809
+designado, aquele que precisa
+ser chamado em todas as suas
+
+463
+00:26:21,829 --> 00:26:24,309
+classes que tem um inicializador,
+nem todas suas classes vão ter.
+
+464
+00:26:24,329 --> 00:26:26,809
+Até agora, as únicas classes que
+tem inicializadores aqui, é essa
+
+465
+00:26:26,829 --> 00:26:29,809
+e PlayingCardDeck.
+As outras não tem, então
+
+466
+00:26:29,829 --> 00:26:32,559
+eu não tenho isso. É possível
+ter outros inicializadores.
+
+467
+00:26:32,579 --> 00:26:35,960
+Nós chamamos eles de
+"inicializadores convenientes".
+
+468
+00:26:35,980 --> 00:26:38,999
+Em outras palavras, eles existem
+apenas por conveniência.
+
+469
+00:26:39,019 --> 00:26:42,599
+Eles teriam que chamar esse
+designated initializer nas
+
+470
+00:26:42,619 --> 00:26:44,779
+suas implementações, pois tudo
+tem que passar pelo
+
+471
+00:26:44,799 --> 00:26:45,779
+designated initializer.
+
+
+472
+00:26:45,799 --> 00:26:49,769
+Todo mundo entende isso? É como
+se fosse um ponto único de contato.
+
+473
+00:26:49,789 --> 00:26:50,769
+Sim?
+
+
+474
+00:26:50,789 --> 00:26:53,769
+>> [Estudante perguntando] 
+
+475
+00:26:53,789 --> 00:26:55,019
+[estudante perguntando]
+
+
+476
+00:26:55,039 --> 00:26:58,019
+>> Arram, a pergunta é, e se
+eu tentar chamar o init
+
+477
+00:26:58,039 --> 00:27:01,019
+logo aqui? Bom eu... nesse caso
+eu teria um objeto malformado
+
+478
+00:27:01,039 --> 00:27:03,819
+porque ele não saberia
+quantas cartas ou algo assim.
+
+479
+00:27:03,839 --> 00:27:07,809
+Na verdade, eu deveria sobrescrever
+o init e retornar nil. É isso
+
+480
+00:27:07,829 --> 00:27:10,599
+o que eu deveria fazer aqui.
+Eu não vou fazer isso nessa demo
+
+481
+00:27:10,619 --> 00:27:13,099
+Eu vou manter isso aqui
+racional. Mas isso é
+
+482
+00:27:13,119 --> 00:27:15,849
+provavelmente o que eu deveria fazer,
+porque se você chamar o init,
+
+483
+00:27:15,869 --> 00:27:19,099
+você não vai ter um objeto bom.
+Então deve retornar nil.
+
+484
+00:27:19,119 --> 00:27:22,099
+E lembrem-se o que eu falei, se
+você chamar um inicializador
+
+485
+00:27:22,119 --> 00:27:24,849
+e ele falhar na inicialização,
+ele deve retornar nil. Vamos olhar
+
+486
+00:27:24,869 --> 00:27:27,349
+a implementação dessa coisa.
+Ok, eu vou copy e paste
+
+487
+00:27:27,369 --> 00:27:30,349
+ele aqui. Bom, eu poderai
+apenas começar a digitar
+
+488
+00:27:30,369 --> 00:27:33,609
+e o Xcode teria preenchido.
+Assim como o inicializador
+
+489
+00:27:33,629 --> 00:27:36,149
+que fizemos para o PlayingCardDeck.
+A primeira coisa que
+
+490
+00:27:36,169 --> 00:27:41,649
+sempre fazemos é "self = [super init]".A
+Agora, esse e meu designated
+
+491
+00:27:41,669 --> 00:27:45,720
+initializer, então eu preciso
+chamar os designated initializers
+
+492
+00:27:45,740 --> 00:27:49,639
+das minhas superclasses a partir
+do meu designated initializer,
+
+493
+00:27:49,659 --> 00:27:52,679
+isso é um regra, ok? Se você implementa,
+quando você implementa o seu próprio
+
+494
+00:27:52,699 --> 00:27:55,779
+designated initializer, você tem
+que chamar o designated initializer
+
+495
+00:27:55,799 --> 00:28:00,059
+das sua superclasse. Se você está
+implementando um convenient initializer
+
+496
+00:28:00,079 --> 00:28:04,239
+você chama o seu próprio
+designated initializer. Então você
+
+497
+00:28:04,259 --> 00:28:09,669
+diria "self = [self designated
+initializer]". Mas aqui, esse é
+
+498
+00:28:09,689 --> 00:28:12,419
+nosso designated initializer,
+então eu preciso chamar o designated
+
+499
+00:28:12,439 --> 00:28:16,079
+initializer da minha superclasse.
+Minha superclasse é NSObject.
+
+500
+00:28:16,099 --> 00:28:20,230
+E o designated initializer de
+NSObject é o init. Todo mundo ok
+
+501
+00:28:20,250 --> 00:28:26,549
+com isso? Faz sentido? Então
+quando nós fazemos isso, if self,
+
+502
+00:28:26,569 --> 00:28:29,849
+daí nós vamos nos inicializar
+e nós vamos retornar self.
+
+503
+00:28:29,869 --> 00:28:34,319
+Então se por alguma razão
+o NSObject retornou nil do seu
+
+504
+00:28:34,339 --> 00:28:36,919
+designated initializer, nós não
+faríamos isso e nós iríamos
+
+505
+00:28:36,939 --> 00:28:39,960
+retornar nil. E nós podemos
+nos setar para nil logo aqui
+
+506
+00:28:39,980 --> 00:28:42,999
+se alguma coisa der errado,
+e as vezes pode acontecer.
+
+507
+00:28:43,019 --> 00:28:46,119
+Nesse mesmo. Esse objeto é parte
+do motivo que eu fiz isso,
+
+508
+00:28:46,139 --> 00:28:48,869
+porque algo pode dar errado com
+esse inicializador. Então vamos
+
+509
+00:28:48,889 --> 00:28:52,210
+dar uma olhada no código para esse
+inicializador e podemos ver o que
+
+510
+00:28:52,230 --> 00:28:57,759
+pode dar errado. Tudo que esse
+inicializador precisa fazer é
+
+511
+00:28:57,779 --> 00:29:02,529
+distribuir "count" cartas desse deck
+para serem usadas no jogo e
+
+512
+00:29:02,549 --> 00:29:05,599
+armazená-las em alguma estrutura
+de dados interna. Então, esse
+
+513
+00:29:05,619 --> 00:29:07,999
+jogo da memória precisa de uma
+estrutura de dados internas para
+
+514
+00:29:08,019 --> 00:29:11,569
+suas cartas, as cartar que
+estão no jogo. Então vamos fazer
+
+515
+00:29:11,589 --> 00:29:14,200
+isso primeiro. Eu vou dizer
+"@property (strong, nonatomic)",
+
+516
+00:29:14,220 --> 00:29:21,619
+vou fazer isso ser um NSMutableArray
+de "cards", ok?
+
+517
+00:29:21,639 --> 00:29:24,759
+Perceberam esse pequeno comentário
+logo do lado de "card"? Não há como,
+
+518
+00:29:24,779 --> 00:29:28,499
+em Objective-C, especificar
+de que classe são os objetos que
+
+519
+00:29:28,519 --> 00:29:31,480
+estão nesse array. Eles podem ser
+qualquer classe de objetos. Qualquer
+
+520
+00:29:31,500 --> 00:29:35,909
+mix de quaisquer classes. Uma
+zona completa no array. Então,
+
+521
+00:29:35,929 --> 00:29:38,429
+nós colocamos esse comentariozinho
+aqui, assim qualquer um que ler nosso
+
+522
+00:29:38,449 --> 00:29:43,210
+código sabera, ok, "eu previ que
+sempre teriam cartas nesse array".
+
+523
+00:29:43,230 --> 00:29:48,439
+Ok, faz sentido? Percebam que
+eu não falei nada de PlayingCard,
+
+524
+00:29:48,459 --> 00:29:51,739
+é só de Card. Depende de
+qual deck eu passei
+
+525
+00:29:51,759 --> 00:29:54,739
+assim como que tipo de cartas
+eles vão ter. Meu jogo é
+
+526
+00:29:54,759 --> 00:29:56,989
+bem genérico. Ele não sabe
+nada sobre cartas de jogo
+
+527
+00:29:57,009 --> 00:29:59,839
+ou sobre alguma carta específica,
+ele sabe somebte sobre
+
+528
+00:29:59,859 --> 00:30:02,839
+cartas no geral e eles podem
+fazer pares enquanto as cartas
+
+529
+00:30:02,859 --> 00:30:05,339
+souberem como implementar o
+método "match", certo?
+
+530
+00:30:05,359 --> 00:30:09,829
+Tudo que eu preciso fazer é
+"(for int i = 0; i < count ...
+
+531
+00:30:09,849 --> 00:30:13,749
+i ++)", ok? Então, estou
+fazendo essa contagem
+
+532
+00:30:13,769 --> 00:30:17,970
+como um "for" normal.
+E eu vou apenas dizer:
+
+533
+00:30:17,990 --> 00:30:23,689
+"Card *card = [deck drawRandomCard]"
+Oops, eu vou fazer
+
+534
+00:30:23,709 --> 00:30:26,519
+muito disso. Eu acidentalmente
+digitei muito desses,
+
+535
+00:30:26,539 --> 00:30:30,210
+porque o Xcode tenta me ajudar
+demais. Então é só isso,
+
+536
+00:30:30,230 --> 00:30:33,220
+Esse deck, comprando uma
+carta aleatória daqui, ok?
+
+537
+00:30:33,240 --> 00:30:38,659
+E então eu vou dizer apenas
+"self.cards[i] = card",
+
+538
+00:30:38,679 --> 00:30:44,089
+bom, seu eu vou fazer isso,
+o que eu preciso pra esse cara?
+
+539
+00:30:44,109 --> 00:30:50,429
+Ninguém? Instanciação lazy, sim
+"lazy instantiation".
+
+540
+00:30:50,449 --> 00:30:55,329
+Certo? Porque se isso é nil,
+então isso vai ser nada,
+
+541
+00:30:55,349 --> 00:30:57,829
+ok? Porque isso é
+basicamente o mesmo que dizer,
+
+542
+00:30:57,849 --> 00:31:03,079
+hm, "[objeto setObjectAtIndex...]"
+ou "insertObjectAtIndex". Então
+
+543
+00:31:03,099 --> 00:31:06,299
+isso será apenas uma mensagem
+enviada para o nada se isso
+
+544
+00:31:06,319 --> 00:31:08,549
+for nil. Então é melhor que façamos
+nossa lazy instantiation.
+
+545
+00:31:08,569 --> 00:31:16,960
+Mutable array... cards...
+if !cards... então cards = NSMutableArray...
+
+546
+00:31:16,980 --> 00:31:22,220
+Alloc... init... e retorno cards.
+Ok, tomara que vocês todos
+
+547
+00:31:22,240 --> 00:31:24,720
+estejam acostumados a fazer
+lazy instantiation, mesmo que
+
+548
+00:31:24,740 --> 00:31:27,470
+nenhum de vocês tenha se voluntariado,
+mas é isso que precisávamos aqui.
+
+549
+00:31:27,490 --> 00:31:29,970
+Você teve que fazer isso no seu
+homework. Tomara que vocês estejam
+
+550
+00:31:29,990 --> 00:31:32,970
+se acostumando com isso. Agora,
+"self.cards" vai sempre, na pior
+
+551
+00:31:32,990 --> 00:31:37,329
+das hipóteses, retornar um
+array vazio. Ok, no pior caso.
+
+552
+00:31:37,349 --> 00:31:40,369
+E feito isso uma vez, isso aqui
+nunca mais vai ser "!_cards",
+
+553
+00:31:40,389 --> 00:31:43,509
+então vamos apenas executar essa
+parte logo aqui. Isso só vai
+
+554
+00:31:43,529 --> 00:31:48,710
+acontecer uma vez, ok? Então
+está tudo certo, mas um problema pode
+
+555
+00:31:48,730 --> 00:31:52,169
+acontecer aqui dentro. O que
+acontece se nós ficarmos
+
+556
+00:31:52,189 --> 00:31:56,970
+sem cartas? E se, digamos, 
+initWithCardCount:100 usando
+
+557
+00:31:56,990 --> 00:32:00,299
+um PlayingCardDeck? Bom, existem
+apenas 52 cartas em um deck.
+
+558
+00:32:00,319 --> 00:32:04,819
+Então, eu não consigo comprar 100
+cartas daqui. E agora? Ok, agora eu
+
+559
+00:32:04,839 --> 00:32:08,710
+tenho um jogo da memória
+mal-formado. Ok, esse é um caso
+
+560
+00:32:08,730 --> 00:32:12,579
+onde nós queremos retornar nil
+do nosso init. Porque nós
+
+561
+00:32:12,599 --> 00:32:16,809
+não podemos inicializar, dado os
+argumentos que foram passados.
+
+562
+00:32:16,829 --> 00:32:20,659
+Então eu vou dizer aqui: "if card",
+ok? se eu for capaz de comprar
+
+563
+00:32:20,679 --> 00:32:24,379
+uma carta aleatória, então eu
+a coloco aqui. Caso contrário,
+
+564
+00:32:24,399 --> 00:32:29,869
+"self = nil", e dou um break
+nesse for. Ok, todo mundo
+
+565
+00:32:29,889 --> 00:32:33,839
+entendeu isso? Alguma pergunta
+sobre isso? Fiquem à vontade para
+
+566
+00:32:33,859 --> 00:32:36,289
+me parar se vocês quiserem:
+"oh, não entendi isso", ok?
+
+567
+00:32:36,309 --> 00:32:38,899
+Estamos apenas tendo certeza que
+aqui vamos dar um break aqui
+
+568
+00:32:38,919 --> 00:32:41,289
+e retornar nul caso nós não
+consigamos comprar todas as cartas. Sim?
+
+569
+00:32:41,309 --> 00:32:50,470
+>> [Estudante perguntando]
+
+
+570
+00:32:50,490 --> 00:32:54,449
+>> A pergunta é: "eu posso apenas
+ter um assert?" E sim,
+
+571
+00:32:54,469 --> 00:32:58,239
+existem asserts em Objective-C.
+Eu poderia, mas...
+
+572
+00:32:58,259 --> 00:33:00,789
+quero dizer, eu poderia ter
+um assert e basicamente
+
+573
+00:33:00,809 --> 00:33:04,480
+crashar meu app, o que na verdade
+não é uma má idéia. Alguns podem
+
+574
+00:33:04,500 --> 00:33:07,230
+argumentar que se alguém chamar
+isso com as coisas erradas, você
+
+575
+00:33:07,250 --> 00:33:10,230
+deveria crashar seu app. Ter um
+assert e crashar e essa é uma
+
+576
+00:33:10,250 --> 00:33:13,980
+boa maneira de fazer também. Mas,
+novamente, eu só quero mostrar
+
+577
+00:33:14,000 --> 00:33:16,730
+uma demo retornando nil de um init,
+quando você não pode inicializar.
+
+578
+00:33:16,750 --> 00:33:19,230
+Então, sim, você pode "asserto".
+Provavelmente a pessoa que chamou
+
+579
+00:33:19,250 --> 00:33:21,980
+isso poderia colocar um assert
+dizendo "initWithCardCount:usingDeck"
+
+580
+00:33:22,000 --> 00:33:24,489
+e se isso retornasse nil,
+então faria o assert. "Ah, não pude
+
+581
+00:33:24,509 --> 00:33:27,389
+criar o deck", certo? E ele
+crasharia também. Então a pergunta
+
+582
+00:33:27,409 --> 00:33:30,139
+é: quão longe você estaria indo
+se forçasse os asserts?
+
+583
+00:33:30,159 --> 00:33:33,699
+E isso meio que depende em
+quão reusável você quer que
+
+584
+00:33:33,719 --> 00:33:36,199
+um objeto seja. Um objeto altamente
+reusável? Provavlemente não quer
+
+585
+00:33:36,219 --> 00:33:38,720
+ter asserts que causam crash
+no meio, ok? Objetos
+
+586
+00:33:38,740 --> 00:33:41,710
+menos reusáveis com ocontrollers,
+eles tem mais cara de quererem
+
+587
+00:33:41,730 --> 00:33:46,230
+ter asserts neles, certo?
+É aquela história de 
+
+588
+00:33:46,250 --> 00:33:49,879
+a arte de programar. Então não
+seja tão religioso em relação a isso.
+
+589
+00:33:49,899 --> 00:33:55,449
+Então esse é o init e vamos fazer
+esse cara aqui, cardAtIndex,
+
+590
+00:33:55,469 --> 00:33:58,710
+porque é realmente fácil. Percebam
+que o Objective-C sabe que
+
+591
+00:33:58,730 --> 00:34:02,059
+isso é um método, então mesmo que
+eu comece a digitá-lo, tão logo
+
+592
+00:34:02,079 --> 00:34:05,059
+eu comece... algo assim, ele vai dizer
+"oh, cardAtIndex".
+
+593
+00:34:05,079 --> 00:34:08,619
+Então eu dou apenas um TAB aqui,
+eu poderia dizer apenas: 
+
+594
+00:34:08,639 --> 00:34:16,009
+"return self.cards[index]". Oops,
+muitos colchetes de novo.
+
+595
+00:34:16,029 --> 00:34:20,920
+Ok, novamente eu vou tentar
+me proteget de mim mesmo aqui.
+
+596
+00:34:20,940 --> 00:34:23,980
+E se essa pessoa passar 1000
+e eu só tiver 50 cartas?
+
+597
+00:34:24,000 --> 00:34:31,440
+Então eu vou dizer...
+"return (index < [self.cards ...
+
+598
+00:34:31,460 --> 00:34:37,849
+Então eu retorno. Oops,
+então eu retorno isso.
+
+599
+00:34:37,869 --> 00:34:40,819
+Caso contrário nós vamos apenas
+retornar nil. Então se você
+
+600
+00:34:40,839 --> 00:34:43,989
+pedir uma carta num índice que é
+maior que o meu count, eu vou
+
+601
+00:34:44,009 --> 00:34:47,239
+apenas retornar nil. Agora,
+uma coisa que quero mostrar
+
+602
+00:34:47,259 --> 00:34:50,329
+aqui, porque eu meio que deixei
+vocês desviarem da última vez.
+
+603
+00:34:50,349 --> 00:34:53,940
+"count" é o método no NSArray
+que diz quantas coisas você
+
+604
+00:34:53,960 --> 00:34:57,069
+tem no array. Eu na verdade
+usei a "dot notation" para chamá-lo
+
+605
+00:34:57,089 --> 00:35:00,340
+da última vez. Porque eu estava
+pensando comigo: ah, sim. "count"
+
+606
+00:35:00,360 --> 00:35:03,090
+é uma property de um array. Mas
+"count" na verdade não é uma
+
+607
+00:35:03,110 --> 00:35:06,150
+property do array. É somente um
+método, ok? Agora, por que a
+
+608
+00:35:06,170 --> 00:35:09,349
+"dot notation" funciona? Porque
+um getter para uma property chamada
+
+609
+00:35:09,369 --> 00:35:13,110
+"count" seria escrita exatamente
+como o método "count", ok?
+
+610
+00:35:13,130 --> 00:35:16,090
+Então o complilador vai na verdade
+permitir que você use a "dot notation"
+
+611
+00:35:16,110 --> 00:35:18,719
+mesmo que não seja uma @property.
+Se tem um método que parece
+
+612
+00:35:18,739 --> 00:35:21,469
+com um getter que faz sentido,
+ele vai chamá-lo.
+
+613
+00:35:21,489 --> 00:35:24,219
+Mas você não deveria usar a
+"dot notatio" nesse caso.
+
+614
+00:35:24,239 --> 00:35:27,130
+Então, a razão pela qual "count"
+não é uma property é porque
+
+615
+00:35:27,150 --> 00:35:30,090
+propriedades geralmente não devem
+ser coisas que necessitam cálculos,
+
+616
+00:35:30,110 --> 00:35:34,269
+ou muitos cálculos a serem feitos.
+Ok, se você vai chamar
+
+617
+00:35:34,289 --> 00:35:36,440
+um método que na verdade
+vai calcular alguma coisa
+
+618
+00:35:36,460 --> 00:35:38,749
+então ele deveria ser um método.
+Provavelmente não um getter
+
+619
+00:35:38,769 --> 00:35:42,009
+de uma property. Ok, novamente,
+Isso é aquela coisa de "a arte
+
+620
+00:35:42,029 --> 00:35:44,599
+de programar". Se você não entende
+o que eu estou falando, não
+
+621
+00:35:44,619 --> 00:35:49,269
+se preocupe muito, mas "count"
+pode, conceitualmente, ter que
+
+622
+00:35:49,289 --> 00:35:52,019
+olhar seu array e fazer alguns
+cálculos para ver quantos
+
+623
+00:35:52,039 --> 00:35:55,269
+objetos tem lá, então eles não
+fizeram dele uma property.
+
+624
+00:35:55,289 --> 00:35:58,519
+Posso dizer isso porque, se eu
+segurar o tecla ALT e mover o mouse
+
+625
+00:35:58,539 --> 00:36:01,090
+por cima... lembram-se do lance
+da documentação? E então
+
+626
+00:36:01,110 --> 00:36:04,759
+click. Vêem a declaração do
+"count"? Ele não fala
+
+627
+00:36:04,779 --> 00:36:09,409
+"@property (readonly) ... count",
+ele fala "NSUInteger count".
+
+628
+00:36:09,429 --> 00:36:14,449
+Ok? Todo mundo bem em relação
+a isso? Ok, vocês aprenderam
+
+629
+00:36:14,469 --> 00:36:17,119
+várias coisinhas no caminho aqui.
+Esse foi o "cardAtIndex",
+
+630
+00:36:17,139 --> 00:36:21,549
+agora o último aqui é o
+"flipCardAtIndex". Agora,
+
+631
+00:36:21,569 --> 00:36:24,949
+"flipCardAtIndex", esse são
+as entranhas do nosso jogo
+
+632
+00:36:24,969 --> 00:36:27,599
+da memória. Esse é cara que
+vai, na verdade, virar a carta,
+
+633
+00:36:27,619 --> 00:36:30,849
+então esse é o cara que tem
+que fazer o pareamento também.
+
+634
+00:36:30,869 --> 00:36:34,349
+Agora, eu vou seguir e digitar
+tudo isso aqui e eu não quero
+
+635
+00:36:34,369 --> 00:36:37,349
+que vocês se percam muito
+com detalhes do algoritmo
+
+636
+00:36:37,369 --> 00:36:40,049
+ou algo assim. Vocês podem
+olhar isso offline.
+
+637
+00:36:40,069 --> 00:36:43,549
+O que eu quero de fato é que
+vocês tenham feeling de
+
+638
+00:36:43,569 --> 00:36:46,549
+como é a cara do Objective-C.
+Ok, eu vou digitar
+
+639
+00:36:46,569 --> 00:36:50,049
+um método que tem um monte
+de if's e for's e coisas assim.
+
+640
+00:36:50,069 --> 00:36:53,549
+Assim vocês podem tipo
+ir pegando o jeito. Vocês podem sempre
+
+641
+00:36:53,569 --> 00:36:56,049
+voltar atrás e tentar entender
+como isso está implementando
+
+642
+00:36:56,069 --> 00:36:58,049
+de fato o jogo de cartas.
+Embora seja muito direto.
+
+643
+00:36:58,069 --> 00:37:01,299
+Então a primeira coisa
+que eu vou fazer é pegar carta
+
+644
+00:37:01,319 --> 00:37:04,299
+nesse índice. Então eu vou fizer
+"card = [self cardAtIndex:index]",
+
+645
+00:37:04,319 --> 00:37:08,349
+ok? Então nós estamos
+virando a carta naquele
+
+646
+00:37:08,369 --> 00:37:11,599
+índice, então eu vou pegá-la.
+Agora, eu vou me certificar
+
+647
+00:37:11,619 --> 00:37:14,759
+que existe uma carta nesse índice,
+e que ela não é injogável.
+
+648
+00:37:14,779 --> 00:37:21,869
+Ok, então se não houverem cartas
+nesse índice, ou seja, se alguém
+
+649
+00:37:21,889 --> 00:37:24,619
+tentar virar uma carta que é
+maior que o número de cartas
+
+650
+00:37:24,639 --> 00:37:27,869
+que nós temos ou se tentarem
+virar uma carta que
+
+651
+00:37:27,889 --> 00:37:30,869
+é injogável, eu não vou
+permitir que façam isso. Então
+
+652
+00:37:30,889 --> 00:37:33,869
+eu vou apenas não fazer nada
+nesse caso. Eu vou fazer algo
+
+653
+00:37:33,889 --> 00:37:36,369
+apenas se tiver uma carta
+e ela for jogável.
+
+654
+00:37:36,389 --> 00:37:39,119
+Se isso for verdade, então
+eu vou apenas virar a carta, ok?
+
+655
+00:37:39,139 --> 00:37:42,119
+Então fou dizer:
+"card.faceUp = !card.isFaceUp".
+
+656
+00:37:42,139 --> 00:37:45,679
+É a mesma coisa que fizemos
+lá atrás no nosso controller.
+
+657
+00:37:45,699 --> 00:37:48,929
+Na verdade lá fizemos apenas com
+o "selected" porque estávamos
+
+658
+00:37:48,949 --> 00:37:52,039
+mexendo com a UI e não
+com o model. Mas nesse caso
+
+659
+00:37:52,059 --> 00:37:55,759
+é isso que acontece aqui.
+Se tivermos uma carta e ela
+
+660
+00:37:55,779 --> 00:37:59,079
+for jogável, nós vamos virá-la.
+Ok? Mas tem mais coisa aqui,
+
+661
+00:37:59,099 --> 00:38:02,199
+porque e se virou a carta
+e ela fez par com uma
+
+662
+00:38:02,219 --> 00:38:05,339
+carta que já estava virada pra cima?
+Ok? Nós precisamos colocar essa
+
+663
+00:38:05,359 --> 00:38:08,589
+lógica aqui. Como nós vamos
+fazer isso? Bom, para fazer isso,
+
+664
+00:38:08,609 --> 00:38:12,089
+primeiro de tudo, precisamos ver
+se existe alguma outra carta
+
+665
+00:38:12,109 --> 00:38:15,589
+no jogo que está virada pra cima.
+Vou fazer isso olhando
+
+666
+00:38:15,609 --> 00:38:18,589
+para as outras cartas nas
+minhas cartas. Vocês vêem como
+
+667
+00:38:18,609 --> 00:38:21,589
+Objective-C tem esse lance de
+se parecer com inglês?
+
+668
+00:38:21,609 --> 00:38:25,569
+"Para outras cartas nas
+minhas cartas"? Inglês meio informal,
+
+669
+00:38:25,589 --> 00:38:29,960
+mas meio que tentamos ler
+dessa forma. E vou dizer:
+
+670
+00:38:29,980 --> 00:38:34,869
+se nós acharmos outra carta que
+está de face para cima, e ela é
+
+671
+00:38:34,889 --> 00:38:41,599
+"não injogável", ok? Então nós
+achamos outra carta que ou
+
+672
+00:38:41,619 --> 00:38:44,849
+faz um par e nós vamos ganhar
+uns pontos, ou não faz par
+
+673
+00:38:44,869 --> 00:38:47,420
+e nós temos que ter uma
+penalidade para isso,
+
+674
+00:38:47,440 --> 00:38:50,920
+se você virar duas cartas
+ao mesmo tempo e elas não
+
+675
+00:38:50,940 --> 00:38:53,920
+fizerem par, você recebe uma
+penalidade. Mas não vamos fazer 
+
+676
+00:38:53,940 --> 00:38:56,670
+isso agora. Então achamos
+outra carta. Nós vamos permitir
+
+677
+00:38:56,690 --> 00:39:00,170
+apenas uma carta, uma outra carta
+ficar virada pra cima por vez,
+
+678
+00:39:00,190 --> 00:39:03,170
+Porque se você virar uma segunda
+carta e não fizer par, eu vou
+
+679
+00:39:03,190 --> 00:39:05,670
+virar as não-pareadas para baixo.
+Então vai ter sempre no máximo
+
+680
+00:39:05,690 --> 00:39:08,920
+uma carta virada pra cima
+até você virar uma segunda,
+
+681
+00:39:08,940 --> 00:39:12,170
+e então elas ou fazem par e daí
+você vai virar outra. Então nunca
+
+682
+00:39:12,190 --> 00:39:15,920
+vai ter mais do que uma carta
+virada pra cima. Esse é um
+
+683
+00:39:15,940 --> 00:39:18,920
+loop "for" para olhar as cartas,
+mas uma vez que nós a achamos,
+
+684
+00:39:18,940 --> 00:39:21,920
+nós podemos dar um break, porque
+nós sabemos que nunca vai ter
+
+685
+00:39:21,940 --> 00:39:24,920
+mais de uma carta. Então, achamos
+outra carta, vamos ver se faz par.
+
+686
+00:39:24,940 --> 00:39:27,670
+Eu vou dizer: int matchScore...
+igual a, essa carta,
+
+687
+00:39:27,690 --> 00:39:30,420
+a carta que acabamos de virar,
+faz par com "otherCard", mas
+
+688
+00:39:30,440 --> 00:39:33,170
+na verdade nós não podemos
+fazer isso, ok? isso é um warning.
+
+689
+00:39:33,190 --> 00:39:36,469
+Alguém vê porque isso não é bom?
+Porque "match", lembram-se?
+
+690
+00:39:36,489 --> 00:39:39,529
+Lembram-se o que "match" recebe
+como argumento? Vamos ver, bom,
+
+691
+00:39:39,549 --> 00:39:42,809
+vamos aqui no navegador
+e dar uma olhada no "match",
+
+692
+00:39:42,829 --> 00:39:47,730
+aqui está. Match recebe um array
+de outras cartas. Porque
+
+693
+00:39:47,750 --> 00:39:50,190
+"match" pode ser feito contra
+múltiplas cartas. Mesmo que
+
+694
+00:39:50,210 --> 00:39:53,239
+nosso jogo de cartas pareie
+com apenas uma outra carta.
+
+695
+00:39:53,259 --> 00:39:56,279
+Você pode imaginar um jogo como
+o que tem no homework de vocês,
+
+696
+00:39:56,299 --> 00:40:00,650
+onde ele faz par com múltiplas cartas.
+Ok, então nós temos esse mecanismo
+
+697
+00:40:00,670 --> 00:40:04,480
+já implantado na nossa carta e
+então precisamos nos certificar que
+
+698
+00:40:04,500 --> 00:40:07,230
+chamamos "match" passando a coisa certa.
+Vamos voltar ao nosso jogo,
+
+699
+00:40:07,250 --> 00:40:11,940
+Arrumar um espaço e, para
+fazer disso um array,
+
+700
+00:40:11,960 --> 00:40:14,869
+tudo que preciso é adicionar
+arroba, abre colchetes,
+
+701
+00:40:14,889 --> 00:40:15,869
+fecha colchetes, ok?
+
+
+702
+00:40:15,889 --> 00:40:21,009
+Todo mundo lembra dessa mágica?
+É a mesma coisa que usamos para
+
+703
+00:40:21,029 --> 00:40:23,809
+criar rankStrings, lembram-se?
+Arroba, abre colchetes,
+
+704
+00:40:23,829 --> 00:40:26,559
+e então uma
+lista de objeto, o que
+
+705
+00:40:26,579 --> 00:40:30,940
+signifca criar um array agora,
+com esses objetos nele.
+
+706
+00:40:30,960 --> 00:40:33,940
+Então aqui eu estou apenas
+criando um array. Nós tínhamos strings
+
+707
+00:40:33,960 --> 00:40:36,940
+no outro array. Dessa ve
+temos uma carta aqui.
+
+708
+00:40:36,960 --> 00:40:40,139
+Perfeitamente legal. Ok, eu poderia
+por vírgula e alguma outra coisa
+
+709
+00:40:40,159 --> 00:40:43,139
+e fazer um array com mais
+de um item. Então esse é um array
+
+710
+00:40:43,159 --> 00:40:46,139
+com apenas uma coisa nele, que é
+essa carta para fazer o par.
+
+711
+00:40:46,159 --> 00:40:48,860
+Alguma pergunta sobre isso? Isso
+é novo no iOS 6, a propósito,
+
+712
+00:40:48,880 --> 00:40:52,789
+esse negócio de "@[ ]". É uma
+sintaxe realmente legal. Eu
+
+713
+00:40:52,809 --> 00:40:56,400
+pessalmente gosto dela. Então se
+fez o par, se o "match" for
+
+714
+00:40:56,420 --> 00:41:00,099
+não-zero, ok, nós meio que definimos
+que o "match" iria retornar
+
+715
+00:41:00,119 --> 00:41:02,960
+um valor não-zero, que seria
+a qualidade do match,
+
+716
+00:41:02,980 --> 00:41:05,099
+mas se não fizesse o match,
+ele retornaria zero.
+
+717
+00:41:05,119 --> 00:41:08,519
+Isso é apenas parte da semântica
+da nossa carta. Se fizer o par
+
+718
+00:41:08,539 --> 00:41:11,309
+então nós vamos virar ambas
+essas cartas de face para baixo
+
+719
+00:41:11,329 --> 00:41:16,119
+e nos dar alguns pontos.
+Então, "card.isUnplayable = YES"
+
+720
+00:41:16,139 --> 00:41:22,460
+Oops, YES... eu faço isso também...
+Muito rápido na tecla shift.
+
+721
+00:41:22,480 --> 00:41:26,039
+Ok? Então virei
+as duas cartas... hmmm,
+
+722
+00:41:26,059 --> 00:41:28,659
+não, na verdade eu não as virei.
+Eu estou apenas as fazendo
+
+723
+00:41:28,679 --> 00:41:30,909
+injogáveis. Então elas vão continuar
+ficando de face pra cima, na verdade.
+
+724
+00:41:30,929 --> 00:41:33,409
+Mas elas não vão mais ser jogáveis,
+porque eu já fiz par com elas.
+
+725
+00:41:33,429 --> 00:41:37,639
+E então eu vou apenas
+aumentar minha pontuação com o
+
+726
+00:41:37,659 --> 00:41:41,920
+valor do match. Entretanto, esse
+"match score" que voltou das cartas,
+
+727
+00:41:41,940 --> 00:41:47,839
+meu jogo poderia querer...
+querer dar mais peso para um par,
+
+728
+00:41:47,859 --> 00:41:51,279
+e menos peso para um erro ou
+vice-versa. Então eu vou na verdade
+
+729
+00:41:51,299 --> 00:41:55,110
+multiplicá-lo por uma constante.
+Eu vou chamar MATCH_SCORE,
+
+730
+00:41:55,130 --> 00:41:58,730
+Ou, na verdade, eu vou chamá-lo
+de MATCH_BONUS, porque é
+
+731
+00:41:58,750 --> 00:42:02,529
+na verdade um bônus ao "matchScore"
+E então eu vou colocar
+
+732
+00:42:02,549 --> 00:42:09,440
+#define MATCH_BONUS
+e vou fazer MATCH_BONUS
+
+733
+00:42:09,460 --> 00:42:15,569
+igual a... digamos 4 vezes
+a mais do que um match.
+
+734
+00:42:15,589 --> 00:42:18,569
+Então eu vou por um peso
+bem grande no bônus do match,
+
+735
+00:42:18,589 --> 00:42:21,650
+porque eu vou fazer com que
+um erro te custe dois pontos.
+
+736
+00:42:21,670 --> 00:42:25,299
+Eu quero que um par seja
+duas vezes melhor do que um erro,
+
+737
+00:42:25,319 --> 00:42:28,069
+ok? Então, se fizer par, você
+vai ganhar mais pontos.
+
+738
+00:42:28,089 --> 00:42:30,819
+E se você errar, você vai
+perder pontos, mas não tão
+
+739
+00:42:30,839 --> 00:42:38,039
+rapidamente. Então eu vou
+#define um penalty para erro,
+
+740
+00:42:38,059 --> 00:42:42,199
+e eu vou fazer ele ser 2.
+E vocês vão ver aonde e vou usar
+
+741
+00:42:42,219 --> 00:42:45,929
+isso aqui em um segundo.
+Então, se não fizer par, então
+
+742
+00:42:45,949 --> 00:42:50,139
+a "otherCard" não vai ser
+virada pra cima. Ok, eu vou
+
+743
+00:42:50,159 --> 00:42:52,699
+virar a outra carta, a carta que
+não fez par, para baixo
+
+744
+00:42:52,719 --> 00:42:55,639
+de novo, a que você tentou fazer
+o par com ela e não fez.
+
+745
+00:42:55,659 --> 00:42:58,889
+Então eu vou virá-la de volta
+par abaixo. Eu vou deixar
+
+746
+00:42:58,909 --> 00:43:01,889
+a minha carta virada pra cima,
+virar a outra para baixo,
+
+747
+00:43:01,909 --> 00:43:04,889
+e é aqui que eu vou aplicar
+a penalidade de erro, eu vou dizer
+
+748
+00:43:04,909 --> 00:43:09,400
+menos igual ao MISMATCH_PENALTY, ok?
+Então você pode jogar com...
+
+749
+00:43:09,420 --> 00:43:13,159
+o que eu fiz errado aqui?
+Ah, desculpa, "unplayable".
+
+750
+00:43:13,179 --> 00:43:17,059
+Esse é o getter igual a alguma coisa,
+o que eu não gosto, a propósito.
+
+751
+00:43:17,079 --> 00:43:21,999
+Mas, agora sim. Ok, então você
+pode jogar com esse jogo,
+
+752
+00:43:22,019 --> 00:43:24,509
+e no seu homework você pode
+querer que isso seja configurável
+
+753
+00:43:24,529 --> 00:43:27,849
+ao invés de serem
+#defines, certo?
+
+754
+00:43:27,869 --> 00:43:30,739
+Constantes... você pode querê-las
+como sendo propriedades ou
+
+755
+00:43:30,759 --> 00:43:34,059
+algo do tipo. É meio que sua escolha
+definir como você quer 
+
+756
+00:43:34,079 --> 00:43:36,309
+fazer. Mas todo mundo entende
+o que está acontecendo aqui?
+
+757
+00:43:36,329 --> 00:43:39,559
+Se fizermos o par, nós vamos pegar
+o "match score" que recebemos
+
+758
+00:43:39,579 --> 00:43:42,309
+por fazer o par e vamos
+multiplicá-lo por um bônus,
+
+759
+00:43:42,329 --> 00:43:44,559
+caso contrário nós vamos ter
+uma penalidade por ter
+
+760
+00:43:44,579 --> 00:43:47,309
+errado. E se nós acharmos essa
+coisa, daí nós podemos dar um
+
+761
+00:43:47,329 --> 00:43:48,309
+break nesse for.
+
+
+762
+00:43:48,329 --> 00:43:51,559
+Esse break termina esse for, ok,
+e nós fazemos isso somente
+
+763
+00:43:51,579 --> 00:43:57,130
+se nós acharmos outra carta
+virada pra cima e tratamos isso.
+
+764
+00:43:57,150 --> 00:44:03,789
+Então vamos também, eu também quero
+meio que impor um custo para
+
+765
+00:44:03,809 --> 00:44:07,239
+virar cartas. Eu não quero que
+você possa ficar virando e virando
+
+766
+00:44:07,259 --> 00:44:12,190
+e virando. Virar uma carta e então
+virar outra apenas para ver
+
+767
+00:44:12,210 --> 00:44:15,440
+se elas fazem par. Precisa existir
+algum tipo de penalidade.
+
+768
+00:44:15,460 --> 00:44:19,980
+Então se nós acharmos outra carta
+virada pra cima, então, desculpe.
+
+769
+00:44:20,000 --> 00:44:27,569
+Esse aqui.
+[falando baixo...]
+
+770
+00:44:27,589 --> 00:44:34,480
+Eu vou subtrair um custo de virar,
+basicamente, do nosso score. Oops.
+
+771
+00:44:34,500 --> 00:44:39,359
+Então, quando você virar uma carta,
+não importa se faz par ou não,
+
+772
+00:44:39,379 --> 00:44:42,609
+você tem que pagar um custo
+e só vai existir um.
+
+773
+00:44:42,629 --> 00:44:46,109
+Tem um pequeno custo para virar
+cartas. Se eu não colocar esse custo
+
+774
+00:44:46,129 --> 00:44:48,359
+vocÊ vai ficar constantemente
+virando as cartas até
+
+775
+00:44:48,379 --> 00:44:50,609
+você memorizar todas. E então,
+você vai começar a fazer os pares,
+
+776
+00:44:50,629 --> 00:44:54,109
+ok? Então tem um pequeno custo
+para virar as cartas.
+
+777
+00:44:54,129 --> 00:45:10,869
+E, na verdade, eu acho que
+eu coloquei isso no
+
+778
+00:45:10,889 --> 00:45:12,369
+lugar errado, mas, é...
+isso provavelment deve... sim?
+
+779
+00:45:12,389 --> 00:45:13,369
+Vá em frente.
+
+
+780
+00:45:13,389 --> 00:45:15,869
+>> [Estudante perguntando]
+
+781
+00:45:15,889 --> 00:45:18,869
+[estudante perguntando]
+
+782
+00:45:18,889 --> 00:45:19,869
+[estudante perguntando]
+
+
+783
+00:45:19,889 --> 00:45:22,119
+>> Ótima pergunta. Então aqui eu
+estou checando, veja, a razão
+
+784
+00:45:22,139 --> 00:45:25,119
+que "otherCard" nunca poderá
+ser eu mesmo é porque eu
+
+785
+00:45:25,139 --> 00:45:28,369
+só vou fazer isso no caso onde
+"self", desculpe, "card isFaceUp".
+
+786
+00:45:28,389 --> 00:45:31,619
+É "não face-up" na verdade.
+Ok, então eu só vou fazer isso
+
+787
+00:45:31,639 --> 00:45:34,619
+no caso onde eu estiver
+virando a carta para cima. Obrigado.
+
+788
+00:45:34,639 --> 00:45:37,369
+Eu sabia que eu estava esquecendo
+alguma coisa. Vamos colocar isso
+
+789
+00:45:37,389 --> 00:45:40,119
+aqui. Isso faz muito mais sentido.
+Isso aqui, colocando isso
+
+790
+00:45:40,139 --> 00:45:43,409
+aqui, ok? Então nós só vamos fazer
+esse test, checar por um par
+
+791
+00:45:43,429 --> 00:45:46,409
+se nós estivermos virando a carta
+para cima. Então, se a carta...
+
+792
+00:45:46,429 --> 00:45:50,130
+se nós estivermos virando uma
+carta, se ela não está virada pra cima,
+
+793
+00:45:50,150 --> 00:45:53,409
+então nós vamos virá-la pra cima
+e essa é a única hora que nós
+
+794
+00:45:53,429 --> 00:45:55,909
+vamos fazer o "match". Se você
+estiver virando a carta para baixo,
+
+795
+00:45:55,929 --> 00:45:58,659
+de face para baixo, não há razão para
+tentar fazer o par. Isso faz
+
+796
+00:45:58,679 --> 00:46:01,409
+sentido? E então, é quando meu
+"custo de virar" é feito.
+
+797
+00:46:01,429 --> 00:46:04,789
+Pra quem me ajudou com isso,
+muito obrigado. Então só custa
+
+798
+00:46:04,809 --> 00:46:08,039
+algo, você só tem um custo para
+virar se você virou a carta
+
+799
+00:46:08,059 --> 00:46:13,019
+para cima. Virar uma carta de
+face para baixo, não há custo, ok?
+
+800
+00:46:13,039 --> 00:46:16,480
+De novo, os detalhes disso não
+importam muito. Você pode olhar
+
+801
+00:46:16,500 --> 00:46:19,480
+isso depois. O ponto é... é assim
+que, sabe, é a cara do
+
+802
+00:46:19,500 --> 00:46:23,219
+Objective-C. Ele se parece muito
+com C. Você tem alguns colchetes
+
+803
+00:46:23,239 --> 00:46:26,730
+aqui, que você tem que entender,
+você tem algum "for in"
+
+804
+00:46:26,750 --> 00:46:30,839
+acontecendo aqui, mas, basicamente,
+se parece muito com C e
+
+805
+00:46:30,859 --> 00:46:36,249
+ele é muito parecido com C, ok?
+Alguma pergunta sobre isso?
+
+806
+00:46:36,269 --> 00:46:40,539
+Então é isso! Para o model do
+nosso jogo da memória. Nada mais
+
+807
+00:46:40,559 --> 00:46:44,679
+é preciso para fazer o nosso
+jogo da memória. Entretanto,
+
+808
+00:46:44,699 --> 00:46:47,980
+isso não vai funcionar muito bem
+com PlayingCards. E por que
+
+809
+00:46:48,000 --> 00:46:50,730
+não vai funcionar com PlayingCards?
+Vamos dar uma olhada
+
+810
+00:46:50,750 --> 00:46:54,139
+no PlayingCard. Vamos olhar
+a implementação do "match" de
+
+811
+00:46:54,159 --> 00:46:57,849
+PlayingCard. E a resposta é,
+PlayingCard não implementa
+
+812
+00:46:57,869 --> 00:47:02,109
+"match", ok? Então o que acontece
+se você envia "match" para
+
+813
+00:47:02,129 --> 00:47:04,730
+PlayingCard? Bom, ele vai herdar
+de "Card", ok?
+
+814
+00:47:04,750 --> 00:47:08,369
+Aqui está a implementação de "Card".
+E o que "Card" faz é
+
+815
+00:47:08,389 --> 00:47:12,880
+ele dá um ponto se os contents
+forem idênticos. Bom, se você
+
+816
+00:47:12,900 --> 00:47:15,630
+está jogando esse jogo da memória
+com um maço de cartas,
+
+817
+00:47:15,650 --> 00:47:18,380
+você nunca vai fazer um par,
+porque nenhuma das cartas
+
+818
+00:47:18,400 --> 00:47:21,139
+é idêntica. Todas elas são
+diferentes. 52 cartas diferentes.
+
+819
+00:47:21,159 --> 00:47:25,420
+Então nós precisamos de uma versão
+de "match" para PlayingCard que
+
+820
+00:47:25,440 --> 00:47:28,809
+faça par com PlayingCard de um
+modo específico com, digamos,
+
+821
+00:47:28,829 --> 00:47:31,559
+naipes e ranks, ok? Nós vamos
+dar alguns pontos se você fizer par
+
+822
+00:47:31,579 --> 00:47:34,309
+de naipes e vamos dar mais pontos
+ainda se você fizer um par
+
+823
+00:47:34,329 --> 00:47:37,309
+de ranks. Então vamos fazer isso.
+Eu vou voltar aqui para
+
+824
+00:47:37,329 --> 00:47:40,309
+"PlayingCard". Eu vou esconder isso
+aqui pra conseguir mais espaço.
+
+825
+00:47:40,329 --> 00:47:44,799
+Vou colocar logo no começo de
+"PlayingCard". E aqui está o "match".
+
+826
+00:47:44,819 --> 00:47:47,389
+Agora, vocês sabem, eu estou
+sobrescrevendo o "match", então vocês
+
+827
+00:47:47,409 --> 00:47:50,670
+poderiam argumentar que eu deveria
+chamar [super match], mas eu não preciso
+
+828
+00:47:50,690 --> 00:47:53,690
+fazer isso, porque minha classe sabe
+completamente como fazer o "match"
+
+829
+00:47:53,710 --> 00:47:57,150
+de uma maneira melhor que a superclasse
+faz. Porém, uma coisa que farei é
+
+830
+00:47:57,170 --> 00:48:04,900
+eu vou apenas fazer o "match" se
+o "[otherCards count]" for igual a 1.
+
+831
+00:48:04,920 --> 00:48:09,440
+Ok, você poderia imaginar,
+no seu homework talvez,
+
+832
+00:48:09,460 --> 00:48:13,199
+onde se você estiver fazendo o "match"
+de múltiplas cartas, duas outras
+
+833
+00:48:13,219 --> 00:48:16,369
+cartas, você poderia ter, sabe,
+pouquíssimos pontos se duas de três
+
+834
+00:48:16,389 --> 00:48:19,369
+cartas tiverem o mesmo name.
+Muitos pontos se todas
+
+835
+00:48:19,389 --> 00:48:22,119
+as três cartas tiverem o
+mesmo rank, ok?
+
+836
+00:48:22,139 --> 00:48:24,609
+E tudo que estiver entre isso.
+Mas eu só vou fazer o "match"
+
+837
+00:48:24,629 --> 00:48:29,599
+contra uma outra carta. E eu vou
+apenas dizer que... vamos tirar
+
+838
+00:48:29,619 --> 00:48:34,369
+a PlayingCard pra fora do array,
+então card igual a, na verdade,
+
+839
+00:48:34,389 --> 00:48:39,150
+otherCard igual a otherCards...
+e aqui eu vou mostrar a vocês
+
+840
+00:48:39,170 --> 00:48:42,230
+outro método. Eu poderia
+dizer objectAtIndex:0,
+
+841
+00:48:42,250 --> 00:48:47,460
+ok? Eu sei que existe apenas
+uma carta no array.
+
+842
+00:48:47,480 --> 00:48:49,730
+Eu não estaria aqui, caso
+contrário. Mas existe outro
+
+843
+00:48:49,750 --> 00:48:53,230
+método legal no array
+chamado "lastObject". E
+
+844
+00:48:53,250 --> 00:48:56,460
+"lastObject" é o último objeto
+do array. E eu só tenho um
+
+845
+00:48:56,480 --> 00:48:59,460
+objeto no array, então ele vai
+me retornar esse único objeto.
+
+846
+00:48:59,480 --> 00:49:01,960
+Mas existe algo meio que especial
+no "lastObject" e eu vou usar
+
+847
+00:49:01,980 --> 00:49:04,710
+essa oportunidade para
+contar pra vocês, que é
+
+848
+00:49:04,730 --> 00:49:07,710
+"lastObject" nunca te dá um
+"Array index out of bounds" mesmo
+
+849
+00:49:07,730 --> 00:49:11,420
+que o array esteja vazio. Ele só
+retorna nil. Ok, então essa é
+
+850
+00:49:11,440 --> 00:49:14,749
+uma semântica especial do
+método "lastObject" de um
+
+851
+00:49:14,769 --> 00:49:18,039
+array. É diferente de "objectAtIndex:"
+que definitivamente vai
+
+852
+00:49:18,059 --> 00:49:20,940
+crashar seu app com
+"array index out of bounds".
+
+853
+00:49:20,960 --> 00:49:24,609
+Se você cria um array e pede o
+"objectAtIndex:0" e o array
+
+854
+00:49:24,629 --> 00:49:28,019
+está vazio, ele vai crashar,
+certo? Porque não há nenhum
+
+855
+00:49:28,039 --> 00:49:30,999
+objeto no índice zero. Não há
+nenhum objetos lá.
+
+856
+00:49:31,019 --> 00:49:33,999
+O "lastObject" não vai. Então,
+eu só estou colocando isso aqui
+
+857
+00:49:34,019 --> 00:49:36,749
+para que vocês saibam que esse
+método existe e que às vezes
+
+858
+00:49:36,769 --> 00:49:39,749
+pode ser bom escrever uma lógica
+onde ele vai apenas retornar nil
+
+859
+00:49:39,769 --> 00:49:42,499
+no caso de não haver objetos
+ou vai retornar o último objeto
+
+860
+00:49:42,519 --> 00:49:44,999
+no array. Especialmente se você
+estiver falando sobre arrays
+
+861
+00:49:45,019 --> 00:49:47,999
+de uma coisa só, o que não é
+tão incomum, como vocês podem ver aqui.
+
+862
+00:49:48,019 --> 00:49:52,880
+Certo, então eu vou dizer
+if ([otherCard.suit isEqual...
+
+863
+00:49:52,900 --> 00:49:57,960
+toString..." meu naipe, ok?
+Eu sou uma carta, eu sou uma
+
+864
+00:49:57,980 --> 00:50:06,569
+"PlayingCard". Então, eu vou
+dar a pontuação de 1. Então
+
+865
+00:50:06,589 --> 00:50:09,069
+vamos ter uma pequena variável local
+aqui: "score = 0", que vai
+
+866
+00:50:09,089 --> 00:50:13,960
+ser o default. Oops. Um
+"return score"... vai dar uma
+
+867
+00:50:13,980 --> 00:50:20,529
+pontuação de 1, caso contrário,
+se o rank da outra carta for igual
+
+868
+00:50:20,549 --> 00:50:24,599
+ao meu rank, então eu vou dar
+4 pontos e, na verdade, se você 
+
+869
+00:50:24,619 --> 00:50:27,549
+pensar na probabilidade, tendo
+um deck de 52 cartas, você tem
+odds of having 52 card deck,
+you're four times more likely, 
+
+870
+00:50:27,569 --> 00:50:32,509
+4 vezes mais chance, dada uma carta,
+de achar uma carta do mesmo naipe
+
+871
+00:50:32,529 --> 00:50:35,210
+porque existem 12 outras
+cartas no deck que fazer par
+
+872
+00:50:35,230 --> 00:50:37,960
+com esse naipe. E existem apenas
+três outras cartas no deck
+
+873
+00:50:37,980 --> 00:50:40,960
+que fazer par com o rank. Certo?
+Então é 4 vezes mais fácil.
+
+874
+00:50:40,980 --> 00:50:45,499
+Então eu vou dar 4 pontos aqui.
+Ahm... o que eu...
+
+875
+00:50:45,519 --> 00:50:49,139
+"else if". Eu sempre esqueço
+o "else if", obrigado.
+
+876
+00:50:49,159 --> 00:50:52,989
+Todo mundo entendeu isso? Vêem
+o que eu estou fazendo aqui?
+
+877
+00:50:53,009 --> 00:50:55,739
+Isso faz sentido como um método
+de "match", certo? Você ganha
+
+878
+00:50:55,759 --> 00:50:58,739
+um ponto se fizer par com o naipe,
+você ganha mais pontos se você
+
+879
+00:50:58,759 --> 00:51:02,079
+fizer par com o rank, simplesmente
+porque é mais raro, ok? Agora,
+
+880
+00:51:02,099 --> 00:51:04,460
+alguém poderia dizer: e se eu
+quisesse um algoritmo de "match"
+
+881
+00:51:04,480 --> 00:51:07,019
+diferente para o meu jogo? Bom,
+eu poderia na verdade criar outra
+
+882
+00:51:07,039 --> 00:51:09,409
+subclasse de PlayingCard que tivesse
+um algoritmo de "match" diferente.
+
+883
+00:51:09,429 --> 00:51:12,449 
+E implementar o "match" nela
+e então criar um deck
+
+884
+00:51:12,469 --> 00:51:16,129
+com essas cartas ao invés,
+e passar esse deck para o meu
+
+885
+00:51:16,149 --> 00:51:19,569
+jogo de "match". Voilá! Agora eu
+tenho um mecanismo de pontuação
+
+886
+00:51:19,589 --> 00:51:24,210
+diferente para os pares. Ok,
+é simplesmente programação orientada
+
+887
+00:51:24,230 --> 00:51:27,739
+a objetos. Pronto, nosso model está
+totalmente pronto. Agora, uma coisinha
+
+888
+00:51:27,759 --> 00:51:31,489
+que precisamos fazer em algum lugar
+do nosso model. Tudo que precisamos
+
+889
+00:51:31,509 --> 00:51:33,989
+é deixar o controller fazer seu
+trabalho, sendo o intérprete entre
+
+890
+00:51:34,009 --> 00:51:37,989
+o model e a UI, ok? Então isso
+é tudo que falta fazermos.
+
+891
+00:51:38,009 --> 00:51:42,349
+Então, vamos voltar para...
+na verdade, eu vou colocar nosso
+
+892
+00:51:42,369 --> 00:51:45,989
+Storyboard de bolta aqui e,
+sempre que você voltar pro
+
+893
+00:51:46,009 --> 00:51:48,739
+storyboard ele vai te mostrar
+o header. Então eu vou voltar
+
+894
+00:51:48,759 --> 00:51:51,489
+para a implementação.
+Então, aqui está meu Storyboard...
+
+895
+00:51:51,509 --> 00:51:55,179
+deixa eu colocar aqui, o mais
+longe possível, arrumar mais
+
+896
+00:51:55,199 --> 00:52:00,269
+espaço aqui. Certo, então nós temos
+que [???] nosso controller
+
+897
+00:52:00,289 --> 00:52:04,659
+completamente, como está agora.
+Nós temos que mudar nosso controller
+
+898
+00:52:04,679 --> 00:52:08,619
+para que, ao invés de virar a carta
+ele mesmo, ele precisa usar
+
+899
+00:52:08,639 --> 00:52:12,699
+o model para virar e ao invés de,
+sabe, setar as cartas no começo
+
+900
+00:52:12,719 --> 00:52:16,400
+com cartas aleatórioas,
+ele precisa perguntar ao model
+
+901
+00:52:16,420 --> 00:52:19,519
+que carta colocar em cada lugar.
+E então o controller
+
+902
+00:52:19,539 --> 00:52:22,179
+sabe que botão está
+naquele lugar também
+
+903
+00:52:22,199 --> 00:52:25,309
+porque vai ser o mesmo lugar
+no Outlet Collection,
+
+904
+00:52:25,329 --> 00:52:27,809
+o lance da "carta-botão".
+E então, nós podemos
+
+905
+00:52:27,829 --> 00:52:31,869
+deixar essas duas coisas em sync.
+Então vamos prosseguir e fazer
+
+906
+00:52:31,889 --> 00:52:34,219
+algumas coisas aqui. Primeiro
+eu vou começar criando
+
+907
+00:52:34,239 --> 00:52:38,789
+uma property pro meu model,
+ok? Strong, nonatomic,
+
+908
+00:52:38,809 --> 00:52:48,739
+CardMatchingGame *game,
+Tudo bem? Preciso importá-la.
+
+909
+00:52:48,759 --> 00:52:56,029
+CardMatchinGame, ok?
+É muito comum, muito comum
+
+910
+00:52:56,049 --> 00:52:59,759
+no seu controller ter
+uma property que aponta
+
+911
+00:52:59,779 --> 00:53:04,179
+para o model. Ok, você meio que
+precisa disso. Se não fosse assim,
+
+912
+00:53:04,199 --> 00:53:07,670
+Como você iria interagir
+com o model? É muito comum.
+
+913
+00:53:07,690 --> 00:53:12,859
+Nós temos isso e obviamente
+queremos... esperem para ver...
+
+914
+00:53:12,879 --> 00:53:19,499
+Lazy instantiation, ok? Bom, lazy
+instantiation aqui é um pouco
+
+915
+00:53:19,519 --> 00:53:22,619
+mais interessante porque o...
+não é só alloc init. Não é
+
+916
+00:53:22,639 --> 00:53:30,009
+[[CardMatchingGame alloc] init],
+
+
+917
+00:53:30,029 --> 00:53:33,249
+nós temos esse negócio de
+"initWithCardCount:", ok?
+
+918
+00:53:33,269 --> 00:53:38,029
+Como saberemos quantas cartas
+teremos no nosso jogo? Bom,
+
+919
+00:53:38,049 --> 00:53:45,480
+[self.cardButtons count], ok?
+
+
+920
+00:53:45,500 --> 00:53:48,920
+Então, quantos botões de cartas
+existirem será quantas cartas
+
+921
+00:53:48,940 --> 00:53:52,299
+vão ter no nosso jogo. Então, aqui
+estamos, novamente, alinhando
+
+922
+00:53:52,319 --> 00:53:57,389
+nossa UI com nosso model, ok?
+E sobre... qual deck usar?
+
+923
+00:53:57,409 --> 00:53:59,940
+Bom, nós poderíamos dizer apenas
+self.deck, poruqe nós temos
+
+924
+00:53:59,960 --> 00:54:03,940
+esse deck por aí. Também vou...
+um pouquinho maior...
+
+925
+00:54:03,960 --> 00:54:06,940
+E vou teclar enter aqui.
+Alinhar esses dois pontos,
+
+926
+00:54:06,960 --> 00:54:10,190
+para que vocês consigam ver
+um pouco melhor. Nós poderíamos
+
+927
+00:54:10,210 --> 00:54:16,019
+dizer self.deck, mas eu não vou.
+Certo? É realmente
+
+928
+00:54:16,039 --> 00:54:19,299
+desnecessário manter esse deck
+aqui o tempo todo,
+
+929
+00:54:19,319 --> 00:54:22,009
+porque nós não vamos, na verdade,
+usar o deck. Nós vamos
+
+930
+00:54:22,029 --> 00:54:25,009
+usar o model para lidar
+com todas as nossas cartas.
+
+931
+00:54:25,029 --> 00:54:28,259
+Então eu vou na verdade me livrar
+disso aqui e me livrar dessa
+
+932
+00:54:28,279 --> 00:54:30,759
+lazy instantinaton logo aqui.
+E vou dizer apenas aqui:
+
+933
+00:54:30,779 --> 00:54:36,539
+[[PlayingCardDeck alloc] init].
+Bem aqui, ok?
+
+934
+00:54:36,559 --> 00:54:40,440
+Isso está certo? E aquilo de
+ponteiros fortes, ponteiros fracos,
+
+935
+00:54:40,460 --> 00:54:44,799
+todas essas coisas? Isso é
+na verdade incrível, porque isso aqui
+
+936
+00:54:44,819 --> 00:54:47,789
+vai criar isso, ele vai viver tempo
+suficiente para passar do
+
+937
+00:54:47,809 --> 00:54:51,730
+inicializador do jogo de cartas,
+do jogo da memória,
+
+938
+00:54:51,750 --> 00:54:54,730
+que vai tira quantas
+cartas ele precisar e então
+
+939
+00:54:54,750 --> 00:54:57,949
+ninguém vai ter um ponteiro
+forte para ele, então ele vai
+
+940
+00:54:57,969 --> 00:55:00,949
+ser limpado para fora da heap.
+E isso é bom,
+
+941
+00:55:00,969 --> 00:55:03,449
+porque ninguém precisa desse
+deck mais. Nós já tiramos
+
+942
+00:55:03,469 --> 00:55:06,199
+as cartas que nós queríamos
+para dentro do jogo da memória.
+
+943
+00:55:06,219 --> 00:55:09,199
+E essa linha de código logo aqui,
+vai pro espaço. Porque nós
+
+944
+00:55:09,219 --> 00:55:12,199
+não vamos setar as cartas
+baseados em cartas aleatórias
+
+945
+00:55:12,219 --> 00:55:15,449
+tiradas do deck. Nós vamos
+setá-las para o que o model
+
+946
+00:55:15,469 --> 00:55:18,239
+nos disser, ok? Isso meio que
+nos permite limpar...
+
+947
+00:55:18,259 --> 00:55:22,799
+fazer com que o código fique um
+pouco mais limpo aqui. Agora,
+
+948
+00:55:22,819 --> 00:55:25,779
+eu deletei o código aqui,
+que estava setando todas
+
+949
+00:55:25,799 --> 00:55:28,859
+as cartas para cartas aleatórias,
+mas eu preciso de algo tipo
+
+950
+00:55:28,879 --> 00:55:32,879
+updateUI ou algo assim aqui.
+Quando meus botões-carta entrarem,
+
+951
+00:55:32,899 --> 00:55:36,889
+eu preciso fazer update na minha
+interface com o usuário para refletir
+
+952
+00:55:36,909 --> 00:55:40,569
+o model. E é bem comum termos um
+método tipo updateUI, cujo trabalho
+
+953
+00:55:40,589 --> 00:55:45,150
+é fazer a UI corresponder com o model
+o tempo todo. Então, sempre que
+
+954
+00:55:45,170 --> 00:55:48,129
+você chamar updateUI, ele faz
+essas duas coisas ficarem em sync.
+
+955
+00:55:48,149 --> 00:55:52,329
+Esse é um paradigma bem comum
+de termos pois aqui quando
+
+956
+00:55:52,349 --> 00:55:56,699
+meus botões-cartas forem setados
+quando esse array... quando o sistema
+
+957
+00:55:56,719 --> 00:55:59,499
+me falar: eu tenho esse array de
+buttons pronto para você,
+
+958
+00:55:59,519 --> 00:56:02,999
+eu vou fazer o update na minha UI.
+Eu vou fazer update nela algumas
+
+959
+00:56:03,019 --> 00:56:06,499
+outras vezes também, mas eu vou
+fazer isso aqui. Então, vou precisar
+
+960
+00:56:06,519 --> 00:56:09,499
+de um método para fazer o update da UI
+e nós vamos falar sobre isso e
+
+961
+00:56:09,519 --> 00:56:13,249
+sobre o que terá lá em um segundo,
+porque tudo que ele precisa fazer é
+
+962
+00:56:13,269 --> 00:56:16,249
+manter a UI em sync com o model.
+Uma outra coisa aqui é "flipCard"
+
+963
+00:56:16,269 --> 00:56:18,999
+Por enquanto, quando um botão
+for tocado, ele nos envia uma
+
+964
+00:56:19,019 --> 00:56:22,319
+mensagem "flipCard" e nós mudamos
+o estado "selected" do botão.
+
+965
+00:56:22,339 --> 00:56:25,650
+Mas, nós não vamos mais
+fazer isso. Porque é o model
+
+966
+00:56:25,670 --> 00:56:29,369
+que decide que botões estão
+no estado "selected".
+
+967
+00:56:29,389 --> 00:56:32,269
+E então, em vez disso, nós vamos
+pegar isso e vamos dizer pro
+
+968
+00:56:32,289 --> 00:56:37,190
+nosso model: por favor, vire
+a carta no índice X. E em qual
+
+969
+00:56:37,210 --> 00:56:43,249
+índice esse botão está?
+"[self.cardButtons indexOfObject:sender]"
+
+970
+00:56:43,269 --> 00:56:49,369
+Ok, vamos processar um pouco
+isso, ok? "self.cardButtons"
+
+971
+00:56:49,389 --> 00:56:53,679
+esse é o nosso array de botões,
+o Outlet Collection,
+
+972
+00:56:53,699 --> 00:56:57,779
+esse negócio logo aqui, ok?
+É um array desses botões.
+
+973
+00:56:57,799 --> 00:57:03,009
+E um desses botões,
+o sender, está nos enviando
+
+974
+00:57:03,029 --> 00:57:07,049
+essa mensagem, então nós estamos
+perguntando ao nosso array de
+
+975
+00:57:07,069 --> 00:57:11,599
+botões-carta pelo índice daquele
+objeto, de 0 a 12. Então pode
+
+976
+00:57:11,619 --> 00:57:12,599
+ser o zero,
+
+
+977
+00:57:12,619 --> 00:57:15,509
+Esse pode ser o zero, eu não sei.
+Esse pode ser o seis,
+
+978
+00:57:15,529 --> 00:57:19,199
+sete, onze, zero, eu não sei.
+Ok, porque eu falei pra vocês
+
+979
+00:57:19,219 --> 00:57:21,949
+que a ordem é indeterminada.
+Mas isso não importa para mim,
+
+980
+00:57:21,969 --> 00:57:27,119
+ok? Porque eu consigo saber
+qual é com isso aqui, ok? Agora,
+
+981
+00:57:27,139 --> 00:57:30,619
+toda vez que eu virar uma carta
+eu também vou precisar fazer update
+
+982
+00:57:30,639 --> 00:57:33,619
+na minha UI, então eu vou chamar
+updateUI aqui também, ok?
+
+983
+00:57:33,639 --> 00:57:36,420
+Então eu vou chamar updateUI quando
+minhas cartas forem setadas
+I'm going to call updateUI when my
+cards first get set up 
+
+984
+00:57:36,440 --> 00:57:36,619
+
+
+985
+00:57:36,639 --> 00:57:40,119
+E faço uma chamada para updateUI
+sempre que eu virar uma carta,
+
+986
+00:57:40,139 --> 00:57:43,119
+porque toda vez que eu virar uma
+carta, todo tipo de coisa pode
+
+987
+00:57:43,139 --> 00:57:45,869
+acontecer. Cartas podem fazer par
+e serem desabilitadas, você pode
+
+988
+00:57:45,889 --> 00:57:49,369
+marcar pontos, várias coisas
+podem acontecer. Então eu tenho
+
+989
+00:57:49,389 --> 00:57:52,119
+que fazer update na minha UI sempre
+que eu virar uma carta, ok? Pergunta.
+
+990
+00:57:52,139 --> 00:57:54,349
+>> [Estudante dando pitaco]
+
+991
+00:57:54,369 --> 00:57:56,339
+>> Ok, obrigado.
+
+
+992
+00:57:56,359 --> 00:57:59,339
+Vêem? Eu confio totalmente
+em vocês para achar
+
+993
+00:57:59,359 --> 00:58:00,339
+essas coisas pra mim. Sim?
+
+
+994
+00:58:00,359 --> 00:58:02,839
+>> [Estudante pergutando]
+
+995
+00:58:02,859 --> 00:58:06,279
+[estudante perguntando]
+
+996
+00:58:06,299 --> 00:58:09,730
+>> setFlipCount?
+Logo aqui você diz? Aqui? Arram.
+
+997
+00:58:09,750 --> 00:58:13,769
+Eu estou fazendo update do
+número de viradas, isso é verdade.
+
+998
+00:58:13,789 --> 00:58:16,789
+Você poderia dizer que nós deveríamos
+ter um model mantendo a contagem
+
+999
+00:58:16,809 --> 00:58:20,099
+do número de viradas. É meio que
+obscuro. Vêem o que eu estou falando?
+
+1000
+00:58:20,119 --> 00:58:23,099
+Eu não estou fazendo o update da
+pontuação aqui. Esse é apenas
+
+1001
+00:58:23,119 --> 00:58:27,609
+o número de viradas. Vêem o que
+estou dizendo? É um tipo de...
+
+1002
+00:58:27,629 --> 00:58:30,960
+Você poderia argumentar que deveríamos
+jogar isso fora. Oh, eu vejo
+
+1003
+00:58:30,980 --> 00:58:33,509
+o que você está dizendo. Isso aqui
+não deveria estar em updateUI?
+
+1004
+00:58:33,529 --> 00:58:37,759
+E, na verdade, não, porque
+esse é o setter de algo
+
+1005
+00:58:37,779 --> 00:58:40,269
+que está sendo realmente
+gerenciado pelo lado da UI.
+
+1006
+00:58:40,289 --> 00:58:42,710
+Isso aqui não é parte do model.
+Ok, o número de viradas que tivemos
+
+1007
+00:58:42,730 --> 00:58:46,730
+é usado... internamente. Você está
+calculando o custo das
+
+1008
+00:58:46,750 --> 00:58:49,749
+viradas e coisas assim, mas isso
+não é o que está sendo mostrado
+
+1009
+00:58:49,769 --> 00:58:52,730
+nesse textField aqui. O que está
+aqui é apenas quantas vezes
+
+1010
+00:58:52,750 --> 00:58:55,599
+você virou uma carta. Virou pra
+cima ou pra baixo, basicamente
+
+1011
+00:58:55,619 --> 00:59:00,289
+quantas vezes vc tocou um botão.
+Então é ok para coisas puramente de UI
+
+1012
+00:59:00,309 --> 00:59:03,789
+fazerem updates nelas mesmas nos seus
+próprios setters, ok? Mas coisas
+
+1013
+00:59:03,809 --> 00:59:07,230
+de model geralmente você quer
+juntar em um update... embora
+
+1014
+00:59:07,250 --> 00:59:10,049
+novamente, isso é a arte da
+programação. Não há regras
+
+1015
+00:59:10,069 --> 00:59:12,429
+que diz que você deve juntar
+todos os updates dos models
+
+1016
+00:59:12,449 --> 00:59:16,249
+em um "updateUI". Eu apenas decidi
+que ia fazer isso no meu design
+
+1017
+00:59:16,269 --> 00:59:19,249
+aqui, ok? É meio que seu critério.
+Depende do que está acontecendo
+
+1018
+00:59:19,269 --> 00:59:21,999
+no seu controller assim como
+se isso faz sentido.
+
+1019
+00:59:22,019 --> 00:59:26,460
+Ok, vamos falar então sobre
+updateUI porque tudo que
+
+1020
+00:59:26,480 --> 00:59:29,710
+tudo que falta para implementar aqui
+é que nós temos que fazer update
+
+1021
+00:59:29,730 --> 00:59:33,539
+da nossa interface. Então, esse
+método tem apenas uma função.
+
+1022
+00:59:33,559 --> 00:59:38,009
+Pegar o estado do model e fazer
+ele ser refletido na UI.
+
+1023
+00:59:38,029 --> 00:59:41,230
+Isso é o que essa coisa vai
+fazer. Você pode chamá-la a qualquer
+
+1024
+00:59:41,250 --> 00:59:44,249
+momento e ela fará isso. Ela vai
+garantir que a UI está de acordo
+
+1025
+00:59:44,269 --> 00:59:48,029
+com o model. Esse é o trabalho
+fundamental do controller,
+
+1026
+00:59:48,049 --> 00:59:52,769
+fazer a UI ficar de acordo com
+o model e também fazer com que
+
+1027
+00:59:52,789 --> 00:59:56,449
+as alterações na UI vão pra o model,
+que é o que estamos fazendo aqui:
+
+1028
+00:59:56,469 --> 00:59:58,949
+"flipCardAtIndex", certo? Quando
+uma carta for virada, nós
+
+1029
+00:59:58,969 --> 01:00:01,949
+estamos falando par ao model,
+"oh, ele virou uma carta, essa é
+
+1030
+01:00:01,969 --> 01:00:05,449
+a carta que ele virou". Ok, então,
+o seu trabalho é ir em ambas
+
+1031
+01:00:05,469 --> 01:00:08,739
+as direções. Esse é o lugar onde
+ele vai fazer a UI refletir
+
+1032
+01:00:08,759 --> 01:00:12,399
+o model o tempo todo. Ok,
+então o que precisamos fazer para
+
+1033
+01:00:12,419 --> 01:00:15,399
+fazer isso? Bom, a primeira coisa
+que fazemos é percorrer todas
+
+1034
+01:00:15,419 --> 01:00:18,649
+as cartas e fazer update em todos
+os botões, então eu preciso de um loop
+
+1035
+01:00:18,669 --> 01:00:21,649
+"for" aqui. Isso vai percorrer todos
+os meus botões: "UIButton *cardButton...
+
+1036
+01:00:21,669 --> 01:00:27,269
+in self.cardButtons", ok?
+e para cada uma, para cada cartam
+
+1037
+01:00:27,289 --> 01:00:32,690
+eu preciso pegar a carta que está
+no model para ele. Então,
+
+1038
+01:00:32,710 --> 01:00:36,859
+A "card" é igual... eu vou perguntar pro
+meu model qual a carta que está no
+
+1039
+01:00:36,879 --> 01:00:40,559
+índice desse cardButton.
+E como eu vou pegar o índice
+
+1040
+01:00:40,579 --> 01:00:44,149
+desse cardButton?
+"[self.cardButtons indexOfObject...
+
+1041
+01:00:44,169 --> 01:00:52,149
+:cardButton", ok?
+Todo mundo bem com isso?
+
+1042
+01:00:52,169 --> 01:00:54,649
+Isso é uma linha de código realmente
+importante porque esse é
+
+1043
+01:00:54,669 --> 01:00:57,899
+a linha de código que faz o mapeamento
+entre o model e a UI. Esse é o
+
+1044
+01:00:57,919 --> 01:01:00,399
+controller mapeando entre um
+e outro. Um array de botões
+
+1045
+01:01:00,419 --> 01:01:06,199
+me dando o mapeamento para o
+"cardAtIndex" do model, ok?
+
+1046
+01:01:06,219 --> 01:01:10,389
+Agorax que nós temos a carta, podemos
+setar todas as coisas na carta,
+
+1047
+01:01:10,409 --> 01:01:13,940
+ou melhor, no botão, a partir
+da informação da carta. Então,
+
+1048
+01:01:13,960 --> 01:01:17,519
+por exemplo, nós temos... vamos ver...
+deixa eu me certificar que lembro tudo
+
+1049
+01:01:17,539 --> 01:01:19,769
+aqui... oh, claro, nós temos
+o "selected title"
+
+1050
+01:01:19,789 --> 01:01:23,699
+do cardButton. Isso é algo
+bem importante.
+
+1051
+01:01:23,719 --> 01:01:29,079
+"setTitle: card.contents
+forState:UIControlStateSelected",
+
+1052
+01:01:29,099 --> 01:01:31,460
+ok? Isso é algo bem importante,
+isso é o que vocês tiveram que
+
+1053
+01:01:31,480 --> 01:01:34,539
+fazer no homework. Nós ainda estamos
+fazendo esse negócio aqui onde
+
+1054
+01:01:34,559 --> 01:01:37,889
+o verso da carta é o estado
+normal e a frente da carta é
+
+1055
+01:01:37,909 --> 01:01:40,889
+o estado selecionado. Bom,
+é bom termos certeza que nós
+
+1056
+01:01:40,909 --> 01:01:44,659
+setamos o "selected state" do
+cardButton para a coisa certa.
+
+1057
+01:01:44,679 --> 01:01:47,679
+Se ele está selecionado ou não
+é o mesmo que se a carta está
+
+1058
+01:01:47,699 --> 01:01:51,579
+virada para cima. Certo? Se a carta
+estiver virada pra cima, então
+
+1059
+01:01:51,599 --> 01:01:54,079
+você está mostrando o lado selected
+do botão. Todo mundo concorda
+
+1060
+01:01:54,099 --> 01:01:58,269
+com isso? Ok, se eu errar aqui,
+vocês me param. E sobre o
+
+1061
+01:01:58,289 --> 01:02:00,829
+estado "enabled"? Nós não
+fizemos isso antes, mas
+
+1062
+01:02:00,849 --> 01:02:06,139
+agora nós sabemos se a carta é
+injogável, e se ela não for
+
+1063
+01:02:06,159 --> 01:02:09,839
+daí nós vamos permitir que nosso
+botão fique habilitado. Então "enabled",
+
+1064
+01:02:09,859 --> 01:02:13,769
+se nós fizermos o nosso ALT + click,
+vocês vÃo ver que é um método
+
+1065
+01:02:13,789 --> 01:02:18,019
+do "Control", uma property na
+verdade, do "Control" que diz
+
+1066
+01:02:18,039 --> 01:02:21,259
+se o botão está habilitado ou não.
+E se um botão não está habilitado,
+
+1067
+01:02:21,279 --> 01:02:27,339
+então quando você tocá-lo,
+ele não faz nada. Ok, então
+
+1068
+01:02:27,359 --> 01:02:31,499
+nós poderíamos rodar agora.
+E eu estou fazendo isso agora.
+
+1069
+01:02:31,519 --> 01:02:34,499
+E nós não terminamos. Ainda existem
+algumas linhas de código a mais
+
+1070
+01:02:34,519 --> 01:02:37,749
+que precisamos. Mas vamos rodar
+agora. Porque eu quero mostrar
+
+1071
+01:02:37,769 --> 01:02:40,999
+a vocês como que fica quando
+você acha que você fez
+
+1072
+01:02:41,019 --> 01:02:43,749
+tudo certo e ele simplesmente
+não funciona. E então tenta
+
+1073
+01:02:43,769 --> 01:02:46,749
+diagnosticar o que está acontecendo.
+Então, deixe-me tentar manter
+
+1074
+01:02:46,769 --> 01:02:49,999
+ambos na tela ao mesmo tempo.
+Rodar isso. Ok, então
+
+1075
+01:02:50,019 --> 01:02:53,349
+nós temos nossas cartas aqui.
+Oh! Está meio que funcionando.
+
+1076
+01:02:53,369 --> 01:02:56,549
+Pelo menos o model parace estar
+provendo as cartas. Isso são
+
+1077
+01:02:56,569 --> 01:03:00,269
+notícias boas. É um bom começo.
+Ok, deixe-me ver se consigo achar
+
+1078
+01:03:00,289 --> 01:03:02,519
+um par. Ok, essas duas cartas
+fazem um par, certo? Ambas são
+
+1079
+01:03:02,539 --> 01:03:06,719
+de paus. Então vamos tentar fazer
+um par com elas. Re de paus e
+
+1080
+01:03:06,739 --> 01:03:10,809
+agora eu vou clicar nessa aqui.
+Que ***** que aconteceu aqui?
+
+1081
+01:03:10,829 --> 01:03:14,869
+Ok? você ficou tipo "o que está
+acontecendo? Vamos... e agora eu
+
+1082
+01:03:14,889 --> 01:03:17,619
+não posso clicar mais nelas?
+Estou clicando nelas e nada
+
+1083
+01:03:17,639 --> 01:03:19,619
+está acontecendo. Essas ainda
+funcionam, o que está acontecendo?"
+
+1084
+01:03:19,639 --> 01:03:22,929
+Ok, então... se você estiver
+escrevendo esse código, você estaria
+
+1085
+01:03:22,949 --> 01:03:25,929
+tipo: "que *****... o qu está
+acontecendo aqui?" Porque...
+
+1086
+01:03:25,949 --> 01:03:29,109
+se você parar um pouco
+e respirar profundamente,
+
+1087
+01:03:29,129 --> 01:03:32,849
+você vai perceber algo muito
+importante que é que as cartas
+
+1088
+01:03:32,869 --> 01:03:37,589
+fizeram um par, porque elas
+não estão mais habilitadas, certo?
+
+1089
+01:03:37,609 --> 01:03:39,789
+Então eu clico nelas e nada acontece.
+Isso é por causa dessa linha
+
+1090
+01:03:39,809 --> 01:03:43,419
+de código logo aqui. Então elas
+fizeram um par. Ok, então é
+1091
+01:03:43,439 --> 01:03:49,069
+realmente um bom começo que elas
+fizeram um par. Mas por que elas
+
+1092
+01:03:49,089 --> 01:03:52,609
+voltaram de verso pra cima? Por que
+elas estão mais de face pra cima? Ok?
+
+1093
+01:03:52,629 --> 01:03:57,730
+Então esse é um bug muito sutil,
+ok? Um bug muito... tipo...
+
+1094
+01:03:57,750 --> 01:04:01,489
+a razão para isso é meio sutil.
+E a resposta é, se você ler
+
+1095
+01:04:01,509 --> 01:04:04,769
+a documentação do UIButton,
+ele diz que você tem que
+
+1096
+01:04:04,789 --> 01:04:09,899
+setar um título para cada estado
+que o botão possa estar e
+
+1097
+01:04:09,919 --> 01:04:13,699
+se você não setar o título para
+o estado, ele usa o estado normal.
+
+1098
+01:04:13,719 --> 01:04:17,299
+Que para nós é o verso...
+que é o logo da Apple, certo?
+
+1099
+01:04:17,319 --> 01:04:21,109
+Esse é o estado normal.
+E você poderia dizer, bom
+
+1100
+01:04:21,129 --> 01:04:23,940
+nós setamos isso, nós setamos
+esse estado aqui. Mas na verdade
+
+1101
+01:04:23,960 --> 01:04:27,129
+esse botÃo está em um estado
+diferente quando você o desabilita.
+
+1102
+01:04:27,149 --> 01:04:34,019
+Ele está em um estado que
+parece com isso aqui. UIControl...
+
+1103
+01:04:34,039 --> 01:04:38,319
+StateDisabled. Em outras palavras,
+ele está tanto nos estados
+
+1104
+01:04:38,339 --> 01:04:45,719
+selecionado como no desabilitado
+ao mesmo tempo, ok? Esse é "ou",
+
+1105
+01:04:45,739 --> 01:04:49,960
+"e ou". É um enum bitwise
+aqui. Então você tem que
+
+1106
+01:04:49,980 --> 01:04:53,639
+setar o título que você quer que
+apareça quando está nos estados
+
+1107
+01:04:53,659 --> 01:04:55,619
+selecionados e desabilitados
+ao mesmo tempo, ok?
+
+1108
+01:04:55,639 --> 01:05:00,569
+É o modo como o botão funciona.
+Então isso vai consertar
+
+1109
+01:05:00,589 --> 01:05:04,639
+esse problema porque, bem,
+o que está acontecendo aqui,
+
+1110
+01:05:04,659 --> 01:05:09,319
+desculpe, logo aqui, é que quando
+eu faço par com esses dois botões
+
+1111
+01:05:09,339 --> 01:05:11,980
+eles ainda estão virados para cima,
+eles ainda estão selecionados,
+
+1112
+01:05:12,000 --> 01:05:16,289
+mas também desabilitados. E então,
+eu estou usando o "normal title".
+
+1113
+01:05:16,309 --> 01:05:21,169
+Agora consertei isso. Tem outra coisa...
+bom, vamos rodar com esse
+1114
+01:05:21,189 --> 01:05:24,739
+conserto. Ver como que está agora.
+Ok, então vamos achar algum
+
+1115
+01:05:24,759 --> 01:05:28,980
+par... Aqui tem uma espada,
+e aqui tem uma espada,
+
+1116
+01:05:29,000 --> 01:05:32,399
+então elas vão fazer par. Excelente!
+Elas ficaram de face pra cima!
+
+1117
+01:05:32,419 --> 01:05:35,319
+E elas estão desabilitadas,
+eu não posso mais clicar nelas! Woo!
+
+1118
+01:05:35,339 --> 01:05:39,480
+Exceto que... é meio difícil de dizer
+que elas estão desabilitadas, certo?
+
+1119
+01:05:39,500 --> 01:05:42,710
+Elas se parecem com as outras cartas
+que estão de face pra cima.
+
+1120
+01:05:42,730 --> 01:05:45,460
+Eu fica tipo "oh, essas cartas estão
+travadas?" Ok? isso não
+
+1121
+01:05:45,480 --> 01:05:48,210
+é muito bom. Nós queremos
+que essas cartas tenham uma 
+
+1122
+01:05:48,230 --> 01:05:50,460
+cara diferente também quando
+elas estiverem desabilitadas,
+
+1123
+01:05:50,480 --> 01:05:53,869
+e, por padrão, elas não tem.
+Então, como podemos fazer isso?
+
+1124
+01:05:53,889 --> 01:05:59,190
+Bom, nós vamos usar um mecanismo
+da hora de iOS aqui, chamado "alpha".
+
+1125
+01:05:59,210 --> 01:06:03,940
+Ok, todas as views, cada uma
+dessas coisinhas que estão na tela,
+
+1126
+01:06:03,960 --> 01:06:08,369
+o label, os botões, todos têm
+uma property chamada
+
+1127
+01:06:08,389 --> 01:06:12,219
+"alpha". Ok, quantas pessoas
+sabem o que é alpha em termos
+
+1128
+01:06:12,239 --> 01:06:17,230
+de Ciência da Computação? Poucas
+pessoas... "alpha" é uma palavra
+
+1129
+01:06:17,250 --> 01:06:22,109
+que significa transparência, ok?
+Então, alpha de 1.0 é totalmente
+
+1130
+01:06:22,129 --> 01:06:25,369
+opaco. Algo que tem um alpha
+de 1.0 é totalmente opaco.
+
+1131
+01:06:25,389 --> 01:06:27,869
+Algo que tem um alpha de zero
+é completamente transparente.
+
+1132
+01:06:27,889 --> 01:06:32,169
+Você não pode vê-lo, ok?
+Isso é chamado alpha,
+
+1133
+01:06:32,189 --> 01:06:34,879
+é um termo de computação gráfica,
+ok? Bom, não é algo do iOS,
+
+1134
+01:06:34,899 --> 01:06:38,529
+é um termo de computação gráfica.
+Então nós vamos, se estivermos
+
+1135
+01:06:38,549 --> 01:06:42,399
+desabilitados, setar nosso
+alpha para tipo, mais transparente.
+
+1136
+01:06:42,419 --> 01:06:45,719
+talvez 30% ou algo assim.
+Então eu vou dizer
+
+1137
+01:06:45,739 --> 01:06:50,589
+"meu alpha = card.isUnplayable ? ..."
+humm, vamos dizer 0.3,
+
+1138
+01:06:50,609 --> 01:06:56,109
+caso contrário, totalmente
+opaco, ok? Vamos ver se
+
+1139
+01:06:56,129 --> 01:07:00,989
+isso faz nosso jogo um pouco
+mais fácil de saber o que está
+
+1140
+01:07:01,009 --> 01:07:06,639
+acontecendo. Certo, então vamos
+achar outro par. Oh, nós temos
+
+1141
+01:07:06,659 --> 01:07:11,629
+"cincos". Oh, cincos. Prontos?
+Boom! Ok, fizemos um par. Eles
+
+1142
+01:07:11,649 --> 01:07:15,359
+estão desabilitados agora. Está
+claro que esse foi um par passado.
+
+1143
+01:07:15,379 --> 01:07:17,859
+Agora nós podemos procurar por
+mais coisas. Tem um outro par
+
+1144
+01:07:17,879 --> 01:07:24,089
+Copas. Vêem?
+Agora aqui eu cliquei duas cartas
+
+1145
+01:07:24,109 --> 01:07:27,099
+que não fizeram um par,
+ele simplesmente re-vira a antiga.
+
+1146
+01:07:27,119 --> 01:07:30,230
+Minha pontuação está caindo
+na medida que eu faço isso,
+
+1147
+01:07:30,250 --> 01:07:33,099
+eu continuo recebendo penalidades,
+penalidades. Mas eu não consigo ver
+
+1148
+01:07:33,119 --> 01:07:36,599
+minha pontuação, então esse não é
+um jogo muito bom, ok? Então nós
+
+1149
+01:07:36,619 --> 01:07:40,849
+precisamos ver nossa pontuação.
+Vamos fazer isso. Voltar aqui, na nossa
+
+1150
+01:07:40,869 --> 01:07:45,629
+pontuação. Agora o score é fácil de
+colocar aqui. Incrivelmente fácil.
+
+1151
+01:07:45,649 --> 01:07:48,499
+Na mente de vocÊs, espero que metade
+de vocês está tipo "oh, eu sei
+
+1152
+01:07:48,519 --> 01:07:51,249
+exatamente como fazer isso, colocar
+isso aí", porque é
+
+1153
+01:07:51,269 --> 01:07:53,719
+quase exatamente igual ao
+"flips", ok?
+
+1154
+01:07:53,739 --> 01:07:56,079
+Mas, ao invés de mostrar o flipCount,
+nós vamos apenas mostrar
+
+1155
+01:07:56,099 --> 01:08:00,249
+a pontuação, que o nosso model
+guarda para nós, certo? Então,
+
+1156
+01:08:00,269 --> 01:08:04,019
+nós vamos aqui embaixo, pegar
+um label. Ok, igual fizemos
+
+1157
+01:08:04,039 --> 01:08:07,289
+para os flips. Arrastá-lo
+para cá. Eu na verdade vou fazê-lo
+
+1158
+01:08:07,309 --> 01:08:11,409
+alinhado à direita, porque eu
+vou por do lado direito aqui.
+
+1159
+01:08:11,429 --> 01:08:15,480
+Pontuação de zero,
+essa é tipo
+
+1160
+01:08:15,500 --> 01:08:19,749
+a pontuação inicial aqui, tanto faz.
+Então eu vou fazer um
+
+1161
+01:08:19,769 --> 01:08:22,629
+outlet para ele. Estou segurando
+a tecla CTRL bem aqui.
+
+1162
+01:08:22,649 --> 01:08:28,929
+Arrastar... outlet. Nós vamos
+chamar esse outlet de "scoreLabel".
+
+1163
+01:08:28,949 --> 01:08:32,570
+Certo? "Weak" tá bom. É um
+UILabel. É um outlet normal,
+
+1164
+01:08:32,590 --> 01:08:35,429
+não é um outlet collection,
+apenas um outlet normal.
+
+1165
+01:08:35,449 --> 01:08:39,280
+Conectados. Agora tudo que eu
+preciso fazer é dar update nesse label
+
+1166
+01:08:39,300 --> 01:08:42,549
+toda vez que o score for alterado.
+Eu tenho um método logo aqui
+
+1167
+01:08:42,569 --> 01:08:45,690
+que mantém o model em sync
+com a UI o tempo todo.
+
+1168
+01:08:45,710 --> 01:08:48,690
+Então eu vou fizer self.score,
+oops, nem preciso
+
+1169
+01:08:48,710 --> 01:08:50,459
+do colchete aqui.
+self.scoreLabel.text = ... 
+
+1170
+01:08:50,479 --> 01:08:51,459
+[NSString stringWithFormat:]...
+
+
+1171
+01:08:51,479 --> 01:09:08,369
+E vamos apenas dizer
+"Score: %d, self.game.score". Ok?
+
+1172
+01:09:08,389 --> 01:09:14,879
+Isso é tudo que preciamos. Rodar,
+e aqui vamos nós. Vamos ver aqui...
+
+1173
+01:09:14,899 --> 01:09:18,179
+A nossa pontuação é -1 porque nós
+temos que pagar para virar
+
+1174
+01:09:18,199 --> 01:09:22,339
+uma carta, ok? Porém, apenas para
+virar a carta para cima. Então, eu sei
+
+1175
+01:09:22,359 --> 01:09:25,089
+que esse é o 9 de ouros, oh
+logo aqui tem um 5 de ouros.
+
+1176
+01:09:25,109 --> 01:09:29,030
+Apenas duas viradas. Então, quando eu
+clicar aqui, qual vocês acham que
+
+1177
+01:09:29,050 --> 01:09:33,219
+vai ser minha pontuação? Eu vou
+ganhar 4 pontos por fazer o par
+
+1178
+01:09:33,239 --> 01:09:36,099
+de naipes, porque eu recebo um ponto
+e então o MATCH_BONUS de 4 vezes,
+
+1179
+01:09:36,119 --> 01:09:39,299
+mas eu vou ter que pagar para
+virar essa outra carta,
+
+1180
+01:09:39,319 --> 01:09:42,299
+então eu vou ganhar mais
+três pontos, então minha pontuação
+
+1181
+01:09:42,319 --> 01:09:45,549
+deve ser 1. Woo eu ganhei!
+Vencedor! Vamos ver se nós
+
+1182
+01:09:45,569 --> 01:09:48,799
+conseguimos achar um match
+de rank aqui. Oh, vejam! As duas
+
+1183
+01:09:48,819 --> 01:09:51,799
+primeiras cartas que cliquei. Ok,
+vamos tentar essas. Prontos? Oh, nós
+
+1184
+01:09:51,819 --> 01:09:54,299
+ganhamos um monte de pontos. Nós
+fomos para 14 pontos! Então, nós
+
+1185
+01:09:54,319 --> 01:09:57,889
+recebemos 16 pontos, menos 1
+pela virada, ok? Ok, então esse
+
+1186
+01:09:57,909 --> 01:10:03,419
+é o jogo. O homework de vocês é
+adicionar algumas cartas a mais.
+
+1187
+01:10:03,439 --> 01:10:05,969
+Para fazer esse jogo ter uma
+experiência onde vocês vão ter
+
+1188
+01:10:05,989 --> 01:10:08,469
+pequenos textFields em algum lugar
+que dirão o que está acontecendo,
+
+1189
+01:10:08,489 --> 01:10:12,049
+como: "você fez o par com o 2 de
+copas e o 2 de espadas e ganhou
+
+1190
+01:10:12,069 --> 01:10:16,070
+essa pontuação." Também, vocês tem
+que fazer esse jogo ser um
+
+1191
+01:10:16,090 --> 01:10:19,249
+jogo de pares, como esse,
+ou um jogo de trincas.
+
+1192
+01:10:19,269 --> 01:10:21,950
+Com um pequeno controle que permite
+que troque qual o modo que você está.
+
+1193
+01:10:21,970 --> 01:10:24,119
+Jogo de trincas ou
+jogo de pares. Vocês vão
+
+1194
+01:10:24,139 --> 01:10:26,869
+na verdade ter um outro jogo.
+Ok? É um jogo de fazer trincas.
+
+1195
+01:10:26,889 --> 01:10:29,959
+Certo. E vocês vão ter que
+inventar uma pontuação
+
+1196
+01:10:29,979 --> 01:10:32,709
+que faça sentido para
+um jogo de trincas.
+
+1197
+01:10:32,729 --> 01:10:36,669
+E nós também vamos ter
+outras coisinhas,
+
+1198
+01:10:36,689 --> 01:10:39,659
+como, por exemplo, ao invés de ter
+o logo da Apple no verso,
+
+1199
+01:10:39,679 --> 01:10:42,349
+talvez colocar uma imagem ali.
+Ok, como a imagem de um
+
+1200
+01:10:42,369 --> 01:10:49,099
+verso de carta. Ok, é basicamente
+isso. Esse é basicamente o
+
+1201
+01:10:49,119 --> 01:10:52,099
+homework de vocês. Ok, eu tenho
+dois minutos sobrando e eu vou
+
+1202
+01:10:52,119 --> 01:10:54,599
+mostrar alguns slides. Tem
+alguma pergunta sobre isso?
+
+1203
+01:10:54,619 --> 01:10:58,320
+Ok, então vamos ver se eu
+consigo achar o Keynote no meio
+
+1204
+01:10:58,340 --> 01:11:04,200
+dessas várias telas... provavlemente
+está aqui, aqui...
+
+1205
+01:11:04,220 --> 01:11:10,879
+[bla bla bla], aqui está.
+Ok, vamos para o final.
+
+1206
+01:11:10,899 --> 01:11:13,879
+Queria apenas mostrar pra vocês
+esses slides de revisão porque
+
+1207
+01:11:13,899 --> 01:11:17,469
+eu não vou passar por eles.
+A idéia desses slides,
+
+1208
+01:11:17,489 --> 01:11:20,769
+dessses slides de revisão é para
+vocês olharem para eles e
+
+1209
+01:11:20,789 --> 01:11:24,099
+perguntar a vocês mesmos, para cada
+linha no slide, "eu sei isso?"
+
+1210
+01:11:24,119 --> 01:11:28,089
+Ok, e vocês devem poder dizer
+"sim" e então eu agrupei
+
+1211
+01:11:28,109 --> 01:11:30,339
+essas coisas que vocês deveriam
+saber em três categorias
+
+1212
+01:11:30,359 --> 01:11:32,589
+porque tem três grandes coisas
+que nós aprendemos. Nós aprendemos
+
+1213
+01:11:32,609 --> 01:11:35,419
+sobre MVC e espero que hoje vocês
+realmente tenham aprendido um monte
+
+1214
+01:11:35,439 --> 01:11:38,659
+sobre MVC porque nós temos um
+model bem claro nesse jogo de cartas
+
+1215
+01:11:38,679 --> 01:11:42,110
+e uma view bem clara, esses
+doze botões e esses dois labels.
+
+1216
+01:11:42,130 --> 01:11:45,650
+E um controller bem claro
+no meio deles. Ok, e isso é
+
+1217
+01:11:45,670 --> 01:11:49,839
+exatamente o que é o MVC.
+Essas coisas sendo claras.
+
+1218
+01:11:49,859 --> 01:11:53,059
+Vocês aprederam um monte sobre
+Xcode, sobre como criar um projeto
+
+1219
+01:11:53,079 --> 01:11:56,429
+e adicionar arquivos e coisas assim.
+E então vocês aprenderam um monte
+
+1220
+01:11:56,449 --> 01:12:00,190
+de Objective-C. Vocês realmente
+sabem o básico de Objective-C,
+
+1221
+01:12:00,210 --> 01:12:04,030
+propriedades e classes e...
+como é a cara de um código
+
+1222
+01:12:04,050 --> 01:12:08,079
+em Objective-C. Então vocês
+devem passar por essas coisas
+
+1223
+01:12:08,099 --> 01:12:11,839
+e ter certeza que vocês entenderam
+MVC. Entenderam todas essas
+
+1224
+01:12:11,859 --> 01:12:14,849
+coisas no Xcode. Essas são
+as coisas que vocês deveriam
+
+1225
+01:12:14,869 --> 01:12:17,849
+saber como fazer no Xcode.
+E essa última, muito importante.
+
+1226
+01:12:17,869 --> 01:12:20,070
+Usando a documentação. É realmente
+muito importante se acostumar
+
+1227
+01:12:20,090 --> 01:12:22,400
+em saber como procurar na
+documentação para achar como
+
+1228
+01:12:22,420 --> 01:12:25,150
+que fazemos as coisas. Uma das coisas
+do homework de vocês vai requerer
+
+1229
+01:12:25,170 --> 01:12:28,049
+que vocês aprendam uma classe,
+uma classe simples, que é
+
+1230
+01:12:28,069 --> 01:12:30,969
+SegmentedControl, procurando
+e lendo sua documentação, ok?
+
+1231
+01:12:30,989 --> 01:12:34,219
+E eu pedi para vocês fazerem isso
+um pouco nesse homework zero
+
+1232
+01:12:34,239 --> 01:12:36,719
+e muito mais no
+homework 1.
+
+1233
+01:12:36,739 --> 01:12:40,669
+E então, na parte de Objective-C,
+tentei colocar várias
+
+1234
+01:12:40,689 --> 01:12:44,709
+linhas de código que vocês deveriam
+entender quando vocês as vissem.
+
+1235
+01:12:44,729 --> 01:12:47,829
+E vocês deveriam passar por todas
+elas e ter certeza que: "é,
+
+1236
+01:12:47,849 --> 01:12:50,829
+é, eu entendo isso. E uma string,
+é. Array, eu entendi isso...
+
+1237
+01:12:50,849 --> 01:12:53,079
+propriedades. Eu entendo como
+a memória é usada. Eu entendo
+
+1238
+01:12:53,099 --> 01:12:56,740
+sobre alloc e inicialização
+de objetos, fast enumeration"...
+
+1239
+01:12:56,760 --> 01:12:59,719
+Na verdade eu não fiz
+nenhum NSLog nas demos,
+
+1240
+01:12:59,739 --> 01:13:02,259
+não tive tempo hoje,
+me desculpem por isso, mas está
+
+1241
+01:13:02,279 --> 01:13:04,740
+nos walkthroughs,
+os walksthroughs dos slides de aula.
+
+1242
+01:13:04,760 --> 01:13:08,629
+Vocês vão realmente precisar de
+NSLog. Relmente vão. É uma
+
+1243
+01:13:08,649 --> 01:13:11,129
+ótima maneira de debugar, principalmente
+porque vocês não vão aprender sobre
+
+1244
+01:13:11,149 --> 01:13:14,110
+o debugger até a
+"Friday Section", então
+
+1245
+01:13:14,130 --> 01:13:17,639
+o NSLog é realmente ótimo.
+Eu coloque uma linhazinha de código
+
+1246
+01:13:17,659 --> 01:13:21,079
+com um monte de colchetes aqui,
+se você consegue entender o que
+
+1247
+01:13:21,099 --> 01:13:23,829
+ela faz, então você provavelmente
+pegou a idéia. Porque tem
+
+1248
+01:13:23,849 --> 01:13:25,829
+setters e getters e accessors de
+array, e criação de array,
+
+1249
+01:13:25,849 --> 01:13:30,030
+e todas essas coisas em um
+negócio só. Certo, então na
+
+1250
+01:13:30,050 --> 01:13:33,299
+quinta eu vou falar um pouco mais
+sobre Objective-C.
+
+1251
+01:13:33,319 --> 01:13:36,079
+Tem mais algumas classes no
+Foundation do que só NSObject,
+
+1252
+01:13:36,099 --> 01:13:39,200
+NSString e NSArray, então nós
+vamos falar sobre isso. E então
+
+1253
+01:13:39,220 --> 01:13:42,099
+nós vamos falar sobre essa classe
+NSAttributedString...
+
+1254
+01:13:42,119 --> 01:13:45,280
+Ou UI... NSAttributedString...
+
+
+1255
+01:13:45,300 --> 01:13:49,249
+que é tipo uma ponte entre
+strings e a interface de usuário,
+
+1256
+01:13:49,269 --> 01:13:51,860
+fontes e cores e coisas assim.
+Então é um uso clássico do controller
+
+1257
+01:13:51,880 --> 01:13:55,789
+de trazer informação de texto
+na tela de um modo rico
+
+1258
+01:13:55,809 --> 01:13:58,909
+e parte do homework de vocês
+da próxima semana é
+
+1259
+01:13:58,929 --> 01:14:01,909
+vocês vão usar isso para
+fazer o seu jogo de cartas
+
+1260
+01:14:01,929 --> 01:14:06,199
+ainda mais excitante. E então
+na próxima semana, nós vamos falar
+
+1261
+01:14:06,219 --> 01:14:10,049
+um pouco sobre o que acontece
+se você tiver múltiplos MVCs
+
+1262
+01:14:10,069 --> 01:14:12,799
+no seu app. Porque até agora
+vocês só tem um MVC. Um model,
+
+1263
+01:14:12,819 --> 01:14:16,129
+um controller, uma view.
+E se você tiver mútiplos desses
+
+1264
+01:14:16,149 --> 01:14:19,129
+e como nós os gerenciamos
+e como nós os introduzimos?
+
+1265
+01:14:19,149 --> 01:14:22,129
+Então vocês verão um pouco sobre
+isso na próxima semana.
+
+1266
+01:14:22,149 --> 01:14:26,490
+Ok, é isso por hoje. Se vocês
+tiverem alguma pergunta, estarei aqui.
+
+1267
+01:14:26,510 --> 01:14:26,490
+Visite nosso site:
+www.centraldosapps.com

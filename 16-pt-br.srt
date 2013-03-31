@@ -1,0 +1,5323 @@
+1
+00:00:00,003 --> 00:00:12,957
+Legendas em português por:
+Bruno Koga - koga@centraldosapps.com
+
+2
+00:00:12,957 --> 00:00:18,625
+Bem-vindos à aula 16 do CS193P, Inverno de 2013.
+Hoje eu vou continuar a demo
+
+3
+00:00:18,625 --> 00:00:23,500
+que nós começamos na aula passada e a
+principal coisa que vamos aprender na
+
+4
+00:00:23,500 --> 00:00:27,434
+continuação dessa demo são segues manuais.
+Ok? Porque até agora todos os segues
+
+5
+00:00:27,434 --> 00:00:30,386
+que nós fizemos foram automáticos.
+Nós CTRL + arrastamos de um botão e quando
+
+6
+00:00:30,386 --> 00:00:34,242
+você clicava no botão, o segue acontecia.
+Bom, e se você quiser que o segue aconteça
+
+7
+00:00:34,242 --> 00:00:37,054
+no seu código?
+Ok? Você ainda quer ter o mecanismo
+
+8
+00:00:37,054 --> 00:00:39,460
+do segue, mas você precisa ser capaz
+de dispará-lo em código.
+
+9
+00:00:39,460 --> 00:00:42,835
+Vamos chamar isso de segue manual
+que nós não mostramos ainda.
+
+10
+00:00:42,835 --> 00:00:46,493
+E na aula de hoje eu vou falar
+sobre dois novos tipos de segues,
+
+11
+00:00:46,493 --> 00:00:50,564
+um segue "embeded", onde você pode "embedar"
+a self.view em um outro view.controller,
+
+12
+00:00:50,564 --> 00:00:54,710
+dentro da hierarquia de view de um outro
+view controller, é bem da hora.
+
+13
+00:00:54,710 --> 00:00:58,797
+E também segues modal, onde você pode
+seguear para um view controller que vai
+
+14
+00:00:58,797 --> 00:01:02,884
+ocupar a tela inteira até que ele acabar
+de fazer o que ele precisava e então
+
+15
+00:01:02,884 --> 00:01:06,605
+ele vai sair da screen,
+e daí seu app vai
+
+16
+00:01:06,605 --> 00:01:09,985
+continuar.
+Como parte disso, eu também vou - 
+
+17
+00:01:09,985 --> 00:01:14,143
+por causa da demo, eu vou mostrar segues
+modal pra vocês - eu vou falar sobre
+
+18
+00:01:14,143 --> 00:01:18,433
+text field, UITextField, que é um
+outro Control, e é um pouco mais
+
+19
+00:01:18,433 --> 00:01:23,185
+complicado que UILabel porque ele é
+editável, mas não é tão mais
+
+20
+00:01:23,185 --> 00:01:27,790
+complicado. E daí
+apenas um lembrete que a section
+
+21
+00:01:27,790 --> 00:01:33,315
+de amanhã é sobre Instruments, esse pequeno
+add-on do Xcode que permite que você meça
+
+22
+00:01:33,315 --> 00:01:38,345
+a performance do seu app, então esse
+é um bom de assistir também.
+
+23
+00:01:38,345 --> 00:01:43,514
+Alguma pergunta antes de começarmos?
+Ok, então de volta para nossa demo.
+
+24
+00:01:43,514 --> 00:01:50,047
+Então, apenas para sumarizar onde nós
+estávamos quando nós paramos, nós tínhamos
+
+25
+00:01:50,047 --> 00:01:56,023
+criado as classes de Photo e Photographer, que são
+essas subclasses de NSManagedObject e nós
+
+26
+00:01:56,023 --> 00:02:00,674
+adicionamos métodos a elas com categorias
+para transformá-las em MKAnnotation.
+
+27
+00:02:00,674 --> 00:02:04,452
+Em outras palavras, nós fizemos isso para
+que elas implementasse aquele protocol MKAnnotation.
+
+28
+00:02:04,452 --> 00:02:09,083
+E tendo isso, nós criamos esse simples
+MapViewController e tudo o que
+
+29
+00:02:09,083 --> 00:02:13,568
+o MapViewController sabe fazer é
+ele tem um mapView no self.view e
+
+30
+00:02:13,568 --> 00:02:18,329
+você adiciona anotações a ele e ele sabe
+como mostrar todas essas anotações como
+
+31
+00:02:18,329 --> 00:02:22,531
+pins e quando você clica neles,
+ele te dá o title e o subtitle.
+
+32
+00:02:22,531 --> 00:02:26,236
+E ele também sabe como mostrar uma imagem,
+aquela coisa que chamamos de thumbnail e
+
+33
+00:02:26,236 --> 00:02:28,960
+também sabe como fazer esse
+detailDisclosureButton.
+
+34
+00:02:28,960 --> 00:02:35,008
+Daí nós subclasseamos isso algumas vezes
+para criar uma view de Photographer e daí
+
+35
+00:02:35,008 --> 00:02:41,098
+nós vamos implementar uma view
+PhotosByPhotographer em um segundo aqui
+
+36
+00:02:41,098 --> 00:02:47,274
+para que nós possamos replicar a UI do
+nosso Photomania do iPhone para o iPad
+
+37
+00:02:47,274 --> 00:02:51,315
+usando apenas mapas. Ok? Então é aqui que
+estávamos. O nosso próximo passo
+
+38
+00:02:51,315 --> 00:02:55,002
+aqui é fazer o segue.
+Então deixa eu rodar esse app.
+
+39
+00:02:55,002 --> 00:02:58,609
+Nós vamos fazer esse segue, esse
+segue manual que eu falei para que possamos
+
+40
+00:02:58,609 --> 00:03:03,184
+passar pelos vários passos entre
+Photographer, PhotosByPhotographer
+
+41
+00:03:03,184 --> 00:03:05,440
+e então Photo.
+Essa é a coisa principal que vamos
+
+42
+00:03:05,440 --> 00:03:09,646
+fazer aqui.
+Então vamos voltar para o Xcode.
+
+43
+00:03:09,646 --> 00:03:14,386
+Agora, uma coisa que eu queria mostrar,
+apenas para ter certeza que está claro.
+
+44
+00:03:14,386 --> 00:03:19,122
+Eu removi o MapKit das linked libraries,
+então quando eu rodar, vocês podem ver
+
+45
+00:03:19,122 --> 00:03:23,414
+que eu tenho esse Build Failed e se eu
+clicar em Failure, vocês podem ver que
+
+46
+00:03:23,414 --> 00:03:28,594
+o MKPinAnnotationView não está linkado e
+espero que vocês estejam confortáveis agora com,
+
+47
+00:03:28,594 --> 00:03:33,809
+quando você faz algo assim, quando você usa
+alguma API em um framework diferente,
+
+48
+00:03:33,809 --> 00:03:39,289
+você pode vir aqui no seu projeto e
+seus targets, vir em Build Phases e então
+
+49
+00:03:39,289 --> 00:03:44,489
+o terceiro de cima pra baixo é Link With
+Binary Libraries e aqui você clicar no +
+
+50
+00:03:44,489 --> 00:03:47,774
+e, por exemplo, nós podemos
+adicionar o MapKit de volta aqui.
+
+51
+00:03:47,775 --> 00:03:52,546
+E tendo o MapKit, agora se rodarmos,
+nós conseguiremos resolver esses
+
+52
+00:03:52,546 --> 00:03:57,263
+símbolos do MKPinAnnotation e então...
+espero que a rede esteja funcionando hoje.
+
+53
+00:03:57,263 --> 00:04:02,104
+E aqui vamos nós. Aqui está nosso primeiro
+view controller. Esse é nosso
+
+54
+00:04:02,104 --> 00:04:06,180
+PhotographerViewController.
+Então o Photographer apenas fez uma query,
+
+55
+00:04:06,180 --> 00:04:09,876
+vocês se lembram, no database, por todos
+os fotógrafos que tinham mais
+
+56
+00:04:09,876 --> 00:04:11,442
+que duas fotos.
+Todo mundo lembra disso?
+
+57
+00:04:11,442 --> 00:04:13,234
+Ok?
+Então isso é o que esse view controller
+
+58
+00:04:13,234 --> 00:04:16,855
+está fazendo aqui e então está usando
+a sua superclasse, o MapViewController, para
+
+59
+00:04:16,855 --> 00:04:19,672
+mostrar essas annotations.
+E  quando nós clicamos em uma dessas
+
+60
+00:04:19,672 --> 00:04:24,364
+annotations, como estou tocando um Pin,
+vocês podem ver que o MapViewController
+
+61
+00:04:24,364 --> 00:04:28,834
+trouxe esse callout.
+E do lado esquerdo aqui, vocês podem ver
+
+62
+00:04:28,834 --> 00:04:34,864
+é um pequeno thumbnail de qualquer objeto,
+uma das fotos do fotógrafo,
+
+63
+00:04:34,864 --> 00:04:37,150
+ok?
+Da hora.
+
+64
+00:04:37,150 --> 00:04:41,428
+Próximo passo que nós queremos dar é:
+nós queremos o lado direito desse callout,
+
+65
+00:04:41,428 --> 00:04:45,030
+essa barrinha preta, para ser aquele
+pequeno detailDisclosureButton azul.
+
+66
+00:04:45,030 --> 00:04:48,515
+E quando nós clicarmos isso,
+nós queremos seguear, ok?
+
+67
+00:04:48,515 --> 00:04:53,089
+Nós vamos trazer um mapa totalmente novo.
+E eses mapa vai ter as fotos tiradas
+
+68
+00:04:53,089 --> 00:04:57,749
+por esse fotógrafo, esse fotógrafo
+chamado Aaron56125 por exemplo, ok?
+
+69
+00:04:57,750 --> 00:05:01,177
+Ele tem cinco fotos. Gostaríamos de ver
+essas fotos, certo?
+
+70
+00:05:01,177 --> 00:05:05,940
+Então é isso que vamos fazer a seguir.
+O truque para isso ou a consideração 
+
+71
+00:05:05,940 --> 00:05:10,078
+importante que devemos ter é
+que nós queremos fazer um segue.
+
+72
+00:05:10,078 --> 00:05:16,424
+Aqui está o nosso storyboard do iPad.
+Nós queremos seguear daqui, que é
+
+73
+00:05:16,424 --> 00:05:20,392
+o nosso Photographer, para esse aqui,
+mas não há nada para nós fazermos
+
+74
+00:05:20,392 --> 00:05:23,330
+o CTRL + arrastar.
+Não há botão ou algo assim,
+
+75
+00:05:23,330 --> 00:05:26,414
+então como nós podemos fazer esse segue?
+Nós ainda queremos fazer o segue.
+
+76
+00:05:26,414 --> 00:05:29,994
+E a resposta para isso é que nós
+vamos fazer isso em código.
+
+77
+00:05:29,994 --> 00:05:33,394
+Então vamos primeiro falar sobre
+como nós vamos disparar esse segue.
+
+78
+00:05:33,394 --> 00:05:36,320
+E nós vamos fazer isso no
+PhotographerMapViewController. 
+
+79
+00:05:36,320 --> 00:05:42,809
+Esse é o MapViewController que vocês
+acabaram de ver na tela e nós vamos
+
+80
+00:05:42,809 --> 00:05:48,960
+implementar esse método de delegate
+do MapView chamado... como é chamado?
+
+81
+00:05:48,960 --> 00:05:53,568
+AnnotationViewFor... (???)
+Vêem aqui? O primeiro?
+
+82
+00:05:53,568 --> 00:05:58,536
+annotationViewCalloutAccessoryControlTapped?
+E eu disse que essa mensagem de delegate é
+
+83
+00:05:58,536 --> 00:06:03,880
+enviada para o delegate do MapView sempre que
+aquele pequeno detailDisclosureButton é clicado.
+
+84
+00:06:03,880 --> 00:06:07,444
+Agora, aquele detailDisclosureButton não
+está aí porque se vocês se lembram
+
+85
+00:06:07,444 --> 00:06:11,008
+no nosso MapViewController nós não colocamos
+ele ali a não ser que o delegate responda
+
+86
+00:06:11,008 --> 00:06:13,482
+para esse método.
+method. Certo? Nós temos um delegateResponds,
+
+87
+00:06:13,482 --> 00:06:17,419
+aliás, vamos dar uma olhada nele
+para ter certeza que vocês entenderam essa parte
+
+88
+00:06:17,420 --> 00:06:21,480
+Vêem aqui?
+Nós apenas colocamos esse pequeno
+
+89
+00:06:21,480 --> 00:06:25,010
+detailDisclosureButton se o delegate
+responde para esse
+
+90
+00:06:25,010 --> 00:06:29,126
+lance de mapViewCalloutAccessory...
+Esse é o código que escrevemos na última aula,
+
+91
+00:06:29,126 --> 00:06:32,374
+ok? Então vamos
+voltar aqui para esse e nós vamos
+
+92
+00:06:32,374 --> 00:06:37,597
+implementar isso para que aquela
+coisinha possa aparecer lá.
+
+93
+00:06:37,598 --> 00:06:42,074
+E tudo que vamos fazer dentro desse callout,
+quando esse calloutAccessory é 
+
+94
+00:06:42,074 --> 00:06:45,580
+clicado, nós vamos manuealmente fazer
+com que o segue aconteça.
+
+95
+00:06:45,580 --> 00:06:51,941
+E o modo que fazemos isso é:
+nós chamamos performSegueWithIdentifier.
+
+96
+00:06:51,942 --> 00:06:56,436
+E nós temos que especificar o identifier.
+E eu vou usar o identifier 
+
+97
+00:06:56,436 --> 00:06:59,846
+setPhotographer. É o mesmo nome
+que eu usei na
+
+98
+00:06:59,846 --> 00:07:03,292
+versão do iPhone.
+E nós vamos ter que colocar
+
+99
+00:07:03,292 --> 00:07:08,407
+esse segue no nosso storyboard e dar
+esse nome a ele, para que possamos usá-lo.
+
+100
+00:07:08,408 --> 00:07:12,467
+E o sender é interessante. Quando você
+está fazendo isso no código, o sender é
+
+101
+00:07:12,467 --> 00:07:15,752
+mais interessante. Por exemplo,
+em uma TableView, quando você faz
+
+102
+00:07:15,752 --> 00:07:19,487
+um segue de uma TableViewCell, você percebe
+que o sender é a TableViewCell?
+
+103
+00:07:19,488 --> 00:07:23,989
+Então nós queremos passar alguma coisa aqui
+que identifique aonde nós clicamos,
+
+104
+00:07:23,989 --> 00:07:26,018
+certo?
+Então eu vou passar esse
+
+105
+00:07:26,018 --> 00:07:31,566
+MKAnnotationView. Esse argumento
+bem aqui que nós obtivemos quando esse
+
+106
+00:07:31,566 --> 00:07:36,770
+accessory foi clicado e nos disse
+qual Annotation View foi clicada.
+
+107
+00:07:36,770 --> 00:07:39,705
+Então vou passar isso pra frente.
+E é assim que eu vou saber,
+
+108
+00:07:39,705 --> 00:07:43,310
+no prepareForSegue, de qual fotógrafo
+eu quero ver as fotos.
+
+109
+00:07:43,310 --> 00:07:45,940
+Faz sentido?
+É isso.
+
+110
+00:07:45,940 --> 00:07:48,632
+Isso é tudo que eu tenho que fazer aqui.
+Tem uma linha de código nesse
+
+111
+00:07:48,632 --> 00:07:52,912
+calloutAccessoryTapped.
+Agora, vamos voltar ao nosso Storyboard
+
+112
+00:07:52,912 --> 00:07:56,888
+e criar aquele segue.
+E, nós não podemos ter o segue vindo
+
+113
+00:07:56,888 --> 00:08:01,676
+de nenhum botão aqui, mas é possível
+CTRL + arrastar do próprio
+
+114
+00:08:01,676 --> 00:08:03,479
+view controller.
+Vêem? Isso representa o próprio
+
+115
+00:08:03,479 --> 00:08:06,524
+view controller.
+Então vou CTRL + arrastar daqui
+
+116
+00:08:06,524 --> 00:08:11,276
+até esse View Controller para criar um segue
+desse View Controller para aquele
+
+117
+00:08:11,276 --> 00:08:13,916
+View Controller.
+E quando eu solto, ele diz: que tipo
+
+118
+00:08:13,916 --> 00:08:17,428
+de segue nós queremos aqui?
+E nós estamos dentro de um navigation
+
+119
+00:08:17,428 --> 00:08:21,223
+controller, então queremos que seja um push.
+Nós queremos que isso pushe esse novo mapa,
+
+120
+00:08:21,223 --> 00:08:25,110
+então eu vou clicar em Push.
+E vocês podem ver agora que ele criou
+
+121
+00:08:25,110 --> 00:08:29,422
+esse segue bem aqui, ok?
+Segue entre esses dois view controllers,
+
+122
+00:08:29,422 --> 00:08:33,583
+e eu preciso me certificar que eu setei
+o identifier para essa coisa para ser
+
+123
+00:08:33,583 --> 00:08:36,865
+setPhotographer.
+Caso contrário, ele não vai saber de qual
+
+124
+00:08:36,865 --> 00:08:41,065
+segue nós estamos falando, certo?
+E esse segue é importante, ele especifica
+
+125
+00:08:41,065 --> 00:08:44,600
+o view controller fonte e o
+view controller de destino.
+
+126
+00:08:44,600 --> 00:08:47,940
+Essa é uma das coisas importantes acontecendo
+aqui e é um segue no estilo push.
+
+127
+00:08:47,940 --> 00:08:52,514
+Ele também define isso, certo?
+Agora que especificamos o segue
+
+128
+00:08:52,514 --> 00:08:56,764
+se um view controller para o próximo e nós
+o disparamos em código, ok
+
+129
+00:08:56,764 --> 00:09:00,080
+Todo mundo bem com isso?
+Isso é chamado segue manual.
+
+130
+00:09:00,080 --> 00:09:05,356
+Isso está criando um segue manual.
+É apenas um segue normal e nós temos
+
+131
+00:09:05,356 --> 00:09:14,857
+que fazer nosso prepareForSegue normal.
+Então vamos fazer nosso prepareForSegue aqui.
+
+132
+00:09:14,858 --> 00:09:18,705
+prepareForSegue e, nesse prepareForSegue,
+eu vou ter que pegar
+
+133
+00:09:18,705 --> 00:09:23,110
+aquele próximo view controller que
+é o PhotosByPhotographerViewController.
+
+134
+00:09:23,110 --> 00:09:27,744
+Eu tenho que deixá-lo pronto.
+Vamos prossegue e arrumar mais espaço
+
+135
+00:09:27,744 --> 00:09:32,387
+para qe possamos ver melhor.
+Primeiro eu vou me certificar que
+
+136
+00:09:32,387 --> 00:09:36,419
+estamos falando sobre esse identifier--
+esse segue.
+
+137
+00:09:36,420 --> 00:09:41,621
+Lembrem-se, é chamado setPhotographer, ok?
+E nós sempre colocamos isso aqui,
+
+138
+00:09:41,621 --> 00:09:46,780
+mesmo que só tenha um segue, porque algum dia
+nós podemos ter else, if, algum outro segue.
+
+139
+00:09:46,780 --> 00:09:51,196
+Nós podemos adicionar algo ao nosso
+view controller onde ele seguea para
+
+140
+00:09:51,196 --> 00:09:55,729
+outra coisa, então nós sempre queremos
+checar isso. Eu também vou checar para ver
+
+141
+00:09:55,729 --> 00:10:01,561
+se o sender, bem aqui, que eu estou passando
+aqui é de fato um MKAnnotationView.
+
+142
+00:10:01,561 --> 00:10:06,988
+Deveria ser. E novamente, alguém disse e
+é verdade: talvez eu devesse deixar
+
+143
+00:10:06,988 --> 00:10:12,658
+essa coisa crashar se não for, porque
+daó eu poderia achar esse bug mais cedo
+
+144
+00:10:12,658 --> 00:10:15,826
+se eu tiver um bug aqui.
+Mas eu vou deixar pra lá e
+
+145
+00:10:15,826 --> 00:10:19,886
+usar uma instrospecção aqui.
+E agora eu sei que o sender é um
+
+146
+00:10:19,886 --> 00:10:24,460
+MKAnnottionView. Na verdade vou criar
+uma variável local aqui para isso.
+
+147
+00:10:24,460 --> 00:10:30,466
+Vou chamá-la de aView, porque é uma annotationView.
+E deixe me setá-la igual
+
+148
+00:10:30,466 --> 00:10:33,892
+ao sender.
+E daí vou dizer:
+
+149
+00:10:33,892 --> 00:10:41,074
+[ditando código]
+
+150
+00:10:41,074 --> 00:10:47,686
+[ditando código],
+daí eu vou poder fazer
+
+151
+00:10:47,686 --> 00:10:51,954
+o segue, certo?
+Porque isso é um
+
+152
+00:10:51,954 --> 00:10:55,778
+segue setPhotographer.
+Nós vamos mostrar fotos tiradas
+
+153
+00:10:55,778 --> 00:11:01,205
+por esse fotógrafo, então queremos ter certeza
+de que isso é o que temos aqui e, se for,
+
+154
+00:11:01,205 --> 00:11:04,889
+daí, novamente, vou criar essa
+variável local aqui.
+
+155
+00:11:04,889 --> 00:11:12,250
+vou chamá-la de photographer e ela é
+
+156
+00:11:12,250 --> 00:11:19,400
+igual a annotation.
+E uma coisa sobre isso para considerar.
+
+157
+00:11:19,400 --> 00:11:25,530
+Vocês podem ver eu tenho um erro bem aqui.
+E nós temos que declarar Photographer aqui.
+
+158
+00:11:25,530 --> 00:11:30,986
+Então nós temos que importar o Photographer
+e, na verdade, nós vamos importar também
+
+159
+00:11:30,986 --> 00:11:35,525
+Photographer+MKAnnotation.
+Daí nós vamos ter a versão de Photographer
+
+160
+00:11:35,525 --> 00:11:40,467
+que sabemos que é uma annotation.
+Ok? Porque nós estamos usando como tal aqui.
+
+161
+00:11:40,468 --> 00:11:46,260
+E daí vou finalmente dizer: se meu
+destinationViewController responder para o
+
+162
+00:11:46,260 --> 00:11:51,870
+setPhotographer, o que deveria,
+senão alguém linkou de um jeito
+
+163
+00:11:51,870 --> 00:11:55,894
+que não deveria, mas vou checar.
+Se ele responde, daí eu vou
+
+164
+00:11:55,894 --> 00:12:06,735
+enviar ao meu destinationViewController
+essa mensagem setPhotographer
+
+165
+00:12:06,735 --> 00:12:14,981
+withObject:photographer, ok?
+Espero que vocês estejam familiarizados
+
+166
+00:12:14,981 --> 00:12:19,275
+com esse código. É o prepareForSegue
+padrão acontecendo aqui.
+
+167
+00:12:19,275 --> 00:12:23,755
+Mas para isso funcionar, claro a coisa
+para qual estamos segueando, que é um
+
+168
+00:12:23,755 --> 00:12:27,635
+PhotosByPhotographerViewController,
+ela precisa set implementada. Nós não
+
+169
+00:12:27,635 --> 00:12:29,300
+implementamos ainda.
+Vocês podem ver ele bem aqui.
+
+170
+00:12:29,300 --> 00:12:33,206
+Ele tem essa API pública para setar
+o Photographer, mas nós precisamos que
+
+171
+00:12:33,206 --> 00:12:37,206
+ele faça alguma coisa quando setar
+o Photographer. O que nós vamos fazer aqui?
+
+172
+00:12:37,207 --> 00:12:42,550
+O que geralmente fazemos..
+Vamos... quando nosso model for setado,
+
+173
+00:12:42,550 --> 00:12:49,124
+vamos prosseguir e fazer algumas coisas.
+Vamos setar nosso título para ser
+
+174
+00:12:49,124 --> 00:12:54,576
+o nome do fotógrafo, que seria da hora.
+E se nós estivermos visíveis, ok? Se
+
+175
+00:12:54,576 --> 00:12:58,055
+o nosso view controller está na tela,
+então eu vou reload.
+
+176
+00:12:58,056 --> 00:13:03,692
+Ok? Reload, lembram-se? No nosso MapView
+significa carregue todas as annotations, ok?
+
+177
+00:13:03,692 --> 00:13:06,060
+Vai buscar no database
+e carregue todas elas.
+
+178
+00:13:06,060 --> 00:13:10,807
+Agora, por que eu estou fazendo isso
+quando estiver visível? Primeiro seria uma
+
+179
+00:13:10,808 --> 00:13:13,758
+perda de tempo. Se eu não estou visível
+e eu nunca ficar visível.
+
+180
+00:13:13,758 --> 00:13:16,219
+Também, eu quero ter certeza que
+todos meus outlets foram setados.
+
+181
+00:13:16,220 --> 00:13:20,150
+Se eu não estou visível, pode ser porque
+eu não fui carregado ainda, então meus
+
+182
+00:13:20,150 --> 00:13:22,488
+outlets seriam todos nil.
+Isso não é bom.
+
+183
+00:13:22,489 --> 00:13:28,589
+E, na verdade, no viewDidLoad, vamos dizer,
+ou, de novo, posso fazer no viewDidAppear.
+
+184
+00:13:28,589 --> 00:13:34,714
+Eu vou ter certeza que eu
+vou dar o reload, ok?
+
+185
+00:13:34,714 --> 00:13:39,430
+Desse modo eu tenho certeza que depois
+que meus outlets foram carregados, daí
+
+186
+00:13:39,430 --> 00:13:46,176
+eu me carreguei.
+(...).
+
+187
+00:13:46,176 --> 00:13:56,820
+Vamos fazer o reload. E o reload aqui
+vai ser a mesma coisa do outro.
+
+188
+00:13:56,820 --> 00:14:01,443
+Vamos fazer um fetchRequest aqui.
+Esse é um fetchRequest onde estamos
+
+189
+00:14:01,443 --> 00:14:04,901
+procurando por Photos.
+Então vamos dizer Photo ao invés
+
+190
+00:14:04,901 --> 00:14:07,207
+de Photographer, que foi o que
+dissemos no outro.
+
+191
+00:14:07,208 --> 00:14:13,016
+O predicado que queremos aqui
+é o mesmo predicado que tínhamos
+
+192
+00:14:13,016 --> 00:14:19,272
+na nossa TableView que é
+[ditando código]
+
+193
+00:14:19,272 --> 00:14:23,020
+E então vamos pegar as photos.
+
+194
+00:14:23,020 --> 00:14:29,068
+Podemos fazer isso pedindo para o
+managedObjectContext do photographer
+
+195
+00:14:29,068 --> 00:14:34,370
+executar esse fetch request.
+E nós não vamos checar por erros porque
+
+196
+00:14:34,370 --> 00:14:39,864
+é uma demo, estamos tentando economizar tempo.
+Certo, então agora temos as fotos.
+
+197
+00:14:39,864 --> 00:14:43,017
+Agora só precisamos carregá-las
+no MapView.
+
+198
+00:14:43,017 --> 00:14:48,800
+Então vamos primeiro remover todas
+as annotations existentes apenas no caso de
+
+199
+00:14:48,800 --> 00:14:52,120
+já termos algumas.
+Alguém ter nos dado um fotógrafo diferente
+
+200
+00:14:52,120 --> 00:14:57,772
+no passado, então vamos nos livrar
+de todas as annotations existentes e daí
+
+201
+00:14:57,773 --> 00:15:01,502
+vamos adicionar essas novas fotos.
+Ok? Photos.
+
+202
+00:15:01,503 --> 00:15:06,850
+Lembrem-e que photos aqui é um array
+de objetos Photos e é ok adicioná-los
+
+203
+00:15:06,850 --> 00:15:12,358
+como annotations no MapView
+porque essas fotos foram transformadas
+
+204
+00:15:12,358 --> 00:15:15,523
+em MKAnnotations.
+Lembram-se? É isso que adicionamos
+
+205
+00:15:15,523 --> 00:15:18,720
+na categoria.
+Nós adicionamos os métodos title,
+
+206
+00:15:18,720 --> 00:15:22,643
+e subtitle e coordinate.
+E então agora Photos podem ser annotations
+
+207
+00:15:22,643 --> 00:15:28,404
+e é por isso que podemos adicioná-las aqui.
+Eu também vou pegar uma dessas fotos
+
+208
+00:15:28,404 --> 00:15:33,088
+e centralizar o mapa nela.
+Então vou dizer apenas: lastObject.
+
+209
+00:15:33,088 --> 00:15:35,849
+É como estivesse dizendo "anyObject"
+eu um arrai, de certo modo.
+
+210
+00:15:35,850 --> 00:15:41,500
+E enquanto existir pelo menos uma foto
+lá, daí eu vou dizer para o MapView
+
+211
+00:15:41,500 --> 00:15:46,747
+setar a coordenada do seu centro para ser
+a coordenada da foto, ok?
+
+212
+00:15:46,747 --> 00:15:52,956
+E o erro aqui é porque
+essa coordinate é um MKAnnotation
+
+213
+00:15:52,956 --> 00:15:59,649
+e nós não importamos nenhuma versão
+de um arquivo header de Photo que diz que
+
+214
+00:15:59,649 --> 00:16:05,206
+ele é um MKAnnotation.
+Então vamos em frente e fazer isso.
+
+215
+00:16:05,206 --> 00:16:12,044
+MKAnnotation... COF COF, ok?
+Todo mundo bem com esse código?
+
+216
+00:16:12,044 --> 00:16:17,166
+Isso é tudo que é necessário
+para fazer as fotos... oh-oh.
+
+217
+00:16:17,166 --> 00:16:21,274
+Acho que temos um problema aqui novmente.
+Talvez... ah, desconectou.
+
+218
+00:16:21,274 --> 00:16:25,833
+Pronto.
+É um cabo muito sensível aqui.
+
+219
+00:16:25,833 --> 00:16:32,974
+Então vamos tentar.
+Acho que tudo vai funcionar.
+
+220
+00:16:35,630 --> 00:16:39,690
+Ok, aqui estão nossos fotógrafos
+ao redor do mundo e se eu clicar
+
+221
+00:16:39,690 --> 00:16:44,380
+em um fotógrafo aqui. Percebam que agora
+o nosso callout tem esse detail...
+
+222
+00:16:44,380 --> 00:16:46,864
+AccessoryButton na direita.
+Vocês vêem esse botão redondo,
+
+223
+00:16:46,864 --> 00:16:50,018
+azul, com uma seta?
+Isso é porque nós implementamos
+
+224
+00:16:50,018 --> 00:16:53,872
+aquele método calloutAccessory.
+E agora se eu clicar nessa coisa azul,
+
+225
+00:16:53,872 --> 00:16:58,420
+daí nós pushamos, ok? E está mostrando
+todas as fotos tiradas por esse cara.
+
+226
+00:16:58,420 --> 00:17:02,393
+Agora, isso tá meio zoado, porque nós
+estamos com um zoom out e todas as fotos dele,
+
+227
+00:17:02,393 --> 00:17:06,488
+claro, foram tiradas no mesmo lugar.
+Então, é... eu posso zoom in aqui,
+
+228
+00:17:06,488 --> 00:17:10,450
+mas isso é meio chato.
+O que queremos na verdade é que isso
+
+229
+00:17:10,450 --> 00:17:14,215
+faça o zoom automático.
+Ok? Então eu vou adicionar uma nova
+
+230
+00:17:14,215 --> 00:17:19,415
+feature agora JUST FOR FUN, no
+MapViewController onde, quando ele
+
+231
+00:17:19,415 --> 00:17:24,535
+tiver uma annotation setada nele, quando
+ele aparecer, ele vai zoom in para mostrar
+
+232
+00:17:24,535 --> 00:17:27,440
+essas annotations.
+sanduiche-iche.
+
+233
+00:17:27,440 --> 00:17:30,270
+Vamos fazer isso.
+Não vamos estar necessariamente mostrando
+
+234
+00:17:30,270 --> 00:17:35,382
+a vocês nenhuma feature em particular,
+mas é tipo uma coisa legal
+
+235
+00:17:35,382 --> 00:17:38,930
+de se fazer.
+O modo como eu vou fazer isso, eu tenho
+
+236
+00:17:38,930 --> 00:17:44,290
+um método aqui que eu fiz um snippet
+chamado updateRegion, que vamos olhar
+
+237
+00:17:44,290 --> 00:17:47,580
+rapidamente. Aqui está.
+Ok, updateRegion.
+
+238
+00:17:47,580 --> 00:17:51,982
+E tudo que updateRegion faz é, na verdade,
+ele está apenas pegando um
+
+239
+00:17:51,982 --> 00:17:56,197
+boundingRect, CGRect, e ele passa
+por todas as annotations.
+
+240
+00:17:56,197 --> 00:18:02,995
+E chama CGRectUnion para unir
+retângulos que incluem todas
+
+241
+00:18:02,995 --> 00:18:07,995
+as annotations.
+E então ele transforma esse rect
+
+242
+00:18:07,995 --> 00:18:11,580
+em regiões de lagitude e longitude
+e span. Faz sentido?
+
+243
+00:18:11,580 --> 00:18:15,100
+Esse é modo meio (???) de fazer isso
+mas é simples.
+
+244
+00:18:15,100 --> 00:18:17,700
+Eu não queria colocar um monte de código
+na frente de vocês e vocês ficassem
+
+245
+00:18:17,700 --> 00:18:19,219
+AHHH O QUE É TUDO ISSO?!?
+Então... perguntas aí atrás?
+
+246
+00:18:19,219 --> 00:18:25,933
+>> [Estudante perguntando]
+
+247
+00:18:25,933 --> 00:18:31,179
+[estudante perguntando]
+
+248
+00:18:31,179 --> 00:18:34,771
+>> A pergunta é: e se o cara
+
+249
+00:18:34,771 --> 00:18:37,808
+tidou uma foto na Austrália
+euma nos Estados Unidos?
+
+250
+00:18:37,808 --> 00:18:41,652
+Daí é, ele ficaria com o zoom out.
+Mas você iria querer com o zoom out.
+
+251
+00:18:41,652 --> 00:18:45,676
+[estudante perguntando]
+
+252
+00:18:45,676 --> 00:18:48,633
+>> É, mesmo que você tenha
+tirado mil
+
+253
+00:18:48,633 --> 00:18:51,948
+nos Estados Unidos e uma na Austrália,
+você ainda quer ver o mundo inteiro
+
+254
+00:18:51,948 --> 00:18:55,336
+par saber que tem aquela uma na Austrália.
+Mas, de qualquer modo, você pode fazer isso,
+
+255
+00:18:55,336 --> 00:18:57,387
+o que você poderia fazer isso.
+Isso foi apenas FOR FUN mesmo.
+
+256
+00:18:57,388 --> 00:19:01,121
+Percebam que a outra coisa que fiz foi
+eu chamei esse updateRegion no
+
+257
+00:19:01,121 --> 00:19:03,748
+viewDidAppear.
+Mas eu vou apenas chamar esse
+
+258
+00:19:03,748 --> 00:19:07,040
+updateRegion uma vez.
+Eu não quero ficar constantemente
+
+259
+00:19:07,040 --> 00:19:10,296
+zooming in no pobre do usuário, então eu vou
+fazer só da primeira vez que aparecer.
+
+260
+00:19:10,296 --> 00:19:12,730
+E daí eu vou setar esse
+needUpadateRegion para NO.
+
+261
+00:19:12,730 --> 00:19:19,514
+Então eu preciso ter essa pequena
+property aqui que é nonatomic BOOL
+
+262
+00:19:19,514 --> 00:19:26,515
+como eu chamei?
+needUpdateRegion.
+
+263
+00:19:26,515 --> 00:19:31,180
+Ok?
+E vai começar como NO, porque
+
+264
+00:19:31,180 --> 00:19:36,704
+uma property sempre começa como zero.
+E nós vamos... que mais?
+
+265
+00:19:36,704 --> 00:19:40,469
+Nós vamos setá-la talvez
+no viewDidLoad.
+
+266
+00:19:40,469 --> 00:19:46,305
+Que tal?
+Então needUpdateRegion = YES,
+
+267
+00:19:46,305 --> 00:19:48,921
+ok?
+Então depois que carregou,
+
+268
+00:19:48,921 --> 00:19:53,761
+primeira vez que aparecer, ele vai fazer
+um updateRegion. Vamos ver se funciona.
+
+269
+00:19:53,761 --> 00:20:01,759
+Certo, novamente, vamos aqui.
+Escolhemos alguém aqui. Temos três fotos,
+
+270
+00:20:01,759 --> 00:20:05,032
+clicamos aqui.
+Ele zoom in, ok?
+
+271
+00:20:05,033 --> 00:20:11,434
+O que é da hora sobre isso, eu na verdade
+fiz esse zooming in, vocês perceberam,
+
+272
+00:20:11,434 --> 00:20:16,247
+no viewDidAppear, não no viewWillAppear,
+viewDidAppear.
+
+273
+00:20:16,248 --> 00:20:20,662
+E é por isso que nós temos esse belo
+efeito aqui onde ele desliza.
+
+274
+00:20:20,662 --> 00:20:23,144
+Nos mostra o mundo inteiro
+e JUUUUM e daí faz o zoom. Então podemos
+
+275
+00:20:23,144 --> 00:20:25,423
+ter uma idéia: onde nós estamos?
+Ok, estamos em Amsterdam.
+
+276
+00:20:25,424 --> 00:20:32,405
+Mesma coisa se voltarmos aqui e
+clicarmos aqui, ele vai zoom in, ok?
+
+277
+00:20:32,405 --> 00:20:36,290
+É só um efeito legal para dar ao usuário
+a idéia de onde você está.
+
+278
+00:20:36,290 --> 00:20:39,287
+E isso não precisou de nenhum código extra.
+É só tipo um timing, quando nós fizemos,
+
+279
+00:20:39,287 --> 00:20:42,243
+nós fizemos no viewDidAppear, ok?
+
+280
+00:20:42,243 --> 00:20:44,820
+Então isso está funcionando bem, certo?
+Nós temos nossos fotógrafos.
+
+281
+00:20:44,820 --> 00:20:50,076
+Nós podemos clicar aqui, zoom in, 
+ele mostra várias coisas, certo?
+
+282
+00:20:50,077 --> 00:20:55,354
+Podemos scrollar por aí e voltar.
+Agora, a próxima coisa que queremos
+
+283
+00:20:55,354 --> 00:20:57,09
+fazer é o segue.
+Desculpe, pergunta?
+
+284
+00:20:57,093 --> 00:21:04,045
+>> [Estudante perguntando]
+
+285
+00:21:04,045 --> 00:21:07,853
+>> A pergunta é se eu não gostar dessa
+
+286
+00:21:07,853 --> 00:21:10,800
+pequena seta azul de detail
+aqui na direita?
+
+287
+00:21:10,800 --> 00:21:13,095
+O que eu concordo,
+não é muito atrativo.
+
+288
+00:21:13,095 --> 00:21:15,732
+E eu quero fazer
+algo diferente. Posso fazer?
+
+289
+00:21:15,732 --> 00:21:19,100
+Absolutamente, porque isso é somente
+o calloutAccessoryView da direita.
+
+290
+00:21:19,100 --> 00:21:23,523
+Poderia ser qualquer classe que você quiser
+ali. Na verdade, poderia ser apenas uma
+
+291
+00:21:23,523 --> 00:21:27,744
+imagem que você quisesse, se fosse uma
+subclasse de UIControl então aquele lance de
+
+292
+00:21:27,744 --> 00:21:31,584
+controlAccessoryTapped seria chamado para você.
+Então você poderia escolher qualquer imagem
+
+293
+00:21:31,584 --> 00:21:35,676
+que você quiser, fazer uma pequena subclasse
+de UIControl, fazê-lo desenhar aquela imagem,
+
+294
+00:21:35,676 --> 00:21:37,862
+como a única coisa que ela faria, BOOM.
+Pronto. Ok?
+
+295
+00:21:37,862 --> 00:21:42,096
+Agora, você iria querer fazer isso?
+Existe um simples argumento que diz
+
+296
+00:21:42,096 --> 00:21:47,195
+que esse pequeno símbolo é o símbolo
+oficial da Apple para "mostre-me mais detalhes".
+
+297
+00:21:47,196 --> 00:21:52,230
+então, hm, você poderia querer ficar
+com ele. Eu não sei. É algo de design
+
+298
+00:21:52,230 --> 00:21:56,262
+e você pode escolher ambas soluções.
+É tipo, sabe, é meio estranho
+
+299
+00:21:56,262 --> 00:21:59,600
+ter isso aqui. Isso é
+mais um lance de 
+
+300
+00:21:59,600 --> 00:22:01,898
+TableView, certo? Então
+é meio estranho ter isso aqui.
+
+301
+00:22:01,898 --> 00:22:05,741
+Eu acho... eu não acho que a Apple iria
+rejeitar você da App Store se você colocar
+
+302
+00:22:05,741 --> 00:22:09,134
+uma cara mais bonitinha aqui.
+Certo, agora vamos ver esse outro segue,
+
+303
+00:22:09,134 --> 00:22:12,416
+é outro segue manual.
+Então se você não entendeu o que
+
+304
+00:22:12,416 --> 00:22:15,552
+eu estava falando no último segue
+manual, ainda bem que você vai
+
+305
+00:22:15,552 --> 00:22:18,517
+ver de novo agora.
+Para fazer esse aqui, se nós olharmos
+
+306
+00:22:18,517 --> 00:22:21,830
+para o nosso storyboard aqui, esse é
+um ImageViewController, certo?
+
+307
+00:22:21,830 --> 00:22:26,445
+Que mostra uma imagem. Mas eu vou na verdade
+criar uma subclasse disso chamada
+
+308
+00:22:26,445 --> 00:22:31,344
+PhotoViewController que recebe uma Photo
+como seu model e daí chama sua superclasse,
+
+309
+00:22:31,344 --> 00:22:36,009
+ImageViewController, para mostrar aquela URL.
+E vocês verão porque eu vou fazer isso
+
+310
+00:22:36,009 --> 00:22:40,130
+mais tarde nessa aula.
+Então, deixe-me fazer isso.
+
+311
+00:22:40,130 --> 00:22:46,093
+Então vamos criar essa subclasse,
+que é uma subclasse bem simples
+
+312
+00:22:46,093 --> 00:22:50,042
+de ImageViewController.
+E eu vou chamá-lo de
+
+313
+00:22:50,042 --> 00:22:53,230
+PhotoViewController, porque ele recebe
+uma Photo e mostra.
+
+314
+00:22:53,230 --> 00:22:56,496
+E eu vou colocar no lugar padrão...
+e aqui está.
+
+315
+00:22:56,497 --> 00:22:59,426
+Vou colocar aqui embaixo,
+porque é uma coisa do iPad.
+
+316
+00:22:59,426 --> 00:23:05,443
+E seu model, model público aqui
+é uma Photo.
+
+317
+00:23:05,443 --> 00:23:13,821
+Oops, Photo, HELLOU.
+Vou importar Photo, claro.
+
+318
+00:23:13,821 --> 00:23:19,650
+Então esse é o seu model.
+E nós vamos, na sua implementação,
+
+319
+00:23:19,650 --> 00:23:27,430
+quando setarmos o model, nós vamos, claro,
+updatear a imagem.
+
+320
+00:23:27,430 --> 00:23:30,590
+Eu posso também, digamos,
+setar meu title.
+
+321
+00:23:30,590 --> 00:23:34,686
+Isso é uma coisa legal de fazer
+já que temos a foto inteira ao invés
+
+322
+00:23:34,686 --> 00:23:37,389
+de apenas a URL da imagem,
+posso setar o meu próprio title.
+
+323
+00:23:37,390 --> 00:23:47,540
+E então eu vou setar minha imageURL
+que é o model da minha superclasse para ser
+
+324
+00:23:47,540 --> 00:23:53,906
+[ditando código]
+Ok?
+
+325
+00:23:53,907 --> 00:23:59,416
+Todo mundo entende o que estou fazendo
+nessa pequena subclasse além de esquecer
+
+326
+00:23:59,416 --> 00:24:04,732
+que falta um ".title"? Ok?
+Estou apenas fazendo isso ser meu model,
+
+327
+00:24:04,732 --> 00:24:10,342
+um model um pouco mais poderoso.
+E então eu preciso voltar para o meu Storyboard
+
+328
+00:24:10,342 --> 00:24:14,923
+aqui e configurar esse carinha.
+Então vamos criar mais espaço, vamos
+
+329
+00:24:14,923 --> 00:24:17,408
+trazer isso.
+Nós queremos uma ScrollView aqui,
+
+330
+00:24:17,408 --> 00:24:19,990
+vocês se lembram, para nossa ImageView.
+Então vamos fazer isso.
+
+331
+00:24:19,990 --> 00:24:23,505
+Vamos arrastar a scrollview, oops,
+Preciso dar um double-click. Pego
+
+332
+00:24:23,505 --> 00:24:25,954
+a scrollview aqui.
+Claro, nós sempre temos um pouco
+
+333
+00:24:25,954 --> 00:24:28,700
+de desafio em uma tela pequena
+para posicionar essa coisa.
+
+334
+00:24:28,700 --> 00:24:34,961
+Não tá tão ruim.
+Então vamos linkar essa coisa...
+
+335
+00:24:34,961 --> 00:24:38,762
+não é isso...
+Vamos por automático...
+
+336
+00:24:38,762 --> 00:24:44,189
+(...)
+Linkar na nossa
+
+337
+00:24:44,190 --> 00:24:47,560
+ScrollView, bem aqui.
+Ok, então nós linkamos.
+
+338
+00:24:47,560 --> 00:24:53,434
+Também queremos ter certeza que setamos
+esse view controller para ser nosso
+
+339
+00:24:53,434 --> 00:24:57,790
+PhotoViewController, que está aqui.
+PhotoViewController, bem aqui.
+
+340
+00:24:57,790 --> 00:25:02,537
+(...)
+Ok, e nós também precisamos de um segue
+
+341
+00:25:02,537 --> 00:25:06,771
+daqui pra cá, então eu vou fazer isso
+na ordem inversa, apenas para
+
+342
+00:25:06,771 --> 00:25:10,240
+fazer tipo uma experiência aqui.
+Eu vou criar esse segue primeiro.
+
+343
+00:25:10,240 --> 00:25:13,957
+Então eu estou apenas CTRL + arrastando
+de um para outro.
+
+344
+00:25:13,958 --> 00:25:18,850
+Ok? E é um push segue. E eu vou 
+chamar esse de setPhoto ao invés de
+
+345
+00:25:18,850 --> 00:25:22,510
+setPhotographer. Isso vai ser
+o nome desse segue.
+
+346
+00:25:22,510 --> 00:25:24,324
+Esse segue manual.
+Sim.
+
+347
+00:25:24,324 --> 00:25:28,104
+>> [Estudante falando qualquer coisa]
+>> É, eu sabia que você ia fala--
+
+348
+00:25:28,104 --> 00:25:29,056
+perguntar isso.
+É por isso que eu fiz.
+
+349
+00:25:29,056 --> 00:25:32,542
+Não. Da última vez eu arrastei
+desse carinha aqui embaixo e dessa vez
+
+350
+00:25:32,542 --> 00:25:34,370
+eu arrastei do meio dele.
+
+351
+00:25:34,370 --> 00:25:36,757
+E por que isso?
+É porque eu estava zoomed out.
+
+352
+00:25:36,758 --> 00:25:41,255
+Quando você está zoomed out e CTRL + arrasta
+entre view controllers, ele não vai
+
+353
+00:25:41,255 --> 00:25:43,620
+fazer isso para
+uma view que está dentro, certo?
+
+354
+00:25:43,620 --> 00:25:44,950
+Ele vai fazer para
+o View Controller inteiro.
+
+355
+00:25:44,950 --> 00:25:48,089
+Então é meio que um truque aqui.
+Mas se você sempre quiser arrastar
+
+356
+00:25:48,089 --> 00:25:51,123
+desse ícone daqui, você pode
+tranquilamente fazer isso também.
+
+357
+00:25:51,124 --> 00:25:54,368
+Ok, mas o o ponto aqui é que esse segue
+simplesmente vai desse view controller
+
+358
+00:25:54,368 --> 00:25:57,130
+para esse view controller.
+É tudo que ele faz.
+
+359
+00:25:57,130 --> 00:26:01,554
+Está nas nossas mãos determinar em código
+quem vai dispará-lo, ok?
+
+360
+00:26:01,554 --> 00:26:05,190
+Porque tudo que fizemos até agora foi
+configurar esse segue, mas ninguém dispara ele
+
+361
+00:26:05,190 --> 00:26:08,545
+porque ele não é de um botão ou TableViewCell,
+está apenas entre
+
+362
+00:26:08,545 --> 00:26:12,693
+dois view controllers.
+Agora voltamos para o nosso Photographer.
+
+363
+00:26:12,694 --> 00:26:17,957
+Onde está?
+Nosso PhotographerViewController...
+
+364
+00:26:17,957 --> 00:26:21,507
+esse é o PhotosByPhotographerViewController...
+aqui está.
+
+365
+00:26:21,508 --> 00:26:25,530
+Esse negócio precisa ser disparado
+da mesma maneira que o outro foi.
+
+366
+00:26:25,530 --> 00:26:30,696
+Então vamos fazer exatamente a mesma coisa.
+Vamos usar esse mapViewCalloutAccessory...
+
+367
+00:26:30,696 --> 00:26:36,026
+ControlTapped e ele vai ser disparado
+fazendo o performSegue
+
+368
+00:26:36,026 --> 00:26:40,460
+com esse identifier, setPhoto, e nós
+vamos fazer o mesmo truque aqui.
+
+369
+00:26:40,460 --> 00:26:46,730
+Nós vamos passar a view como sender
+e daí, na verdade, o prepare é exatamente
+
+370
+00:26:46,730 --> 00:26:53,215
+igual, então vamos copy + paster aqui,
+exceto por essas photos dentro de Photographers.
+
+371
+00:26:53,216 --> 00:27:01,490
+Então eu copio isso, vou até aqui,
+e coloco isso aqui. Eu posso na verdade...
+
+372
+00:27:01,490 --> 00:27:06,898
+Eu vou substituir o "grapher" por nada.
+Um truquezinho (credo!).
+
+373
+00:27:06,898 --> 00:27:08,678
+Certo?
+
+374
+00:27:08,678 --> 00:27:13,306
+Photo, photo, photo, photo, 
+photo, photo, photo, photo, photo.
+
+375
+00:27:13,306 --> 00:27:16,282
+Ok?
+Esse é o truque da troca
+
+376
+00:27:16,282 --> 00:27:21,166
+na programação. Você copia e cola
+e daí faz um
+
+377
+00:27:21,166 --> 00:27:24,825
+find e replace para fazer o que você quer.
+Aqui está. (tsc, tsc...)
+
+378
+00:27:24,825 --> 00:27:31,060
+Agora temos que prepareForSegue,
+nós temos um segue manual acontecendo,
+
+379
+00:27:31,060 --> 00:27:36,402
+eu acho que fiz tudo aqui, vamos ver.
+Eu não linkei a toolbar
+
+380
+00:27:36,402 --> 00:27:41,064
+e todas essas coisas para a view,
+mas tudo bem. Vamos ver ver aqui
+
+381
+00:27:41,064 --> 00:27:43,615
+esse carinha.
+Bem aqui...
+
+382
+00:27:43,615 --> 00:27:48,310
+Então aqui temos três coisas.
+Vamos olhar essa aqui.
+
+383
+00:27:48,310 --> 00:27:52,864
+Percebam agora que quando eu clico nessas
+fotos, que tem um pequeno thumbnail
+
+384
+00:27:52,864 --> 00:27:57,670
+da foto, mas também tem esse
+lindo detailDisclosure azul.
+
+385
+00:27:57,670 --> 00:28:01,114
+Então vamos clicar aqui.
+E eu não tenho o spinner e tal,
+
+386
+00:28:01,114 --> 00:28:03,005
+mas aqui está.
+Ok?
+
+387
+00:28:03,005 --> 00:28:09,176
+Escolhemos essa. Então,
+vamos escolher essa aqui...
+
+388
+00:28:09,176 --> 00:28:10,685
+E aqui está.
+Ok?
+
+389
+00:28:10,685 --> 00:28:14,768
+Todo mundo bem com isso?
+Segues manuais?
+
+390
+00:28:14,768 --> 00:28:15,830
+Ok.
+Então é isso.
+
+391
+00:28:15,830 --> 00:28:21,070
+Isso é tudo que eu queria mostrar
+pra vocês nessa demo.
+
+392
+00:28:21,070 --> 00:28:24,787
+Nós vamos continuar com essa demo,
+uma coisa a mais, mas eu quero mostrar
+
+393
+00:28:24,787 --> 00:28:29,647
+a vocês alguns slides primeiro.
+Então vamos voltar aqui.
+
+394
+00:28:29,648 --> 00:28:33,203
+Falar sobre... a próxima coisa que eu 
+quero falar é sobre embed segues.
+
+395
+00:28:33,203 --> 00:28:39,480
+Então um embed segue, novo no iOS 6 ou iOS 5,
+não tenho certeza.
+
+396
+00:28:39,480 --> 00:28:42,300
+Eu não consigo lembrar exatamente.
+Esses são da hora mesmo, ok?
+
+397
+00:28:42,300 --> 00:28:47,045
+Um embed segue é: e se você tiver
+um view controller e você quiser
+
+398
+00:28:47,045 --> 00:28:50,625
+colocar o self.view dela dentro
+da hierarquia de outro
+
+399
+00:28:50,625 --> 00:28:54,590
+view controller?
+Ok? E por que você iria querer fazer isso?
+
+400
+00:28:54,590 --> 00:28:59,208
+Bom, sabe, quando você tem um self.view
+como o MapViewController, ele faz
+
+401
+00:28:59,208 --> 00:29:02,744
+um monte de coisas lá.
+Ok? E você quer ter as coisas
+
+402
+00:29:02,744 --> 00:29:06,627
+que ele faz, mas estando
+dentro de outra view, porque você
+
+403
+00:29:06,627 --> 00:29:11,652
+o quer como um pedaço do display daquela view,
+sem que a pessoa tenha que seguear para ele,
+
+404
+00:29:11,652 --> 00:29:16,602
+colocar um popover, mostrá-lo modally,
+push, ou qualquer-- você quer tê-lo ali,
+
+405
+00:29:16,602 --> 00:29:20,750
+especialmente no iPad, onde nós temos
+um "real estate" (?) sério.
+
+406
+00:29:20,750 --> 00:29:24,703
+Então, por exemplo, na nossa demo, Photomania,
+não seria legal se quando nós mostramos a foto,
+
+407
+00:29:24,703 --> 00:29:28,538
+ok? Onde a tela está cheia com a foto,
+se em cima, no canto, tivesse
+
+408
+00:29:28,538 --> 00:29:31,337
+um pequeno mapa que mostrasse
+onde a foto está?
+
+409
+00:29:31,338 --> 00:29:33,977
+Então nós não teríamos que lembrar
+de onde nós viemos, ele já mostraria.
+
+410
+00:29:33,978 --> 00:29:36,694
+Sabe? Australia! É da onde
+essa foto veio.
+
+411
+00:29:36,695 --> 00:29:41,304
+Então isso seria legal, e nós podemos usar
+nosso MapViewController existente
+
+412
+00:29:41,304 --> 00:29:44,675
+para controlar o desenho
+dessa pequena view, ok?
+
+413
+00:29:44,675 --> 00:29:48,645
+Isso é chamado de embed segue e
+é chamado segue porque nós ainda temos
+
+414
+00:29:48,645 --> 00:29:51,982
+que preparar esse pequeno view controller
+para fazer o que ele tem que fazer, certo?
+
+415
+00:29:51,983 --> 00:29:54,060
+Ainda temos aquele lance
+de prepareForSegue.
+
+416
+00:29:54,060 --> 00:29:57,210
+Também é um segue porque ele
+instancia um desses view controllers.
+
+417
+00:29:57,210 --> 00:29:59,472
+Ele na verdade cria
+um pequeno MapViewController
+
+418
+00:29:59,472 --> 00:30:01,684
+para essa view.
+Então é realmente um segue normal.
+
+419
+00:30:01,684 --> 00:30:06,618
+É um pouco diferente porque ele
+dispara automaticamente, ok? Ele está embedded
+
+420
+00:30:06,618 --> 00:30:10,342
+em uma view de outro view controller.
+Então assim que a view daquele view controller
+
+421
+00:30:10,342 --> 00:30:14,368
+se desenha, ele automaticamente dispara
+todos os embed segues e cria todos os
+
+422
+00:30:14,368 --> 00:30:17,450
+view controllers que estão embedded também.
+É assim que funciona.
+
+423
+00:30:17,450 --> 00:30:21,439
+O Xcode faz isso super hiper fácil.
+Todo que você tem que fazer é ir na paleta
+
+424
+00:30:21,439 --> 00:30:25,528
+e vocÊ arrasta um Containter View.
+Ok? Algum lugar lá na lista vai ter
+
+425
+00:30:25,528 --> 00:30:28,840
+algo chamado Container View, você simplesmente
+o arrasta pra fora e quando você fizer,
+
+426
+00:30:28,840 --> 00:30:32,041
+ele vai ficar que nem está aqui.
+Onde vai ter um container, essa área
+
+427
+00:30:32,041 --> 00:30:35,689
+cinza, e então esse pequeno segue
+para uma coisinha ali do lado,
+
+428
+00:30:35,689 --> 00:30:38,092
+que é o view controller
+que vai estar embeded.
+
+429
+00:30:38,093 --> 00:30:39,191
+Ok?
+Pergunta.
+
+430
+00:30:39,191 --> 00:30:47,337
+>> [Estudante perguntando]
+>> A pergunta é: o que tem nesse container?
+
+431
+00:30:47,338 --> 00:30:51,657
+O self.view do view controller
+da direita.
+
+432
+00:30:51,658 --> 00:30:55,950
+O self.view daquele view controller. Sua view.
+Lembra-se? MVC? Model-View-Controller.
+
+433
+00:30:55,950 --> 00:30:59,478
+O controller tem uma view que pode ter
+todos os tipos de subview, você sabe,
+
+434
+00:30:59,478 --> 00:31:02,264
+coisas nela, mas ele tem uma view.
+É chamado self.view.
+
+435
+00:31:02,264 --> 00:31:03,960
+Certo?
+É uma property.
+
+436
+00:31:03,960 --> 00:31:07,536
+É isso que vai estar nessa caixinha
+que diz "container".
+
+437
+00:31:07,536 --> 00:31:10,528
+>> [Estudante perguntando]
+>> Não precisa originalmente ser grande.
+
+438
+00:31:10,528 --> 00:31:14,132
+Você vê que o Xcode já sabe
+que ela vai ser pequeno.
+
+439
+00:31:14,132 --> 00:31:17,260
+Ele a fez pequeno.
+Mesmo no storyboard está pequeno.
+
+440
+00:31:17,260 --> 00:31:21,388
+Vê? Lá na direita?
+Está pequeno. É do tamanho
+
+441
+00:31:21,388 --> 00:31:23,330
+que ele vai ser.
+E se eu fizesse aquele container view
+
+442
+00:31:23,330 --> 00:31:26,964
+ser menor, então o view controller seria menor.
+Então o view controller seria
+
+443
+00:31:26,964 --> 00:31:29,644
+do mesmo tamanho.
+Agora, lembrem-se que anteriormente nesse curso,
+
+444
+00:31:29,644 --> 00:31:33,996
+eu disse a vocês que vocês querem fazer
+seus view controllers de modo que eles possam ter
+
+445
+00:31:33,996 --> 00:31:37,642
+qualquer tamanho. Porque eles podem estar em um
+iPad, eles podem estar em um PopoverController,
+
+446
+00:31:37,642 --> 00:31:41,394
+eles podem estar em um navigationController,
+um iPhone, ou eles também podem estar
+
+447
+00:31:41,394 --> 00:31:44,261
+embeded em outra view.
+Então eles podem ser de qualquer tamanho arbitrário,
+
+448
+00:31:44,261 --> 00:31:46,730
+Vêem?
+Então, como nós temos feito bem, usando
+
+449
+00:31:46,730 --> 00:31:51,280
+auto-layout e coisas assim para deixar
+nossas views dos view controllers redimensionáveis,
+
+450
+00:31:51,280 --> 00:31:53,957
+agora nós podemos usá-las
+nessa circunstância, ok?
+
+451
+00:31:53,958 --> 00:31:56,882
+Pergunta.
+>> [Estudante perguntando]
+
+452
+00:31:56,882 --> 00:32:00,894
+[estudante perguntando]
+
+453
+00:32:00,894 --> 00:32:03,739
+[estudante perguntando]
+
+454
+00:32:03,739 --> 00:32:06,039
+>> A pergunta foi:
+quando nós usamos isso?
+
+455
+00:32:06,039 --> 00:32:07,974
+E eu já dei um exemplo de quando
+você usa isso, nosso exemplo,
+
+456
+00:32:07,974 --> 00:32:10,826
+Onde nós temos essa foto e seria
+legal que ao mesmo tempo que você estivesse
+
+457
+00:32:10,826 --> 00:32:13,678
+olhando para a foto você pudesse ser capaz
+de ver onde no mundo
+
+458
+00:32:13,678 --> 00:32:15,476
+ela está, sabe?
+E ter esse belo view controller
+
+459
+00:32:15,476 --> 00:32:18,770
+que mostra onde as coisas estão
+no mundo e você pode simplesmente usá-lo.
+
+460
+00:32:18,770 --> 00:32:22,368
+Ele permite que você o use.
+Ótima encapsulação, certo? Porque está tudo
+
+461
+00:32:22,368 --> 00:32:25,875
+em um segue, então sempre tem o prepare...
+tudo está belamente encapsulado.
+
+462
+00:32:25,875 --> 00:32:31,882
+>> [Estudante perguntando]
+>> A pergunta é:
+
+463
+00:32:31,882 --> 00:32:35,310
+meu MapViewController, e se eu tivesse
+esse MapViewController mostrar
+
+464
+00:32:35,310 --> 00:32:38,173
+outras fotos? Não apenas a
+foto que eu estou vendo, mas eu poderia
+
+465
+00:32:38,173 --> 00:32:40,216
+clicar nele e ter 
+um update nessa coisa?
+
+466
+00:32:40,216 --> 00:32:42,412
+Sim, eu poderia.
+Absolutmente, eu poderia, você poderia
+
+467
+00:32:42,412 --> 00:32:44,330
+configurar isso.
+Você teria que ter alguma comunicação
+
+468
+00:32:44,330 --> 00:32:48,104
+entre esses dois view controlers, mas é
+definitivamente possivel. Definitivamente.
+
+469
+00:32:48,104 --> 00:32:51,430
+Então esse segue que foi criado
+é um segue normal.
+
+470
+00:32:51,430 --> 00:32:55,670
+Ele tem um identifier.
+Seu tipe é Embed, mas fora isso
+
+471
+00:32:55,670 --> 00:32:57,899
+ele é normal.
+Tem o prepareForSegue, tudo isso.
+
+472
+00:32:57,900 --> 00:33:02,048
+Uma coisa quando você faz embed segues, que eu
+quero enfatizar: não é diferente do que
+
+473
+00:33:02,048 --> 00:33:06,208
+em outros segues, mas isso realmente
+se destaca no Embed. Você precisa se lembrar
+
+474
+00:33:06,208 --> 00:33:09,984
+que o viewDidLoad não aconteceu
+até o momento que o prepareForSegue
+
+475
+00:33:09,984 --> 00:33:13,458
+acontece.
+Então quando você faz o prepareForSegue
+
+476
+00:33:13,458 --> 00:33:16,768
+no seu negócio embedded, nenhum dos seus
+outlets foram setados ainda.
+
+477
+00:33:16,768 --> 00:33:20,100
+Então você precisa setar informações nele
+ou apenas segurar esse view controller
+
+478
+00:33:20,100 --> 00:33:24,723
+e daí depois que você for carregado, porque
+depois que você foi carregado todos seus
+
+479
+00:33:24,723 --> 00:33:27,900
+embed segue terão sido carregados,
+daí você pode contar com isso.
+
+480
+00:33:27,900 --> 00:33:32,435
+No seu viewDidLoad, todos os seus embedados
+terão seus viewDidLoads acontecidos, ok?
+
+481
+00:33:32,435 --> 00:33:36,490
+Isso é algo que você pode contar.
+Apenas lembre-se disso, já vi várias pessoas
+
+482
+00:33:36,490 --> 00:33:39,890
+tendo problemas com emebed segues
+onde no prepareForSegue eles começam a
+
+483
+00:33:39,890 --> 00:33:43,140
+manipular os outlets das coisas embedadas
+e eles ainda não foram setados, porque
+
+484
+00:33:43,140 --> 00:33:49,100
+é assim que o prepareForSegue funciona.
+Ok, então vamos mostrar a demo para isso.
+
+485
+00:33:49,100 --> 00:33:54,910
+As vezes a demo vale muitas palavras.
+Então, vamos olhar isso aqui.
+
+486
+00:33:54,910 --> 00:33:57,347
+Então como eu vou fazer isso?
+Eu vou direto para o meu storyboard
+
+487
+00:33:57,347 --> 00:33:59,680
+e criar esse negócio
+de embed primeiro.
+
+488
+00:33:59,680 --> 00:34:04,750
+Então aqui está meu PhotoViewController.
+e aqui em cima nessa canto eu vou
+
+489
+00:34:04,750 --> 00:34:07,767
+embedar um MapViewController, ok?
+
+490
+00:34:07,767 --> 00:34:10,902
+Então vamos clicar aqui.
+Isso é, de novo, um desafio em uma
+
+491
+00:34:10,902 --> 00:34:13,198
+tela pequena.
+Um truque quando você está arrastando
+
+492
+00:34:13,198 --> 00:34:16,738
+coisas que você quer passar direto
+pela scrollview, porque várias vezes ele
+
+493
+00:34:16,738 --> 00:34:18,811
+vai colocar dentro da
+scrollview, certo?
+
+494
+00:34:18,812 --> 00:34:22,634
+Na área scrollável.
+Então uma coisa que eu geralmente faço
+
+495
+00:34:22,634 --> 00:34:27,019
+é, temporariamente, pegar minha scrollview,
+se eu conseguir pegá-la aqui.
+
+496
+00:34:27,019 --> 00:34:29,129
+Oops.
+Aqui está.
+
+497
+00:34:29,130 --> 00:34:32,057
+E movê-la do meu caminho apenas um pouquinho.
+Eu estou apenas movendo esse canto
+
+498
+00:34:32,057 --> 00:34:34,330
+do meu caminho.
+Eu vou colocar isso aqui e daí eu
+
+499
+00:34:34,330 --> 00:34:38,356
+movo de volta, ok?
+Então vamos seguir e pegar aquele
+
+500
+00:34:38,356 --> 00:34:42,560
+container view. Está aqui embaixo em
+algum lugar. Aqui está, vêem que diz
+
+501
+00:34:42,560 --> 00:34:45,782
+container view?
+Então eu vou arrastar esse container
+
+502
+00:34:45,782 --> 00:34:49,453
+view aqui pra cima. Oops.
+E não queria colocá-lo no meu scrollview.
+
+503
+00:34:49,453 --> 00:34:55,327
+Então eu preciso liberar mais espaço
+da minha scrollview aqui. Peraí.
+
+504
+00:34:55,327 --> 00:34:58,260
+ContainerView, aqui vamos nós.
+Não está no meu scrollview,
+
+505
+00:34:58,260 --> 00:35:02,216
+isso é bom. Oops,
+conseguir selecionar essas cosias
+
+506
+00:35:02,216 --> 00:35:06,494
+as vezes é um desafio.
+Não tenho certeza porque eles fizeram isso
+
+507
+00:35:06,494 --> 00:35:10,699
+um desafio, mas aqui vamos nós, ok?
+Vou deixar meu container view de algum
+
+508
+00:35:10,699 --> 00:35:13,630
+tamanho razoável, sabe, qualquer tamanho
+que eu queira.
+
+509
+00:35:13,630 --> 00:35:19,454
+Algo assim, digamos. E eu vou fazer
+meu lance do auto-layout colocando-o
+
+510
+00:35:19,454 --> 00:35:23,402
+no canto aqui e agora
+nós podemos colocar isso de volta.
+
+511
+00:35:23,403 --> 00:35:28,654
+Certo. Agora nós temos
+um container ali.
+
+512
+00:35:28,654 --> 00:35:36,964
+Percebam que quando eu arrasto isso, eu não
+tenho apenas um container. Eu também tenho
+
+513
+00:35:36,964 --> 00:35:41,910
+esse pequeno ViewController, ok?
+Então esse view controller é a coisa que
+
+514
+00:35:41,910 --> 00:35:45,844
+eu vou ter embedado aqui. E eu quero
+que isso seja um MapViewController.
+
+515
+00:35:45,844 --> 00:35:51,370
+Então vamos seguir e setar a classe do
+controller para ser um MapViewController e,
+
+516
+00:35:51,370 --> 00:35:56,810
+claro, um MapViewController-- isso é
+igual qualquer outro lugar que você usa
+
+517
+00:35:56,810 --> 00:36:00,278
+um view controller.
+um MapViewController precisa de um MapView,
+
+518
+00:36:00,278 --> 00:36:05,236
+então vamos pegar isso, colocar isso aqui.
+Ok? Nós precisamos fazer as coisas que nós
+
+519
+00:36:05,236 --> 00:36:11,729
+fazemos como linkar esse outlet aqui.
+Então vamos fazer isso, CTRL... MapView.
+
+520
+00:36:11,730 --> 00:36:16,830
+Ok, então você configurou seu storyboard
+do mesmo modo que qualquee outro segue.
+
+521
+00:36:16,830 --> 00:36:20,530
+Quando você segueia para algum lugar, você tem
+que configurá-lo como você o quer.
+
+522
+00:36:20,530 --> 00:36:26,694
+Então temos tudo isso setado aqui belamente
+e agora nós só precisamos preparar para
+
+523
+00:36:26,694 --> 00:36:32,790
+esse segue, então vamos dar um nome a esse segue.
+Ok? Eu vou chamar esse segue de...
+
+524
+00:36:32,790 --> 00:36:37,360
+algo como... como que eu
+decidi chamá-lo?
+
+525
+00:36:37,360 --> 00:36:43,002
+Embed Map ou algo assim...
+Embed Map Of Photo, é assim que eu vou
+
+526
+00:36:43,002 --> 00:36:48,369
+chamar esse segue. É o segue identifier.
+Ok? Agora eu preciso do prepareForSegue
+
+527
+00:36:48,369 --> 00:36:51,950
+para fazer isso.
+E eu vou fazer o prepareForSegue
+
+528
+00:36:51,950 --> 00:36:54,526
+nesse cara aqui, ok? Novamente,
+exatamente igual se eu fosse seguear
+
+529
+00:36:54,526 --> 00:36:57,660
+de qualquer outro modo,
+eu iria prepareForSegue aqui.
+
+530
+00:36:57,660 --> 00:37:01,760
+Então vamos fazer isso, esse é o
+PhotoViewController. Aqui está.
+
+531
+00:37:01,760 --> 00:37:06,130
+Então vamos fazer o prepareForSegue aqui.
+E o que eu preciso fazer nesse
+
+532
+00:37:06,130 --> 00:37:09,628
+prepareForSegue?
+Bom, eu preciso setar
+
+533
+00:37:09,628 --> 00:37:14,083
+o annotations nesse MapView
+para ser a minha photo, certo?
+
+534
+00:37:14,083 --> 00:37:16,050
+Todo mundo entende que é isso
+que eu preciso fazer?
+
+535
+00:37:16,050 --> 00:37:20,674
+Mas eu não posso fazer isso aqui, porque
+meus outlets não estão setados no meu MapViewController,
+
+536
+00:37:20,674 --> 00:37:24,333
+então eu não posso falar com o MapView ainda.
+Então, ao invés, eu vou apenas pegar
+
+537
+00:37:24,333 --> 00:37:26,620
+o MapViewController e segurá-lo.
+
+538
+00:37:26,620 --> 00:37:28,950
+E então no meu viewDidLoad,
+daí eu seto a annotation.
+
+539
+00:37:28,950 --> 00:37:35,710
+Então vamos importar o MapViewController
+e eu vou ter uma pequena property aqui
+
+540
+00:37:35,710 --> 00:37:41,548
+atomic, strong, MapViewController
+e eu vou chamar de mapVC.
+
+541
+00:37:41,548 --> 00:37:44,500
+E então aqui eu vou apenas
+segurá-lo.
+
+542
+00:37:44,500 --> 00:37:51,850
+E eu definitivamente quero checar para ver
+se esse segue particular é igual a string
+
+543
+00:37:51,850 --> 00:37:59,305
+Embed Map Of Photo, porque eu posso
+ter outro segue acontecendo aqui na
+
+544
+00:37:59,305 --> 00:38:03,412
+minha Photo View aqui.
+E eu provavelmente, é, vamos seguir e
+
+545
+00:38:03,412 --> 00:38:08,522
+fazer isso. Eu devo checar para ter certeza
+que o destinationViewControler é,
+
+546
+00:38:08,522 --> 00:38:11,249
+de fato, um MapViewController.
+Certo?
+
+547
+00:38:11,249 --> 00:38:17,739
+E se for, eu vou dizer
+[ditando código]
+
+548
+00:38:17,739 --> 00:38:22,144
+Ok, então no meu prepareForSegue
+eu apenas
+
+549
+00:38:22,144 --> 00:38:26,343
+segurei esse controller.
+
+550
+00:38:26,343 --> 00:38:37,830
+E então, no meu viewDidLoad, oops
+[super viewDidLoad].
+
+551
+00:38:37,831 --> 00:38:49,322
+Eu vou apenas dizer
+[ditando código], ok?
+
+552
+00:38:49,322 --> 00:38:51,600
+E tenho um warning.
+Por que tenho um warning?
+
+553
+00:38:51,600 --> 00:38:56,496
+Porque nós temos que importar, nós estamos
+usando o Photo+MKAnnotation aqui, então nós
+
+554
+00:38:56,496 --> 00:39:00,960
+queremos importar o Photo+MKAnnotation
+para que o compilador saiba que isso
+
+555
+00:39:00,960 --> 00:39:05,164
+é uma annotation, caso contrário nós não
+poderiamos adicioná-lo como annotation.
+
+556
+00:39:05,165 --> 00:39:07,880
+Tenho certeza que alguns de vocês
+tiveram problemas com auto-layout.
+
+557
+00:39:07,880 --> 00:39:11,885
+É, então temos que...
+Ok, aqui, leading space... trailling space...
+
+558
+00:39:11,885 --> 00:39:15,696
+Na verdade nós queremos
+que isso seja um
+
+559
+00:39:15,696 --> 00:39:20,730
+tamanho fixo.
+Deixe-me tirar isso do caminho.
+
+560
+00:39:20,730 --> 00:39:24,234
+E vamos ver se conseguimos
+consertar o tamanho desse negócio.
+
+561
+00:39:24,234 --> 00:39:29,277
+Vamos aqui e pin width
+e pin height.
+
+562
+00:39:29,278 --> 00:39:36,772
+Opps. Pin width e
+pin height. Ok.
+
+563
+00:39:36,773 --> 00:39:42,558
+Não precisamos disso,
+e nós não precisamos de nada disso agora.
+
+564
+00:39:42,559 --> 00:39:47,361
+Ok, agora temos esse containner
+colado no canto superior direito.
+
+565
+00:39:47,361 --> 00:39:51,240
+E esse cara, vamos colocá-lo de volta.
+
+566
+00:39:51,240 --> 00:39:55,880
+Ter cereza que ele está
+hookado corretamente, e ele está.
+
+567
+00:39:55,880 --> 00:40:02,504
+Vamos também olhar nosso document outilne
+aqui, nos certificar que está um do
+
+568
+00:40:02,504 --> 00:40:14,515
+lado do outro. Positivo, ok.
+Então espero que tenha arrumado, ok?
+
+569
+00:40:14,515 --> 00:40:24,468
+Aqui vamos nós. Aqui está nosso mapa.
+E vocês podem ver que a view
+
+570
+00:40:24,468 --> 00:40:28,846
+de baixo continua funcionando bem.
+Eu ainda posso dar zoom aqui, mas eu
+
+571
+00:40:28,846 --> 00:40:33,102
+posso também dar zoom dentro desse mapa.
+Ok? Porque tem esse view controller aqui.
+
+572
+00:40:33,102 --> 00:40:37,387
+E eu posso até clicar nessa coisa, ok?
+E obter a imagem.
+
+573
+00:40:37,388 --> 00:40:41,600
+Agora não tem nenhum calloutAccessoryView,
+porque o MapViewController
+
+574
+00:40:41,600 --> 00:40:44,118
+é um genérico.
+Ele não implementa isso. O delegate
+
+575
+00:40:44,118 --> 00:40:47,027
+não implementa aquele lance do callout.
+Isso fez sentido?
+
+576
+00:40:47,028 --> 00:40:51,520
+Então vocês podem ver como eu embedei
+um view controller inteiro que tem todas as
+
+577
+00:40:51,520 --> 00:40:56,225
+coisas que ele sabe fazer, dentro de
+um outro, ok? Perguntas?
+
+578
+00:40:56,225 --> 00:40:59,611
+>> [Estudante perguntando]
+
+579
+00:40:59,611 --> 00:41:00,342
+>> Então você poderia fazer isso
+com outras coisas sem ser um mapa?
+
+580
+00:41:00,343 --> 00:41:03,973
+Absolutamente, você poderia fazer isso
+com qualquer combinação sensata de controllers
+
+581
+00:41:03,973 --> 00:41:06,884
+que você quiser.
+É apenas outra maneira de seguear
+
+582
+00:41:06,884 --> 00:41:10,032
+de um view controller para outro.
+Apenas está embedded dentro, ok?
+
+583
+00:41:10,032 --> 00:41:12,913
+É basicamente... é basicamente
+uma coisa de iPad. Mas você
+
+584
+00:41:12,913 --> 00:41:17,474
+poderia fazer em um iPhone também.
+Tipo se você tivesse uma view onde a parte
+
+585
+00:41:17,474 --> 00:41:21,628
+de cima esteja talvez explicando alguma coisa
+sobre uma foto e a parte de baixo talvez
+
+586
+00:41:21,628 --> 00:41:25,658
+você teria um PhotoViewController que está
+mostrando a foto e talvez ele tenha, sabe,
+
+587
+00:41:25,658 --> 00:41:29,940
+algum tipo de mecanismo dentro dele.
+Então você poderia usá-lo em todos os
+
+588
+00:41:29,940 --> 00:41:31,096
+tipos de circunstâncias.
+Sim?
+
+589
+00:41:31,096 --> 00:41:33,544
+>> [Estudante perguntando]
+
+590
+00:41:33,544 --> 00:41:36,232
+[estudante perguntando]
+
+591
+00:41:36,232 --> 00:41:38,690
+>> Certo, a pergunta é: poderiam
+ambas essas views--
+
+592
+00:41:38,690 --> 00:41:41,210
+esses view controllers na verdade.
+São ambos view controllers.
+
+593
+00:41:41,210 --> 00:41:44,934
+Poderiam ambos ser a mesma subclasse
+de um view controller?
+
+594
+00:41:44,935 --> 00:41:48,356
+Absolutamente, eles poderiam. Eles poderiam
+estar até mostrando o mesmo dado. Uma versão
+
+595
+00:41:48,356 --> 00:41:51,270
+em miniatura e uma versão maior.
+Não há razão para não poder. Se eles
+
+596
+00:41:51,270 --> 00:41:54,216
+funcionam corretamente, certo?
+Você seta os models deles e eles corretamente
+
+597
+00:41:54,216 --> 00:41:57,696
+os mostra, que é o que fazer os
+view controllers, não há razão para
+
+598
+00:41:57,696 --> 00:42:01,804
+eles não poderem ser os mesmos.
+Absolutamente, ok? Então isso é
+
+599
+00:42:01,804 --> 00:42:05,831
+view controllers embedados.
+Uma feature bem legal, como vocês podem
+
+600
+00:42:05,831 --> 00:42:12,551
+ver, bem fácil de implementar, se você
+tiver seu auto-layout correto e
+
+601
+00:42:12,551 --> 00:42:13,820
+uma feature realmente poderosa.
+Sim.
+
+602
+00:42:13,820 --> 00:42:18,056
+>> [Estudante perguntando]
+
+603
+00:42:18,056 --> 00:42:21,881
+[estudante perguntando]
+
+604
+00:42:21,881 --> 00:42:25,744
+[estudante perguntando]
+
+605
+00:42:25,744 --> 00:42:30,577
+>> A pergunta é: e se eu tivesse
+
+606
+00:42:30,577 --> 00:42:35,030
+um mapa como o da página anterior e quando
+eu clicar nele, ao invés de, sabe, fazer
+
+607
+00:42:35,030 --> 00:42:37,972
+um push e zoomando que nem esse
+e mostrando essa foto,
+
+608
+00:42:37,973 --> 00:42:43,130
+eu quero que esse mapa meio que encolha
+para ser essa coisa embedada.
+
+609
+00:42:43,130 --> 00:42:49,250
+E você poderia fazer isso, porque esse
+container view, o frame dele pode ser
+
+610
+00:42:49,250 --> 00:42:53,672
+setado em tempo de execução para coisas
+diferentes. E eu vou mostrar a vocês na próxima
+
+611
+00:42:53,672 --> 00:42:56,712
+semana, view animation.
+Você pode animar a mudança de um frame.
+
+612
+00:42:56,712 --> 00:43:01,290
+Ok? É uma linha de código ou duas linhas
+de código para ter um frame de uma view
+
+613
+00:43:01,290 --> 00:43:04,240
+ir da tela inteira
+para uma coisa pequena.
+
+614
+00:43:04,240 --> 00:43:07,323
+E uma linha de código, JUUUUP,
+ele vai animar, ok?
+
+615
+00:43:07,324 --> 00:43:10,576
+Bem fácil de fazer. Então você absolutmente
+poderia fazer isso, você poedria ter a
+
+616
+00:43:10,576 --> 00:43:13,776
+PhotoView como tipo uma MainViewController
+e daí adicionar esse MapView para ser
+
+617
+00:43:13,776 --> 00:43:17,026
+uma coisa embedada que preenche a tela inteira,
+até você clicar em algo ou fazer
+
+618
+00:43:17,026 --> 00:43:21,977
+algo e daí ele poderia dar o zoom, claro.
+Essa pequena view é o self.view
+
+619
+00:43:21,977 --> 00:43:26,746
+de outro controller. Então é uma
+view poderosa, mas é somente
+
+620
+00:43:26,746 --> 00:43:32,689
+uma view na view desse view controller,
+na view do PhotoViewController, ok?
+
+621
+00:43:32,690 --> 00:43:42,050
+Certo, voltando aos slides, ok?
+Certo. A próxima coisa que nós vamos falar
+
+622
+00:43:42,050 --> 00:43:46,960
+é sobre ModalViewControllers.
+Então esse é outro modo de seguear
+
+623
+00:43:46,960 --> 00:43:50,656
+para um view controller.
+E uma apresentação modal de outro
+
+624
+00:43:50,656 --> 00:43:56,452
+view controller significa que vocÊ deixa esse
+outro view controller tomar posse da tela
+
+625
+00:43:56,452 --> 00:44:00,695
+inteira, então o resto da sua aplicação
+estará completamente inacessível.
+
+626
+00:44:00,696 --> 00:44:05,042
+Certo? Não há como mexer no resto
+da sua aplicação até que esse
+
+627
+00:44:05,042 --> 00:44:07,314
+ModalViewController termine de fazer
+o que ele tinha que fazer.
+
+628
+00:44:07,314 --> 00:44:11,630
+Então, quando você faria tal coisa?
+Bom, a resposta é: não é comum.
+
+629
+00:44:11,630 --> 00:44:15,583
+Na minha opinião, ModalViewControllers
+querem ser usados muito de vez em quando,
+
+630
+00:44:15,583 --> 00:44:18,250
+porque eles são de certa forma
+desconsertantes para o usuário.
+
+631
+00:44:18,250 --> 00:44:22,389
+Porque agora eles não podem fazer
+nada no app, exceto por isso que está na tela.
+
+632
+00:44:22,390 --> 00:44:25,010
+Mas isso faz sentido?
+É, as vezes faz sentido.
+
+633
+00:44:25,010 --> 00:44:29,235
+Se você chegou num ponto onde seu app
+onde você precisa de uma informação do user
+
+634
+00:44:29,235 --> 00:44:33,785
+ou você simplesmente não pode continuar com a
+operação normal do seu app, então você pode
+
+635
+00:44:33,785 --> 00:44:36,626
+querer usar o modal.
+Por exemplo, aqui temos algumas aninações
+
+636
+00:44:36,626 --> 00:44:41,724
+que eu tenho de modal.
+Então na esquerda, nós temos o alarm--
+
+637
+00:44:41,724 --> 00:44:44,434
+ou o Clock app. E o que eu vou
+fazer nessa animação é:
+
+638
+00:44:44,434 --> 00:44:47,430
+eu vou clicar no + para
+adicionar um novo alarme.
+
+639
+00:44:47,430 --> 00:44:51,718
+Mas quando clico naquele +, até que
+você me dê toda a informação que eu quero
+
+640
+00:44:51,718 --> 00:44:54,160
+sobre esse alarme eu não posso
+realmente fazer nada.
+
+641
+00:44:54,160 --> 00:44:56,439
+Eu não posso ficar na metade
+da configuração disso.
+
+642
+00:44:56,440 --> 00:45:00,032
+Então eu realmente preciso que você acabe
+de fazer isso. E quando você acabar, ou se
+
+643
+00:45:00,032 --> 00:45:04,379
+você clicar cancel se você decidir que
+não quer adicionar um alarme, daí nós podemos
+
+644
+00:45:04,379 --> 00:45:08,967
+voltar para a UI normal dessa aplicação.
+Agora, perceba que quando eu toco no +,
+
+645
+00:45:08,967 --> 00:45:13,989
+ele vai cobrir a tela completamente,
+incluindo a TabBar e tudo mais,
+
+646
+00:45:13,989 --> 00:45:17,070
+ok? Vejam.
+Ok? Aperto +, Tabbar se foi.
+
+647
+00:45:17,070 --> 00:45:21,766
+Tudo que posso fazer aqui é
+adicionar um novo alarme, ok?
+
+648
+00:45:21,766 --> 00:45:25,180
+Isso é modal. "Modal" significa que ele
+está em um modo onde ele só pode
+
+649
+00:45:25,180 --> 00:45:28,226
+usar esse view controller.
+Na direita nós temos um app, um app de
+
+650
+00:45:28,226 --> 00:45:32,194
+texto, iMessage ou coisa assim,
+e aqui eu vou clicar no botão
+
+651
+00:45:32,194 --> 00:45:36,058
+compose no canto superior direito
+para compor uma nova mensagem.
+
+652
+00:45:36,058 --> 00:45:39,632
+Então, vejam aqui.
+Quando eu faço isso, agora eu vou clicar
+
+653
+00:45:39,632 --> 00:45:44,093
+no + novamente.
+Então isso é um modal dentro de um modal, ok?
+
+654
+00:45:44,093 --> 00:45:48,520
+Vamos fazer-- mostrar novamente.
+Aqui está o alarme novamente, simples.
+
+655
+00:45:48,520 --> 00:45:50,600
+Aperto + você tem esse
+modal view controller.
+
+656
+00:45:50,600 --> 00:45:54,006
+Você pode clicar em cancel ou save.
+E daí você volta pra onde estava, ok?
+
+657
+00:45:54,006 --> 00:45:57,230
+Então você estava em um "modo" por um tempo.
+O outro, mais complicado.
+
+658
+00:45:57,230 --> 00:46:00,422
+Eu vou clicar compose.
+Ele vai aparcer e daí eu vou clicar
+
+659
+00:46:00,422 --> 00:46:04,360
+em outro botão + para escolher alguém
+que eu quero mandar essa coisa.
+
+660
+00:46:04,360 --> 00:46:06,580
+E ele vai me trazer
+outro modal controller.
+
+661
+00:46:06,580 --> 00:46:09,343
+Então esses modal controllers podem ser
+aninhados. Você apenas-- você pode continuar
+
+662
+00:46:09,343 --> 00:46:10,544
+trazendo-os para frente.
+Então vejam novamente.
+
+663
+00:46:10,544 --> 00:46:13,044
+Compose, agora eu vou dizer
+para que eu vou--
+
+664
+00:46:13,045 --> 00:46:17,998
+eu vou nos meus contatos, escolho
+que eu quero, clico em Cancel ou Confirm, ok?
+
+665
+00:46:17,998 --> 00:46:20,993
+Pergunta?
+>> [Estudante perguntando]
+
+666
+00:46:20,993 --> 00:46:25,189
+>> Esse botão Cancel vem
+por default ou ele está sendo
+
+667
+00:46:25,189 --> 00:46:28,495
+colocado lá no Storyboard
+e a resposta é: ele não está vindo
+
+668
+00:46:28,495 --> 00:46:31,566
+por default. A pessoa está colocando
+ele ali no storyboard
+
+669
+00:46:31,566 --> 00:46:35,836
+e elas tem que fazer aquele botão
+cancel desfazer o 
+
+670
+00:46:35,836 --> 00:46:37,996
+modal view controller.
+Então vamos falar sobre isso, na verdade,
+
+671
+00:46:37,996 --> 00:46:40,122
+o "unwinding".
+Como fazemos isso?
+
+672
+00:46:40,123 --> 00:46:45,474
+Eu já falei sobre essa consideração de
+não usar modal, não sobre-use Modal, ok?
+
+673
+00:46:45,474 --> 00:46:48,691
+Só vá para um "modo"
+quando é isso que você
+
+674
+00:46:48,691 --> 00:46:51,944
+realmente quer.
+Mas agora vamos fala sobre como nós
+
+675
+00:46:51,944 --> 00:46:54,070
+configuramos esse segue.
+Nada para falar.
+
+676
+00:46:54,070 --> 00:46:56,532
+É igual qualquer outro segue.
+Você vai ter um view controller
+
+677
+00:46:56,532 --> 00:46:58,793
+no seu storyboard. 
+Você vai CTRL + arrastar de qualquer
+
+678
+00:46:58,793 --> 00:47:01,575
+botão, como o new,
+compose button,
+
+679
+00:47:01,575 --> 00:47:04,270
+ou o botão de +
+ou qualquer coisa
+
+680
+00:47:04,270 --> 00:47:07,342
+Como no exemplo anterior,
+você pode CTRL + arrastar daquilo
+
+681
+00:47:07,342 --> 00:47:09,480
+para um outro view controller.
+E você seta o tipo para ser modal
+
+682
+00:47:09,480 --> 00:47:12,734
+e é isso. 
+Aquele view controller
+
+683
+00:47:12,734 --> 00:47:18,234
+vai aparecer modalmente na tela, ok?
+Não dava pra ser mais fácil. É possivel
+
+684
+00:47:18,234 --> 00:47:23,192
+fazer um view controller aparecer modalmente
+sem usar um segue, usando esse método aqui,
+
+685
+00:47:23,192 --> 00:47:26,201
+presentViewControllerAnimated:completion.
+
+686
+00:47:26,202 --> 00:47:30,882
+Sério, isso é coisa de antigamente, você
+não vai querer mais fazer isso. Usamos segue.
+
+687
+00:47:30,883 --> 00:47:34,730
+E se você quiser seguear não de um botão
+ou alguma coisa assim, simplesmente
+
+688
+00:47:34,730 --> 00:47:37,264
+use um segue manual, aqueleas
+que acabamos de ver, ok?
+
+689
+00:47:37,264 --> 00:47:41,223
+Onde você CTRL + arrasta um segue
+entre dois view controllers e apenas
+
+690
+00:47:41,223 --> 00:47:45,448
+performSegueWithIdentifier no seu código.
+Então configurar o segue é
+
+691
+00:47:45,448 --> 00:47:48,634
+super hiper simples.
+O lance modal pode aparecer de alguns
+
+692
+00:47:48,634 --> 00:47:53,884
+modos diferentes... as vezes com uma voltinha,
+ou as vezes escorregando ou dissolvendo
+
+693
+00:47:53,884 --> 00:47:57,783
+e eu vou mostrar como.
+Nós podemos fazer isso em um momento.
+
+694
+00:47:57,783 --> 00:48:00,083
+É um segue normal, então você
+vai usar o prepareForSegue.
+
+695
+00:48:00,083 --> 00:48:04,437
+Para que você possa preparar essa coisa
+para aparecer, mas que é novo sobre
+
+696
+00:48:04,437 --> 00:48:09,336
+modal segues, que vocês não usam muito isso
+com outros view controllers, embora você
+
+697
+00:48:09,336 --> 00:48:12,644
+possa, especialemente com
+navigation controllers, mas...
+
+698
+00:48:12,645 --> 00:48:17,172
+Existe essa questão de como você se comunica
+de volta, qualquer que seja a informação
+
+699
+00:48:17,172 --> 00:48:21,204
+que aquele modal view controller tenha coletado?
+Tipo, em um lugar onde você vai está adicionando
+
+700
+00:48:21,204 --> 00:48:25,104
+um alarme, você especifica a hora do alarme
+e o nome e daí, tipo,
+
+701
+00:48:25,104 --> 00:48:27,699
+como o relógio pega
+essa informação de volta?
+
+702
+00:48:27,699 --> 00:48:31,779
+Ok?
+A resposta é: você segueia de volta (!).
+
+703
+00:48:31,780 --> 00:48:37,506
+Mas esse é um tipo muito especial de segue,
+o segue mais especial do mundo, ok?
+
+704
+00:48:37,506 --> 00:48:42,437
+Unwind segue, é chamado.
+É chamado unwind segue e ele vai seguear de volta.
+
+705
+00:48:42,437 --> 00:48:48,060
+A razão pela qual ele é tão especial é que eu
+disse a vocês antes nesse curso que cada segue
+
+706
+00:48:48,060 --> 00:48:53,226
+instancia um novo view controller.
+Esse aqui não. Esse tipo de segue
+
+707
+00:48:53,226 --> 00:48:57,332
+não instancia um novo controller.
+Ele volta para um existente.
+
+708
+00:48:57,332 --> 00:49:02,743
+Entretanto, ele é limitado para apenas
+voltar para o view controller que o apresentou.
+
+709
+00:49:02,743 --> 00:49:07,126
+Tanto direta ou indiretamente, ok?
+Você não pode simplesmente unwind para algum
+
+710
+00:49:07,126 --> 00:49:10,881
+view controller aleatório ou algo assim.
+Você tem que voltar para aquele que
+
+711
+00:49:10,881 --> 00:49:14,478
+em algum momento te apresentou.
+Ok? Ou apresentou alguém que te apresentou
+
+712
+00:49:14,478 --> 00:49:16,370
+ou algl assim.
+E isso funciona modalmente,
+
+713
+00:49:16,370 --> 00:49:20,240
+é óbvio, certo?
+Quem quer que tenha de segueado modalmente,
+
+714
+00:49:20,240 --> 00:49:22,865
+você pode voltar para ele.
+Outro exemplo seria
+
+715
+00:49:22,865 --> 00:49:25,992
+navigation controller.
+Você push push push push push push push push
+
+716
+00:49:25,992 --> 00:49:28,292
+e se você quiser
+voltar três níveis?
+
+717
+00:49:28,292 --> 00:49:33,322
+Bom, você pode, com um unwind segue.
+Porque você pode voltar para um
+
+718
+00:49:33,322 --> 00:49:39,367
+view controller que te pushou indiretamente
+fazendo esse unwind segue, ok?
+
+719
+00:49:39,367 --> 00:49:42,457
+Nós não vamos falar sobre isso, mas eu
+queria apenas que vocês soubessem que
+
+720
+00:49:42,457 --> 00:49:44,699
+vocês podem fazer isso, ok?
+Vocês tem alguma pergunta?
+
+721
+00:49:44,700 --> 00:49:49,860
+Ok, então como você configura
+esse unwind segue?
+
+722
+00:49:49,860 --> 00:49:53,610
+É um pouco diferente, porque você vai
+para um view controller existente.
+
+723
+00:49:53,610 --> 00:49:56,430
+É como (...)
+eu não consigo me ligar nele, eu não
+
+724
+00:49:56,430 --> 00:50:00,226
+sei o que fazer.
+A resposta é: um pouco complicado, mas
+
+725
+00:50:00,226 --> 00:50:03,754
+uma vez que você entender,
+faz bastante sentido.
+
+726
+00:50:03,755 --> 00:50:09,052
+Você implementa um método, qualquer nome que quiser.
+É um IBAction, então ele tem que dizer
+
+727
+00:50:09,052 --> 00:50:13,268
+IBAction ali onde normalmente estaria o void,
+e o argumento tem que ser um
+
+728
+00:50:13,268 --> 00:50:17,960
+UIStoryboardSegue, porque você vai receber
+o unwind segue como argumento aqui,
+
+729
+00:50:17,960 --> 00:50:20,850
+ok? Esse unwind segue,
+o seu sourceViewController vai ser
+
+730
+00:50:20,850 --> 00:50:24,908
+o modal view controller
+que está unwinding.
+
+731
+00:50:24,909 --> 00:50:30,940
+Ok? Agora esse método é implementado
+na coisa que você quer ser unwind para.
+
+732
+00:50:30,940 --> 00:50:34,860
+Ok? Agora você pode ver como você
+será comunicado de volta.
+
+733
+00:50:34,860 --> 00:50:38,358
+Você vai implementar esse método,
+quando for hora de unwind, esse método
+
+734
+00:50:38,358 --> 00:50:41,962
+será chamado e o sourceViewController
+vai ser a coisa que você está
+
+735
+00:50:41,962 --> 00:50:44,772
+unwinding a partir de.
+Agora você pode conversar com o pequeno
+
+736
+00:50:44,772 --> 00:50:48,926
+painel de alerme que coletou todas as informações
+sobre o novo alarme e perguntá-lo:
+
+737
+00:50:48,926 --> 00:50:52,050
+qual é a nova coisa? Ok?
+Então, você tem esse método.
+
+738
+00:50:52,050 --> 00:50:56,400
+Como você linka o unwind?
+Como você diz: esse é o unwind que eu quero?
+
+739
+00:50:56,400 --> 00:51:00,631
+E a resposta é: você CTRL + arrasta de qualquer
+quer seja o cara que vai fazer o unwind 
+
+740
+00:51:00,631 --> 00:51:04,726
+acontecer, como um cancel button ou um
+save button ou algo assim, no modal view
+
+741
+00:51:04,726 --> 00:51:08,935
+controller, para o botão verde embaixo
+do modal view controller.
+
+742
+00:51:08,935 --> 00:51:13,620
+Vêem? Você tem uma imagem dele bem aqui.
+Esse botão verde. E quando você CTRL + arrasta,
+
+743
+00:51:13,620 --> 00:51:18,450
+isso é tudo no view controller apresentado,
+o modal view controller, você CTRL + arrasta
+
+744
+00:51:18,450 --> 00:51:23,000
+daquele botão para aquele negócio verde
+e aquele botão verde vai mostrar um
+
+745
+00:51:23,000 --> 00:51:27,970
+negócio de conexão, parecido com
+o negócio de target-action, que vai ter
+
+746
+00:51:27,970 --> 00:51:32,520
+todos os métodos como o Done aqui,
+que estão nos view controllers que
+
+747
+00:51:32,520 --> 00:51:36,712
+te apresentaram, ok?
+E você, vai só escolher o Done.
+
+748
+00:51:36,712 --> 00:51:41,921
+E o que isso vai dzer é: quando eu clicar
+em Done no meu modal view controller,
+
+749
+00:51:41,921 --> 00:51:47,250
+unwind e chame o done de volta,
+em qualquer view controller que implementa done.
+
+750
+00:51:47,250 --> 00:51:51,466
+E isso poderia ser a que imediatamente
+me apresentou, ou em um navigation
+
+751
+00:51:51,466 --> 00:51:54,430
+controller, poderia ser
+três ou quatro pushes pra trás.
+
+752
+00:51:54,430 --> 00:51:58,945
+Se eu for um modal dentro de um modal,
+eu poderia voltar um nível ou eu poderia
+
+753
+00:51:58,945 --> 00:52:03,734
+voltar dois níveis para trás, ok?
+Porque ele vai olhar para trás procurando
+
+754
+00:52:03,734 --> 00:52:07,857
+por esse método done, ok?
+Alguma pergunta sobre isso?
+
+755
+00:52:07,858 --> 00:52:11,240
+Quando vocês virem a demo, isso vai
+provavelmente fazer bem mais sentido, imagino.
+
+756
+00:52:11,240 --> 00:52:17,144
+Talvez devemos segurar as perguntas até lá.
+A propósito, quando você unwind, o
+
+757
+00:52:17,144 --> 00:52:21,982
+modal view controller vai sair da tela,
+ele vai automaticamende se dismissar.
+
+758
+00:52:21,982 --> 00:52:27,848
+É possível dismissá-la manualmente
+em código, usando esse
+
+759
+00:52:27,848 --> 00:52:32,492
+dismissModalViewController:animated:completion.
+Isso, a propósito, tem que ser chamado
+
+760
+00:52:32,492 --> 00:52:35,793
+no view controller que está apresentando.
+Se você for fazer isso em código, não com
+
+761
+00:52:35,793 --> 00:52:40,041
+um unwind segue, mas em código assim,
+você tem que chamá-lo no que está apresentando.
+
+762
+00:52:40,041 --> 00:52:44,636
+Não o chame no que está apresentado, ok?
+Você dismiss a partir do que
+
+763
+00:52:44,636 --> 00:52:46,663
+o apresentou, ok?
+Pergunta?
+
+764
+00:52:46,663 --> 00:52:50,548
+>> [Estudante perguntando]
+
+765
+00:52:50,548 --> 00:52:54,243
+[estudante perguntando]
+
+766
+00:52:54,243 --> 00:52:57,363
+>> A pergunta é: você pode criar
+manualmente outros tipos de segue?
+
+767
+00:52:57,363 --> 00:53:02,291
+Você quer dizer outros tipos
+de unwind segues?
+
+768
+00:53:02,291 --> 00:53:04,819
+Sim, nós acabamos de cobrir
+como criar um
+
+769
+00:53:04,819 --> 00:53:07,408
+segue manual. Você simplesmente
+CTRL + arrasta entre dois
+
+770
+00:53:07,408 --> 00:53:10,160
+view controllers e daí você faz
+performSegueWithIdentifier.
+
+771
+00:53:10,160 --> 00:53:15,539
+Foi assim que eu fiz esse.
+>> [Estudante perguntando]
+
+772
+00:53:15,540 --> 00:53:21,020
+[estudante perguntando]
+
+773
+00:53:21,020 --> 00:53:25,839
+[estudante perguntando]
+
+774
+00:53:25,839 --> 00:53:30,353
+[estudante perguntando]
+
+775
+00:53:30,353 --> 00:53:36,626
+[estudante perguntando]
+>> Ok, bom, se você tem um exemplo
+
+776
+00:53:36,626 --> 00:53:40,450
+onde um botão volta 2 ou 3 telas,
+você está unwinding.
+
+777
+00:53:40,450 --> 00:53:45,778
+Então seria esse mecanismo.
+Ok, certo.
+
+778
+00:53:45,779 --> 00:53:50,593
+Então é isso.
+Como o modal view controller aparece
+
+779
+00:53:50,593 --> 00:53:53,002
+na tela? Ok?
+Como é a cara dele quando ele aparece
+
+780
+00:53:53,002 --> 00:53:57,643
+na tela? Primeiro, pergunta.
+>> [Estudante perguntando]
+
+781
+00:53:57,643 --> 00:54:02,932
+[estudante perguntando]
+>> A pergunta é: quando eu faço um
+
+782
+00:54:02,932 --> 00:54:06,470
+push segue e tem aquele botãozinho
+de back e eu clico no back button,
+
+783
+00:54:06,470 --> 00:54:09,236
+isso é unwinding?
+A resposta é não, porque aquele back
+
+784
+00:54:09,236 --> 00:54:13,328
+button foi inventado pela Apple antes
+de eles inventarem esse negócio todo de unwind.
+
+785
+00:54:13,328 --> 00:54:16,630
+Mas poderia ser. Quero dizer eles poderiam
+ter sido implementados como um negócio
+
+786
+00:54:16,630 --> 00:54:20,231
+de unwind, mas eles não implementaram.
+>> [Estudante perguntando]
+
+787
+00:54:20,231 --> 00:54:22,920
+[estudante perguntando]
+>> Não, não é.
+
+788
+00:54:22,920 --> 00:54:26,575
+É apenas um navigation control--
+A pergunta é: o View Controller para o qual
+
+789
+00:54:26,575 --> 00:54:29,957
+eu estou voltando, quando eu voltar,
+ele está sendo instanciado?
+
+790
+00:54:29,958 --> 00:54:33,000
+A resposta'é não, porque aquele
+back button nem está fazendo um segue.
+
+791
+00:54:33,000 --> 00:54:37,040
+É apenas as entranhas do Navigation
+Controller que sabe como voltar.
+
+792
+00:54:37,040 --> 00:54:40,117
+Vê o que eu estou dizendo?
+Não é nem um segue, aquele back button.
+
+793
+00:54:40,118 --> 00:54:43,628
+Mas poderia ter sido-- eles poderiam--
+se eles tivessem o unwind segue, eles poderiam
+
+794
+00:54:43,628 --> 00:54:45,474
+muito bem ter feito isso.
+Mas eles não tinham isso no momento.
+
+795
+00:54:45,474 --> 00:54:48,650
+Certo, então um modal view controller,
+como ele aparece na tela visualmente?
+
+796
+00:54:48,650 --> 00:54:52,610
+E existem duas coisas a se considerar.
+Uma é: como ele transiciona na tela?
+
+797
+00:54:52,610 --> 00:54:57,524
+Vocês podem ver aqui, existem opções para
+ele dissolver na tela, ou flipar na tela
+
+798
+00:54:57,524 --> 00:55:04,160
+ou até mesmo "enrolar", vindo de baixo.
+E tem também, quando ele finalmente
+
+799
+00:55:04,160 --> 00:55:08,690
+aparece, qual é a cara dele?
+E no iPhone, ele sempre vai simplesmente
+
+800
+00:55:08,690 --> 00:55:10,781
+ocupar a tela toda.
+A cara dele vai ser sempre assim.
+
+801
+00:55:10,781 --> 00:55:13,750
+Mas no iPad, você tem um monte de opções
+aqui, porque você tem mais espaço.
+
+802
+00:55:13,750 --> 00:55:17,636
+Então poderia ser uma PageSheet, que é
+um pouco menor com tipo
+
+803
+00:55:17,636 --> 00:55:20,328
+um fundo cinza.
+Ele ainda vai ocupar a tela toda,
+
+804
+00:55:20,328 --> 00:55:22,977
+mas vai tipo, visualmente mostrar
+uma caixa um pouco menor.
+
+805
+00:55:22,978 --> 00:55:27,516
+Você pode até ter ele dentro do
+current context. Então se você tem um
+
+806
+00:55:27,516 --> 00:55:31,912
+popover que apresenta alguma coisa modalmente,
+ele vai ser modal somente no popover, ok?
+
+807
+00:55:31,912 --> 00:55:35,448
+Então ele vai ocupar o popover inteiro.
+Mas o resto da UI... você ainda pode
+
+808
+00:55:35,448 --> 00:55:38,568
+tocá-la e fazer o popover ir embora,
+que é interessante
+
+809
+00:55:38,569 --> 00:55:42,062
+Então essa é apresentação
+currentContext no iPad.
+
+810
+00:55:42,062 --> 00:55:47,512
+Essas coisas, ambas essas coisas
+são setáveis no inspector no Xcode, certo?
+
+811
+00:55:47,513 --> 00:55:51,056
+Você vai lá e quando você inspecionar
+o segue, o modal segue, você terá
+
+812
+00:55:51,056 --> 00:55:53,636
+popups para essas duas coisas.
+Nós vamos ver isso na demo
+
+813
+00:55:53,636 --> 00:55:56,136
+e ver a cara de coisas
+como page curl.
+
+814
+00:55:56,136 --> 00:56:00,540
+Certo, então eu vou passar
+pelo UITextField aqui rapidamente.
+
+815
+00:56:00,540 --> 00:56:03,025
+São cinco ou seis slides,
+mas é realmente bem simples.
+
+816
+00:56:03,026 --> 00:56:11,357
+Apenas para que possamos fazer a demo
+com essa modal presentation-- modal segue.
+
+817
+00:56:11,358 --> 00:56:17,025
+Um UITextField é muito parecido com UILabel,
+exceto pelo fato que ele é um UIControl,
+
+818
+00:56:17,025 --> 00:56:20,281
+então ele tem target-action
+e é editável, ok?
+
+819
+00:56:20,281 --> 00:56:24,550
+Mas fora isso, ele é tipo um UILabel...
+(...)
+
+820
+00:56:24,550 --> 00:56:28,548
+Ele foi desenhado para ser uma linha de texto.
+Ele tem uma property que pode
+
+821
+00:56:28,548 --> 00:56:31,114
+deixá-lo com múltiplas linhas.
+Mas não é como UITextView.
+
+822
+00:56:31,114 --> 00:56:34,927
+Lembram-se UITextView que nós fizemos
+na view do GameResults lá atrás?
+
+823
+00:56:34,928 --> 00:56:38,049
+Aquilo era um grande block de texto,
+texto com atributos.
+
+824
+00:56:38,050 --> 00:56:41,480
+Nós podíamos setá-lo para qualquer coisa
+que quiséssemos. Esse é mais para uma linha
+
+825
+00:56:41,480 --> 00:56:44,180
+de texto editável ou talvez duas linhas
+ou três linhas, essas coisas.
+
+826
+00:56:44,180 --> 00:56:47,130
+E é um Control, ok?
+Então ele tem target-action.
+
+827
+00:56:47,130 --> 00:56:52,171
+Uma coisa importante para entender
+sobre TextField é becoming e resigning
+
+828
+00:56:52,171 --> 00:56:55,504
+o first responder.
+Quando ele se torna o first responder,
+
+829
+00:56:55,504 --> 00:56:59,644
+quando um text field se torna o first responder,
+vai aparecer aquele cursos piscando nele.
+
+830
+00:56:59,645 --> 00:57:04,034
+E o teclado vai aparecer.
+Então o teclado-- você não faz o
+
+831
+00:57:04,034 --> 00:57:06,913
+teclado aparecer aparecer
+chamando alguma API do teclado.
+
+832
+00:57:06,913 --> 00:57:11,357
+Você faz isso tornando um text field
+ou um text view, o first responder.
+
+833
+00:57:11,358 --> 00:57:14,974
+E você vai isso enviando a mensagem
+becomeFirstResponder para um text field
+
+834
+00:57:14,974 --> 00:57:18,442
+ou um text view e ele se tornará o first
+responder e o teclado vai aparecer.
+
+835
+00:57:18,442 --> 00:57:23,506
+Ok? Faz sentido?
+E resignFirstResponder, a mesma coisa,
+
+836
+00:57:23,506 --> 00:57:26,360
+o teclado vai embora,
+o cursos piscando pára.
+
+837
+00:57:26,360 --> 00:57:29,080
+Um teclado tem uma
+tecla de return nele.
+
+838
+00:57:29,080 --> 00:57:33,624
+Vocês provavelmente sabem disso,
+como uma teclinha de return, e você tem
+
+839
+00:57:33,624 --> 00:57:37,270
+algum controle no UITextField sobre o que
+acontece quando você toca aquela tecla return.
+
+840
+00:57:37,270 --> 00:57:41,610
+Você poderia, se eles digitaram
+alguma coisa que você não gostou,
+
+841
+00:57:41,610 --> 00:57:46,230
+você pode fazer a tecla return não funcionar,
+ou mesmo colocar um alerta ou algo assim
+
+842
+00:57:46,230 --> 00:57:49,844
+e dizer: dados inválidos ou qualquer coisa.
+E isso é feito com um delegate.
+
+843
+00:57:49,844 --> 00:57:52,810
+Então o UITextField tem um
+delegate, não tem um monte de métodos,
+
+844
+00:57:52,810 --> 00:57:56,247
+mas um dos métodos no delegate
+é o textFieldShoudReturn.
+
+845
+00:57:56,248 --> 00:58:00,022
+E ele retorna-- você retorna um BOOL aqui,
+se ele deve fazer o seu target-action normal
+
+846
+00:58:00,022 --> 00:58:03,818
+quando ele retorna.
+E você pode também chamar resignFirstResponder
+
+847
+00:58:03,818 --> 00:58:08,193
+ou não nesse método.
+Ok? Então se o user tocar o return e tudo
+
+848
+00:58:08,193 --> 00:58:12,550
+está OK, você poderia resignFirstResponder
+e o teclado iria embora, ok?
+
+849
+00:58:12,550 --> 00:58:17,094
+Ou talvez as coisas não estejam ok,
+você toca return, coloca um alerta ou algo assim
+
+850
+00:58:17,094 --> 00:58:21,851
+e daí você não resignFirstResponder, daí
+o teclado não vai embora.
+
+851
+00:58:21,851 --> 00:58:25,838
+Ele continua na tela, ok?
+Descobrir o que está acontecendo
+
+852
+00:58:25,838 --> 00:58:28,850
+no TextField, existem algumas maneiras
+de se fazer isso.
+
+853
+00:58:28,850 --> 00:58:32,626
+Uma é, você pode descobrir quando a edição
+acabou, em outras palavras, quando
+
+854
+00:58:32,626 --> 00:58:36,402
+o text field resignou o first responder,
+porque o delegate vai receber esse método
+
+855
+00:58:36,402 --> 00:58:41,419
+textFieldDidEndEditing, ok? Ou você
+pode descobrir quando o texto mudou
+
+856
+00:58:41,419 --> 00:58:45,011
+dentro do textfield a cada
+teclada, ok?
+
+857
+00:58:45,012 --> 00:58:49,050
+Com um NSNotification. Lembram-se do
+Notification Center e tal?
+
+858
+00:58:49,050 --> 00:58:53,845
+Você assina para receber a notificação
+UITextFieldDidChangeNotification e
+
+859
+00:58:53,846 --> 00:58:58,158
+cada vez que o texto mudar nele,
+você vai receber uma notificação do
+
+860
+00:58:58,158 --> 00:59:02,062
+NSNotificationCenterl.
+Ele também é um Control, então você pode
+
+861
+00:59:02,062 --> 00:59:06,526
+amarrar target-action e ele é tipo um
+botão. Sabe? Como no botão você pode
+
+862
+00:59:06,526 --> 00:59:10,120
+enviar uma action no
+didTouchUpInside ou algo assim?
+
+863
+00:59:10,120 --> 00:59:12,708
+Você pode fazer a mesma coisa.
+TextField tem um monte de diferentes
+
+864
+00:59:12,708 --> 00:59:16,296
+opções também sobre quando o target-action
+é enviado, dependendo do que está acontecendo
+865
+00:59:16,296 --> 00:59:18,793
+no text field, então você pode
+olhar no Xcode pra achar isso.
+
+866
+00:59:18,793 --> 00:59:23,090
+Quando o teclado aparece, como você diz
+qual vai ser a cara do teclado?
+
+867
+00:59:23,090 --> 00:59:24,670
+Porque existem vários tipos
+diferentes de teclados.
+
+868
+00:59:24,670 --> 00:59:28,227
+Existe um para digitar URLs, existe um
+para digitar números de telefone,
+
+869
+00:59:28,228 --> 00:59:32,160
+teclados normais
+para digitar texto, etc.
+
+870
+00:59:32,160 --> 00:59:37,360
+Você faz tudo isso usando esse
+protocolo UITextInputTraits.
+
+871
+00:59:37,360 --> 00:59:41,504
+E esse é um protocolo implementado por
+qualquer objeto que coloca um teclado na tela.
+
+872
+00:59:41,504 --> 00:59:46,734
+Então UITextField é um desses objetos,
+então você pode enviar qualquer um desses
+
+873
+00:59:46,734 --> 00:59:52,272
+métodos para o UITextField e você pode olhar
+tudo isso na documentação do UITextInputTraits
+
+874
+00:59:52,272 --> 00:59:57,732
+para controlar a aparência do teclado. Uma coisa
+sobre o teclado é: ele vem de baixo
+
+875
+00:59:57,732 --> 01:00:00,327
+e cobre as views, certo?
+Ele cobre as coisas.
+
+876
+01:00:00,328 --> 01:00:03,210
+Então vocÊ pode querer escutar
+para essa notification.
+
+877
+01:00:03,210 --> 01:00:06,536
+Esse keyboardWill
+ou keyboardDidShowNotification.
+
+878
+01:00:06,536 --> 01:00:10,680
+Outra coisa do Notification Center.
+Você pode querer escutar isso, e quando
+
+879
+01:00:10,680 --> 01:00:14,213
+isso acontecer, mover algumas coisas
+do caminho que estavam por baixo, ok?
+
+880
+01:00:14,214 --> 01:00:18,728
+Especialmente se a coisa que você clicou
+para começar a editar estava embaixo, onde
+
+881
+01:00:18,728 --> 01:00:21,598
+o teclado apareceu.
+Você quer scrollar para cima ou algom assim.
+
+882
+01:00:21,598 --> 01:00:25,542
+É isso que as table views fazem automaticamente
+para você, o UITableViewController
+
+883
+01:00:25,542 --> 01:00:29,602
+vai mover automaticamente se você clicou
+em uma cell na table view que era editável,
+
+884
+01:00:29,602 --> 01:00:33,314
+e o teclado aparece. Se a cell que era
+editável está embaixo do teclado,
+
+885
+01:00:33,314 --> 01:00:36,883
+ÚÚ, ele scrolla para cima, e daí você
+pode ver o que você está digitando, ok?
+
+886
+01:00:36,883 --> 01:00:41,426
+Ou você tem que colocar todos os text fields
+no topo da sua tela, mas mesmo assim,
+
+887
+01:00:41,426 --> 01:00:45,817
+você deveria, sabe, provavelmente
+escutar essa notification.
+
+888
+01:00:45,817 --> 01:00:50,332
+É algo um pouco avançado, eu não espero,
+mesmo nos seus projetos finais,
+
+889
+01:00:50,332 --> 01:00:54,602
+eu gostaria de ver vocês fazerem
+essas escutas de notifications,
+
+890
+01:00:54,602 --> 01:00:58,382
+mas não é uma obrigação.
+Existem outras propriedades aqui, vocês
+
+891
+01:00:58,382 --> 01:01:02,792
+podem olhar nas configurações do UITextField,
+sabe, várias coisas sobre a aparência
+
+892
+01:01:02,792 --> 01:01:06,921
+e coisas assim.
+O text field também tem um accessory view
+
+893
+01:01:06,921 --> 01:01:11,404
+na esquerda e na direita. Similares
+ao callout que nós vimos
+
+894
+01:01:11,404 --> 01:01:15,480
+no map view que vocês podem configurar.
+Algo tipo um search button ali,
+
+895
+01:01:15,480 --> 01:01:18,930
+ou um botão de X para cancelar
+a digitação, coisas assim.
+
+896
+01:01:18,930 --> 01:01:21,657
+Vocês podem olhar isso também
+se vocês estiverem interessados.
+
+897
+01:01:21,658 --> 01:01:25,724
+E o seu teclado também pode ter
+uma accessory view, ok?
+
+898
+01:01:25,725 --> 01:01:29,209
+Uma view que talvez adicione
+mais botões, mais teclas.
+
+899
+01:01:29,210 --> 01:01:33,128
+Então vocês podem ver isso também.
+Certo, agora eu vou fazer essa demo,
+
+900
+01:01:33,128 --> 01:01:37,291
+onde nos fazemos modal view controller.
+Nós vamos ter um text field no nosso
+
+901
+01:01:37,291 --> 01:01:40,473
+modal view controller, é por isso
+que eu passei por text field.
+
+902
+01:01:40,473 --> 01:01:45,490
+Então vejam como nós criamos esse segue
+e vejam como nós unwindamos.
+
+903
+01:01:45,490 --> 01:01:48,724
+Essa é a coisa principal para assistir
+e como esse é meu último slide, lembrem-se
+
+904
+01:01:48,724 --> 01:01:51,284
+que nós temos Friday section amanhã
+com Instruments.
+
+905
+01:01:51,285 --> 01:01:55,383
+E próxima Terça, eu vou falar
+sobre view animation e sobre alerts
+
+906
+01:01:55,383 --> 01:01:57,758
+e action sheets. Aí diz
+"mode view animation", mas é,
+
+907
+01:01:57,758 --> 01:02:00,128
+na verdade, apenas view animations.
+Nós não começamos ainda.
+
+908
+01:02:00,128 --> 01:02:05,374
+Então é isso que teremos na Terça.
+Certo, agora temos um novo app,
+
+909
+01:02:05,374 --> 01:02:08,344
+chega de Photomania.
+Eu sei que vocês amam o Photomania,
+
+910
+01:02:08,344 --> 01:02:12,316
+mas chega disso.
+Aqui nós vamos criar um novo projeto.
+
+911
+01:02:12,316 --> 01:02:14,882
+Eu vou chamar esse projeto
+de Kitchen Sink (pia de cozinha)
+
+912
+01:02:14,882 --> 01:02:18,652
+porque eu vou jogar um monte de coisas
+nele durante essas próximas
+
+913
+01:02:18,652 --> 01:02:22,480
+duas semanas, então ele é tipo uma pia de cozinha,
+mas ele também vai ser uma
+
+914
+01:02:22,480 --> 01:02:25,257
+pia de cozinha.
+Vamos fazer ele ser iPad-only,
+
+915
+01:02:25,257 --> 01:02:30,262
+porque eu vou demonstrá-lo aqui,
+colocá-lo no nosso "developer". Aqui está
+
+916
+01:02:30,262 --> 01:02:33,878
+o KitchenSink.
+O que nós vamos fazer para o
+
+917
+01:02:33,878 --> 01:02:37,120
+KitchenSink aqui?
+O KitchenSink vai ser apenas
+
+918
+01:02:37,120 --> 01:02:39,565
+uma view que nós vamos
+jogar coisas nela.
+
+919
+01:02:39,565 --> 01:02:43,452
+Vamos começar pelas coisas
+que nós jogamos lá.
+
+920
+01:02:43,452 --> 01:02:45,635
+Isso vai ser como uma pia de cozinha,
+então o que vamos jogar nela
+
+921
+01:02:45,635 --> 01:02:48,281
+será comida. Ok?
+Então nós vamos jogar nossos restos
+
+922
+01:02:48,281 --> 01:02:52,307
+de comida, limpar nossos pratos e
+jogar nossa comida lá, e daí nós vamos
+
+923
+01:02:52,307 --> 01:02:56,455
+ter um ralo. Vamos ter as coisas
+escorrendo pelo ralo com uma bela animação
+
+924
+01:02:56,455 --> 01:02:59,152
+e coisas assim. 
+Mas nós vamos começar aqui tendo um
+
+925
+01:02:59,152 --> 01:03:03,846
+modal view controller aparecendo e te
+perguntando que comida você quer colocar
+
+926
+01:03:03,846 --> 01:03:09,362
+na pia. Ok? Então vai ser bem simples.
+Vamos para o nosso storyboard bem aqui.
+
+927
+01:03:09,362 --> 01:03:13,095
+Arrumar espaço, vocês podem ver que esse
+é o view controller que ele criou,
+
+928
+01:03:13,095 --> 01:03:15,880
+o KitchenSinkViewController.
+
+929
+01:03:15,880 --> 01:03:20,530
+Eu vou colocar um Toolbar
+nesse KitchenSinkViewController.
+
+930
+01:03:20,530 --> 01:03:27,062
+Vocês podem encontrá-lo... aqui, um toolbar.
+Vamos colocar aqui em cima.
+
+931
+01:03:27,062 --> 01:03:30,060
+Vocês não tem idéia do desafio que é
+para mim fazer isso.
+
+932
+01:03:30,060 --> 01:03:34,204
+Tenho certeza que seria para vocês também,
+fazer isso nessa telinha, porque eu tenho
+
+933
+01:03:34,204 --> 01:03:38,104
+baixa resolução aqui... Vamos colocar
+uma KitchenSinkView aqui também.
+
+934
+01:03:38,104 --> 01:03:40,208
+Vou colocar uma view genérica,
+UIView aqui
+
+935
+01:03:40,208 --> 01:03:43,630
+Colocá-la bem aqui.
+
+936
+01:03:43,630 --> 01:03:46,744
+Ter certeza que eu tenho
+meus auto-layouts corretos aqui.
+
+937
+01:03:46,745 --> 01:03:51,333
+E nós vamos fazê-la
+caber perfeitamente, ok?
+
+938
+01:03:51,333 --> 01:03:56,520
+Então temos essa KitchenSinkView. Uma coisa
+sobre a KitchenSinkView, a propósito,
+
+939
+01:03:56,520 --> 01:04:01,542
+quando as coisas na pia ficam perto da
+borda, eu não quero que elas fiquem
+
+940
+01:04:01,542 --> 01:04:06,888
+pra fora da view e, por default, no iOS,
+nós não falamos sobre isso, mas uma view
+
+941
+01:04:06,888 --> 01:04:10,490
+não vai "clip" as subviews dela mesmo
+nas bordas.
+
+942
+01:04:10,490 --> 01:04:14,220
+Então, se você quiser esse comportamento,
+você tem que clickar nesse botãozinho bem aqui.
+
+943
+01:04:14,220 --> 01:04:17,820
+Eu estou inspecionando essa view
+e dizendo Clip Subviews, ok?
+
+944
+01:04:17,820 --> 01:04:21,984
+Desse modo, se eu tiver alguma coisa
+se afastando do ralo da pia, e ela ficar
+
+945
+01:04:21,984 --> 01:04:26,247
+perto da borda, especialmente aqui em cima,
+ela não vai ficar em cima da toolbar, ok?
+
+946
+01:04:26,247 --> 01:04:29,313
+Ela vai ser cortada, quando
+ficar na borda.
+
+947
+01:04:29,314 --> 01:04:32,435
+E esse botão aqui vai ser
+meu botão de adicionar comida.
+
+948
+01:04:32,435 --> 01:04:35,320
+Ok? Então eu vou adicionar comida
+na minha pia usando isso.
+
+949
+01:04:35,320 --> 01:04:40,480
+E essa é a coisa que vai
+fazer a transição modal.
+
+950
+01:04:40,480 --> 01:04:44,987
+E na verdade, vamos fazer isso.
+Meu modal... eu vou pegar um view controller
+
+951
+01:04:44,987 --> 01:04:49,660
+aqui. Trazê-lo pra fora, certo?
+
+952
+01:04:49,660 --> 01:04:54,935
+E a coisa que te pergunta por comida
+é tipo... eu vou fazer isso ser um
+
+953
+01:04:54,935 --> 01:04:58,454
+view controller genérico de
+pergunta e resposta, ok?
+
+954
+01:04:58,455 --> 01:05:01,578
+Ele vai apenas fazer
+genericamente uma pergunta e resposta.
+
+955
+01:05:01,578 --> 01:05:08,110
+Então vamos prosseugir e criar isso.
+Vou chamá-lo de... vamos chamá-lo...
+
+956
+01:05:08,110 --> 01:05:12,216
+é um UIViewController.
+Eu vou chamá-lo de Asker, ok?
+
+957
+01:05:12,216 --> 01:05:17,256
+Porque isso é tudo que ele faz, apenas
+faz uma pergunta e (...)
+
+958
+01:05:17,256 --> 01:05:21,562
+isso vai ser uma classe meio genérica.
+Então o Asker View Controller, aqui está.
+
+959
+01:05:21,563 --> 01:05:28,528
+A API pública para o Asker View Controller
+será... nós vamos ter apenas
+
+960
+01:05:28,528 --> 01:05:33,230
+uma pergunta e nós vamos ter
+uma resposta.
+
+961
+01:05:33,230 --> 01:05:37,333
+E a resposta, como ela volta,
+eu vou fazê-la ser readonly.
+
+962
+01:05:37,333 --> 01:05:43,008
+Então essa é a resposta que nós recebemos, ok?
+Então esse view controller vai fazer
+
+963
+01:05:43,008 --> 01:05:47,526
+uma pergunta e obter uma resposta.
+Vamos seguir em frente e fazer a UI
+
+964
+01:05:47,526 --> 01:05:50,709
+para isso. Vamos aqui
+no nosso storyboard.
+
+965
+01:05:50,709 --> 01:05:57,686
+vamos setar isso para ser um Asker.
+Certo, aqui está.
+
+966
+01:05:57,686 --> 01:06:01,906
+Agora é um Asker.
+E vamos colocar um text field-- vamos
+
+967
+01:06:01,906 --> 01:06:06,043
+colocar um label primeiro
+para a pergunta. Ok?
+
+968
+01:06:06,043 --> 01:06:10,777
+(...)
+
+969
+01:06:10,777 --> 01:06:16,545
+... as linhas azuis...
+não tão grande...
+
+970
+01:06:16,545 --> 01:06:24,676
+aumentar a fonte aqui...
+36 pontos ou algo assim...
+
+971
+01:06:24,676 --> 01:06:26,490
+Ok?
+Pronto,
+
+972
+01:06:26,490 --> 01:06:33,044
+esse vai ser a pergunta.
+... certificando que o layout está bom...
+
+973
+01:06:33,044 --> 01:06:38,448
+Ok, agora vamos colocar
+um text field, um 
+
+974
+01:06:38,448 --> 01:06:41,550
+UITextField que acabamos de falar,
+será a resposta.
+
+975
+01:06:41,550 --> 01:06:44,709
+Colocamos ele aqui.
+Vamos aumentar a fonte também.
+
+976
+01:06:44,709 --> 01:06:55,186
+24 pontos ou algo assim...
+e vamos aumentar largura... Ok?
+
+977
+01:06:55,187 --> 01:06:59,470
+Daí vou apenas criar outlets
+para essas duas coisas.
+
+978
+01:06:59,470 --> 01:07:05,435
+Vamos fazer isso.
+(...)
+
+979
+01:07:05,435 --> 01:07:08,855
+...
+
+980
+01:07:08,855 --> 01:07:12,422
+Quero que isso seja privado.
+Vamos fazer a pergunta aqui.
+
+981
+01:07:12,422 --> 01:07:20,246
+Nós vamos chamar de questionLabel,
+daí vamos fazer nossa resposta aqui,
+
+982
+01:07:20,246 --> 01:07:26,666
+e vou chamár de answerTextField, ok?
+Então nós temos isso e obviamente
+
+983
+01:07:26,666 --> 01:07:32,124
+no nosso viewDidLoad, na verdade vou fazer
+no viewWillAppear -- [ditando código]
+
+984
+01:07:32,124 --> 01:07:35,772
+[ditando código]
+Eu vou apenas setar a pergunta
+
+985
+01:07:35,772 --> 01:07:39,884
+e a resposta.
+[ditando código]
+
+986
+01:07:39,884 --> 01:07:47,126
+[ditando código]
+
+987
+01:07:47,126 --> 01:07:52,076
+Ok? Porque nós não fizemos
+uma pergunta, nós acabamos de aparecer,
+
+988
+01:07:52,076 --> 01:07:55,967
+então nós vamos limpar nosso
+text field cada vez que reaparecermos.
+
+989
+01:07:55,968 --> 01:08:00,972
+E a outra coisa que eu vou fazer, que
+queremos fazer é: eu vou fazer
+
+990
+01:08:00,972 --> 01:08:04,256
+o answerTextField se tornar
+o first responder.
+
+991
+01:08:04,256 --> 01:08:07,977
+Ok? Então assim que essa coisa aparecer,
+o teclado vai aparecer
+
+992
+01:08:07,977 --> 01:08:10,615
+pronto para digitar nesse text field.
+Porque fundamentalmente o que nós
+
+993
+01:08:10,615 --> 01:08:13,252
+fazemos é fazer essa pergunta.
+Então nós fundamentalmente queremos
+
+994
+01:08:13,252 --> 01:08:17,832
+essa coisa aqui.
+E por último, eu vou fazer que meu answer
+
+995
+01:08:17,832 --> 01:08:23,749
+retorne apenas o
+answerTextField.text, ok?
+
+996
+01:08:23,750 --> 01:08:27,250
+Então isso é parte da minha API pública.
+Esse é o getter para aquela
+
+997
+01:08:27,250 --> 01:08:31,557
+property read-only.
+Então essa é a API para pegar a resposta.
+
+998
+01:08:31,558 --> 01:08:35,280
+Agora, a única coisa--
+ah, e outra coisa que eu vou fazer,
+
+999
+01:08:35,280 --> 01:08:40,490
+vamos colocar alguns botões aqui.
+Para done e cancel.
+
+1000
+01:08:40,490 --> 01:08:44,964
+Aqui está o button Vou colocar um
+button aqui e outro aqui.
+
+1001
+01:08:44,965 --> 01:08:51,519
+As linhas azuis... então tenho o done.
+E tenho outro botão aqui
+
+1002
+01:08:51,519 --> 01:08:58,006
+que será o cancel.
+Ok, agora quando o done e o cancel
+
+1003
+01:08:58,006 --> 01:09:03,518
+forem tocados, eles vão unwind
+de volta para quem apresentou isso.
+
+1004
+01:09:03,518 --> 01:09:08,415
+Certo? É assim que o unwind funciona.
+Então cancel ou done, cada um envia
+
+1005
+01:09:08,415 --> 01:09:12,380
+um unwind diferente porque são
+coisas diferentes,
+
+1006
+01:09:12,380 --> 01:09:15,418
+cancel x done.
+Então esse unwinding tem que voltar
+
+1007
+01:09:15,418 --> 01:09:20,540
+para esse view controller bem aqui.
+Ok? Então é aqui onde-- esse view controller,
+
+1008
+01:09:20,540 --> 01:09:24,944
+o KitchenSinkViewController
+é o cara que tem que implementar
+
+1009
+01:09:24,944 --> 01:09:27,524
+aqueles métodos de unwinding.
+Então eu vou criar dois deles,
+
+1010
+01:09:27,524 --> 01:09:34,068
+eu vou chamar um deles...
+vamos chamar um deles de cancelAsking,
+
+1011
+01:09:34,068 --> 01:09:44,052
+e isso precisa ser um UIStoryboardSegue,
+e daí o outro eu vou chamar
+
+1012
+01:09:44,052 --> 01:09:50,506
+de doneAsking. Então um
+é o cancelAsking e o outro
+
+1013
+01:09:50,506 --> 01:09:55,062
+é o doneAsking.
+Agora, se eu acabei de perguntar, então
+
+1014
+01:09:55,062 --> 01:10:01,350
+eu vou pegar o Asker View Controller e
+descobrir qual foi a resposta para a pergunta.
+
+1015
+01:10:01,350 --> 01:10:06,887
+Então importo Asker View Controller,
+Pego o Asker View Controller,
+
+1016
+01:10:06,887 --> 01:10:12,537
+vai ser o sourceViewController desse segue,
+porque esse segue está segueando a partir
+
+1017
+01:10:12,537 --> 01:10:17,909
+do Asker View Controller de volta pra mim
+e aqui eu vou apenas, nesse caso,
+
+1018
+01:10:17,909 --> 01:10:21,863
+vamos apenas NSLog
+a resposta do Asker, ok?
+
+1019
+01:10:21,864 --> 01:10:27,257
+Agora cancel, na verdade
+não preciso fazer nada.
+
+1020
+01:10:27,257 --> 01:10:31,466
+Ok? Porque se você cancelou,
+eu não vou adicionar comida.
+
+1021
+01:10:31,466 --> 01:10:33,550
+Ok? Eu vou simplesmente não fazer nada,
+como se nem tivesse aqui.
+
+1022
+01:10:33,550 --> 01:10:38,962
+Eu preciso implementar o cancelAsking,
+porque eu preciso ter um unwind segue aqui,
+
+1023
+01:10:38,962 --> 01:10:43,027
+mas eu não preciso, na verdade,
+fazer nada.
+
+1024
+01:10:43,027 --> 01:10:48,947
+A única outra coisa aqui é,
+nesse KitchenSinkController, eu preciso
+
+1025
+01:10:48,947 --> 01:10:52,470
+preparar para aquele modal segue também.
+Não só o unwind, mas aquele que
+
+1026
+01:10:52,470 --> 01:10:55,090
+vai até ele.
+Eu preciso ter o prepare para isso.
+
+1027
+01:10:55,090 --> 01:11:03,050
+Vamos fazer apenas...
+[ditando código]
+
+1028
+01:11:03,050 --> 01:11:09,899
+[ditando código]
+
+1029
+01:11:09,899 --> 01:11:16,929
+[ditando código]
+
+1030
+01:11:16,929 --> 01:11:23,104
+[ditando código]
+"Que comida você quer na pia?"
+
+1031
+01:11:23,104 --> 01:11:27,634
+Ok? Porque é para isso
+que estamos usando o Asker.
+
+1032
+01:11:27,634 --> 01:11:30,364
+Ok? Então estou fazendo apenas
+um prepareForSegue
+
+1033
+01:11:30,364 --> 01:11:33,067
+normal aqui.
+Isso faz sentido?
+
+1034
+01:11:33,067 --> 01:11:36,837
+Agora nós vamos apenas
+linkar tudo isso e estamos prontos.
+
+1035
+01:11:36,838 --> 01:11:41,700
+Nós precisamos linkar
+esse negócio aqui em cima para isso.
+
+1036
+01:11:41,700 --> 01:11:47,694
+Assim, ok? Isso vai ser modal.
+Vêem o Action Segue aqui? 
+
+1037
+01:11:47,694 --> 01:11:50,762
+Ele diz modal.
+Esse vai ser um modal segue.
+
+1038
+01:11:50,762 --> 01:11:54,517
+E nós queremos ter certeza que nós demos
+o nome certo, que é "Ask".
+
+1039
+01:11:54,518 --> 01:11:58,896
+Percebam também que esse segue,
+bem aqui, nós podemos especificar o style
+
+1040
+01:11:58,896 --> 01:12:01,241
+da presentation.
+Oops, não o style do segue.
+
+1041
+01:12:01,241 --> 01:12:04,557
+O presentation style, que eu vou
+fazer full screen.
+
+1042
+01:12:04,558 --> 01:12:08,599
+E eu vou fazer a transição
+ser um Partial Curl, de cima pra baixo.
+
+1043
+01:12:08,600 --> 01:12:13,828
+E a propósito, para fazer isso tudo
+um pouco mais fácil de ver, eu vou setar
+
+1044
+01:12:13,828 --> 01:12:19,158
+o backgroundColor desse view
+para algo mais legal, tipo
+
+1045
+01:12:19,158 --> 01:12:23,603
+essa cor bem aqui ou algo assim.
+Basicamente para que vocês possam ver
+
+1046
+01:12:23,603 --> 01:12:25,197
+o que está acontecendo.
+Ok? Eu não quero que fique muito branco
+
+1047
+01:12:25,197 --> 01:12:28,946
+e vocês fiquem tipo: "o que está acontecendo?"
+E agora nós precisamos setar o
+
+1048
+01:12:28,946 --> 01:12:32,020
+unwind segue, ok?
+O unwind segue que vai ao contrário.
+
+1049
+01:12:32,020 --> 01:12:36,946
+É quando esses botões são apertados.
+Eu mal consigo ver os dois na tela
+
+1050
+01:12:36,946 --> 01:12:41,185
+ao mesmo tempo.
+Então o cancel button aqui embaixo,
+
+1051
+01:12:41,185 --> 01:12:43,897
+até o unwind verde.
+E vocês podem ver que eu tenho duas escolhas
+
+1052
+01:12:43,897 --> 01:12:48,266
+porque ele os viu.
+Ok? Ele sabe sobre eles. Então esse
+
+1053
+01:12:48,266 --> 01:12:53,792
+é o cancel e ese aqui é o Done.
+Ok? Agora nós linkamos tudo
+
+1054
+01:12:53,792 --> 01:12:58,211
+em ambas as direções.
+Nós temos um segue para frente e temos
+
+1055
+01:12:58,211 --> 01:13:02,139
+esses unwind segues indo para trás, ok?
+Então vamos rodar isso.
+
+1056
+01:13:04,120 --> 01:13:08,362
+Eu corri um pouco então se eu
+não esqueci nada...
+
+1057
+01:13:08,362 --> 01:13:15,063
+Aqui eu vou dizer Add Food e você
+pode ver que ele transicionou, certo?
+
+1058
+01:13:15,063 --> 01:13:19,486
+Modal segue, agora a tela inteira
+foi tomara por esse view controller
+
+1059
+01:13:19,486 --> 01:13:25,228
+perguntando sobre a comida que eu quero na pia.
+Agora, se eu clicar cancel,
+
+1060
+01:13:25,228 --> 01:13:29,076
+ele não fez nada.
+Se eu voltar aqui e disser, que tal
+
+1061
+01:13:29,076 --> 01:13:33,468
+broccoli? É assim que soletra broccoli?
+Isso, pronto.
+
+1062
+01:13:33,469 --> 01:13:41,022
+E agora, se voltarmos e olharmos
+nossa coisa bem aqui, podemos ver que
+
+1063
+01:13:41,022 --> 01:13:46,046
+nos NSLogamos broccoli, ok?
+Isso faz sentido?
+
+1064
+01:13:46,046 --> 01:13:50,615
+Então esse modal está indo para frente
+modalmente e, para voltar, você apenas
+
+1065
+01:13:50,615 --> 01:13:53,564
+unwind, através daquele
+botão verde para voltar?
+
+1066
+01:13:53,564 --> 01:13:58,163
+Da próxima vez, o que nós vamos fazer, na
+próxima demo nós vamos, ao invés de
+
+1067
+01:13:58,163 --> 01:14:02,080
+colocar um NSLog aqui, nós vamos
+colocar o broccoli na pia.
+
+1068
+01:14:02,080 --> 01:14:06,740
+E daí nós vamos fazer ele animar.
+Então vamos ter o broccoli rodopiar
+
+1069
+01:14:06,740 --> 01:14:10,358
+um pouco na pia e nós vamos ativar
+o rola e vamos fazer o broccoli
+
+1070
+01:14:10,358 --> 01:14:13,042
+descer pelo ralo.
+Nós vamos limpar nossos pratos e
+
+1071
+01:14:13,042 --> 01:14:16,766
+adicionar mais comida.
+Ok? Vamos fazer tudo isso na próxima semana, ok?
+
+1072
+01:14:16,766 --> 01:14:18:766
+Se tiverem perguntas, estarei aqui.
+
+1073
+01:14:18,766 --> 01:14:23,166
+Visite nosso site:
+www.centraldosapps.com
